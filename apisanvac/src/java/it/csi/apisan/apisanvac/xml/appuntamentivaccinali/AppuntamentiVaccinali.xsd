@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="AppuntamentiVaccinali" nillable="true" type="AppuntamentiVaccinali" />
+  <xs:complexType name="AppuntamentiVaccinali">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Convocazioni" type="ArrayOfDTOConvocazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTOConvocazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTOConvocazione" nillable="true" type="DTOConvocazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOConvocazione">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="CodicePaziente" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataConvocazione" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceConsultorio" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CodiceAmbulatorio" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vaccini" type="ArrayOfDTOVaccino" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTOVaccino">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTOVaccino" nillable="true" type="DTOVaccino" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOVaccino">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceVaccino" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneVaccino" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

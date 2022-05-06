@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://scaricoStudi.dmass.csi.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://dmass.csi.it/" name="SaricoStudiWSBeanImplService" targetNamespace="http://scaricoStudi.dmass.csi.it/">
+  <wsdl:import location="https://tst-xxx-dma.xxx.csi.it/dmassws/scaricoStudi/ws/scaricoStudiWSBean?wsdl=ScaricoStudiWSBean.wsdl" namespace="http://dmass.csi.it/">
+    </wsdl:import>
+  <wsdl:binding name="SaricoStudiWSBeanImplServiceSoapBinding" type="ns1:ScaricoStudiWSBean">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CancellaPacchetto">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="CancellaPacchetto">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="CancellaPacchettoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verificaStatoRichiesta2">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verificaStatoRichiesta2">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verificaStatoRichiesta2Response">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricoStudi">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="ScaricoStudi">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ScaricoStudiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getElencoPacchettiScaduti">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getElencoPacchettiScaduti">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getElencoPacchettiScadutiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="aggiornaStatoRichiesta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="aggiornaStatoRichiesta">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="aggiornaStatoRichiestaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setPacchettoCancellato">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setPacchettoCancellato">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setPacchettoCancellatoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificaStatoListaRichieste">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="VerificaStatoListaRichieste">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="VerificaStatoListaRichiesteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verificaStatoRichiesta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="verificaStatoRichiesta">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verificaStatoRichiestaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SaricoStudiWSBeanImplService">
+    <wsdl:port binding="tns:SaricoStudiWSBeanImplServiceSoapBinding" name="SaricoStudiWSBeanImplPort">
+      <soap:address location="https://tst-xxx-dma.xxx.csi.it/dmassws/scaricoStudi/ws/scaricoStudiWSBean"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

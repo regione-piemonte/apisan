@@ -1,0 +1,16 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.apisan.apisanvac.api",
+"modelPackage":  "it.csi.apisan.apisanvac.model",
+"invokerPackage": "it.csi.apisan.apisanvac.invoker",
+"implFolder": "implasdasdasdasdsa",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"useImplicitSnakeCaseAttributeStrategy": true,
+"accessHttpHeaders": true
+}

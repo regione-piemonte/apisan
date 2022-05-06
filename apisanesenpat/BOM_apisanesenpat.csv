@@ -1,0 +1,24 @@
+name@version *,license *,copyrights *,end-of-support,dependencies,language,repository,email,URL
+aopalliance-1.0.0.jar,"Public Domain",-,-,-,Java,-,-,-
+bcprov-jdk15on-151.jar,"BouncyCastle License",-,-,-,Java,-,-,-
+cglib-2.2.2.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-lang3-3.2.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-logging-1.1.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-logging-1.1.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+cxf-2.7.14.jar,"Apache-2.0",-,-,-,Java,-,-,-
+cxf-utils.js,"Apache-2.0",-,-,-,Javascript,-,-,-
+jackson-core-asl-1.9.9.redhat-4.jar,"Apache-2.0",Redhat,-,-,Java,-,-,-
+jackson-mapper-asl-1.9.9.redhat-4.jar,"Apache-2.0",Redhat,-,-,Java,-,-,-
+jettison-1.3.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+neethi-3.0.2.jar,"Apache-2.0",-,-,-,Java,-,-,-
+spring-beans-4.1.2.RELEASE.jar,"Apache-2.0",-,-,-,Java,-,-,-
+spring-core-4.1.2.RELEASE.jar,"Apache-2.0",-,-,-,Java,-,-,-
+spring-tx-4.1.2.RELEASE.jar,"Apache-2.0",-,-,-,Java,-,-,-
+swagger-annotations-1.5.18.jar,"Apache-2.0",-,-,-,Java,-,-,-
+swagger-jaxrs-1.5.18.jar,"Apache-2.0",-,-,-,Java,-,-,-
+util-perf-1.0.0.jar,"Apache-2.0; MIT (Rilasciata da CSI Piemonte su richiesta)",CSI-Piemonte,-,-,Java,-,-,-
+validation-api-1.0.0.GA-redhat-3.jar,"Apache-2.0",Redhat,-,-,Java,-,-,-
+wsdl4j-1.6.3.redhat-1.jar,"CPL ",Redhat,-,-,Java,-,-,-
+wss4j-1.6.17.jar,"Apache-2.0",-,-,-,Java,-,-,-
+xmlschema-core-2.0.2.jar,"Apache-2.0",-,-,-,Java,-,-,-
+xmlsec-1.5.1.jar,"Apache-2.0",-,-,-,Java,-,-,-

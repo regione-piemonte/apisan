@@ -1,0 +1,786 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Celiachia</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Celiachia</h1>
+    <div class="app-desc"><h1>Avvertenze</h1>
+<hr />
+<ol>
+<li>Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino</li>
+<li>Questo YAML è un contratto tra lo strato verde e lo strato rosso</li>
+<li>Deve essere ancora definita la tipologia di QR Code da usare, il livello di correzione errore e come comporre la stringa che poi diventerà l'immagine QR Code</li>
+</ol>
+<h1>Domande</h1>
+<hr />
+<ol>
+<li>L'esporta in CSV va implementato? Se sì, da quale strato?</li>
+</ol>
+<h1>Prototipo Interfaccia</h1>
+<hr />
+<p>http://dev-prototipi.csi.it/2020/sanita%20-%20Estratto%20Conto%20-%20Celiachia/html/#id=apqobv&amp;p=home-_celiachia&amp;g=1</p>
+<h1>Note versione 1.0.0 (16 Lug 2020)</h1>
+<hr />
+<ul>
+<li>
+<p>Rimosso endpoint <code>Informazioni cittadino</code> che rappresentava una versione alternativa della progettazione.</p>
+</li>
+<li>
+<p>Rimosso endpoint <code>Dettaglio autorizzazione</code>. Ora i dati dell'autorizzazione sono nell'endpoint <code>Cedolino corrente</code></p>
+</li>
+<li>
+<p>Nelle <code>Erogazioni</code> sono state aggiunte informazioni relative alla struttura:</p>
+<ul>
+<li><code>id</code></li>
+<li><code>provincia</code></li>
+<li><code>comune</code></li>
+<li><code>cap</code> (da verificare se presente come dato separato)</li>
+<li><code>indirizzo</code></li>
+<li><code>civico</code> (da verificare se presente come dato separato)</li>
+</ul>
+</li>
+<li>
+<p>Cambio naming per avere un vocabolario comune su tutti gli strati:</p>
+<ul>
+<li><code>Buono</code> → <code>Cedolino</code></li>
+<li><code>Transazioni</code> → <code>Erogazioni</code></li>
+</ul>
+</li>
+</ul>
+<h1>Note versione 0.0.2 (15 Lug 2020)</h1>
+<hr />
+<ul>
+<li>
+<p>Aggiunto endpoint <code>Codice QR</code> che permette di ottenere i dati necessari per generare correttamente l'immagine del codice QR</p>
+</li>
+<li>
+<p>Aggiunto endpoint <code>Dettaglio autorizzazione</code> che permette di ottenere i dati relativi all'autorizzazione</p>
+</li>
+<li>
+<p>Aggiunto endpoint <code>Informazioni cittadino</code> che rappresenta una versione alternativa della progettazione.</p>
+</li>
+</ul>
+<h1>Note versione 0.0.1 (13 Lug 2020)</h1>
+<hr />
+<ul>
+<li>Prima implementazione</li>
+</ul>
+</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/apisanceliachia/api/v1</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Default">Default</a></h4>
+  <ul>
+  <li><a href="#cittadiniCitIdCedoliniCorrenteGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/cedolini/corrente</code></a></li>
+  <li><a href="#cittadiniCitIdCodiceQrGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/codice-qr</code></a></li>
+  <li><a href="#cittadiniCitIdErogazioniGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/erogazioni</code></a></li>
+  <li><a href="#cittadiniCitIdPinGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/pin</code></a></li>
+  <li><a href="#cittadiniCitIdPinPost"><code><span class="http-method">post</span> /cittadini/{cit_id}/pin</code></a></li>
+  <li><a href="#servizioAttivoGet"><code><span class="http-method">get</span> /servizio-attivo</code></a></li>
+  </ul>
+
+  <h1><a name="Default">Default</a></h1>
+  <div class="method"><a name="cittadiniCitIdCedoliniCorrenteGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/cedolini/corrente</code></pre></div>
+    <div class="method-summary">Cedolino corrente (<span class="nickname">cittadiniCitIdCedoliniCorrenteGet</span>)</div>
+    <div class="method-notes"><p>Permette di ottenere il cedolino corrente con i suoi metadati.</p>
+<p>Se il cittadino non ha un buono corrente valido questo servizio restituisce <code>404</code>.</p>
+</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_cedolino">model_cedolino</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "importo_totale" : 100.0,
+  "importo_disponibile" : 60.0,
+  "data_inizio" : "2000-01-23",
+  "autorizzazione" : {
+    "data_validita_fine" : "2000-01-23T04:56:07.000+00:00",
+    "codice" : "codice",
+    "data_validita_inizio" : "2000-01-23T04:56:07.000+00:00"
+  },
+  "data_fine" : "2000-01-23"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#model_cedolino">model_cedolino</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    La risorsa cercata non è stata trovata. <br> Questo errore viene restituito quando si prova ad accedere alla singola risorsa e questa non esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono elementi, restituire 200 con un array vuoto
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdCodiceQrGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/codice-qr</code></pre></div>
+    <div class="method-summary">Codice QR (<span class="nickname">cittadiniCitIdCodiceQrGet</span>)</div>
+    <div class="method-notes">Permette di ottenere il codice da usare per genereare il QR Code</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_codice_qr">model_codice_qr</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice" : "codice",
+  "livello_correzione" : "M",
+  "tipologia" : "QR"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#model_codice_qr">model_codice_qr</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdErogazioniGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/erogazioni</code></pre></div>
+    <div class="method-summary">Lista erogazioni (<span class="nickname">cittadiniCitIdErogazioniGet</span>)</div>
+    <div class="method-notes"><p>Permette di ottenere l'elenco delle erogazioni (movimenti) effettuate da un cittadino.</p>
+<p>Questo elenco è filtrabile per data di inizio e fine. In questo modo è possibile estrapolare l'elenco delle erogazioni di un cedolino andando a filtrare per la data di inizio e la data di fine del cedolino.</p>
+<p>Se il cittadino non ha erogazioni o non ci sono erogazioni in base ai filtri impostati questo servizio restituisce comunque <code>200</code> e lista vuota <code>[]</code></p>
+</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">da (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Permette di filtrare per un range di date. Formato che deve essere passato</p>
+<ul>
+<li>yyyy-MM-dd</li>
+<li>yyyy-MM-ddTHH:mm:ssZ</li>
+</ul>
+ </div><div class="param">a (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Permette di filtrare per un range di date. Formato che deve essere passsato</p>
+<ul>
+<li>yyyy-MM-dd</li>
+<li>yyyy-MM-ddTHH:mm:ssZ</li>
+</ul>
+ </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#model_erogazione">model_erogazione</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : "2000-01-23T04:56:07.000+00:00",
+  "importo" : 100.0,
+  "id" : "id",
+  "struttura" : {
+    "cap" : "cap",
+    "comune" : "comune",
+    "indirizzo" : "indirizzo",
+    "nome" : "nome",
+    "id" : "id",
+    "civico" : "civico",
+    "provincia" : "provincia"
+  }
+}, {
+  "data" : "2000-01-23T04:56:07.000+00:00",
+  "importo" : 100.0,
+  "id" : "id",
+  "struttura" : {
+    "cap" : "cap",
+    "comune" : "comune",
+    "indirizzo" : "indirizzo",
+    "nome" : "nome",
+    "id" : "id",
+    "civico" : "civico",
+    "provincia" : "provincia"
+  }
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    La risorsa cercata non è stata trovata. <br> Questo errore viene restituito quando si prova ad accedere alla singola risorsa e questa non esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono elementi, restituire 200 con un array vuoto
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdPinGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/pin</code></pre></div>
+    <div class="method-summary">Dettaglio PIN (<span class="nickname">cittadiniCitIdPinGet</span>)</div>
+    <div class="method-notes">Permette di ottenere il pin dell'utente</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_pin">model_pin</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice" : "codice"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#model_pin">model_pin</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdPinPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cit_id}/pin</code></pre></div>
+    <div class="method-summary">Nuovo pin (<span class="nickname">cittadiniCitIdPinPost</span>)</div>
+    <div class="method-notes">Permette di chiedere la creazione di un nuovo pin</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_pin">model_pin</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice" : "codice"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Operazione eseguita con successo
+        <a href="#model_pin">model_pin</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="servizioAttivoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /servizio-attivo</code></pre></div>
+    <div class="method-summary">Raggiungibilità (<span class="nickname">servizioAttivoGet</span>)</div>
+    <div class="method-notes">Serve per verificare se il servizio risponde o meno</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_info_servizio">model_info_servizio</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "descrizione" : "descrizione",
+  "data" : "2000-01-23",
+  "nome" : "nome",
+  "servizio_attivo" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    La richiesta è andata a buon fine quindi il servizio è online
+        <a href="#model_info_servizio">model_info_servizio</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#errore"><code>errore</code> - [ERRORE] Generico</a></li>
+    <li><a href="#errore_dettaglio"><code>errore_dettaglio</code> - [ERRORE] Dettaglio</a></li>
+    <li><a href="#model_autorizzazione"><code>model_autorizzazione</code> - Autorizzazione</a></li>
+    <li><a href="#model_cedolino"><code>model_cedolino</code> - Cedolino</a></li>
+    <li><a href="#model_codice_qr"><code>model_codice_qr</code> - Codice QR</a></li>
+    <li><a href="#model_erogazione"><code>model_erogazione</code> - Erogazione</a></li>
+    <li><a href="#model_info_servizio"><code>model_info_servizio</code> - Info servizio</a></li>
+    <li><a href="#model_pin"><code>model_pin</code> - Pin</a></li>
+    <li><a href="#model_struttura"><code>model_struttura</code> - Struttura</a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="errore"><code>errore</code> - [ERRORE] Generico</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">title (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">detail (optional)</div><div class="param-desc"><span class="param-type"><a href="#errore_dettaglio">array[errore_dettaglio]</a></span>  </div>
+<div class="param">links (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="errore_dettaglio"><code>errore_dettaglio</code> - [ERRORE] Dettaglio</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">chiave (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">valore (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_autorizzazione"><code>model_autorizzazione</code> - Autorizzazione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice dell'autorizzazione </div>
+<div class="param">data_validita_inizio (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> La data di inizio validità dell'autorizzazione format: date-time</div>
+<div class="param">data_validita_fine (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> La data di fine validità dell'autorizzazione format: date-time</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_cedolino"><code>model_cedolino</code> - Cedolino</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">importo_totale (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Il valore del cedolino </div>
+<div class="param">importo_disponibile (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo ancora disponibile sul cedolino </div>
+<div class="param">data_inizio (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> La data di inizio del cedolino format: date</div>
+<div class="param">data_fine (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> La data di inizio del cedolino format: date</div>
+<div class="param">autorizzazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_autorizzazione">model_autorizzazione</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_codice_qr"><code>model_codice_qr</code> - Codice QR</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice che verrà usato per generare il QR Code </div>
+<div class="param">tipologia (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La tipologia di QR Code da generare.
+https://www.qrcode.com/en/codes/ </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">QR</div><div class="param-enum">MICRO QR</div><div class="param-enum">IQR</div><div class="param-enum">SQRC</div><div class="param-enum">FRAME QR</div>
+<div class="param">livello_correzione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice del livello di correzione da usare per generare il QR Code.
+https://www.qrcode.com/en/about/error_correction.html </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">M</div><div class="param-enum">L</div><div class="param-enum">Q</div><div class="param-enum">H</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_erogazione"><code>model_erogazione</code> - Erogazione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Identificativo univoco </div>
+<div class="param">importo (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo dell'erogazione </div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> La data in cui è avvenuta l'erogazione format: date-time</div>
+<div class="param">struttura (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_struttura">model_struttura</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_info_servizio"><code>model_info_servizio</code> - Info servizio</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome del servizio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del servizio </div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">servizio_attivo (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> boolean di utilita per eventuali test </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_pin"><code>model_pin</code> - Pin</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice che identifica il pin </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_struttura"><code>model_struttura</code> - Struttura</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Identificativo univoco della struttura </div>
+<div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il nome della struttura </div>
+<div class="param">provincia (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice della provincia alla quale appartiene la struttura </div>
+<div class="param">comune (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il nome del comune al quale appartiene la struttura </div>
+<div class="param">cap (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> il CAP associato alla struttura </div>
+<div class="param">indirizzo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'indirizzo della struttura </div>
+<div class="param">civico (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il civico della struttura </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

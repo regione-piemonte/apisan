@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://impl.screenserviziwebsol.wsdl.screening.csi.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://www.csi.it/ScreenServiziWebSOL/" name="ScreenServiziWebSOLImplService" targetNamespace="http://impl.screenserviziwebsol.wsdl.screening.csi.it/">
+  <wsdl:import location="https://bejava-scr.isan.csi.it/screenws/ScreenServiziWebSOLImplService?wsdl=ScreenServiziWebSOL.wsdl" namespace="http://www.csi.it/ScreenServiziWebSOL/">
+    </wsdl:import>
+  <wsdl:binding name="ScreenServiziWebSOLImplServiceSoapBinding" type="ns1:ScreenServiziWebSOL">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Scr_Ana_01">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Scr_Ana_01" style="document"/>
+      <wsdl:input name="Scr_Ana_01">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Scr_Ana_01Response">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ScrAna01Fault_Exception">
+        <soap:fault name="ScrAna01Fault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Check_Eta_Screening">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Check_Eta_Screening" style="document"/>
+      <wsdl:input name="Check_Eta_Screening">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Check_Eta_ScreeningResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CheckEtaScreeningFault_Exception">
+        <soap:fault name="CheckEtaScreeningFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Get_Appuntamenti_WEB">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Get_Appuntamenti_WEB" style="document"/>
+      <wsdl:input name="Get_Appuntamenti_WEB">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Get_Appuntamenti_WEBResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GetAppuntamentiWEBFault_Exception">
+        <soap:fault name="GetAppuntamentiWEBFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GET_STRUTTURE_WEB2">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/GET_STRUTTURE_WEB2" style="document"/>
+      <wsdl:input name="GET_STRUTTURE_WEB2">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GET_STRUTTURE_WEB2Response">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GETSTRUTTUREWEB2Fault_Exception">
+        <soap:fault name="GETSTRUTTUREWEB2Fault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Get_Date_Disponibili_WEB">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Get_Date_Disponibili_WEB" style="document"/>
+      <wsdl:input name="Get_Date_Disponibili_WEB">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Get_Date_Disponibili_WEBResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GetDateDisponibiliWEBFault_Exception">
+        <soap:fault name="GetDateDisponibiliWEBFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Scr_Mam_01">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Scr_Mam_01" style="document"/>
+      <wsdl:input name="Scr_Mam_01">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Scr_Mam_01Response">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ScrMam01Fault_Exception">
+        <soap:fault name="ScrMam01Fault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Scr_Cit_01">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Scr_Cit_01" style="document"/>
+      <wsdl:input name="Scr_Cit_01">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Scr_Cit_01Response">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ScrCit01Fault_Exception">
+        <soap:fault name="ScrCit01Fault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Set_Situazione_Ass_Ind_WEB">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Set_Situazione_Ass_Ind_WEB" style="document"/>
+      <wsdl:input name="Set_Situazione_Ass_Ind_WEB">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Set_Situazione_Ass_Ind_WEBResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SetSituazioneAssIndWEBFault_Exception">
+        <soap:fault name="SetSituazioneAssIndWEBFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="VerificaAssistita">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/VerificaAssistita" style="document"/>
+      <wsdl:input name="VerificaAssistita">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="VerificaAssistitaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="VerificaAssistitaFault_Exception">
+        <soap:fault name="VerificaAssistitaFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Get_Dettaglio_Strutture_WEB">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Get_Dettaglio_Strutture_WEB" style="document"/>
+      <wsdl:input name="Get_Dettaglio_Strutture_WEB">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Get_Dettaglio_Strutture_WEBResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GetDettaglioStruttureWEBFault_Exception">
+        <soap:fault name="GetDettaglioStruttureWEBFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Set_Situazione_Ass_Tel_WEB">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Set_Situazione_Ass_Tel_WEB" style="document"/>
+      <wsdl:input name="Set_Situazione_Ass_Tel_WEB">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Set_Situazione_Ass_Tel_WEBResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SetSituazioneAssTelWEBFault_Exception">
+        <soap:fault name="SetSituazioneAssTelWEBFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Crea_Appuntamento_WEB">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Crea_Appuntamento_WEB" style="document"/>
+      <wsdl:input name="Crea_Appuntamento_WEB">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Crea_Appuntamento_WEBResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CreaAppuntamentoWEBFault_Exception">
+        <soap:fault name="CreaAppuntamentoWEBFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetElencoDocumentiDigitali">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/GetElencoDocumentiDigitali" style="document"/>
+      <wsdl:input name="GetElencoDocumentiDigitali">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetElencoDocumentiDigitaliResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GetElencoDocumentiDigitaliFault_Exception">
+        <soap:fault name="GetElencoDocumentiDigitaliFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Scr_App_01">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/Scr_App_01" style="document"/>
+      <wsdl:input name="Scr_App_01">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Scr_App_01Response">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ScrApp01Fault_Exception">
+        <soap:fault name="ScrApp01Fault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="TrasmettiNotifica">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/TrasmettiNotifica" style="document"/>
+      <wsdl:input name="TrasmettiNotifica">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="TrasmettiNotificaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="TrasmettiNotificaFault_Exception">
+        <soap:fault name="TrasmettiNotificaFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetDettaglioDocumentoDigitale">
+      <soap:operation soapAction="http://www.csi.it/ScreenServiziWebSOL/GetDettaglioDocumentoDigitale" style="document"/>
+      <wsdl:input name="GetDettaglioDocumentoDigitale">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetDettaglioDocumentoDigitaleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GetDettaglioDocumentoDigitaleFault_Exception">
+        <soap:fault name="GetDettaglioDocumentoDigitaleFault_Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ScreenServiziWebSOLImplService">
+    <wsdl:port binding="tns:ScreenServiziWebSOLImplServiceSoapBinding" name="ScreenServiziWebSOLImplPort">
+      <soap:address location="https://xxx-scr.xxx.csi.it/screenws/ScreenServiziWebSOLImplService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

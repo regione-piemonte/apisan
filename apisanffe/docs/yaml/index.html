@@ -1,0 +1,1659 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Fascicolo Finanziario Elettronico (FFE)</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Fascicolo Finanziario Elettronico (FFE)</h1>
+    <div class="app-desc"><h1>Avvertenze</h1>
+<hr />
+<ol>
+<li>Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino</li>
+<li>Questo YAML è un contratto tra lo strato verde e lo strato rosso</li>
+<li>La tipologia del pagamento verrà calcolata nello strato rosso o verde</li>
+<li>La separazione tra &quot;spese effettuate&quot;, &quot;crediti&quot; e &quot;rimborsi&quot; si fa usando il codice dello stato della pratica:
+<ul>
+<li>801 -&gt; rimborsati</li>
+<li>802 -&gt; crediti</li>
+<li>tutti gli altri -&gt; spese effettute</li>
+</ul>
+</li>
+</ol>
+<h1>Domande</h1>
+<hr />
+<ol>
+<li>La funzionalità &quot;Esporta lista pagamenti&quot; chi la implementa?</li>
+<li>Sarebbe possibile avere tutti i codici possibili dei motivi di pagamento?</li>
+</ol>
+<h1>Prototipo Interfaccia</h1>
+<hr />
+<p>http://dev-prototipi.csi.it/2020/sanita%20-%20Estratto%20Conto%20-%20Celiachia/html/#id=nbn4p0&amp;p=home-_estratto_conto&amp;g=1</p>
+<h1>Note versione 0.0.9</h1>
+<hr />
+<ul>
+<li>Aggiunto model_pratica_ricevuta modello json con il quale risponde la stampa richiesta/ricevuta rimborso nel caso in cui si passasse flag stampabile a false</li>
+</ul>
+<h1>Note versione 0.0.8</h1>
+<hr />
+<ul>
+<li>Modifica endpoint Stampa richiesta/ricevuta rimborso - campi liste e aggiunto campo 'stampabile'</li>
+</ul>
+<h1>Note versione 0.0.7</h1>
+<hr />
+<ul>
+<li>Nuovo endpoint Stampa richiesta/ricevuta rimborso</li>
+</ul>
+<h1>Note versione 0.0.6</h1>
+<hr />
+<ul>
+<li>Aggiunto query param id_asr a Ricevuta pagamento</li>
+<li>Tolta api Lista modalità erogazione in quanto si può utilizzare /modalita-erogazione-ammissibili presente su apisanpag</li>
+</ul>
+<h1>Note versione 0.0.5</h1>
+<hr />
+<ul>
+<li>Tolto query param rimborso_modalita_codice da Ricevuta pagamento</li>
+</ul>
+<h1>Note versione 0.0.4</h1>
+<hr />
+<ul>
+<li>Cancellati campi tipologia_codice e tipologia_descrizione da Elenco ticket pagati</li>
+<li>motivo_pagamento anziché motivo_pagamento_codice su Elenco ticket pagati</li>
+</ul>
+<h1>Note versione 0.0.3</h1>
+<hr />
+<ul>
+<li>Api Lista pagamenti modificato query param anno_pagamento da date a Integer</li>
+<li>Api Ricevuta pagamento tolto query param rimborso_modalita_codice</li>
+</ul>
+<h1>Note versione 0.0.2 (31 Gen 2021)</h1>
+<hr />
+<ul>
+<li>Prima implementazione</li>
+</ul>
+<h1>Note versione 0.0.1 (13 Lug 2020)</h1>
+<hr />
+<ul>
+<li>Prima implementazione</li>
+</ul>
+</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 0.0.8</div>
+    <div class="app-desc">BasePath:/apisanffe/api/v1</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Default">Default</a></h4>
+  <ul>
+  <li><a href="#cittadiniCitIdRimborsiGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/rimborsi</code></a></li>
+  <li><a href="#cittadiniCitIdTicketPagatiGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/ticket-pagati</code></a></li>
+  <li><a href="#cittadiniCitIdTicketPagatiTicketIdRicevutePagamentoRicevutaIdPdfGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/ricevute-pagamento/{ricevuta_id}/pdf</code></a></li>
+  <li><a href="#cittadiniCitIdTicketPagatiTicketIdRicevuteRimborsoRicevutaIdPdfGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/ricevute-rimborso/{ricevuta_id}/pdf</code></a></li>
+  <li><a href="#cittadiniCitIdTicketPagatiTicketIdRichiestaRimborsoPdfPost"><code><span class="http-method">post</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/richiesta-rimborso/pdf</code></a></li>
+  <li><a href="#cittadiniCitIdTicketPagatiTicketIdRimborsoPost"><code><span class="http-method">post</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/rimborso</code></a></li>
+  <li><a href="#servizioAttivoGet"><code><span class="http-method">get</span> /servizio-attivo</code></a></li>
+  </ul>
+
+  <h1><a name="Default">Default</a></h1>
+  <div class="method"><a name="cittadiniCitIdRimborsiGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/rimborsi</code></pre></div>
+    <div class="method-summary">Lista rimborsi (<span class="nickname">cittadiniCitIdRimborsiGet</span>)</div>
+    <div class="method-notes"><p>Permette di leggere l'elenco dei rimborsi di un cittadino.</p>
+<p>E' inoltre possibile filtrare l'elenco secondo diverse condizioni descritte nei query params</p>
+</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">data_dal (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Data di inizio del periodo entro cui cercare le pratiche di rimborso </div><div class="param">data_al (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Data di fine del periodo entro cui cercare le pratiche di rimborso </div><div class="param">stato_ticket (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Permette di filtrare per prendere solo i ticket in un certo stato.
+I valori ammessi sono:</p>
+<ul>
+<li>801 - Rimborsato</li>
+<li>802 - Da rimborsare</li>
+</ul>
+ </div><div class="param">in_erogazione (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Permette di filtrare in base allo stato di erogazione del rimborso.
+I valori ammessi sono:</p>
+<ul>
+<li>0 - Non erogato</li>
+<li>1 - In erogazione (credito incluso in un pagamento tramite borsellino)</li>
+<li>2 - Erogato (il voucher o il bonifico è stato erogato)</li>
+</ul>
+ </div><div class="param">modalita_rimborso (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Permette di filtrare in base alla modalità di rimborso.
+I valori ammessi sono:</p>
+<ul>
+<li>1 - Voucher</li>
+<li>2 - Bonifico</li>
+<li>3 - Borsellino elettronico</li>
+</ul>
+ </div><div class="param">id_asr (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Permette di filtrare per ASR. </div><div class="param">motivo_pagamento (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Motivo pagamento del pagamento oggetto di rimborso. </div><div class="param">codice_versamento (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Codice versamento del pagamento oggetto di rimborso. </div><div class="param">codice_servizio (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificativo del sistema dipartimentale che ha emesso il pagamento oggetto di rimborso. </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#model_lista_ticket">model_lista_ticket</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "lista_prenotazione" : [ {
+    "codice_versamento" : "codice_versamento",
+    "prenotazione" : {
+      "data_creazione_prenotazione" : "data_creazione_prenotazione",
+      "rimborso_in_erogazione" : "rimborso_in_erogazione",
+      "lista_rimborsi" : [ {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      } ],
+      "numero_pratica" : "numero_pratica",
+      "asr_beneficiaria" : "asr_beneficiaria",
+      "importo_pagato" : 1.46581298050294517310021547018550336360931396484375,
+      "opposizione_730" : 2,
+      "codice_servizio" : "codice_servizio",
+      "iban_rimborso" : "iban_rimborso",
+      "lista_fattura" : [ {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      } ],
+      "motivo_pagamento" : "motivo_pagamento",
+      "numero_quietanza" : "numero_quietanza",
+      "importo_da_rimborsare" : 9.301444243932575517419536481611430644989013671875,
+      "avviso_pagamento" : {
+        "data_associazione" : "2000-01-23",
+        "application_code" : "application_code",
+        "auxdigit" : 5,
+        "iuv" : "iuv"
+      },
+      "lista_nre" : [ "lista_nre", "lista_nre" ],
+      "importo_rimborsato" : 3.61607674925191080461672754609026014804840087890625,
+      "iuv_mod1" : "iuv_mod1",
+      "importo_da_pagare" : 6.02745618307040320615897144307382404804229736328125,
+      "modalita_rimborso" : "modalita_rimborso"
+    },
+    "prestazione_erogata" : "prestazione_erogata",
+    "importo_iva" : "importo_iva",
+    "importo_pratica" : "importo_pratica",
+    "percentuale_iva" : 0,
+    "importo_marca_bollo" : "importo_marca_bollo"
+  }, {
+    "codice_versamento" : "codice_versamento",
+    "prenotazione" : {
+      "data_creazione_prenotazione" : "data_creazione_prenotazione",
+      "rimborso_in_erogazione" : "rimborso_in_erogazione",
+      "lista_rimborsi" : [ {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      } ],
+      "numero_pratica" : "numero_pratica",
+      "asr_beneficiaria" : "asr_beneficiaria",
+      "importo_pagato" : 1.46581298050294517310021547018550336360931396484375,
+      "opposizione_730" : 2,
+      "codice_servizio" : "codice_servizio",
+      "iban_rimborso" : "iban_rimborso",
+      "lista_fattura" : [ {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      } ],
+      "motivo_pagamento" : "motivo_pagamento",
+      "numero_quietanza" : "numero_quietanza",
+      "importo_da_rimborsare" : 9.301444243932575517419536481611430644989013671875,
+      "avviso_pagamento" : {
+        "data_associazione" : "2000-01-23",
+        "application_code" : "application_code",
+        "auxdigit" : 5,
+        "iuv" : "iuv"
+      },
+      "lista_nre" : [ "lista_nre", "lista_nre" ],
+      "importo_rimborsato" : 3.61607674925191080461672754609026014804840087890625,
+      "iuv_mod1" : "iuv_mod1",
+      "importo_da_pagare" : 6.02745618307040320615897144307382404804229736328125,
+      "modalita_rimborso" : "modalita_rimborso"
+    },
+    "prestazione_erogata" : "prestazione_erogata",
+    "importo_iva" : "importo_iva",
+    "importo_pratica" : "importo_pratica",
+    "percentuale_iva" : 0,
+    "importo_marca_bollo" : "importo_marca_bollo"
+  } ],
+  "paziente" : {
+    "codice_fiscale" : "codice_fiscale",
+    "cap" : "cap",
+    "comune" : "comune",
+    "cognome" : "cognome",
+    "indirizzo" : "indirizzo",
+    "data_nascita" : "2000-01-23",
+    "nome" : "nome",
+    "provincia" : "provincia"
+  }
+}, {
+  "lista_prenotazione" : [ {
+    "codice_versamento" : "codice_versamento",
+    "prenotazione" : {
+      "data_creazione_prenotazione" : "data_creazione_prenotazione",
+      "rimborso_in_erogazione" : "rimborso_in_erogazione",
+      "lista_rimborsi" : [ {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      } ],
+      "numero_pratica" : "numero_pratica",
+      "asr_beneficiaria" : "asr_beneficiaria",
+      "importo_pagato" : 1.46581298050294517310021547018550336360931396484375,
+      "opposizione_730" : 2,
+      "codice_servizio" : "codice_servizio",
+      "iban_rimborso" : "iban_rimborso",
+      "lista_fattura" : [ {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      } ],
+      "motivo_pagamento" : "motivo_pagamento",
+      "numero_quietanza" : "numero_quietanza",
+      "importo_da_rimborsare" : 9.301444243932575517419536481611430644989013671875,
+      "avviso_pagamento" : {
+        "data_associazione" : "2000-01-23",
+        "application_code" : "application_code",
+        "auxdigit" : 5,
+        "iuv" : "iuv"
+      },
+      "lista_nre" : [ "lista_nre", "lista_nre" ],
+      "importo_rimborsato" : 3.61607674925191080461672754609026014804840087890625,
+      "iuv_mod1" : "iuv_mod1",
+      "importo_da_pagare" : 6.02745618307040320615897144307382404804229736328125,
+      "modalita_rimborso" : "modalita_rimborso"
+    },
+    "prestazione_erogata" : "prestazione_erogata",
+    "importo_iva" : "importo_iva",
+    "importo_pratica" : "importo_pratica",
+    "percentuale_iva" : 0,
+    "importo_marca_bollo" : "importo_marca_bollo"
+  }, {
+    "codice_versamento" : "codice_versamento",
+    "prenotazione" : {
+      "data_creazione_prenotazione" : "data_creazione_prenotazione",
+      "rimborso_in_erogazione" : "rimborso_in_erogazione",
+      "lista_rimborsi" : [ {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "codice_versamento" : "codice_versamento",
+        "data_rimborso" : "data_rimborso",
+        "pratica_pagata_con_credito" : "pratica_pagata_con_credito",
+        "data_emissione" : "data_emissione",
+        "numero_rimborso" : "numero_rimborso",
+        "importo_rimborsato" : 7.061401241503109105224211816675961017608642578125,
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1"
+      } ],
+      "numero_pratica" : "numero_pratica",
+      "asr_beneficiaria" : "asr_beneficiaria",
+      "importo_pagato" : 1.46581298050294517310021547018550336360931396484375,
+      "opposizione_730" : 2,
+      "codice_servizio" : "codice_servizio",
+      "iban_rimborso" : "iban_rimborso",
+      "lista_fattura" : [ {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      }, {
+        "numero_sportello" : "numero_sportello",
+        "importo_ricevuta" : 5.962133916683182377482808078639209270477294921875,
+        "data_ricevuta" : "2000-01-23",
+        "avviso_pagamento" : {
+          "data_associazione" : "2000-01-23",
+          "application_code" : "application_code",
+          "auxdigit" : 5,
+          "iuv" : "iuv"
+        },
+        "iuv_mod1" : "iuv_mod1",
+        "numero_ricevuta" : "numero_ricevuta"
+      } ],
+      "motivo_pagamento" : "motivo_pagamento",
+      "numero_quietanza" : "numero_quietanza",
+      "importo_da_rimborsare" : 9.301444243932575517419536481611430644989013671875,
+      "avviso_pagamento" : {
+        "data_associazione" : "2000-01-23",
+        "application_code" : "application_code",
+        "auxdigit" : 5,
+        "iuv" : "iuv"
+      },
+      "lista_nre" : [ "lista_nre", "lista_nre" ],
+      "importo_rimborsato" : 3.61607674925191080461672754609026014804840087890625,
+      "iuv_mod1" : "iuv_mod1",
+      "importo_da_pagare" : 6.02745618307040320615897144307382404804229736328125,
+      "modalita_rimborso" : "modalita_rimborso"
+    },
+    "prestazione_erogata" : "prestazione_erogata",
+    "importo_iva" : "importo_iva",
+    "importo_pratica" : "importo_pratica",
+    "percentuale_iva" : 0,
+    "importo_marca_bollo" : "importo_marca_bollo"
+  } ],
+  "paziente" : {
+    "codice_fiscale" : "codice_fiscale",
+    "cap" : "cap",
+    "comune" : "comune",
+    "cognome" : "cognome",
+    "indirizzo" : "indirizzo",
+    "data_nascita" : "2000-01-23",
+    "nome" : "nome",
+    "provincia" : "provincia"
+  }
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdTicketPagatiGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/ticket-pagati</code></pre></div>
+    <div class="method-summary">Lista pagamenti (<span class="nickname">cittadiniCitIdTicketPagatiGet</span>)</div>
+    <div class="method-notes"><p>Permette di leggere l'elenco dei pagamenti effettuati da un cittadino o da un suo delegante.</p>
+<p>Se il cittadino o il suo delegante non ha ancora pagamenti il servizio restituisce 200 e lista vuota ([])</p>
+</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">anno_pagamento (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Restituisce tutti i ticket pagati che hanno la data più recente nell'anno passato come filtro.</p>
+<p>La data più recente è il massimo tra le date di pagamento, le date di rimborso e la data di annullamento ticket.</p>
+ format: int32</div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#model_ticket_pagato">model_ticket_pagato</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "numero_pratica" : "numero_pratica",
+  "versamento_codice" : "versamento_codice",
+  "rimborsi_utilizzati" : [ {
+    "importo" : 9.301444243932575517419536481611430644989013671875,
+    "id" : "id",
+    "numero_pratica_rimborsata" : "numero_pratica_rimborsata"
+  }, {
+    "importo" : 9.301444243932575517419536481611430644989013671875,
+    "id" : "id",
+    "numero_pratica_rimborsata" : "numero_pratica_rimborsata"
+  } ],
+  "rimborso_modalita_codice" : 2,
+  "stato_pratica_descrizione" : "stato_pratica_descrizione",
+  "importo_pratica" : 0.80082819046101150206595775671303272247314453125,
+  "data_annullamento" : "2000-01-23T04:56:07.000+00:00",
+  "stato_pratica_codice" : "stato_pratica_codice",
+  "asr_id" : "asr_id",
+  "motivo_pagamento" : "motivo_pagamento",
+  "asr_descrizione" : "asr_descrizione",
+  "importo_da_rimborsare" : 1.46581298050294517310021547018550336360931396484375,
+  "ricevute_rimborso" : [ {
+    "data_rimborso" : "2000-01-23T04:56:07.000+00:00",
+    "pratica_id" : "pratica_id",
+    "numero_rimborso" : "numero_rimborso",
+    "id" : "id",
+    "importo_rimborso" : 7.061401241503109105224211816675961017608642578125
+  }, {
+    "data_rimborso" : "2000-01-23T04:56:07.000+00:00",
+    "pratica_id" : "pratica_id",
+    "numero_rimborso" : "numero_rimborso",
+    "id" : "id",
+    "importo_rimborso" : 7.061401241503109105224211816675961017608642578125
+  } ],
+  "importo_rimborsato" : 5.962133916683182377482808078639209270477294921875,
+  "consenso_730" : 5,
+  "importo_pagamento" : 6.02745618307040320615897144307382404804229736328125,
+  "servizio_codice" : "servizio_codice",
+  "ricevute_pagamento" : [ {
+    "esito_id" : "esito_id",
+    "rt_id" : "rt_id",
+    "data_pagamento" : "2000-01-23T04:56:07.000+00:00",
+    "id" : "id"
+  }, {
+    "esito_id" : "esito_id",
+    "rt_id" : "rt_id",
+    "data_pagamento" : "2000-01-23T04:56:07.000+00:00",
+    "id" : "id"
+  } ]
+}, {
+  "numero_pratica" : "numero_pratica",
+  "versamento_codice" : "versamento_codice",
+  "rimborsi_utilizzati" : [ {
+    "importo" : 9.301444243932575517419536481611430644989013671875,
+    "id" : "id",
+    "numero_pratica_rimborsata" : "numero_pratica_rimborsata"
+  }, {
+    "importo" : 9.301444243932575517419536481611430644989013671875,
+    "id" : "id",
+    "numero_pratica_rimborsata" : "numero_pratica_rimborsata"
+  } ],
+  "rimborso_modalita_codice" : 2,
+  "stato_pratica_descrizione" : "stato_pratica_descrizione",
+  "importo_pratica" : 0.80082819046101150206595775671303272247314453125,
+  "data_annullamento" : "2000-01-23T04:56:07.000+00:00",
+  "stato_pratica_codice" : "stato_pratica_codice",
+  "asr_id" : "asr_id",
+  "motivo_pagamento" : "motivo_pagamento",
+  "asr_descrizione" : "asr_descrizione",
+  "importo_da_rimborsare" : 1.46581298050294517310021547018550336360931396484375,
+  "ricevute_rimborso" : [ {
+    "data_rimborso" : "2000-01-23T04:56:07.000+00:00",
+    "pratica_id" : "pratica_id",
+    "numero_rimborso" : "numero_rimborso",
+    "id" : "id",
+    "importo_rimborso" : 7.061401241503109105224211816675961017608642578125
+  }, {
+    "data_rimborso" : "2000-01-23T04:56:07.000+00:00",
+    "pratica_id" : "pratica_id",
+    "numero_rimborso" : "numero_rimborso",
+    "id" : "id",
+    "importo_rimborso" : 7.061401241503109105224211816675961017608642578125
+  } ],
+  "importo_rimborsato" : 5.962133916683182377482808078639209270477294921875,
+  "consenso_730" : 5,
+  "importo_pagamento" : 6.02745618307040320615897144307382404804229736328125,
+  "servizio_codice" : "servizio_codice",
+  "ricevute_pagamento" : [ {
+    "esito_id" : "esito_id",
+    "rt_id" : "rt_id",
+    "data_pagamento" : "2000-01-23T04:56:07.000+00:00",
+    "id" : "id"
+  }, {
+    "esito_id" : "esito_id",
+    "rt_id" : "rt_id",
+    "data_pagamento" : "2000-01-23T04:56:07.000+00:00",
+    "id" : "id"
+  } ]
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdTicketPagatiTicketIdRicevutePagamentoRicevutaIdPdfGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/ricevute-pagamento/{ricevuta_id}/pdf</code></pre></div>
+    <div class="method-summary">Ricevuta pagamento (<span class="nickname">cittadiniCitIdTicketPagatiTicketIdRicevutePagamentoRicevutaIdPdfGet</span>)</div>
+    <div class="method-notes">Permette di stampare la ricevuta di pagamento</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">ticket_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il numero pratica del ticket </div><div class="param">ricevuta_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Id della ricevuta su cui lavorare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">id_asr (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Permette di filtrare per ASR. </div>
+    </div>  <!-- field-items -->
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/pdf</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce il binario del PDF
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    La risorsa cercata non è stata trovata. <br> Questo errore viene restituito quando si prova ad accedere alla singola risorsa e questa non esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono elementi, restituire 200 con un array vuoto
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdTicketPagatiTicketIdRicevuteRimborsoRicevutaIdPdfGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/ricevute-rimborso/{ricevuta_id}/pdf</code></pre></div>
+    <div class="method-summary">Ricevuta rimborso (<span class="nickname">cittadiniCitIdTicketPagatiTicketIdRicevuteRimborsoRicevutaIdPdfGet</span>)</div>
+    <div class="method-notes">Permette di stampare la ricevuta di pagamento</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">ticket_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il numero pratica del ticket </div><div class="param">ricevuta_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Id della ricevuta su cui lavorare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">rimborso_modalita_codice (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Il codice della modalità di rimborso su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/pdf</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce il binario del PDF
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    La risorsa cercata non è stata trovata. <br> Questo errore viene restituito quando si prova ad accedere alla singola risorsa e questa non esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono elementi, restituire 200 con un array vuoto
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdTicketPagatiTicketIdRichiestaRimborsoPdfPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/richiesta-rimborso/pdf</code></pre></div>
+    <div class="method-summary">Stampa richiesta/ricevuta rimborso (<span class="nickname">cittadiniCitIdTicketPagatiTicketIdRichiestaRimborsoPdfPost</span>)</div>
+    <div class="method-notes">Permette di stampare la richiesta del rimborso o voucher. Se si passa il flag stampabile a false non esegue la stampa ma ritorna un json con la struttura definita in model_pratica_ricevuta. Se viene specificata la modalita_rimborso vuole dire che si richiede la stampa voucher o attestato bonifico.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">ticket_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il numero pratica del ticket </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">Payload stampa richiesta rimborso <a href="#Payload stampa richiesta rimborso">Payload stampa richiesta rimborso</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; I dati che il client deve passare alle API per richiedere il pdf ocn la richiesta di rimborso. </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_pratica_ricevuta">model_pratica_ricevuta</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "elenco_esiti_pagamento" : {
+    "esito" : [ {
+      "stampa" : "stampa",
+      "data_pagamento" : "data_pagamento",
+      "id_esito" : "id_esito"
+    }, {
+      "stampa" : "stampa",
+      "data_pagamento" : "data_pagamento",
+      "id_esito" : "id_esito"
+    } ]
+  },
+  "codice_fiscale" : "codice_fiscale",
+  "numero_pratica" : "numero_pratica",
+  "elenco_ricevute_stampa_asr" : {
+    "rimborso" : [ {
+      "stampa" : "stampa",
+      "data_rimborso" : "data_rimborso",
+      "id_rimborso" : "id_rimborso"
+    }, {
+      "stampa" : "stampa",
+      "data_rimborso" : "data_rimborso",
+      "id_rimborso" : "id_rimborso"
+    } ],
+    "ricevuta" : [ {
+      "stampa" : "stampa",
+      "id_ricevuta" : "id_ricevuta",
+      "data_pagamento" : "data_pagamento"
+    }, {
+      "stampa" : "stampa",
+      "id_ricevuta" : "id_ricevuta",
+      "data_pagamento" : "data_pagamento"
+    } ]
+  },
+  "attestato_richiesta_rimborso" : {
+    "stampa" : "stampa",
+    "modalita_rimborso" : 0.80082819046101150206595775671303272247314453125,
+    "inviato_da_asr" : 6.02745618307040320615897144307382404804229736328125
+  },
+  "elenco_ricevute_stampa_regionale" : {
+    "rimborso" : [ {
+      "stampa" : "stampa",
+      "data_rimborso" : "data_rimborso",
+      "id_rimborso" : "id_rimborso"
+    }, {
+      "stampa" : "stampa",
+      "data_rimborso" : "data_rimborso",
+      "id_rimborso" : "id_rimborso"
+    } ],
+    "ricevuta" : [ {
+      "stampa" : "stampa",
+      "id_ricevuta" : "id_ricevuta",
+      "data_pagamento" : "data_pagamento"
+    }, {
+      "stampa" : "stampa",
+      "id_ricevuta" : "id_ricevuta",
+      "data_pagamento" : "data_pagamento"
+    } ]
+  },
+  "id_asr_cup" : "id_asr_cup",
+  "elenco_ricevute_cortesia" : {
+    "rimborso" : [ {
+      "stampa" : "stampa",
+      "data_rimborso" : "data_rimborso",
+      "id_rimborso" : "id_rimborso"
+    }, {
+      "stampa" : "stampa",
+      "data_rimborso" : "data_rimborso",
+      "id_rimborso" : "id_rimborso"
+    } ],
+    "ricevuta" : [ {
+      "stampa" : "stampa",
+      "id_ricevuta" : "id_ricevuta",
+      "data_pagamento" : "data_pagamento"
+    }, {
+      "stampa" : "stampa",
+      "id_ricevuta" : "id_ricevuta",
+      "data_pagamento" : "data_pagamento"
+    } ]
+  },
+  "elenco_ricevute_telematiche" : {
+    "ricevuta" : [ {
+      "id_rt" : "id_rt",
+      "stampa" : "stampa",
+      "data_pagamento" : "data_pagamento"
+    }, {
+      "id_rt" : "id_rt",
+      "stampa" : "stampa",
+      "data_pagamento" : "data_pagamento"
+    } ]
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/pdf</code></li>
+      <li><code>application/zip</code></li>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce il binario del PDF se stampabile del payload in input vale true , il model model_pratica_ricevuta nel caso in cui stampabile vale false
+        <a href="#model_pratica_ricevuta">model_pratica_ricevuta</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    La risorsa cercata non è stata trovata. <br> Questo errore viene restituito quando si prova ad accedere alla singola risorsa e questa non esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono elementi, restituire 200 con un array vuoto
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdTicketPagatiTicketIdRimborsoPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cit_id}/ticket-pagati/{ticket_id}/rimborso</code></pre></div>
+    <div class="method-summary">Nuovo rimborso (<span class="nickname">cittadiniCitIdTicketPagatiTicketIdRimborsoPost</span>)</div>
+    <div class="method-notes">Permette al cittadino di richiedere il rimborso di un pagamento per se o per un suo delegante.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">ticket_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il numero pratica del ticket </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">Payload rimborso nuovo <a href="#Payload rimborso nuovo">Payload rimborso nuovo</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; I dati che il client deve passare alle API per avviare il rimborso del pagamento. </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Operazione eseguita con successo
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    La risorsa cercata non è stata trovata. <br> Questo errore viene restituito quando si prova ad accedere alla singola risorsa e questa non esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono elementi, restituire 200 con un array vuoto
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="servizioAttivoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /servizio-attivo</code></pre></div>
+    <div class="method-summary">Raggiungibilità (<span class="nickname">servizioAttivoGet</span>)</div>
+    <div class="method-notes">Serve per verificare se il servizio risponde o meno</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_info_servizio">model_info_servizio</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "descrizione" : "descrizione",
+  "data" : "2000-01-23",
+  "nome" : "nome",
+  "servizio_attivo" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    La richiesta è andata a buon fine quindi il servizio è online
+        <a href="#model_info_servizio">model_info_servizio</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Payload rimborso nuovo"><code>Payload rimborso nuovo</code> - </a></li>
+    <li><a href="#Payload stampa richiesta rimborso"><code>Payload stampa richiesta rimborso</code> - </a></li>
+    <li><a href="#errore"><code>errore</code> - [ERRORE] Generico</a></li>
+    <li><a href="#errore_dettaglio"><code>errore_dettaglio</code> - [ERRORE] Dettaglio</a></li>
+    <li><a href="#model_att_rich_rimborso_pratica_ricevuta"><code>model_att_rich_rimborso_pratica_ricevuta</code> - Attestato richiesta rimborso ricevuta pratica</a></li>
+    <li><a href="#model_avviso_pagamento"><code>model_avviso_pagamento</code> - Avviso pagamento</a></li>
+    <li><a href="#model_dett_esiti_pag_pratica_ricevuta"><code>model_dett_esiti_pag_pratica_ricevuta</code> - Dettaglio esiti pagamento ricevuta pratica</a></li>
+    <li><a href="#model_dett_pratica_ricevuta"><code>model_dett_pratica_ricevuta</code> - Dettaglio pratica ricevuta</a></li>
+    <li><a href="#model_dett_rich_tel_pratica_ricevuta"><code>model_dett_rich_tel_pratica_ricevuta</code> - Dettaglio richiesta tel pratica ricevuta</a></li>
+    <li><a href="#model_elenco_pagamenti"><code>model_elenco_pagamenti</code> - Elenco pagamenti</a></li>
+    <li><a href="#model_esito_dett_pratica_ricevuta"><code>model_esito_dett_pratica_ricevuta</code> - Esito dettaglio pratica ricevuta</a></li>
+    <li><a href="#model_info_servizio"><code>model_info_servizio</code> - Info servizio</a></li>
+    <li><a href="#model_lista_ticket"><code>model_lista_ticket</code> - Lista ticket</a></li>
+    <li><a href="#model_lista_ticket_paziente"><code>model_lista_ticket_paziente</code> - Lista ticket paziente</a></li>
+    <li><a href="#model_pratica"><code>model_pratica</code> - Pratica</a></li>
+    <li><a href="#model_pratica_ricevuta"><code>model_pratica_ricevuta</code> - Pratica ricevuta</a></li>
+    <li><a href="#model_prenotazione"><code>model_prenotazione</code> - Prenotazione</a></li>
+    <li><a href="#model_ricevuta_dett_pratica_ricevuta"><code>model_ricevuta_dett_pratica_ricevuta</code> - Ricevuta dettaglio pratica</a></li>
+    <li><a href="#model_ricevuta_dettaglio_pratica"><code>model_ricevuta_dettaglio_pratica</code> - Ricevuta dettaglio pratica</a></li>
+    <li><a href="#model_rimborso"><code>model_rimborso</code> - rimborso</a></li>
+    <li><a href="#model_rimborso_dettaglio_pratica_ricevuta"><code>model_rimborso_dettaglio_pratica_ricevuta</code> - Ricevuta rimborso dettaglio pratica</a></li>
+    <li><a href="#model_ticket_pagato"><code>model_ticket_pagato</code> - Ticket pagato</a></li>
+    <li><a href="#model_ticket_pagato_ricevuta_pagamento"><code>model_ticket_pagato_ricevuta_pagamento</code> - Ticket pagato ricevuta pagamento</a></li>
+    <li><a href="#model_ticket_pagato_ricevuta_rimborso"><code>model_ticket_pagato_ricevuta_rimborso</code> - Ticket pagato ricevuta rimborso</a></li>
+    <li><a href="#model_ticket_pagato_rimborso_utilizzato"><code>model_ticket_pagato_rimborso_utilizzato</code> - Ticket pagato rimborso utilizzato</a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Payload rimborso nuovo"><code>Payload rimborso nuovo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">rimborso_modalita_codice </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> <p>Il codice della modalità di rimborso impostato/usato per questo pagamento.</p>
+<ul>
+<li>1 - Voucher</li>
+<li>2 - Bonifico</li>
+<li>3 - Borsellino</li>
+</ul>
+ </div>
+<div class="param">iban (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> <p>L'IBAN inserito dal cittadino.</p>
+<p>Da valorizzare solo se <code>rimborso_modalita_codice</code> === &quot;2&quot; (cioè Bonifico)</p>
+ </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Payload stampa richiesta rimborso"><code>Payload stampa richiesta rimborso</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">codice_asr (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice della ASl beneficiaria </div>
+<div class="param">id_ricevute (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> lista con gli ID della ricevute di pagamento </div>
+<div class="param">id_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> lista con gli ID della ricevute di rimborso </div>
+<div class="param">rt_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> lista con identificativi delle RicevuteTelematiche generate a seguito del pagamento contenuto nella RT </div>
+<div class="param">esiti_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> lista con identificativi degli esiti di pagamento generati a seguito dei pagamenti Telematici </div>
+<div class="param">modalita_rimborso </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> <p>Il codice della modalità di rimborso impostato/usato per questo pagamento.</p>
+<ul>
+<li>1 - Voucher</li>
+<li>2 - Bonifico</li>
+<li>3 - Borsellino</li>
+</ul>
+ </div>
+<div class="param">stampabile </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica il servizio deve scaricare i documenti (true) oppure restituire un json (false) </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="errore"><code>errore</code> - [ERRORE] Generico</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice univoco di errore interno </div>
+<div class="param">title (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Testo dell'errore da mostrare al cittadino </div>
+<div class="param">detail (optional)</div><div class="param-desc"><span class="param-type"><a href="#errore_dettaglio">array[errore_dettaglio]</a></span>  </div>
+<div class="param">links (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="errore_dettaglio"><code>errore_dettaglio</code> - [ERRORE] Dettaglio</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">chiave (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice univoco di errore interno </div>
+<div class="param">valore (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Testo dell'errore da mostrare al cittadino </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_att_rich_rimborso_pratica_ricevuta"><code>model_att_rich_rimborso_pratica_ricevuta</code> - Attestato richiesta rimborso ricevuta pratica</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">stampa (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> base64 della stampa </div>
+<div class="param">modalita_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  format: int64</div>
+<div class="param">inviato_da_asr (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  format: int64</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_avviso_pagamento"><code>model_avviso_pagamento</code> - Avviso pagamento</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">auxdigit </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">application_code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">iuv </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">data_associazione </div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_dett_esiti_pag_pratica_ricevuta"><code>model_dett_esiti_pag_pratica_ricevuta</code> - Dettaglio esiti pagamento ricevuta pratica</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">esito (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_esito_dett_pratica_ricevuta">array[model_esito_dett_pratica_ricevuta]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_dett_pratica_ricevuta"><code>model_dett_pratica_ricevuta</code> - Dettaglio pratica ricevuta</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">ricevuta (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_ricevuta_dettaglio_pratica">array[model_ricevuta_dettaglio_pratica]</a></span>  </div>
+<div class="param">rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_rimborso_dettaglio_pratica_ricevuta">array[model_rimborso_dettaglio_pratica_ricevuta]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_dett_rich_tel_pratica_ricevuta"><code>model_dett_rich_tel_pratica_ricevuta</code> - Dettaglio richiesta tel pratica ricevuta</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">ricevuta (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_ricevuta_dett_pratica_ricevuta">array[model_ricevuta_dett_pratica_ricevuta]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_elenco_pagamenti"><code>model_elenco_pagamenti</code> - Elenco pagamenti</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">numero_sportello (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">numero_ricevuta (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">data_ricevuta (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">importo_ricevuta (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">avviso_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_avviso_pagamento">model_avviso_pagamento</a></span>  </div>
+<div class="param">iuv_mod1 (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_esito_dett_pratica_ricevuta"><code>model_esito_dett_pratica_ricevuta</code> - Esito dettaglio pratica ricevuta</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id_esito (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> id esito </div>
+<div class="param">data_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> data del pagamento </div>
+<div class="param">stampa (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> base64 della daat di pagamento </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_info_servizio"><code>model_info_servizio</code> - Info servizio</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome del servizio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del servizio </div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">servizio_attivo (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> boolean di utilita per eventuali test </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_lista_ticket"><code>model_lista_ticket</code> - Lista ticket</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">paziente (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_lista_ticket_paziente">model_lista_ticket_paziente</a></span>  </div>
+<div class="param">lista_prenotazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_pratica">array[model_pratica]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_lista_ticket_paziente"><code>model_lista_ticket_paziente</code> - Lista ticket paziente</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice fiscale del paziente </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il cognome del paziente </div>
+<div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il nome del paziente </div>
+<div class="param">data_nascita (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> La data di nascita del paziente format: date</div>
+<div class="param">provincia (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La provincia di residenza del paziente </div>
+<div class="param">comune (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il comune di residenza del paziente </div>
+<div class="param">cap (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il CAP di residenza del paziente </div>
+<div class="param">indirizzo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'indirizzo di residenza del paziente </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_pratica"><code>model_pratica</code> - Pratica</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">importo_pratica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'importo della pratica </div>
+<div class="param">importo_marca_bollo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'importo della marca da bollo </div>
+<div class="param">importo_iva (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'importo dell'IVA </div>
+<div class="param">percentuale_iva (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> La percentuale dell'IVA applicata </div>
+<div class="param">prestazione_erogata (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">codice_versamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice del versamento </div>
+<div class="param">prenotazione </div><div class="param-desc"><span class="param-type"><a href="#model_prenotazione">model_prenotazione</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_pratica_ricevuta"><code>model_pratica_ricevuta</code> - Pratica ricevuta</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice fiscale </div>
+<div class="param">numero_pratica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> numero della pratica </div>
+<div class="param">id_asr_cup (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> id asr </div>
+<div class="param">elenco_ricevute_stampa_asr (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_dett_pratica_ricevuta">model_dett_pratica_ricevuta</a></span>  </div>
+<div class="param">elenco_ricevute_cortesia (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_dett_pratica_ricevuta">model_dett_pratica_ricevuta</a></span>  </div>
+<div class="param">elenco_ricevute_stampa_regionale (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_dett_pratica_ricevuta">model_dett_pratica_ricevuta</a></span>  </div>
+<div class="param">elenco_ricevute_telematiche (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_dett_rich_tel_pratica_ricevuta">model_dett_rich_tel_pratica_ricevuta</a></span>  </div>
+<div class="param">elenco_esiti_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_dett_esiti_pag_pratica_ricevuta">model_dett_esiti_pag_pratica_ricevuta</a></span>  </div>
+<div class="param">attestato_richiesta_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_att_rich_rimborso_pratica_ricevuta">model_att_rich_rimborso_pratica_ricevuta</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_prenotazione"><code>model_prenotazione</code> - Prenotazione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">numero_pratica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il numero univoco del ticket </div>
+<div class="param">importo_da_pagare (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo che il paziente deve pagare </div>
+<div class="param">importo_pagato (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo che il paziente ha pagato </div>
+<div class="param">lista_fattura (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_elenco_pagamenti">array[model_elenco_pagamenti]</a></span>  </div>
+<div class="param">numero_quietanza (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il numero della quietanza </div>
+<div class="param">motivo_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il motivo del pagamento </div>
+<div class="param">asr_beneficiaria (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice dell'asr beneficiaria del pagamento </div>
+<div class="param">codice_servizio (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice del servizio </div>
+<div class="param">data_creazione_prenotazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui è stata effettuata la prenotazione format: datetime</div>
+<div class="param">avviso_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_avviso_pagamento">model_avviso_pagamento</a></span>  </div>
+<div class="param">iuv_mod1 (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Lo IUV </div>
+<div class="param">opposizione_730 (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Indica se il cittadino si è opposto o meno al 730 </div>
+<div class="param">lista_nre (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">lista_rimborsi (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_rimborso">array[model_rimborso]</a></span> Ne contiene sempre almeno 1 </div>
+<div class="param">importo_da_rimborsare (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo che deve essere rimborsato al cittadino </div>
+<div class="param">importo_rimborsato (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo già rimborsato al cittadino </div>
+<div class="param">rimborso_in_erogazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> indica se il rimborso è in erogazione </div>
+<div class="param">modalita_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice della modalità di rimborso </div>
+<div class="param">iban_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'IBAN su cui il cittadino vuole ricevere il rimborso </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_ricevuta_dett_pratica_ricevuta"><code>model_ricevuta_dett_pratica_ricevuta</code> - Ricevuta dettaglio pratica</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id_rt (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> id rt </div>
+<div class="param">data_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> data del pagamento </div>
+<div class="param">stampa (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> base64 della stampa </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_ricevuta_dettaglio_pratica"><code>model_ricevuta_dettaglio_pratica</code> - Ricevuta dettaglio pratica</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id_ricevuta (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> id della ricevuta </div>
+<div class="param">data_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> data del pagamento </div>
+<div class="param">stampa (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> base64 del file </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_rimborso"><code>model_rimborso</code> - rimborso</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">numero_sportello </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">numero_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">data_rimborso </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  format: datetime</div>
+<div class="param">importo_rimborsato </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">codice_versamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">avviso_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_avviso_pagamento">model_avviso_pagamento</a></span>  </div>
+<div class="param">iuv_mod1 (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">data_emissione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  format: datetime</div>
+<div class="param">pratica_pagata_con_credito (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_rimborso_dettaglio_pratica_ricevuta"><code>model_rimborso_dettaglio_pratica_ricevuta</code> - Ricevuta rimborso dettaglio pratica</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> id del rimborso </div>
+<div class="param">data_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> data del rimborso </div>
+<div class="param">stampa (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> base64 del file </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_ticket_pagato"><code>model_ticket_pagato</code> - Ticket pagato</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">numero_pratica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Un numero che identifica univocamente il pagamento </div>
+<div class="param">asr_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'id dell'ASR di riferimento del pagamento </div>
+<div class="param">asr_descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il nome dell'ASR di riferimento del pagamento </div>
+<div class="param">importo_pratica (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo della pratica </div>
+<div class="param">importo_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo pagato dal cittadino </div>
+<div class="param">importo_da_rimborsare (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo da rimborsare al cittadino </div>
+<div class="param">importo_rimborsato (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo rimborsato al cittadino </div>
+<div class="param">consenso_730 (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> codice scelta opposizione trasmissione pagamento al MEF per il calcolo automatico delle spese sanitarie sul 730 0 opposizione 1 autorizzazione, -1 scelta non ancora eseguita </div>
+<div class="param">stato_pratica_codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice dello stato della pratica. Possibili valori
+* 001 -  Ticket pagato Totalmente
+* 010 -  Ticket Pagato Parzialmente
+* 015 -  Ticket Non Pagato
+* 800 -  Ticket Annullato
+* 801 -  Ticket Rimborsato
+* 802 - Ticket Da rimborsare </div>
+<div class="param">stato_pratica_descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Descrizione testuale dello stato da mostrare sulla UI </div>
+<div class="param">data_annullamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Data annullamento della pratica format: date-time</div>
+<div class="param">servizio_codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice del servizio (dipartimentale) che ha generato il ticket </div>
+<div class="param">versamento_codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice stabilito dall’ASR e usato per generare lo IUV nei pagamenti pagoPA </div>
+<div class="param">motivo_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">rimborso_modalita_codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> <p>Il codice della modalità di rimborso impostato/usato per questo pagamento.</p>
+<ul>
+<li>1 - Voucher</li>
+<li>2 - Bonifico</li>
+<li>3 - Borsellino</li>
+</ul>
+ </div>
+<div class="param">ricevute_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_ticket_pagato_ricevuta_pagamento">array[model_ticket_pagato_ricevuta_pagamento]</a></span> <p>Contiene l'elenco delle ricevute create dai vari pagamenti effettuati per pagare completamente la pratica</p>
+<p>Le nuove pratiche non possono essere pagate parzialmente e quindi non possono generare più ricevute di pagamento. Però nello storico potrebbero esserci delle casistiche in cui ci siano delle pratiche pagate in più tranche</p>
+ </div>
+<div class="param">ricevute_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_ticket_pagato_ricevuta_rimborso">array[model_ticket_pagato_ricevuta_rimborso]</a></span> <p>Se questa pratica è stata usata come rimborso, allora qui sono presenti tutte le ricevute relative alla generazione del rimborso</p>
+<p>Se si tratta di un rimborso tramite IBAN o Vaucher conterrà una sola ricevuta di rimborso</p>
+ </div>
+<div class="param">rimborsi_utilizzati (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_ticket_pagato_rimborso_utilizzato">array[model_ticket_pagato_rimborso_utilizzato]</a></span> Contiene l'elenco dei rimborsi utilizzati per pagare questa pratica. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_ticket_pagato_ricevuta_pagamento"><code>model_ticket_pagato_ricevuta_pagamento</code> - Ticket pagato ricevuta pagamento</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Id univoco </div>
+<div class="param">data_pagamento (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> La data in cui è stato effettuato il pagamento format: date-time</div>
+<div class="param">rt_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> identificativo della Ricevuta Telematica generata a seguito del pagamento del modello 1 e 3 (Esito di pagamento contenuto nella RT) </div>
+<div class="param">esito_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> identificativo dell’esiti di pagamento generato a seguito del pagamento del modello 3 (che secondo le specifiche AgID posso essere create senza Richieste di Pagamento Telematico) </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_ticket_pagato_ricevuta_rimborso"><code>model_ticket_pagato_ricevuta_rimborso</code> - Ticket pagato ricevuta rimborso</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Id univoco </div>
+<div class="param">data_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> La data in cui è stato effettuato il rimborso format: date-time</div>
+<div class="param">importo_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo rimborsato </div>
+<div class="param">pratica_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Identificativo della pratica il cui credito è stato pagato in toto o in parte con questo rimborso (in caso di erogazione tramite borsellino) </div>
+<div class="param">numero_rimborso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Numero del rimborso </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_ticket_pagato_rimborso_utilizzato"><code>model_ticket_pagato_rimborso_utilizzato</code> - Ticket pagato rimborso utilizzato</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Id univoco </div>
+<div class="param">importo (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> L'importo del rimborso utilizzato </div>
+<div class="param">numero_pratica_rimborsata (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> numero della pratica rimborsata </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

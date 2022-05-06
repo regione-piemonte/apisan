@@ -1,0 +1,1962 @@
+swagger: '2.0'
+info:
+  title: Esenzione per patologie
+  version: 1.0.5
+  description: |
+  
+    # Note (10 Mag 2021)
+    ---
+    1. Modificata url di "Dettaglio esenzione da Aura" in /cittadini/{cit_id}/esenzioni-aura/{cod_esenzione}/{cod_malattia}. cod_malattia è parametro necessario per identificare univocamente l'esenzione da Aura
+    2. Modificata url di "Revoca di esenzione" in /cittadini/{cit_id}/esenzioni-aura/{cod_esenzione}/{cod_malattia}/revoca. cod_malattia è parametro necessario per identificare univocamente l'esenzione da Aura
+    
+    # Note (03 Mag 2021)
+    ---
+    1. Definiti filtri "Esenzione Aura" e "Esenzione Aura Dettaglio" utilizzati per le nuove API. Le date avranno sempre il formato "YYYY-MM-DD".
+    3. Esenpio di filtro 'Esenzione Aura Dettaglio'-> filter:{"data_emissione":{"eq":"YYYY-MM-DD"},"data_scadenza":{"eq":"YYYY-MM-DD"}}
+    3. Esempio di filtro 'Esenzione Aura'-> filter:{"archiviata":{"eq":true},"tipologia_esenzione":{"eq":"IN"}}
+    
+    # Note (22 Apr 2021)
+    ---
+    1. Rimosso il campo "data_revoca" nella response di GET "Lista esenzioni da aura" (/cittadini/{cit_id}/esenzioni-aura) e GET "Singola esenzione da Aura" (/cittadini/{cit_id}/esenzioni-aura/{cod_esenzione})
+    2. Modificate le descrizioni delle API per differenziare quali agiscono su ESENZIONI e quali su PRATICHE DI ESENZIONE
+    3. Aggiunta NUOVA chiamata PUT "Revoca di esenzione" (/cittadini/{cit_id}/esenzioni-aura/{cod_esenzione}/revoca) che permette la revoca di un'esenzione identificata da "cod_esenzione" e dal filtro "Esenzione Aura Dettaglio"
+  
+    # Note (16 Apr 2021)
+    ---
+    1. Aggiunta NUOVA chiamata GET "Lista esenzioni da aura" (/cittadini/{cit_id}/esenzioni-aura)
+    2. Aggiunta NUOVA chiamata GET "Singola esenzione da Aura" (/cittadini/{cit_id}/esenzioni-aura/{cod_esenzione})
+    3. Aggiunti i tipi di filtro "Esenzione Aura" e "Esenzione Aura Dettaglio" da utilizzare con le chiamate GET dei punti precedenti
+  
+    # Breve descrizione del servizio
+    ---
+    Api risorse per gestire le deleghe e le dichiarazioni (deleghe minori).
+    
+    TODO.
+    
+    # Tabella errori API
+    ---
+    
+    <table border="1">
+        <thead>
+          <th style="width: 10%;">status</th>
+          <th style="width: 40%;">code</th>
+          <th style="width: 50%;">title</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>400</td>
+            <td>Parametri obbligatori mancanti</td>
+            <td>Parametri obbligatori non presenti</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Verifica del CF negativa</td>
+            <td>ATTENZIONE! Codice fiscale del beneficiario non valido perché non è un assistito piemontese</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Verifica del CF delegato negativa</td>
+            <td>ATTENZIONE! Codice fiscale del delegato non valido</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Mancata congruità parametri di input</td>
+            <td>Mancata congruità dei dati di input</td>
+          </tr>
+          <tr>
+            <td>404</td>
+            <td>Not found</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>409</td>
+            <td>Conflict</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>503</td>
+            <td>Mancata connessione ad AURA</td>
+            <td>Ci sono problemi di comunicazione con i servizi di AURA</td>
+          </tr>
+          <tr>
+            <td>503</td>
+            <td>Mancata connessione a deleghe</td>
+            <td>Ci sono problemi di comunicazione con i servizi di Deleghe</td>
+          </tr>
+          <tr>
+            <td>503</td>
+            <td>Mancata connessione al Repository</td>
+            <td>Ci sono problemi di comunicazione con i servizi del repository</td>
+          </tr>
+          <tr>
+            <td>500</td>
+            <td>Errore generico</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    
+    <sub> 
+    Note: Questo YAML è stato pensato esclusivamente per il front-end
+    destinato al cittadino. 
+    </sub>
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanesenpat/api/v1
+schemes:
+  - https
+paths:
+  '/servizio-attivo':
+    get:
+      tags:
+        - Statiche
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+  '/disclaimer-trattamento-dati':
+    get:
+      tags:
+        - Statiche
+      summary: Disclaimer trattamento dati
+      description: |
+        Permette di ottenere il testo del disclaimer per il trattamento dei dati in caso di malattie rare
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/disclaimer-iscrizione-malattie-rare':
+    get:
+      tags:
+        - Statiche
+      summary: Disclaimer iscrizione
+      description: |
+        Permette di ottenere il testo del disclaimer per l'iscrizione al registro interregionale delle malattie rare
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+   
+  '/stati-esenzione':
+    get:
+      tags:
+        - Statiche
+      summary: Lista stati esenzioni
+      description: |
+        Permette di ottenere la lista degli stati dell'esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_stato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-esenzione':
+    get:
+      tags:
+        - Statiche
+      summary: Lista tipologie esenzioni
+      description: |
+        Permette di ottenre la lista delle tipologie di esenzioniche il cittadino con cf == {cit_id} può creare
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_tipologia'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-invalidita':
+    get:
+      tags:
+        - Statiche
+      summary: Lista tipologie invalidità
+      description: |
+        Permette l'elenco delle tipologie di invalidità
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_tipologia_invalidita_v3'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-esenzione/{tipologia_codice}/tipologie-documento':
+    get:
+      tags:
+        - Statiche
+      summary: Lista tipologie documento
+      description: |
+        Permette di ottenere la lista dei tipi di documento che l'utente può inserire in fase di creazione esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/tipologia_codice'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_tipologia_documento_v2'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-esenzione/{tipologia_codice}/malattie':
+    get:
+      tags:
+        - Statiche
+      summary: Lista malattie
+      description: |
+        Permette di ettenere la lista delle malattie che il cittadino con cf == {cit_id} può creare per la tipologia con codice == {tipologia_codice}
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/tipologia_codice'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_malattia_v2'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-esenzione/{tipologia_codice}/malattie/{malattia_codice}':
+    get:
+      tags:
+        - Statiche
+      summary: Dettaglio malattia
+      description: |
+        Permette di ottenere la singola malattia
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/tipologia_codice'
+        - $ref: '#/parameters/malattia_codice'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+              $ref: '#/definitions/model_esenzione_malattia_v2'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-esenzione/{tipologia_codice}/esenzioni':
+    get:
+      tags:
+        - Statiche
+      summary: Lista esenzioni per tipologia
+      description: |
+        Permette di ottenere la lista di esenzioni che il cittadino può richiedere
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/tipologia_codice'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_disponibile_v3'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-esenzione/{tipologia_codice}/esenzioni/{esenzione_codice}':
+    get:
+      tags:
+        - Statiche
+      summary: Dettaglio esenzione richiedibile
+      description: |
+        Permette di ottenere i dati della singola esenzione che il cittadino può richiedere
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/tipologia_codice'
+        - $ref: '#/parameters/esenzione_codice'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+              $ref: '#/definitions/model_esenzione_disponibile_v3'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      
+  '/cittadini/{cit_id}/esenzioni':
+    get:
+      tags:
+        - Dinamiche
+      summary: Lista pratiche esenzioni
+      description: |
+        Permette di ottenere la lista delle pratiche esenzioni associate al
+        cittadino ed eventualmente di filtrarle tramite il parametro
+        `filter` nella query string
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/filter_esenzioni'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post: 
+      tags:
+        - Dinamiche
+      summary: Nuova pratica di esenzione
+      description: |
+        Permette di creare una nuova pratica di esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/payload_nuova_esenzione'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_esenzione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni-aura':
+    get:
+      tags:
+        - Dinamiche
+      summary: Lista esenzioni da aura
+      description: |
+        Permette di ottenere la lista delle esenzioni da Aura associate al
+        cittadino ed eventualmente di filtrarle tramite il parametro
+        `filter` nella query string
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/filter_esenzioni_aura'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_aura'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni-aura/{cod_esenzione}/{cod_malattia}':
+    get:
+      tags:
+        - Dinamiche
+      summary: Dettaglio esenzione da aura
+      description: |
+        Permette di ottenere la singola esenzione da Aura associata al
+        cittadino e identificata da cod_esenzione, cod_malattia e dal filtro obbligatorio su data_emissione e data_scadenza
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/cod_esenzione'
+        - $ref: '#/parameters/cod_malattia'
+        - $ref: '#/parameters/filter_esenzioni_aura_dettaglio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+              $ref: '#/definitions/model_esenzione_aura'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni/pdf':
+    get:
+      tags:
+        - Dinamiche
+      summary: Download attestati
+      description: |
+        Permette di scaricare l'attestato di tutte le esenzioni
+        associate al cittadino
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo. Restituisce il .pdf
+            con tutti gli attestati
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}':
+    get:
+      tags:
+        - Dinamiche
+      summary: Dettaglio pratica di esenzione
+      description: |
+        Permette di ottenere la singola pratica di esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_esenzione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}/rettifica':
+    put:
+      tags:
+        - Dinamiche
+      summary: Rettifica pratica di esenzione
+      description: |
+        Permette di modificare la singola pratica di esenzione tramite il processo di rettifica
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+        - $ref: '#/parameters/payload_rettifica_esenzione'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_esenzione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}/rinnovo':
+    put:
+      tags:
+        - Dinamiche
+      summary: Rinnovo pratica di esenzione
+      description: |
+        Permette di rinnovare una pratica di esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+        - $ref: '#/parameters/payload_rinnovo_esenzione'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_esenzione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni-aura/{cod_esenzione}/{cod_malattia}/revoca':
+    put:
+      tags:
+        - Dinamiche
+      summary: Revoca di esenzione
+      description: |
+        Permette di revocare una pratica di esenzione identificata da codice esenzione, codice malattia e dal filtro obbligatorio
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/cod_esenzione'
+        - $ref: '#/parameters/cod_malattia'
+        - $ref: '#/parameters/filter_esenzioni_aura_dettaglio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_esenzione_aura'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}/revoca':
+    put:
+      tags:
+        - Dinamiche
+      summary: Revoca pratica di esenzione
+      description: |
+        Permette di revocare una pratica di esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+        - $ref: '#/parameters/payload_revoca_esenzione'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_esenzione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/motivazioni/revoca':
+    get:
+      tags:
+        - Statiche
+      summary: Lista motivazioni revoca
+      description: |
+        Permette di ottenere la lista di motivazioni relative alla revoca della singola esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_motivazione_revoca'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}/annullamento':
+    put:
+      tags:
+        - Dinamiche
+      summary: Annulla pratica di esenzione
+      description: |
+        Permette di annullare una pratica di esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+        - $ref: '#/parameters/payload_annullamento_esenzione'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_esenzione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/motivazioni/annullamento':
+    get:
+      tags:
+        - Statiche
+      summary: Lista motivazioni annullamento
+      description: |
+        Permette di ottenere la lista di motivazioni relative all'annullamento della singola esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_motivazione_annullamento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}/storico':
+    get:
+      tags:
+        - Dinamiche
+      summary: Storico esenzione
+      description: |
+        Permette di ottenere lo storico della singola esenzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_esenzione_cambio_stato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}/pdf':
+    get:
+      tags:
+        - Dinamiche
+      summary: Download attestato
+      description: |
+        Permette di ottenere il PDF dell'attestato per la singola esenzione
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+        - $ref: '#/parameters/document_type'
+      responses:
+        '200':
+          description: |
+            Restituisce il PDF con l'attestato della dichiarazione
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/esenzioni/{esenzione_id}/zip':
+    get:
+      tags:
+        - Dinamiche
+      summary: Download allegati
+      description: |
+        Permette di ottenere lo zip della documentazione allegata dal cittadino
+      produces:
+        - application/zip
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/esenzione_id'
+      responses:
+        '200':
+          description: |
+            Restituisce lo zip con la documentazione allegata dall'utente
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/cittadini/{cit_id}/certificati':
+    get:
+      tags:
+        - Dinamiche
+      summary: Lista certificati
+      description: |
+        Permette di ottenere la lista dei certificati associati al
+        cittadino eventualmente filtrabili tramite il parametro `filter` presente nella query string
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/filter_certificati'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_certificato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/certificati/{certificato_id}':
+    get:
+      tags:
+        - Dinamiche
+      summary: Dettaglio certificato
+      description: |
+        Permette di ottenere il singolo certificato
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/certificato_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_certificato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/certificati/{certificato_id}/pdf':
+    get:
+      tags:
+        - Dinamiche
+      summary: Download certificato
+      description: |
+        Permette di ottenere il PDF del certificato
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/certificato_id'
+      responses:
+        '200':
+          description: |
+            Restituisce il PDF con il certificato della dichiarazione
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+parameters:
+  shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è 
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  cod_esenzione:
+    in: path
+    name: cod_esenzione
+    type: string
+    required: true
+    description: Il codice dell'esenzione aura su cui operare
+  cod_malattia:
+    in: path
+    name: cod_malattia
+    type: string
+    required: true
+    description: Il codice della malattia su cui operare
+  tipologia_codice:
+    in: path
+    name: tipologia_codice
+    type: string
+    required: true
+    description: Il codice della tipologia di esenzione su cui operare
+  malattia_codice:
+    in: path
+    name: malattia_codice
+    type: string
+    required: true
+    description: Il codice della malattia su cui operare
+  stato_codice:
+    in: path
+    name: stato_codice
+    type: string
+    required: true
+    description: Il codice dello stato su cui operare
+  esenzione_id:
+    in: path
+    name: esenzione_id
+    type: string
+    required: true
+    description: L id dell esenzione su cui operare
+  document_type:
+    in: query
+    name: document_type
+    type: string
+    required: true
+    description: Il tipo di documento che sarà scaricabile dall'utente (attestato o schermate di conferma operazione[revoca, nuova esenzione, ecc.]) (01 - Nuova esenzione, 02 - Prenotazione esenzione, 03 - Rinnovo esenzione, 04 - Annullamento, 05 - revoca per intervento a carattere risolutivo, 06 - Rettifica dati esenzione, 07 - Singola esenzione)
+  certificato_id:
+    in: path
+    name: certificato_id
+    type: string
+    required: true
+    description: L'id del certificato su cui operare
+  esenzione_codice:
+    in: path
+    name: esenzione_codice
+    type: string
+    required: true
+    description: Il codice dell'esenzione richiedibile su cui operare
+  filter_esenzioni:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un filtro di tipo [FILTRI] Esenzione disponibile in fondo
+  filter_esenzioni_aura:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un filtro di tipo [FILTRI] Esenzione Aura disponibile in fondo
+  filter_esenzioni_aura_dettaglio:
+    in: query
+    name: filter
+    type: string
+    required: true
+    description: |
+      Un filtro di tipo [FILTRI] Esenzione Aura Dettaglio disponibile in fondo
+  filter_certificati:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un filtro di tipo [FILTRI] Certificato disponibile in fondo
+  payload_nuova_esenzione:
+    in: body
+    name: payload
+    required: true
+    description: |
+      L'utente può richiedere l'esenzione in 2 modi:
+      
+      1. **Usando un certificato già validato**
+      
+         In questo caso i dati obbligatori nel payload sono:
+          * certificato_id
+      
+      2. **Caricando il certificato al momento della richiesta di esenzione**
+      
+         In questo caso i dati obbligatori nel payload sono:
+          * file_base64
+          * data_rilascio
+          * tipologia
+          * malattia
+          * tipologia_documento
+          
+      3. **Senza documentazione e recandosi all'ASL**
+      
+         In questo caso i dati obbligatori sono:
+          * tipologia
+          * malattia
+
+      Il campo tipologia_invalidita viene passato solo se il client sta provando a creare una pratica di esenzione per invalidità
+      
+      
+    schema:
+      type: object
+      properties:
+        certificato_id:
+          type: string
+          description: |
+            L'id dell'eventuale certificato usato per creare l'esenzione
+        file_base64:
+          type: string
+          description: |
+            Il base64 del certificato caricato dall'utente
+        data_rilascio:
+          type: string
+          format: datetime
+          description: |
+            Quando è stato rilasciato il certificato
+        data_fine_validita:
+          type: string
+          format: datetime
+          description: |
+            Quando termina il certificato caricato
+        note:
+          type: string
+          description: |
+            Le note per l'operatore dell'ASL inserite dall'utente
+        tipologia:
+          $ref: '#/definitions/model_esenzione_tipologia'
+        tipologia_invalidita:
+          $ref: '#/definitions/model_tipologia_invalidita_v3'
+        malattia:
+          $ref: '#/definitions/model_esenzione_malattia'
+        tipologia_documento:
+          $ref: '#/definitions/model_tipologia_documento'
+  payload_modifica_esenzione:
+    in: body
+    name: payload
+    required: true
+    schema:
+      $ref: '#/definitions/model_esenzione'
+  payload_rettifica_esenzione:
+    in: body
+    name: payload
+    required: true
+    description: |
+      La rettifica avviene solo per richieste di esenzione con caricamento
+      del certificato manuale.
+      
+      Il campo "tipologia_invalidità" viene popolato solo se la "tipologia" è invalidità
+    schema:
+      type: object
+      properties:
+        file_base64:
+          type: string
+          description: |
+            Il base64 del certificato caricato dall'utente
+        data_rilascio:
+          type: string
+          format: datetime
+          description: |
+            Quando è stato rilasciato il certificato
+        data_fine_validita:
+          type: string
+          format: datetime
+          description: |
+            Quando termina il certificato caricato
+        note:
+          type: string
+          description: |
+            Le note per l'operatore dell'ASL inserite dall'utente
+        tipologia:
+          $ref: '#/definitions/model_esenzione_tipologia'
+        tipologia_invalidita:
+          $ref: '#/definitions/model_tipologia_invalidita_v3'
+        malattia:
+          $ref: '#/definitions/model_esenzione_malattia'
+        tipologia_documento:
+          $ref: '#/definitions/model_tipologia_documento'
+  payload_rinnovo_esenzione:
+    in: body
+    name: payload
+    required: true
+    description: |
+      L'utente può richiedere il rinnovo dell'esenzione in 2 modi
+      
+      1. **Usando un certificato già validato**
+      
+         In questo caso i dati obbligatori nel payload sono
+          * certificato_id
+      
+      2. **Caricando il certificato al momento della richiesta di esenzione**
+      
+         In questo caso i dati obbligatori nel payload sono
+          * file_base64
+          * data_rilascio
+          * tipologia_documento
+    schema:
+      type: object
+      properties:
+        certificato_id:
+          type: string
+          description: |
+            L'id dell'eventuale certificato usato per rinnovare l'esenzione
+        file_base64:
+          type: string
+          description: |
+            Il base64 del certificato caricato dall'utente
+        data_rilascio:
+          type: string
+          format: datetime
+          description: |
+            Quando è stato rilasciato il certificato
+        data_fine_validita:
+          type: string
+          format: datetime
+          description: |
+            Quando termina il certificato caricato
+        note:
+          type: string
+          description: |
+            Le note per l'operatore dell'ASL inserite dall'utente
+        tipologia_documento:
+          $ref: '#/definitions/model_tipologia_documento'
+  payload_revoca_esenzione:
+    in: body
+    name: payload
+    required: true
+    schema:
+      type: object
+      properties:
+        motivazione:
+          $ref: '#/definitions/model_esenzione_motivazione_revoca'
+  payload_annullamento_esenzione:
+    in: body
+    name: payload
+    required: true
+    schema:
+      type: object
+      properties:
+        motivazione:
+          $ref: '#/definitions/model_esenzione_motivazione_annullamento'
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test        
+  model_cittadino:
+    title: 'Cittadino'
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale
+        example: AAAAAA00B77B000F
+      nome:
+        type: string
+        description: nome
+      cognome:
+        type: string
+        description: cognome
+      data_nascita:
+        type: string
+        format: date
+        description: data di nascita
+      comune_nascita:
+        type: string
+        description: comune di nascita
+      sesso:
+        type: string
+        description: sesso questo campo non è obbligatorio
+      id_aura:
+        type: integer
+        description: idAura questo campo non è obbligatorio
+    required:
+      - codice_fiscale
+  model_codifica:
+    title: 'Codifica'
+    description: |
+      Rappresenta la classica coppia (codice, descrizione)
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Una descrizione testuale
+    required:
+      - codice
+      - descrizione
+  model_tipologia_invalidita_v3:
+    title: 'Tipologia invalidità'
+    description: |
+      Rappresenta un'esenzione indistintamente dalla tipologia
+    type: object
+    properties:
+      codice:
+        type: string
+        description: |
+          Il codice della tipologia di invalidità
+      descrizione:
+        type: string
+        description: |
+          La descrizione della tipologia di invalidità
+    required:
+      - codice
+  model_tipologia_documento:
+    title: 'Tipologia documento'
+    description: |
+      Rappresenta la tipologia di un documento
+    type: object
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  model_tipologia_documento_v2:
+    title: 'Tipologia documento v2'
+    description: |
+      Rappresenta la tipologia di un documento con una descrizione estesa.
+      NOTA: Il campo "descrizione_estesa" è stato inserito in seguito e per evitare impatti sullo sviluppo già avviato è stato deciso di inserirlo come model aggiuntivo e di usarlo solo sui nuovi endpoint. In futuro valorare se è possibile uniformare il tutto adeguando i vecchi endpoint a questo nuovo model
+    type: object
+    allOf:
+      - $ref: '#/definitions/model_tipologia_documento'
+    properties:
+      descrizione_estesa:
+        type: string
+        description: |
+          Una descrizione estesa per spiegare al cittadino cosa rappresenta questa tipologia di documento
+  model_esenzione:
+    title: 'Esenzione'
+    description: |
+      Rappresenta un'esenzione indistintamente dalla tipologia
+    type: object
+    properties:
+      id:
+        type: string
+        description: |
+          Un identificativo univoco della pratica.
+          TODO: se il numero_pratica è univoco può essere una sua duplicazione, oppure un UUID, oppure qualcosa di comodo per il back-end
+      numero_pratica:
+        type: string
+        description: Il numero della pratica associata alla richiesta
+      data_richiesta:
+        type: string
+        format: datetime
+        description: Quando è stata richiesta
+      data_revoca:
+        type: string
+        format: datetime
+        description: Quando è stata revocata
+      data_annullamento:
+        type: string
+        format: datetime
+        description: Quando è stata annullata
+      data_scadenza:
+        type: string
+        format: datetime
+        description: Quando è prevista la scadenza
+      data_aggiornamento:
+        type: string
+        format: datetime
+        description: Quando è stata effettuata l'ultima modifica
+      data_inizio_validita:
+        type: string
+        format: datetime
+        description: Quando è iniziata la validità dell'esenzione
+      data_fine_validita:
+        type: string
+        format: datetime
+        description: Quando è terminata la validità dell'esenzione
+      certificato_id:
+        type: string
+        description: |
+          L'id del certificato usato per richiedere questa esenzione
+      zip:
+        type: boolean
+        description: |
+          Indica se l'esenzione ha allegati o meno
+      archiviata:
+        type: boolean
+        description: |
+          Indica se l'esenzione deve considerarsi archiviata o meno
+      annullabile:
+        type: boolean
+        description: |
+          Indica se l'esenzione deve considerarsi annulabile o meno
+      rinnovabile:
+        type: boolean
+        description: |
+          Indica se l'esenzione è rinnovabile o meno
+      revocabile:
+        type: boolean
+        description: |
+          Indica se l'esenzione è revocabile o meno
+      in_scadenza:
+        type: boolean
+        description: |
+          Indica se l'esenzione deve considerarsi in scadenza o meno
+      codice:
+        $ref: '#/definitions/model_esenzione_codice'
+      stato:
+        $ref: '#/definitions/model_esenzione_stato'
+      tipologia:
+        $ref: '#/definitions/model_esenzione_tipologia'
+      tipologia_invalidita:
+        $ref: '#/definitions/model_tipologia_invalidita_v3'
+      malattia:
+        $ref: '#/definitions/model_esenzione_malattia'
+      richiesto_da:
+        $ref: '#/definitions/model_cittadino'
+      revocato_da:
+        $ref: '#/definitions/model_cittadino'
+      annullato_da:
+        $ref: '#/definitions/model_cittadino'
+      motivazione_revoca:
+        $ref: '#/definitions/model_esenzione_motivazione_revoca'
+      motivazione_annullamento:
+        $ref: '#/definitions/model_esenzione_motivazione_annullamento'
+    required:
+      - id
+      - numero_pratica
+      - data_richiesta
+      - data_aggiornamento
+      - data_inizio_validita
+      - data_fine_validita
+      - archiviata
+      - annulabile
+      - rinnovabile
+      - revocabile
+      - in_scadenza
+      - codice
+      - stato
+      - tipologia
+      - malattia
+      - richiesto_da
+      - zip
+  model_esenzione_aura:
+    title: 'Esenzione Aura'
+    description: |
+      Rappresenta un'esenzione di Aura indistintamente dalla tipologia
+    type: object
+    properties:
+      data_emissione:
+        type: string
+        format: datetime
+        description: Inizio validità dell'esenzione
+      data_scadenza:
+        type: string
+        format: datetime
+        description: Quando scadrà l'esenzione
+      revocabile:
+        type: boolean
+        description: |
+          Indica se l'esenzione è revocabile o meno
+      codice:
+        $ref: '#/definitions/model_esenzione_codice'
+      stato:
+        $ref: '#/definitions/model_esenzione_stato'
+      tipologia:
+        $ref: '#/definitions/model_esenzione_tipologia'
+      tipologia_invalidita:
+        $ref: '#/definitions/model_tipologia_invalidita_v3'
+      malattia:
+        $ref: '#/definitions/model_esenzione_malattia'
+    required:
+      - revocabile
+      - codice
+      - stato
+      - tipologia
+      - malattia
+      - data_emissione
+      - data_scadenza
+  model_esenzione_codice:
+    title: 'Esenzione codice'
+    description: |
+      Rappresenta il codice di un'esenzione
+    type: object
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  model_esenzione_stato:
+    title: 'Esenzione stato'
+    description: |
+      Rappresenta lo stato di un'esenzione
+      TODO: elencare tutti i possibili stati dell'esenzione
+    type: object
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  model_esenzione_tipologia:
+    title: 'Esenzione tipologia'
+    description: |
+      Rappresenta la tipologia di un'esenzione
+      TODO: elencare i codici di tutte le possibili tipologie
+    type: object
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  model_esenzione_malattia:
+    title: 'Malattia'
+    description: |
+      Risorsa che rappresenta la malattia (può trattarsi di patologia, malattia rara o invalidità)
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+    type: object
+    properties:
+      giorni_validita:
+        type: number
+        description: |
+          Il numero di giorni di validità di un'esenzione richiesta
+          per questa malattia
+      prestazioni:
+          type: array
+          description: |
+            L'elenco delle prestazioni associate all'esenzione.
+            Questo array viene popolato solo per le esenzioni di tipo
+            "Patologia"
+          items:
+            $ref: '#/definitions/model_esenzione_prestazione'
+    required:
+      - giorni_validita
+      - prestazioni
+  model_esenzione_malattia_v2:
+    title: 'Malattia v2'
+    description: |
+      Risorsa che rappresenta la malattia (può trattarsi di patologia, malattia rara o invalidità) più il codice dell'esenzione associata
+      NOTA: Il campo "descrizione_estesa" è stato inserito in seguito e per evitare impatti sullo sviluppo già avviato è stato deciso di inserirlo come model aggiuntivo e di usarlo solo sui nuovi endpoint. In futuro valorare se è possibile uniformare il tutto adeguando i vecchi endpoint a questo nuovo model
+    allOf:
+      - $ref: '#/definitions/model_esenzione_malattia'
+    type: object
+    properties:
+      codice_esenzione:
+        type: string
+        description: |
+          Il codice dell'esenzione associata a questa malattia
+    required:
+      - codice_esenzione
+  model_esenzione_prestazione:
+    title: 'Esenzione prestazione'
+    description: |
+      Rappresenta una prestazione esente
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  model_esenzione_motivazione_revoca:
+    title: 'Motivazione revoca'
+    description: |
+      Rappresenta la motivazione della revoca di un'esenzione
+    type: object
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  model_esenzione_motivazione_annullamento:
+    title: 'Motivazione annullamento'
+    description: |
+      Rappresenta la motivazione dell'annullamento di un'esenzione
+    type: object
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  model_esenzione_cambio_stato:
+    title: 'Esenzione cambio stato'
+    description: |
+      Rappresenta la modifica dello stato di un'esenzione
+    type: object
+    properties:
+      id:
+        type: string
+        description: |
+          Un identificativo univoco del cambio di stato.
+      data_creazione:
+        type: string
+        format: datetime
+        description: |
+          Quando c'è stata una variazione nello stato
+      nuovo_stato:
+        $ref: '#/definitions/model_esenzione_stato'
+      utente:
+        $ref: '#/definitions/model_cittadino'
+      nota:
+        type: string
+        description: L'eventuale nota associata al cambio di stato
+    required:
+      - id
+      - data_creazione
+      - nuovo_stato
+      - utente
+  model_certificato:
+    title: 'Certificato'
+    description: |
+      Rappresenta il certificato di malattia
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un identificativo univoco per il certificato
+      utilizzabile:
+        type: boolean
+        description: |
+          Descrive se è possibile o meno usare il certificato per
+          creare un'esenzione
+      data_inserimento:
+        type: string
+        format: datetime
+        description: Quando è stato inserito
+      data_aggiornamento:
+        type: string
+        format: datetime
+        description: Quando è stato modificato l'ultima volta
+      data_scadenza:
+        type: string
+        format: datetime
+        description: Quando dovrebbe scadere il certificato
+      esenzione_id:
+        type: string
+        description: |
+          L'id dell'esenzione creata a partire da questo certificato
+      tipologia_esenzione:
+        $ref: '#/definitions/model_esenzione_tipologia'
+      malattia:
+        $ref: '#/definitions/model_esenzione_malattia'
+      inserito_da:
+        $ref: '#/definitions/model_cittadino'
+    required:
+      - id
+      - utilizzabile
+      - data_inserimento
+      - data_aggiornamento
+      - data_scadenza
+      - tipologia_esenzione
+      - malattia
+      - inserito_da
+  model_esenzione_disponibile_v3:
+    title: 'Esenzione disponibile'
+    description: |
+      Rappresenta un'esenzione che il cittadino può richiedere
+    type: object
+    properties:
+      tipologia_aura:
+        type: string
+        description: |
+          Contiene il codice della tipologia di esenzione su AURA. In caso di invalidità il codice corrisponde ad uno dei codici restituiti dall'endpoint tipologie-invalidita
+    allOf:
+      - $ref: '#/definitions/model_codifica'
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    description: |
+      I possibili errori sono:
+      
+      <table border="1">
+        <thead>
+          <th style="width: 10%;">status</th>
+          <th style="width: 40%;">code</th>
+          <th style="width: 50%;">title</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>400</td>
+            <td>Parametri obbligatori mancanti</td>
+            <td>Parametri obbligatori non presenti</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Verifica del CF negativa</td>
+            <td>ATTENZIONE! Codice fiscale del beneficiario non valido perché non è un assistito piemontese</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Verifica del CF delegato negativa</td>
+            <td>ATTENZIONE! Codice fiscale del delegato non valido</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Mancata congruità parametri di input</td>
+            <td>Mancata congruità dei dati di input</td>
+          </tr>
+          <tr>
+            <td>404</td>
+            <td>Not found</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>409</td>
+            <td>Conflict</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>503</td>
+            <td>Mancata connessione ad AURA</td>
+            <td>Ci sono problemi di comunicazione con i servizi di AURA</td>
+          </tr>
+          <tr>
+            <td>503</td>
+            <td>Mancata connessione a deleghe</td>
+            <td>Ci sono problemi di comunicazione con i servizi di Deleghe</td>
+          </tr>
+          <tr>
+            <td>503</td>
+            <td>Mancata connessione al Repository</td>
+            <td>Ci sono problemi di comunicazione con i servizi del repository</td>
+          </tr>
+          <tr>
+            <td>500</td>
+            <td>Errore generico</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+  filtro_esenzione:
+    title: '[FILTRI] Esenzione'
+    type: object
+    properties:
+      archiviata:
+        type: object
+        properties:
+          eq:
+            type: boolean
+      stato:
+        type: object
+        properties:
+          eq:
+            type: string
+      tipologia_esenzione:
+        type: object
+        properties:
+          eq:
+            type: string
+  filter_esenzioni_aura:
+    title: '[FILTRI] Esenzione Aura'
+    type: object
+    properties:
+      archiviata:
+        type: boolean
+      tipologia_esenzione:
+        type: string
+    example: 'filter:{"archiviata":{"eq":true},"tipologia_esenzione":{"eq":"IN"}}'
+  filter_esenzioni_aura_dettaglio:
+    title: '[FILTRI] Esenzione Aura Dettaglio'
+    type: object
+    properties:
+      data_emissione:
+        type: string
+        format: date
+      data_scadenza:
+        type: string
+        format: date
+    example: 'filter:{"data_emissione": {"eq": "YYYY-MM-DD"},"data_scadenza":{"eq":"YYYY-MM-DD"}}'
+  filtro_certificato:
+    title: '[FILTRI] Certificato'
+    type: object
+    properties:
+      utilizzabile:
+        type: object
+        properties:
+          eq:
+            type: string
+      tipologia_esenzione:
+        type: object
+        properties:
+          eq:
+            type: string
+externalDocs:
+  description: Prototipo
+  url: 'http://dev-prototipi.csi.it/2019/sanita-esenzioni_patologia/desktop/#g=1&p=home'
+tags:
+  - name: Dinamiche
+    description: Endpoints dinamici
+  - name: Statiche
+    description: Endpoints statici (file json)
+

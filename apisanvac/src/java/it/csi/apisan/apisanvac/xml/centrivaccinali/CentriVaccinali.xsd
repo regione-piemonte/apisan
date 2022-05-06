@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CentriVaccinali" nillable="true" type="CentriVaccinali" />
+  <xs:complexType name="CentriVaccinali">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CentroV" type="CentroVaccinale" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CentroVaccinale">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Codice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Comune" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Indirizzo" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Note" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Ambulatori" type="ArrayOfAmbulatorio" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfAmbulatorio">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Ambulatorio" nillable="true" type="Ambulatorio" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Ambulatorio">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Codice" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Orari" type="ArrayOfOrario" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfOrario">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Orario" nillable="true" type="Orario" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Orario">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Giorno" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="OraInizioAM" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="OraFineAM" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="OraInizioPM" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="OraFinePM" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

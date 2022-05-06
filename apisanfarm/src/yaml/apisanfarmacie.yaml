@@ -1,0 +1,863 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanfarm/api/v1
+schemes:
+  - https
+info:
+  title: 'Farmacie abituali ed occasionali (BOZZA)'
+  version: 0.0.8
+  description: |
+  
+    # Avvertenze
+    ---
+    1. Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino
+    2. Questo YAML è un contratto tra lo strato verde e lo strato rosso
+    3. Si è scelto che l'elenco delle farmacie convenzionate restituisca solo dei codici poiché non saranno paginate e quindi si vuole snellire la response il più possibile
+    4. Per implementare questo SOL bisogna comunicare con 2 sistemi, cioè LOCSI per ottenere i dati geografici delle farmacie ed il BE di farmacie per il resto.
+      **Il codice della farmacia** ci permette di creare corrispondenza tra i dati restituiti dai sistemi: il codice farmacia che restituisce LOCSI è lo stesso
+        identifica la stessa farmacia anche nel BE di farmacie
+    5. Per visualizzare i servizi offerti da LOCSI per le farmacie è possibile fare riferimento allo YAML di "Trova un":
+      https://gitlab.csi.it/apisan/apisantrovaun/blob/master/apisantrovaun.yaml
+
+    
+    # Domande
+    ---
+    1. Quali sono i dati sulla farmacia presenti sul sistema BE di farmacie?
+       Al momento ho inserito gli stessi dati presenti sullo YAML di "Trova un"
+
+    # Prototipo Interfaccia
+    ---
+    https://xd.adobe.com/view/6e970fb7-c633-4b00-bf4d-5a1846a4a0b8-3bc4/
+    
+    # Linee guida del comportamento del front-end
+    ---
+    
+    ## Utente anonimo
+    
+    ### Homepage
+    
+    1. Se ha un UUID salvato nel local storage, chiama subito l'endpoint `Richiesta farmacia occasionale` per controllare se esistono delle richieste pendenti che il cittadino deve consentire
+    
+    ### Pagina associazione tramite OTP
+    
+    1. Chiama il servizio `Associa device certificato per OTP` per associare il device.
+      **DOMANDA: se ho già nel localstorage un UUID, devo crearne uno nuovo o riuso quello esistente?**
+      **RISPOSTA: Ne creo uno nuovo**
+    
+    ## Utente loggato
+    
+    ### Homepage
+    
+    1. Richiama il servizio `Lista farmacie abituali` per visualizzare l'elenco delle farmacie abituali salvate dal cittadino
+    
+    2. Richiama il servizio `Dettaglio device certificato` per verificare se il cittadino ha o meno un device certificato attualmente valido. Inoltre se il front-end ha un UUID salvato nel local storage sovrascrive l'informazione con la risposta ottenuta dal servizio.
+    
+    3. Se il cittadino ha un device certificato ed il front-end ha nel local storage l'UUID salvato, chiama il servizio `Richiesta farmacia occasionale` per controllare se esistono delle richieste pendenti che il cittadino deve consentire.
+      **DOMANDA: Ma quindi un cittadino autenticato NON può dare il consenso ad una farmacia occasionale se non sta lavorando sul device certificato?**
+      **RISPOSTA: Esatto, solo chi sta lavorando sul device certificato può dare il consenso alla farmacia occasionale**
+    
+    ### Cerca farmacia abituale
+    
+    1. Chiama il servizio `Lista farmacie aderenti` per ottenere l'elenco dei codici delle farmacie che possono essere selezionate come "abituali"
+    
+    2. Cerca le farmacie usando i servizi del `Trova un`
+    
+    # NOTE versione 0.0.10 (27 Ott 2021)
+    ---
+    * Aggiunto query param `codice_verticale_delega` all' endpoint 'Disassocia device certificato'    
+    ---
+    * Aggiunto query param `codice_verticale_delega` agli endpoint `Dettaglio device certificato` , 'Richiesta farmacia occasionale', 'Autorizza farmacia occasionale'
+
+    # NOTE versione 0.0.9 (27 Ott 2021)
+    ---
+    * Aggiunto query param `codice_verticale_delega` agli endpoint `Associa device certificato per OTP` e `Associa device certificato` 
+    
+    # NOTE versione 0.0.8 (27 Ott 2021)
+    ---
+    * Aggiunto parametro `codice_fiscale` nel payload dell'associazione del device con OTP 
+    
+    # Note versione 0.0.7 (13 Ott 2021)
+    ---
+    * Aggiunto query param `codice_verticale_delega` agli endpoint `Gestione farmacie abituali` e `Lista farmacie abituali` 
+    
+    # Note versione 0.0.6 (21 Mag 2021)
+    ---
+    * Riaggiunto campo `data_validita_inizio` dal payload `Payload farmacia abituale`
+    
+    # Note versione 0.0.5 (20 Mag 2021)
+    ---
+    * Aggiunto i campi `fonte_descrizione` e rinominato `fonte` in `fonte_codice` nel model `Device certificato`
+    * Rimosso campo `data_validita_inizio` dal payload `Payload farmacia abituale`
+    
+    # Note versione 0.0.4 (14 Mag 2021)
+    ---
+    * Aggiunto i campi `sistema_operativo`, `browser`, `modello` nel payload dell'endpoint `Associa device certificato per OT`
+
+    # Note versione 0.0.3 (11 Mag 2021)
+    ---
+    * Aggiunto endpoint `Disassocia device certificato`
+    * Aggiunto endpoint `Associa device certificato`
+    * Aggiunto endpoint `Associa device certificato per OTP`
+    * Rimosso endpoint `Gestione device certificato`
+    * Aggiunti campi `telefono`, `sistema_operativo`, `browser` e `modello` al model `Device certificato` 
+    
+    # Note versione 0.0.2 (10 Mag 2021)
+    ---
+    * Dal model `Farmacia` rimossi i campi `tipo_codice`, `email`, `telefono` e `sito_web`
+    * Nel payload della `Gestione farmacia abituale` in caso di rimozione (codice `R`) inserito `farmacia_codice` al posto di `faramcia_abituale_id`
+    * Modificata URL dell'endpont `Lista farmacie aderenti`
+    * Aggiunto endpoint `Lista device certificati`
+    * Aggiunto endpoint `Gestione device certificato`
+    * Aggiunto endpoint `Richiesta farmacia occasionale`
+    * Aggiunto endpoint `Autorizza farmacia occasionale`
+    
+    # Note versione 0.0.1 (06 Mag 2021)
+    ---
+    * Prima implementazione
+
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      description: 
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json    
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: 
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+  '/farmacie-aderenti/codice':
+    get:
+      summary: Lista Farmacie aderenti
+      description:  
+        Restituisce l'elenco dei codici delle farmacie aderenti
+        
+        Se non sono presenti farmacie convenzionate restituisce una lista vuota 
+        (es. [])
+      tags:
+        - Pubblici
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: 
+            Restituisce l'elenco dei codici delle farmacie abilitate.
+            Se non sono presenti farmacie abilitate restituisce una lista vuota.
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              type: string
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/device-certificato':
+    post:
+      summary: Associa device certificato per OTP
+      description: 
+        Permette di associare il device certificato tramite OTP
+      tags:
+        - Pubblici
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_codice_verticale_delega'        
+        - $ref: '#/parameters/payload_device_certificato_otp'
+      responses:
+        '201':
+          description: Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/farmacia-occasionale':
+    get:
+      summary: Richiesta farmacia occasionale
+      description:  
+        Permette di leggere la richiesta dell'ultima faramcia occasionale.
+        
+        Se non ci sono richieste pendenti restituisce un 404.
+        
+        Se l'UUID del device non è più valido restituisce un errore noto (da concordare).
+      tags:
+        - Pubblici
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_device_uuid'
+        - $ref: '#/parameters/query_codice_verticale_delega'         
+      responses:
+        '200':
+          description: 
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_farmacia_occasionale'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/farmacia-occasionale/autorizzazione':
+    post:
+      summary: Autorizza farmacia occasionale
+      description:  
+        Permette di autorizzare una farmacia occasionale.
+      tags:
+        - Pubblici
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_codice_verticale_delega'         
+        - $ref: '#/parameters/payload_farmacia_occasionale_autorizzazione'
+      responses:
+        '200':
+          description: 
+            Restituisce la farmacia occasionale appena autorizzata
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_farmacia_occasionale'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/farmacie-abituali':
+    get:
+      summary: Lista farmacie abituali
+      description:  
+        Permette di leggere l'elenco delle farmacie abituali associate ad un cittadino.
+        
+        Se il cittadino non ha farmacie abituali associate allora restituisce une elenco vuoto (es. [])
+      tags:
+        - Autenticati
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_verticale_delega'
+      responses:
+        '200':
+          description: 
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_farmacia_abituale'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Gestione farmacia abituale
+      description: 
+        Permette di Associare/Disassociare una farmacia o di cancellarla.
+      tags:
+        - Autenticati
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_verticale_delega'
+        - $ref: '#/parameters/payload_farmacie_abituali'
+      responses:
+        '200':
+          description: 
+            In caso di creazione/modifica restituisce la farmacia abituale appena create/modificata.
+            
+            In caso di rimozione non restituisce nulla.
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_farmacia_abituale'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/device-certificato':
+    get:
+      summary: Dettaglio device certificato
+      description:  
+        Permette di leggere le informazioni relative al device certificato del cittadino.
+        
+        De il cittadino non ha il device certificato restituisce un 404.
+      tags:
+        - Autenticati
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_verticale_delega'        
+      responses:
+        '200':
+          description: 
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_device_certificato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Associa device certificato
+      description: 
+        Permette di associare il device certificato
+      tags:
+        - Autenticati
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_verticale_delega'        
+        - $ref: '#/parameters/payload_device_certificato'
+      responses:
+        '201':
+          description: Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_device_certificato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    delete:
+      summary: Disassocia device certificato
+      description: 
+        Permette di disassociare il device certificato
+      tags:
+        - Autenticati
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_verticale_delega'        
+      responses:
+        '200':
+          description: 
+            L'operazione è andata a buon fine
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: 
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: 
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  
+  path_cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+    
+  query_device_uuid:
+    in: query
+    name: 'device_uuid'
+    type: string
+    required: true
+    description: 
+      L'id univoco del device certificato
+      
+  query_codice_verticale_delega:
+    in: query
+    name: 'codice_verticale_delega'
+    type: string
+    required: true
+    description: 
+      Il codice del verticale censito su deleghe per controllare eventuali operazioni in modalità delega
+    
+  payload_farmacie_abituali:
+    in: body
+    name: 'Payload farmacia abituale'
+    required: true
+    description: |
+      I dati che il client deve passare alle API per associare/disassociare una farmacia abituale
+      
+      Esempio di payload per l'associazione di una nuova farmacia abituale:
+      
+      ```json
+      {
+        "azione": "C",
+        "farmacia_codice": "string",
+        "data_validita_inizio": "2021-05-06T08:31:56.500Z",
+        "data_validita_fine": "2022-05-06T08:31:56.500Z",
+      }
+      ```
+      
+      Esempio di payload per la modifica di una farmacia abituale:
+      
+      ```json
+      {
+        "azione": "M",
+        "farmacia_abituale_id": "string",
+        "data_validita_fine": "2022-05-06T08:31:56.500Z",
+      }
+      ```
+      
+      Esempio di payload per la rimozione di una farmacia abituale:
+      
+      ```json
+      {
+        "azione": "R",
+        "farmacia_codice": "string"
+      }
+      ```
+      
+    schema:
+      type: object
+      properties:
+        azione:
+          $ref: '#/definitions/enum_azione_farmacia_abituale'
+        farmacia_codice:
+          type: string
+          description: |
+            Il codice univoco della farmacia.
+            Questo campo è popolato ed obbligatorio se azione è C o R
+        farmacia_abituale_id:
+          type: string
+          description: |
+            Il codice univoco della farmacia abituale.
+            Questo campo è popolato ed obbligatorio se azione è M
+        data_validita_inizio:
+          type: string
+          format: date-time
+          description: |
+            La data da cui la farmacia deve essere considerata come "abituale" per il cittadino.
+            Questo campo è popolato ed obbligatorio se azione è C
+        data_validita_fine:
+          type: string
+          format: date-time
+          description: |
+            La data limite entro cui la farmacia deve essere considerata come "abituale" per il cittadino.
+            Questo campo è popolato ed obbligatorio se azione è uno tra C e M
+      required:
+        - azione
+  payload_device_certificato:
+    in: body
+    name: 'Payload device certificato'
+    required: true
+    description: |
+      I dati che il client deve passare alle API per associare il device certificato
+    schema:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: |
+            Id univoco che rappresenta il device. In formato UUID v4
+        fonte_codice:
+          type: string
+          description: |
+            Indica da dove è stato certificato il device.
+            Può valere "Cittadino" o "Operatore" e dal front-end dobbiamo
+            passare "Cittadino"
+        telefono:
+          type: string
+          description: |
+            Il numero di telefono del cittadino certificato sul notificatore
+        sistema_operativo:
+          type: string
+          description: Il sistema operativo del device
+        browser:
+          type: string
+          description: Il browser su cui sta girando la webapp
+        modello:
+          type: string
+          description: Il modello del device
+      required:
+        - uuid
+        - fonte_codice
+        - telefono
+        - sistema_operativo
+        - browser
+  payload_device_certificato_otp:
+    in: body
+    name: 'Payload device certificato otp'
+    required: true
+    description: |
+      I dati che il client deve passare alle API per associare il device certificato tramite OTP
+    schema:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: |
+            Id univoco che rappresenta il device. In formato UUID v4
+        otp:
+          type: string
+          description: |
+            L'OTP ricevuto dal punto assistito
+        codice_fiscale:
+          type: string
+          description: |
+            Il codice fiscale del cittadino. Arriva tramite il link inviato al cittadino
+        sistema_operativo:
+          type: string
+          description: Il sistema operativo del device
+        browser:
+          type: string
+          description: Il browser su cui sta girando la webapp
+        modello:
+          type: string
+          description: Il modello del device
+      required:
+        - uuid
+        - otp
+        - codice_fiscale
+        - sistema_operativo
+        - browser
+  payload_farmacia_occasionale_autorizzazione:
+    in: body
+    name: 'Payload Farmacia occasionale autorizzazione'
+    required: true
+    description: |
+      Il payload da passare per autorizzare la farmacia occasionale
+    schema:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: |
+            Id univoco che rappresenta il device. In formato UUID v4
+      required:
+        - uuid
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  enum_azione_farmacia_abituale:
+    type: string
+    description: |
+      L'azione da compiere.
+      
+      * C - Creazione
+      * M - Modifica
+      * R - Rimuovi
+    enum:
+      - C
+      - M
+      - R
+
+  model_farmacia:
+    title: 'Farmacia'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome della struttura
+      provincia:
+        type: string
+        description: La provincia di appartenenza
+        example: Torino
+      comune:
+        type: string
+        description: Il comune di appartenenza
+      cap:
+        type: string
+        description: Il CAP di appartenenza
+      indirizzo:
+        type: string
+        description: L'indirizzo della struttura
+  model_farmacia_abituale:
+    title: 'Farmacia abituale'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un id univoco
+      data_validita_inizio:
+        type: string
+        format: date-time
+        description: La data da cui la farmacia deve essere considerata come "abituale" per il cittadino
+      data_validita_fine:
+        type: string
+        format: date-time
+        description: La data limite entro cui la farmacia deve essere considerata come "abituale" per il cittadino
+      farmacia:
+        $ref: '#/definitions/model_farmacia'
+  model_device_certificato:
+    title: 'Device certificato'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un id univoco
+      uuid:
+        type: string
+        description: L'id univoco del device (nel formato UUID v4)
+      data_certificazione:
+        type: string
+        format: date-time
+        description: La data e ora in cui è stato certificato il dispositivo
+      fonte_codice:
+        type: string
+        description: |
+          Indica da dove è stato certificato il device.
+          Può valere "Cittadino" o "Operatore"
+      fonte_descrizione:
+        type: string
+        description: La descrizione della fonte da mostrare sulla UI
+      codice_fiscale:
+        type: string
+        description: Il codice fiscale del cittadino a cui si riferisce il device
+      telefono:
+        type: string
+        description: |
+          Il numero di telefono del cittadino certificato sul notificatore
+      sistema_operativo:
+        type: string
+        description: Il sistema operativo del device
+      browser:
+        type: string
+        description: Il browser su cui sta girando la webapp
+      modello:
+        type: string
+        description: Il modello del device
+  model_farmacia_occasionale:
+    title: 'Farmacia occasionale'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un id univoco
+      data_richiesta:
+        type: string
+        format: date-time
+        description: La data da cui la farmacia ha fatto la richiesta
+      farmacia:
+        $ref: '#/definitions/model_farmacia'
+        
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+        description: Codice univoco di errore interno
+      title:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+        description: Codice univoco di errore interno
+      valore:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino
+tags:
+  - name: Pubblici
+    description: Servizi accessibili senza login
+  - name: Autenticati
+    description: Servizi accessibili solo dopo essersi autenticati

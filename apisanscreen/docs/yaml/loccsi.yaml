@@ -1,0 +1,192 @@
+swagger: "2.0"
+info:
+  description: "API loccsi di prova"
+  version: 0.0.1
+  title: LOCCSI
+host: tst-srv-xxx.xxx.csi.it
+basePath: /loccsi/api/v1
+schemes:
+  - https
+paths:
+  "/servizio-attivo":
+    get:
+      description: >
+        Restituisce informazioni sull'ambiente su cui sta girando il back-end.
+        Es. variabili ambiente, header http ricevuti ecc.
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: |
+            Restituisce un oggetto JSON contenente i dati dell'env su cui sta girando il servizio
+          schema:
+            $ref: '#/definitions/info_servizio'  
+definitions:
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  loccsi:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      catalogs:
+        type: array
+        items: 
+          type: string
+      featureCollection:
+        $ref:  '#/definitions/featureCollection'
+  featureCollection:
+    type: object
+    properties:
+      type: 
+        type: string
+      features:
+        type: array
+        items:
+          $ref: '#/definitions/feature'
+      crs:
+        $ref: '#/definitions/crs'
+      bbox:
+        type: array
+        items: 
+          type: string
+  properti_crs:
+    type: object
+    properties:
+      name:
+       type: string          
+  crs:
+    type: object
+    properties:
+      properties:
+        $ref: '#/definitions/properti_crs'
+  feature:
+    type: object
+    properties:
+      type:
+        type: string
+      geometry:
+        $ref: '#/definitions/geometry'
+      properties:
+        $ref: '#/definitions/propertie'
+      id:
+       type: integer
+       format: int32
+  geometry:
+    type: object
+    properties:
+      type:
+        type: string
+      coordinates:
+        type: array
+        items:
+          type: string          
+  propertie:
+    type: object
+    properties:
+      id_aura_medico:
+        type: number
+        description: id aura del medico
+      autolimitato:
+        type: string
+        description: flag autolimitato
+      indirizzo_email_ambulatorio:
+        type: string
+      cognome_medico:
+        type: string
+      cod_ambito_medico:
+        type: string
+      note_ambulatorio:
+        type: string
+      indirizzo_email_medico:
+        type: string
+      id_raplav_ambulatorio:
+        type: string
+      orario_amb_martedi:
+        type: string
+      indirizzo_ambulatorio:
+        type: string
+      cod_asl:
+        type: string
+      specializzazioni:
+        type: string
+      orario_amb_sabato:
+        type: string
+      desc_tipo_ambulatorio:
+        type: string
+      orario_amb_giovedi: 
+        type: string
+      massimale:
+        type: integer
+        format: int32
+      data_nascita_medico:
+        type: string
+        format: date-time
+      massimale_scelte_in_deroga:
+        type: integer
+        format: int32
+      sesso_medico:
+        type: string
+      desc_distretto_medico:
+        type: string
+      loccsi_label:
+        type: string
+      codice_regionale_medico:
+        type: string
+      orario_amb_mercoledi:
+        type: string
+      provincia_ambulatorio:
+        type: string
+      tipologia_medico:
+        type: string
+      id_tipo_ambul_medico:
+        type: string
+      nome_medico:
+        type: string
+      desc_asl:
+        type: string
+      massimale_riservato_fascia_eta:
+        type: integer
+        format: int32
+      massimale_scelte_temporanee:
+        type: integer
+        format: int32
+      comune_ambulatorio:
+        type: string
+      cap_ambulatorio:
+        type: string
+      orario_amb_domenica:
+        type: string
+      orario_amb_venerdi:
+        type: string
+      desc_ambito_medico:
+        type: string
+      id_ambulatorio:
+        type: integer
+        format: int32
+      orario_amb_lunedi:
+        type: string
+      cod_distretto_medico:
+        type: string
+      codice_fiscale_medico:
+        type: string
+ 
+        

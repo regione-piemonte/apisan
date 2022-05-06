@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="UtilityService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:element name="GetMessaggiDiServizioRequest" type="tns:GetMessaggiDiServizioRequest" />
+   <xs:element name="GetMessaggiDiServizioResponse" type="tns:GetMessaggiDiServizioResponse" />
+   <xs:element name="SetAuditRequest" type="tns:SetAuditRequest" />
+   <xs:element name="SetAuditResponse" type="tns:SetAuditResponse" />
+   <xs:element name="richiedenteInfo" type="ns1:richiedenteInfo" />
+   <xs:complexType name="GetMessaggiDiServizioRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicativoVerticale">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="codifica">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codice" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicazioneRichiedente">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="GetMessaggiDiServizioResponse">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="messaggi" nillable="true" type="xs:string" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="errore">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="SetAuditRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="codiceAudit" type="xs:string" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="parametroAudit" nillable="true" type="tns:parametroAudit" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="parametroAudit">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="indice" type="xs:int" />
+         <xs:element minOccurs="0" name="valore" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="SetAuditResponse">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:simpleType name="risultatoCodice">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SUCCESSO" />
+         <xs:enumeration value="FALLIMENTO" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:element name="getMessaggiDiServizio" nillable="true" type="tns:GetMessaggiDiServizioRequest" />
+   <xs:element name="setAudit" nillable="true" type="tns:SetAuditRequest" />
+</xs:schema><xs:schema targetNamespace="http://dma.csi.it/" version="1.0" xmlns:ns1="http://dmacc.csi.it/" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dmacc.csi.it/" />
+   <xs:complexType name="richiedenteInfo">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="applicativoVerticale" type="ns1:applicativoVerticale" />
+         <xs:element minOccurs="0" name="applicazione" type="ns1:applicazioneRichiedente" />
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="ip" type="xs:string" />
+         <xs:element minOccurs="0" name="numeroTransazione" type="xs:string" />
+         <xs:element minOccurs="0" name="ruolo" type="tns:ruolo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ruolo">
+      <xs:complexContent>
+         <xs:extension base="ns1:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:sequence>
+         <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="errori" type="ns1:errore" />
+         <xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice" />
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="getMessaggiDiServizio">
+    <wsdl:part element="tns:getMessaggiDiServizio" name="getMessaggiDiServizio">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setAuditResponse">
+    <wsdl:part element="tns:SetAuditResponse" name="SetAuditResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setAudit">
+    <wsdl:part element="tns:setAudit" name="setAudit">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getMessaggiDiServizioResponse">
+    <wsdl:part element="tns:GetMessaggiDiServizioResponse" name="GetMessaggiDiServizioResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UtilityService">
+    <wsdl:operation name="getMessaggiDiServizio">
+      <wsdl:input message="tns:getMessaggiDiServizio" name="getMessaggiDiServizio">
+    </wsdl:input>
+      <wsdl:output message="tns:getMessaggiDiServizioResponse" name="getMessaggiDiServizioResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setAudit">
+      <wsdl:input message="tns:setAudit" name="setAudit">
+    </wsdl:input>
+      <wsdl:output message="tns:setAuditResponse" name="setAuditResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UtilityServiceSoapBinding" type="tns:UtilityService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getMessaggiDiServizio">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getMessaggiDiServizio">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMessaggiDiServizioResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setAudit">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setAudit">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setAuditResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UtilityService">
+    <wsdl:port binding="tns:UtilityServiceSoapBinding" name="UtilityPort">
+      <soap12:address location="https://xxx-dma.xxx.csi.it/dmacc/UtilityService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

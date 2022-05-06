@@ -1,0 +1,16 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.apisan.apisantrovaun.business.apisantrovaun",
+"modelPackage":  "it.csi.apisan.apisantrovaun.dto.apisantrovaun",
+"invokerPackage": "it.csi.apisan.apisantrovaun.business.apisantrovaun",
+"implFolder": "implfolder",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"useImplicitSnakeCaseAttributeStrategy": true,
+"accessHttpHeaders": true
+}

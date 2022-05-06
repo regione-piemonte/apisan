@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ##################################################### -->
+<!-- # build.xml file per compilazione e generazione     # -->
+<!-- # del pacchetto per il rilascio dell'applicazione.  # -->
+<!-- #                                                   # -->
+<!-- # Per una lista completa dei tasks eseguibili usare # -->
+<!-- # l'argomento di ant -projecthelp quando si         # -->
+<!-- # richiama questo build.xml.                        # -->
+<!-- ##################################################### -->
+
+<project basedir="."
+         default="default"
+         name="apisanscerev"
+         xmlns:ivy="antlib:fr.jayasoft.ivy.ant" >
+
+	<description>Build file per il progetto: [apisanscerev]</description>
+
+	<!-- -->
+	<echo message="Loading build properties..." />
+	<property file="buildfiles/build.properties" />
+	<property file="buildfiles/build.locale.properties" />
+	<property file="buildfiles/${target}.properties" />
+
+	<taskdef name="encrypt" classname="EncryptTask" classpath="buildfiles/taskdef" />
+	<taskdef name="decrypt" classname="DecryptTask" classpath="buildfiles/taskdef" />
+	
+	<property name="secret" value="${SECRET_PWD}"/>
+	<decrypt key="${secret}" decryptAll="true" />
+	
+	<property name="secret" value="${SECRET_PWD}"/>
+		<taskdef name="encrypt" classname="EncryptTask" classpath="buildfiles/taskdef" />
+		
+		<target name="encrypt" description="use -Dvalue=[value to encrypt]">
+			<encrypt key="${secret}" value="${value}" />
+		</target>
+	
+	
+	<taskdef name="decrypt" classname="DecryptTask" classpath="buildfiles/taskdef" />
+
+	<decrypt key="${secret}" property="test.encryption_key" />	
+	
+	<!-- -->
+	<path id="library.ref">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+		<fileset dir="lib-ext">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>		
+	</path>
+
+
+
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: init                                              # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="init" description="Inizializza lo script Ant.">
+		<tstamp />
+		<condition property="target" value="dev">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+		<mkdir dir="${build}/classes" />
+		<mkdir dir="${temp}/${target}/${earLib}" />
+		<mkdir dir="${build}/archives/${target}" />
+		<mkdir dir="${dist}/${target}" />
+		<mkdir dir="${build}/javadoc" />
+		<mkdir dir="${build}/jsp" />
+		<mkdir dir="${build}/cache" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: default                                           # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="default"
+	        description="Eseguire il build per l'environment
+	                     specificato a linea di comando con
+	                     -Dtarget=${target} o per tutti gli
+	                     environment (se non specificato).">
+
+		<condition property="first-call" value="distribution">
+			<not>
+				<equals arg1="${target}" arg2="$${target}" />
+			</not>
+		</condition>
+
+		<condition property="first-call" value="all-targets">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+
+		<echo message="server: ${server}" />
+		<echo message="target: ${target}" />
+		<echo message="first-call: ${first-call}" />
+
+		<antcall target="clean-all" />
+		<antcall target="${first-call}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [DISTRIB]: all-targets                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="all-targets"
+	        description="Esegue il build per le varie distribuzioni in sequenza.">
+		<!--PROTECTED REGION ID(R-1748880042) ENABLED START-->
+		<!-- Inserire le varie distribuzioni di cui si intende eseguire il build. -->
+		<antcall target="distribution" />
+		<!--PROTECTED REGION END-->
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [DISTRIB]: distribution                                   # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="distribution" depends="package-all"
+	        description="Costruisce il tar per la distribuzione." >
+		<echo message="====== Creating distribution for ${target} ..."/>
+		<echo message="====== Basedir: ${build}/archives/${target} ..."/>
+		<copy todir="${build}/archives/${target}" overwrite="true">
+			<fileset file="${build}/temp/conf/tar/apisan-ds.xml" />
+		</copy>
+		<tar tarfile="${dist}/${target}/${dist-file-name}.tar"
+		     basedir="${build}/archives/${target}"
+		     includes="*.ear,*.xml">
+			<tarfileset dir="buildfiles">
+				<include name="readme.txt"/>
+				<!--PROTECTED REGION ID(R1043199259) ENABLED START-->
+				<!-- inserire qui eventuali statement per includere oggetti extra nel tar -->
+				<!--PROTECTED REGION END-->
+			</tarfileset>
+		</tar>
+	</target>
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: compile-all                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="compile-all" depends="init"
+	        description="Compila tutti i sorgenti.">
+
+		<echo message="===> Target: ${target}" />
+
+		<!-- compilazione dei sorgenti -->
+		<javac srcdir="${src}/java" destdir="${build}/classes"
+		       optimize="on" deprecation="on"
+		       compiler="modern"
+		       debug="on" debuglevel="lines,vars,source"
+			   excludes="apisan/apisanscerev/business/integration/dao/ApisanTLogDao.java">
+			<classpath refid="library.ref" />
+		</javac>
+
+		<!-- copia dei sorgenti -->
+		<copy todir="${build}/classes">
+			<fileset dir="${src}/java" excludes="**/*.java*,**/*.jbx*" />
+		</copy>
+		<antcall target="config-encrypt-key" />
+	</target>
+	
+	<!-- ############################################################# -->
+		<!-- # Target: config-encrypt-key                                # -->
+		<!-- ############################################################# -->
+		<!-- -->
+		<target name="config-encrypt-key" description="Sostituisce la chiave con cui criptare i documenti sul db">
+
+			<echo message="encryption_key======================>${encryptionkey}" />
+			<copy todir="${temp}/${target}/src/java/it/csi/apisan/apisanscerev/business/integration/dao/">
+				<fileset dir="${src}/java/it/csi/apisan/apisanscerev/business/integration/dao/" 
+					includes="ApisanTLogDao.java"/>
+				
+			</copy>
+
+		<replace dir="${temp}/${target}/src/java/it/csi/apisan/apisanscerev/business/integration/dao/">
+				<include name="ApisanTLogDao.java" />
+				<replacefilter token="@encryptionkey@" value="${encryptionkey}" />
+			</replace>
+
+			<javac srcdir="${temp}/${target}/src/java/it/csi/apisan/apisanscerev/business/integration/dao/" 
+				includes="ApisanTLogDao.java"
+				destdir="${build}/classes" 
+				optimize="on" 
+				deprecation="on" 
+				compiler="modern"
+				target="1.8" source="1.8" debug="true" >
+				<classpath refid="library.ref" />
+			</javac>
+
+		</target>		
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: environment-recreate                              # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="environment-recreate"
+	        description="Ricrea l&apos;environment di configurazione per il target corrente (per applicare le sostituzionidelle variabili).">
+		<mkdir dir="build/temp/conf" />
+			<copy todir="build/temp/conf" overwrite="true">
+		<fileset dir="${conf}" >
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: environment-config                                # -->
+	<!-- #         Gestire qui i  replace delle variabile d'ambiente # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="environment-config"
+	        description="Predispone le configurazioni dipendenti dall&apos;ambiente." >
+
+	  
+		<!-- Gestione replace delle variabile d'ambiente create dal generatore -->
+		<condition property="xsrffilter.disabled" value="false">
+		      <equals arg1="${xsrffilter.disabled}" arg2="$${xsrffilter.disabled}" />
+		</condition>
+		    <replace dir="${build}/temp/conf/web/" token="@@@XSRFFILTER.DISABLED@@@" value="${xsrffilter.disabled}"/>
+
+		<!-- gestire qui i  replace delle proprie variabili d'ambiente -->
+		<replace dir="${build}/temp/conf/web/" >
+			<replacefilter token="@security.securityon@" value="${security.securityon}"/>
+			<replacefilter token="@security.securityoff@" value="${security.securityoff}"/>
+			<replacefilter token="@loccsiMediciBaseurl@"  value="${loccsiMediciBaseurl}"/> 
+			<replacefilter token="@scerevBaseurl@"  value="${scerevBaseurl}"/>
+			<replacefilter token="@scerevusername@"  value="${scerevusername}"/>
+			<replacefilter token="@scerevpassword@"  value="${scerevpassword}"/>
+			<replacefilter token="@serviceSCEREVName@" value="${serviceSCEREVName}"/>
+			<replacefilter token="@endpointDelegheUrl@" value="${endpointDelegheUrl}"/>
+			<replacefilter token="@userDeleghebe@" value="${userDeleghebe}"/>
+			<replacefilter token="@passDeleghebe@" value="${passDeleghebe}"/>	
+			<replacefilter token="@endpointelencoAssociazioni@" value="${endpointelencoAssociazioni}"/>
+			<replacefilter token="@userOpessanAssociazioni@" value="${userOpessanAssociazioni}" />
+			<replacefilter token="@passOpessanAssociazioni@" value="${passOpessanAssociazioni}" />
+			<replacefilter token="@userOpessanOperatori@" value="${userOpessanOperatori}" />
+			<replacefilter token="@passOpessanOperatori@" value="${passOpessanOperatori}" />
+			<replacefilter token="@endpointelencoOperatori@" value="${endpointelencoOperatori}"/>
+			<replacefilter token="@consumerKey@" value="${consumerKey}"/>
+			<replacefilter token="@consumerSecret@" value="${consumerSecret}"/>
+			<replacefilter token="@apiManagerUrl@" value="${apiManagerUrl}"/>
+		</replace>
+		
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-all                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-all"
+	        description="Esegue il packaging di ogni componente del prodotto">
+		<antcall target="package-ear" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-ear                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-ear"
+            depends="environment-recreate, environment-config, compile-all, package-commons-jar,package-opessan-jar, 
+                     package-all-ws-wars"
+            description="costruisce l&apos;ear">
+
+		<!-- librerie infrastrutturali o client di servizi fruiti -->
+		<copy todir="${temp}/${target}/${earLib}">
+			<fileset dir="${lib}" includes="${ear-libs-filter} ${ear-custom-libs-filter}" />
+			<fileset dir="${build}/archives/${target}" includes="*common.jar" />
+			<fileset dir="${build}/archives/${target}" includes="*opessan.jar" />
+			<!--<fileset dir="lib-ext" includes="okhttp*.jar" />
+			<fileset dir="lib-ext" includes="kotlin-stdlib*.jar" />
+			<fileset dir="lib-ext" includes="mockwebserver*.jar" />
+			<fileset dir="lib-ext" includes="okio*.jar" /> -->
+		</copy>
+
+		<ear appxml="${temp}/conf/ear/application.xml"
+		     destfile="${build}/archives/${target}/${ear-file-name}.ear">
+			<fileset dir="${build}/archives/${target}" includes="*.jar,*.war" excludes="*client*.jar,*common.jar,*opessan.jar" />
+			<fileset dir="${temp}/${target}">
+				<include name="**/*" />
+				<exclude name = "src/**"/>
+			</fileset>
+			<metainf dir="${temp}/conf/ear/" includes="jboss-deployment-structure.xml" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Built-Date" value="${DSTAMP}" />
+				<attribute name="Target" value="${target}" />
+				<attribute name="Appl-Version" value="${version}" />
+			</manifest>
+		</ear>
+	</target>
+
+	<target name="package-opessan-jar" description="Genera il jar per le classi comuni.">
+		<jar destfile="${build}/archives/${target}/apisanscerev-opessan.jar"
+		     basedir="${build}/classes"
+		     includes="it/csi/associazioni/**, it/csi/operatori/**">		
+		</jar>
+	</target>
+<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-all-ws-wars                                # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-all-ws-wars"
+	        description="Costruisce i war di tutti i web services">
+		<!-- richiamo costruzione war backend REST  -->
+		<antcall target="_package-ws-war">
+			<param name="component.name" value="apisanscerev"/>
+			<param name="service.name" value="apisanscerev"/>
+			<param name="binding.code" value="rest"/>
+			<param name="service.type" value="appl"/>
+		</antcall>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: _package-ws-war                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="_package-ws-war"
+	        description="Costruisce il war per un singolo web service">
+		<!-- prende in input i parametri: component.name, service.name, binding.code, service.type, service.ver (deve essere a 2 cifre!!!) -->
+
+        
+				<war destfile="${build}/archives/${target}/${service.type}-${service.name}-${binding.code}.war"
+				     webxml="${temp}/conf/web/${service.name}/${binding.code}/WEB-INF/web.xml"
+				     roundup="false">
+					<webinf dir="${temp}/conf/web/${service.name}/${binding.code}/WEB-INF/">
+						<include name="*.xml" />
+						<include name="*.properties" />
+						<include name="/classes/*.properties" />
+					</webinf>
+					<metainf dir="${temp}/conf/web/${service.name}/${binding.code}/META-INF/">
+						<include name= "org.apache.cxf.Logger" />
+ 					</metainf>					
+					<classes dir="${build}/classes">
+						<!-- <include name="it/csi/*/apisanscerev/business/${service.name}/**"/> -->
+					    <include name="it/csi/*/apisanscerev/**"/>
+					</classes>
+					
+		
+					<classes dir="${temp}/conf/web/${service.name}/${binding.code}/WEB-INF/classes">
+						<include name="*.xml"/>
+				    </classes>
+				    
+					<lib dir="${lib}" includes="*" excludes="${war-exclude-libs-filter}, ${war-exclude-custom-libs-filter}" />
+				
+					<!-- se sono presenti risorse web statiche vengono inserite nel pacchetto
+					     es. distribuizone webpack gia' buildata della parte client di una 
+					     Single Page Application -->
+					<fileset dir="${src}/web/${service.name}/${binding.code}" includes="**"></fileset>
+				</war>
+
+	</target>
+
+	
+
+	
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [PKG]: package-commons-jar                                # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="package-commons-jar" description="Genera il jar per le classi comuni.">
+		<jar destfile="${build}/archives/${target}/apisanscerev-common.jar"
+		     basedir="${build}/classes"
+		     includes="it/csi/apisan/apisanscerev/business/**,
+		               it/csi/apisan/apisanscerev/integration/**,
+		               it/csi/apisan/apisanscerev/util/**">
+		
+			<exclude name="it/csi/apisan/apisanscerev/business/be/**" />
+			<exclude name="it/csi/apisan/apisanscerev/integration/be/**" />
+		</jar>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-all                                        # -->
+	<!-- ############################################################# -->
+	<!-- nota: non cancella la directory "dist" appositamente: v. STDMDD-495.
+	per ripulire anche la "dist" richiamare esplicitamente il target "clean-dist" -->
+	<!-- -->
+	<target name="clean-all" description="Rimuove tutte le cartelle temporanee."
+	        depends="clean-archives, clean-cache, clean-classes, clean-javadoc, clean-jsp, clean-temp" />
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-cache                                      # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-cache"
+	        description="Rimuove la cartella di cache di Ivy e la lib.">
+		<delete dir="${build}/cache" failonerror="no" />
+		<delete dir="${lib}" failonerror="no" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-temp                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-temp"
+	        description="Rimuove la cartella dei files temporanei di build.">
+		<delete dir="${temp}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-archives                                  # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-archives"
+	        description="Rimuove la cartella degli archivi (war, ear, ...).">
+		<delete dir="${build}/archives" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-dist                                       # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-dist"
+	        description="Rimuove la cartella delle distribuzioni.">
+		<delete dir="${dist}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-classes                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-classes"
+	        description="Rimuove la cartella dei sorgenti compilati.">
+		<delete dir="${build}/classes" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-javadoc                                    # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-javadoc"
+	        description="Rimuove la cartella temporanea dei javadoc.">
+		<delete dir="${build}/javadoc" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: clean-jsp                                        # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="clean-jsp"
+	        description="Rimuove la cartella temporanea delle jsp compilate.">
+	<delete dir="${build}/jsp" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # [CLEAN]: _clean-web-inf                                   # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="_clean-web-inf"
+	        description="Rimuove il contenuto di lib e classes della
+	                     web application (per run locali).">
+		<delete dir="${srcweb}/WEB-INF/classes" />
+		<delete dir="${srcweb}/WEB-INF/lib" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: about                                             # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="about" description="Visualizza l'elenco dei target pubblici dello script.">
+		<loadproperties srcfile="buildfiles/build.properties" />
+		<loadfile property="about" srcfile="buildfiles/about.txt" />
+		<echo message="${about}" />
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: about-custom                                      # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="about-custom"
+	        description="Visualizza l'elenco di tutti i target,
+	                     pubblici e privati
+	                     (equivalente a 'ant -projecthelp')" >
+
+		<loadproperties srcfile="buildfiles/build.properties" />
+		<loadfile property="about-custom" srcfile="buildfiles/about-custom.txt" />
+		<echo message="${about-custom}" />
+		<java classname="org.apache.tools.ant.Main">
+			<arg value="-projecthelp" />
+		</java>
+	</target>
+
+	<!-- -->
+	<!-- ############################################################# -->
+	<!-- # Target: show-vars                                         # -->
+	<!-- ############################################################# -->
+	<!-- -->
+	<target name="show-vars" depends="init"
+	        description="Visualizza tutte le variabili impostate nei file di properties e/o da linea di comando">
+		<echo message="*****************************************" />
+		<echo message="********  ${componente} environment  *******" />
+		<echo message="*****************************************" />
+		<echoproperties />
+		<echo />
+		<echo />
+		<echo message="*****************************************" />
+		<echo message="********    java properties      ********" />
+		<echo message="*****************************************" />
+		<echoproperties prefix="java."/>
+	</target>
+
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+</project>

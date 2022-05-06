@@ -1,0 +1,39 @@
+<CentriVaccinali>
+  <!--Optional:-->
+  <CentroV>
+    <!--Optional:-->
+    <Id>string</Id>
+    <!--Optional:-->
+    <Codice>string</Codice>
+    <!--Optional:-->
+    <Descrizione>string</Descrizione>
+    <!--Optional:-->
+    <Comune>string</Comune>
+    <!--Optional:-->
+    <Indirizzo>string</Indirizzo>
+    <!--Optional:-->
+    <Telefono>string</Telefono>
+    <!--Optional:-->
+    <Note>string</Note>
+    <!--Optional:-->
+    <Ambulatori>
+      <!--Zero or more repetitions:-->
+      <Ambulatorio>
+        <Codice>3</Codice>
+        <!--Optional:-->
+        <Descrizione>string</Descrizione>
+        <!--Optional:-->
+        <Orari>
+          <!--Zero or more repetitions:-->
+          <Orario>
+            <Giorno>3</Giorno>
+            <OraInizioAM>2008-09-29T03:49:45</OraInizioAM>
+            <OraFineAM>2014-09-19T01:18:33</OraFineAM>
+            <OraInizioPM>2006-08-19T19:27:14+02:00</OraInizioPM>
+            <OraFinePM>2009-05-16T14:42:28</OraFinePM>
+          </Orario>
+        </Orari>
+      </Ambulatorio>
+    </Ambulatori>
+  </CentroV>
+</CentriVaccinali>

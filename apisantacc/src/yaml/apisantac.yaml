@@ -1,0 +1,2307 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanfse/tac/api/v1
+schemes:
+  - https
+info:
+  title: 'taccuino'
+  version: 1.1.0
+  description: |
+  
+    # Avvertenze
+    ---
+    1. Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino
+    2. Questo YAML è un contratto tra lo strato verde e lo strato rosso
+    
+    # Domande
+    ---
+    1. Le modalità di rilevazione sono fisse o dipendono dal gruppo?
+
+    # Interazione Front-end cittadino - API
+    ---
+    
+    ## Accesso
+    Chiamare `Dettaglio taccuino`
+
+    Se non sono presenti le `note_generali` mostrare la pagina di primo accesso: 
+    https://swe2u4.axshare.com/#g=1&p=onboarding&hi=1
+      
+    Se invece sono presenti mostrare la pagina home:
+    https://swe2u4.axshare.com/#g=1&p=onboarding__impostazioni_&hi=1
+    
+    ## Caso primo accesso (non ci sono le `note_generali`)
+    Vengono visualizzate delle pagine in cui l'utente può inserire le note generali
+    e le preferenze
+    
+    https://swe2u4.axshare.com/#g=1&p=onboarding__nota_generale_&hi=1
+    https://swe2u4.axshare.com/#g=1&p=onboarding__impostazioni_&hi=1
+    
+    Per salvare le modifiche si utilizzano gli endpoint 
+    * `Modifica note generali taccuino`
+    * `Modifica preferenze taccuino`
+    
+    ## Caso accessi successivi (ci sono le `note_generali`)
+    Viene visualizzata la pagina home contenente tutti gli ultimi dati salvati dall'utente e seprati per gruppo:
+    https://swe2u4.axshare.com/#g=1&p=home__con_dati_&hi=1
+    
+    ## Gestione dieta
+    Un giorno può avere un solo elemento della dieta.
+    Quindi il front-end dovrà controllare se nel giorno selezionato dal cittadino
+    esiste già un elemento della dieta inserito o meno.
+    
+    Per farlo può usare l'endpoint `Lista diete` filtrando per `da` e `a` con il giorno interessato. 
+    
+    Si utilizzano i seguenti endpoint con per popolare i dati
+    del vari box:
+    
+    * `Lista eventi`                  limit=1 offset=0
+    * `Lista sintomi`                 limit=1 offset=0
+    * `Lista dolori`                  limit=1 offset=0
+    * `Lista farmaci`                 limit=1 offset=0
+    * `Lista contatti con strutture`  limit=1 offset=0
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_ALTEZZA_PESO_VITA
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_TEMPERATURA
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_PRESSIONE
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_FREQ_RESPIRATORIA
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_OSSIMETRIA
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_GLICEMIA
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_EMOGLOBINA
+    * `Lista rilevazioni`             limit=1 offset=0 gruppo=ID_COLESTEROLO
+    
+    Vengono invocati gli endpoint solo dei box abilitati nelle preferenze dell'utente.
+
+
+
+    # Prototipo Interfaccia
+    ---
+    https://swe2u4.axshare.com/#g=1
+    # Note versione 1.1.0
+    Aggiunto model_unita_misura_decodifica
+    Aggiunto query parameter descrittore per la get rilevazioni
+    Eliminato gruppo_codice sia dalla post che dalla get rilevazioni
+    
+    # Note versione 1.0.0
+    * Eliminato seguenti enumerazioni rilevazione_modalita_codice, rilevazione_descrittore_codice, rilevazione_gruppo_codice, struttura_tipo_codice e contatto_tipo_codice
+    
+    # Note versione 0.1.0 (11 Feb 2021)
+    * Aggiunto nuovo servizio di decodifica /decodifiche/descrittori-misurazione
+    * modificato tipo per campi id da stringa a numerico
+    
+    # Note versione 0.0.7 (02 Dic 2020)
+    ---
+    * Rinominato campo `codice` in `valore` del model `DoloreIntensita`
+    * Rinominato il campo `intensita_codice` in `intensita_valore` nel model `Dolore` e nel payload `PayloadDoloreNuovo`
+    * Rinominato il campo `descrizione` in `denominazione` nel model `Contatto` e nel payload `PayloadContattoStrutturaNuovo`
+    
+    # Note versione 0.0.6 (29 Giu 2020)
+    ---
+    * Modificato model `model_rilevazione` per aggiungere il campo `valore_testuale`
+    
+    # Note versione 0.0.5 (26 Giu 2020)
+    ---
+    * Modificato model `model_preferenza` che ora contiene il codice ed altri dati dell'entità
+    
+    # Note versione 0.0.4 (24 Giu 2020)
+    ---
+    * I model si basano sul codice e non più sull'id
+    * Modificato model `model_dolore_intensita`
+    * Modificato model `model_dolore`
+    * Modificato model `model_contatto_tipo`
+    * Modificato model `model_contatto_struttura_tipo`
+    * Modificato model `model_contatto`
+    * Modificato model `model_rilevazione_modalita`
+    * Modificato model `model_rilevazione_gruppo`
+    * Modificato model `model_rilevazione_descrittore`
+    * Modificato model `model_rilevazione`
+    * Modificato model `response_rilevazioni`
+    * Aggiunto model `model_rilevazione_unita_misura`
+    * Aggiunte enum sui codici
+    
+    
+    * Aggiunto endpoint `Lista diete`
+    * Aggiunto endpoint `Nuova dieta`
+    * Aggiunto endpoint `Elimina dieta`
+    
+    # Note versione 0.0.3 (23 Giu 2020)
+    ---
+    * Eliminato endpoint `Nuovo dolore massiva` ed aggiunto `Nuovo dolore`
+    * Eliminato endpoint `Nuovo sintomo massiva` ed aggiunto `Nuovo sintomo`
+    * Eliminato endpoint `Nuovo evento massiva` ed aggiunto `Nuovo evento`
+    * Eliminato endpoint `Elimina evento massiva` ed aggiunto `Elimina evento`
+    * Eliminato endpoint `Modifica preferenza` ed aggiunto `Modifica preferenze`
+    
+    
+    * Aggiunto endpoint `Lista farmaci`
+    * Aggiunto endpoint `Nuovo farmaco`
+    * Aggiunto endpoint `Elimina farmaco`
+    * Aggiunto endpoint `Dettaglio taccuino`
+    * Aggiunto endpoint `Modifica oscuramento`
+    
+    
+    * Eliminato endpoint `Dettaglio nota generale`
+    * Eliminato endpoint `Elenco preferenza`
+    
+    
+    * Molti endpoint hanno un parametro in più nel path che rappresenta l'id del taccuino su cui si sta operando
+    * Adeguate strutture dati al documento excel di analisi
+    
+    # Note versione 0.0.2 (22 Giu 2020)
+    ---
+    * Aggiuno endpoint `Lista tipi di strutture`
+    * Aggiuno endpoint `Lista tipi di contatto`
+    * Aggiuno endpoint `Nuova rilevazione`
+    * Aggiuno endpoint `Elimina rilevazione massiva`
+    * Aggiuno endpoint `Nuovo dolore massiva`
+    * Aggiuno endpoint `Elimina dolore massiva`
+    * Aggiuno endpoint `Nuovo sintomo massiva`
+    * Aggiuno endpoint `Elimina sintomo massiva`
+    * Aggiuno endpoint `Lista eventi`
+    * Aggiuno endpoint `Nuovo evento massiva`
+    * Aggiuno endpoint `Elimina evento massiva`
+    * Aggiuno endpoint `Lista contatti con strutture`
+    * Aggiuno endpoint `Nuovo contatto con struttura`
+    * Aggiuno endpoint `Elimina contatto con struttura massiva`
+    
+    
+    * Modificato endpoint `Modifica preferenza cittadino`
+    * Deprecato endpoint `CSV rilevazione`
+    
+    
+    * Eliminato endpoint `Elimina rilevazione`
+    * Eliminato endpoint `Nuovo dolore`
+    * Eliminato endpoint `Elimina dolore`
+    * Eliminato endpoint `Nuovo sintomo`
+    * Eliminato endpoint `Elimina sintomo`
+    
+    # Note versione 0.0.1 (17 Giu 2020)
+    ---
+    * Prima implementazione
+
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      tags:
+        - info
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+  '/decodifiche/modalita-rilevazione':
+    get:
+      summary: Lista modalità rilevazione
+      tags:
+        - Decodifiche
+      description:  |
+        Permette di ottenere l'elenco delle modalità di rilevazione'
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_rilevazione_modalita'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/decodifiche/intensita-dolore':
+    get:
+      summary: Lista intensità dolore
+      tags:
+        - Decodifiche
+      description:  |
+        Permette di ottenere l'elenco delle intensità del dolore
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_dolore_intensita'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/decodifiche/struttura-tipi':
+    get:
+      summary: Lista tipi di strutture
+      tags:
+        - Decodifiche
+      description:  |
+        Permette di ottenere l'elenco delle tipologie di strutture
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_contatto_struttura_tipo'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/decodifiche/contatto-tipi':
+    get:
+      summary: Lista tipi di contatto
+      tags:
+        - Decodifiche
+      description:  |
+        Permette di ottenere l'elenco delle tipologie di contatto con le strutture
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_contatto_tipo'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/decodifiche/descrittori-misurazione':
+    get:
+      summary: Lista descrittori misura
+      tags:
+        - Decodifiche
+      description:  |
+        Permette di ottenere l'elenco dei descrittori delle misurazioni
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_unita_misura_decodifica'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/taccuino':
+    get:
+      summary: Dettaglio taccuino
+      tags:
+        - Taccuino
+      description:  |
+        Restituisce le informazioni sul taccuino del cittadino.
+        
+        Se il cittadino non ha un taccuino associato, questo endpoint ne crea uno nuovo
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_taccuino'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/note-generali':
+    put:
+      summary: Modifica note generali taccuino
+      tags:
+        - Taccuino
+      description:  |
+        Permette le note generali del cittadino e restituisce il dato aggiornato
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_note_generali_modifica'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_note_generali'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/preferenze':
+    put:
+      summary: Modifica preferenze taccuino
+      tags:
+        - Taccuino
+      description:  |
+        Permette di modificare le preferenze di un taccuino e restituisce il dato aggiornato
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_preferenza_modifica'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_preferenza'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/oscurato':
+    put:
+      summary: Modifica oscuramento
+      tags:
+        - Taccuino
+      description:  |
+        Permette di modificare l'oscuramento di un taccuino e restituisce il dato aggiornato
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_oscurato_modifica'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: object
+            properties:
+              oscurato:
+                type: boolean
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/eventi':
+    get:
+      summary: Lista eventi
+      tags:
+        - Eventi
+      description:  |
+        Permette di ottenere gli eventi inseriti dal cittadino su un taccuino.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per range di date.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_evento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuovo evento
+      tags:
+        - Eventi
+      description:  |
+        Permette di creare un evento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_evento_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_evento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/eventi/{evento_id}':
+    delete:
+      summary: Elimina evento
+      tags:
+        - Eventi
+      description:  |
+        Permette di rimuovere un evento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/path_evento_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/sintomi':
+    get:
+      summary: Lista sintomi
+      tags:
+        - Sintomi
+      description:  |
+        Permette di ottenere i sintomi inseriti dal cittadino su un taccuino.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per gruppo e per range di date.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_sintomo'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuovo sintomo
+      tags:
+        - Sintomi
+      description:  |
+        Permette inserire un sintomo su un taccuino.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_sintomo_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_sintomo'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuino/{taccuino_id}/sintomi/_bulk_delete':
+    post:
+      summary: Elimina sintomi massiva
+      tags:
+        - Sintomi
+      description:  |
+        Permette di rimuovere uno o più sintomi sintomo
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_sintomo_elimina_massiva'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/dolori':
+    get:
+      summary: Lista dolori
+      tags:
+        - Dolori
+      description:  |
+        Permette di ottenere i dolori inseriti dal cittadino.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per gruppo e per range di date.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_dolore'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuovo dolore
+      tags:
+        - Dolori
+      description:  |
+        Permette inserire un dolore.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_dolore_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_dolore'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/dolori/_bulk_delete':
+    post:
+      summary: Elimina dolori massiva
+      tags:
+        - Dolori
+      description:  |
+        Permette di rimuovere uno o più dolori
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_dolore_elimina_massiva'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/diete':
+    get:
+      summary: Lista dieta
+      tags:
+        - Dieta
+      description:  |
+        Permette di ottenere i dati sulla dieta inseriti dal cittadino.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per gruppo e per range di date.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_dieta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuova dieta
+      tags:
+        - Dieta
+      description:  |
+        Permette inserire elemento nella dieta.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_dieta_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_dieta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/diete/{dieta_id}':
+    delete:
+      summary: Elimina dieta
+      tags:
+        - Dieta
+      description:  |
+        Permette di rimuovere un elemento della dieta inserita dal cittadino
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/path_dieta_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/farmaci':
+    get:
+      summary: Lista farmaci
+      tags:
+        - Farmaci
+      description:  |
+        Permette di ottenere l'elenco dei farmaci inseriti dal cittadino su un taccuino.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per range di date.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_farmaco'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuovo farmaco
+      tags:
+        - Farmaci
+      description:  |
+        Permette di registrare una nuova assunzione di un farmaco
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_farmaco_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_farmaco'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/farmaci/{farmaco_id}':
+    delete:
+      summary: Elimina farmaco
+      tags:
+        - Farmaci
+      description:  |
+        Permette di rimuovere un farmaco
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/path_farmaco_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/taccuini/{taccuino_id}/contatti-strutture':
+    get:
+      summary: Lista contatti con strutture
+      tags:
+        - Contatti con struttura
+      description:  |
+        Permette di ottenere i contatti con struttura inseriti dal cittadino.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per range di date.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_contatto'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuovo contatto con struttura
+      tags:
+        - Contatti con struttura
+      description:  |
+        Permette di creare un nuovo contatto con struttura
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_contatto_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_contatto'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuino/{taccuino_id}/contatti-strutture/_bulk_delete':
+    post:
+      summary: Elimina contatto con struttura massiva
+      tags:
+        - Contatti con struttura
+      description:  |
+        Permette di rimuovere un contatto con struttura
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_contatto_elimina_massiva'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  
+  '/cittadini/{cit_id}/taccuino/{taccuino_id}/rilevazioni':
+    get:
+      summary: Lista rilevazioni
+      tags:
+        - Rilevazioni
+      description:  |
+        Permette di ottenere le rilevazioni effettuate dal cittadino.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per gruppo e per range di date.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_rilevazione_gruppo'
+        - $ref: '#/parameters/query_rilevazione_descrittore'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/response_rilevazioni'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuova rilevazione
+      tags:
+        - Rilevazioni
+      description:  |
+        Permette di creare una nuova rilevazione
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_rilevazione_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/response_rilevazioni'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuino/{taccuino_id}/rilevazioni/_bulk_delete':
+    post:
+      summary: Elimina rilevazione massiva
+      tags:
+        - Rilevazioni
+      description:  |
+        Permette di rimuovere più rilevazioni
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/payload_rilevazione_elimina_massiva'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/taccuino/{taccuino_id}/rilevazioni/csv':
+    get:
+      summary: CSV rilevazioni
+      deprecated: true
+      tags:
+        - Rilevazioni
+      description:  |
+        Permette di scaricare il CSV delle rilevazioni.
+        
+        Questo servizio è paginato, ordinabile e filtrabile per gruppo e per range di date.
+      produces:
+        - text/csv
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_taccuino_id'
+        - $ref: '#/parameters/query_rilevazione_gruppo'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_ordinamento'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  
+  path_cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  path_taccuino_id:
+    in: path
+    name: taccuino_id
+    type: integer
+    format: int64
+    required: true
+    description: ID del taccuino su cui operare
+  path_evento_id:
+    in: path
+    name: evento_id
+    type: integer
+    format: int64
+    required: true
+    description: ID dell'evento su cui operare
+  path_sintomo_id:
+    in: path
+    name: sintomo_id
+    type: integer
+    format: int64
+    required: true
+    description: Id del sintomo su cui operare
+  path_dolore_id:
+    in: path
+    name: dolore_id
+    type: integer
+    format: int64
+    required: true
+    description: Id del dolore su cui operare
+  path_dieta_id:
+    in: path
+    name: dieta_id
+    type: integer
+    format: int64
+    required: true
+    description: Id della dieta su cui operare
+  path_farmaco_id:
+    in: path
+    name: farmaco_id
+    type: integer
+    format: int64
+    required: true
+    description: Id del farmaco su cui operare
+  path_rilevazione_id:
+    in: path
+    name: rilevazione_id
+    type: integer
+    format: int64
+    required: true
+    description: Id della rilevazione su cui operare
+  
+  query_limit:
+    in: query
+    name: 'limit'
+    type: integer
+    required: false
+    description: |
+      Il numero di elementi da restiutire
+  query_offset:
+    in: query
+    name: 'offset'
+    type: integer
+    required: false
+    description: |
+      L'elemento di partenza della paginazione
+  query_ordinamento:
+    in: query
+    name: 'ordinamento'
+    type: string
+    required: false
+    description: |
+      'ASC' per l'ordinamento "dal più piccolo al più grande"
+      'DES' per l'ordinamento "dal più grande al più piccolo"
+  query_rilevazione_gruppo:
+    in: query
+    name: 'gruppo'
+    type: string
+    required: true
+    description: |
+      Permette di filtrare le rilevazioni per gruppo
+  query_rilevazione_descrittore:
+    in: query
+    name: 'descrittore'
+    type: string
+    required: true
+    description: |
+      Permette di filtrare le rilevazioni per descrittore
+  query_da:
+    in: query
+    name: 'da'
+    type: string
+    format: string
+    pattern: '\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}'
+    required: false
+    description: |
+      Permette di filtrare per un range di date.
+      E' da intendere come >= 2021-12-02T00:00:00.000Z
+  query_a:
+    in: query
+    name: 'a'
+    type: string
+    format: string
+    pattern: \d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}
+    required: false
+    description: |
+      Permette di filtrare per un range di date.
+      E' da intendere come <= 2021-12-03T23:59:59.999Z
+      
+  payload_note_generali_modifica:
+    in: body
+    name: payload note generali modifica
+    required: true
+    description: |
+      I dati da passare per modificare le note genrali
+    schema:
+      type: object
+      properties:
+        stato_salute:
+          type: string
+          description: Lo stato di salute inserito dal cittadino
+        stile_vita:
+          type: string
+          description: Lo stile di vita inserito dal cittadino
+  payload_preferenza_modifica:
+    in: body
+    name: payload preferenza modifica
+    required: true
+    description: |
+      I dati da passare per modificare le preferenze
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+            description: Id univoco
+          visibile:
+            type: boolean
+            description: Indica se l'utente ha attivato o meno la preferenza
+          entita_codice:
+            $ref: '#/definitions/entita_codice'
+          gruppo_codice:
+            $ref: '#/definitions/rilevazione_gruppo_codice'
+  payload_oscurato_modifica:
+    in: body
+    name: payload oscurato modifica
+    required: true
+    description: |
+      I dati da passare per modificare l'oscuramento
+    schema:
+      type: object
+      properties:
+        oscurato:
+          type: boolean
+  payload_evento_nuovo:
+    in: body
+    name: payload evento nuovo
+    required: true
+    description: |
+      I dati da passare per creare un nuovo evento
+    schema:
+      type: object
+      properties:
+        descrizione:
+          type: string
+          description: La descrizione inserita dall'utente
+        data:
+          type: string
+          format: date-time
+          description: La data dell'evento inserita dall'utente
+  payload_sintomo_nuovo:
+    in: body
+    name: payload sintomo nuovo
+    required: true
+    description: |
+      I dati da passare per inserire un sintomo
+    schema:
+      type: object
+      properties:
+        descrizione:
+          type: string
+          description: La descrizione inserita dall'utente
+        area_interessata:
+          type: string
+          description: L'area interessata inserita dall'utente
+        data_inizio:
+          type: string
+          format: date-time
+          description: La data di inizio del sintomo
+        data_fine:
+          type: string
+          format: date-time
+          description: La data di inizio del sintomo
+  payload_dolore_nuovo:
+    in: body
+    name: payload dolore nuovo
+    required: true
+    description: |
+      I dati da passare per inserire un dolore
+    schema:
+      type: object
+      properties:
+        descrizione:
+          type: string
+          description: La descrizione inserita dall'utente
+        area_interessata:
+          type: string
+          description: L'area interessata inserita dall'utente
+        data_inizio:
+          type: string
+          format: date-time
+          description: La data di inizio del dolore
+        data_fine:
+          type: string
+          format: date-time
+          description: La data di inizio del dolore
+        intensita_valore:
+          type: string
+          description: Identificativo dell'intensità
+  payload_dieta_nuovo:
+    in: body
+    name: payload dieta nuovo
+    required: true
+    description: |
+      I dati da passare per inserire una dieta
+    schema:
+      type: object
+      properties:
+        data:
+          type: string
+          format: date
+          description: La data della dieta inserita dall'utente
+        colazione_descrizione:
+          type: string
+          description: La descrizione della colazione
+        colazione_calorie:
+          type: integer
+          description: Il numero di calorie della colazione
+        pranzo_descrizione:
+          type: string
+          description: La descrizione del pranzo
+        pranzo_calorie:
+          type: integer
+          description: Il numero di calorie del pranzo
+        cena_descrizione:
+          type: string
+          description: La descrizione della cena
+        cena_calorie:
+          type: integer
+          description: Il numero di calorie della cena
+        spuntini_descrizione:
+          type: string
+          description: La descrizione degli spuntini
+        spuntini_calorie:
+          type: integer
+          description: Il numero di calorie degli spuntini
+  payload_farmaco_nuovo:
+    in: body
+    name: payload farmaco nuovo
+    required: true
+    description: |
+      I dati da passare per inserire un farmaco
+    schema:
+      type: object
+      properties:
+        farmaco:
+          type: string
+          description: La descrizione del farmaco inserita dall'utente
+        quantita:
+          type: string
+          description: La quantità in forma descrittiva inserita dall'utente
+        data_assunzione:
+          type: string
+          format: date-time
+          description: La data di assunzione del farmaco inserita dall'utente
+  payload_contatto_nuovo:
+    in: body
+    name: payload contatto struttura nuovo
+    required: true
+    description: |
+      I dati da passare per creare un nuovo contatto con struttura
+    schema:
+      type: object
+      properties:
+        denominazione:
+          type: string
+          description: La denominazione inserita dall'utente
+        data_contatto_inizio:
+          type: string
+          format: date-time
+          description: La data di inizio contatto
+        data_contatto_fine:
+          type: string
+          format: date-time
+          description: La data di fine contatto
+        motivazione:
+          type: string
+          description: |
+            La motivazione inserita dall'utente
+            Questo campo viene popolato solo in caso cui il tipo contatto è "strutture sanitarie"
+        medicina_non_convenzionale_tipo_contatto:
+          type: string
+          description: |
+            Questo campo viene popolato solo in caso cui il tipo struttura è "medicina non convenzionale"
+        tipo_contatto_codice:
+          $ref: '#/definitions/contatto_tipo_codice'
+        struttura_tipo_codice:
+          $ref: '#/definitions/struttura_tipo_codice'
+  payload_rilevazione_nuovo:
+    in: body
+    name: payload rilevazioni nuovo
+    required: true
+    description: |
+      I dati da passare per creare delle rilevazioni
+    schema:
+      type: object
+      properties:
+        lista:
+          type: array
+          items:
+            type: object
+            properties:
+              valore_numerico:
+                type: number
+                description: Il valore della rilevazione inserita dall'utente
+              valore_testuale:
+                type: string
+                description: Il valore testuale della rilevazione
+              data:
+                type: string
+                format: date-time
+                description: la data di rilevazione inserita dall'utente
+              unita_misura_codice:
+                $ref: '#/definitions/unita_misura_codice'
+              gruppo_codice:
+                $ref: '#/definitions/rilevazione_gruppo_codice'
+              descrittore_codice:
+                $ref: '#/definitions/rilevazione_descrittore_codice'
+              modalita_codice:
+                $ref: '#/definitions/rilevazione_modalita_codice'
+  payload_rilevazione_elimina_massiva:
+    in: body
+    name: payload rilevazioni elimina massiva
+    required: true
+    description: |
+      I dati da passare per rimuovere delle rilevazioni
+    schema:
+      type: array
+      items:
+        type: string
+        description: Id della rilevazione da eliminare
+  payload_dolore_elimina_massiva:
+    in: body
+    name: payload dolore elimina massiva
+    required: true
+    description: |
+      I dati da passare per rimuovere dei dolori
+    schema:
+      type: array
+      items:
+        type: number
+        description: Id del dolore da eliminare
+  payload_sintomo_elimina_massiva:
+    in: body
+    name: payload sintomo elimina massiva
+    required: true
+    description: |
+      I dati da passare per rimuovere dei sintomi
+    schema:
+      type: array
+      items:
+        type: string
+        description: Id del sintomo da eliminare
+  payload_contatto_elimina_massiva:
+    in: body
+    name: payload contatto con struttura elimina massiva
+    required: true
+    description: |
+      I dati da passare per rimuovere dei contatti con strutture
+    schema:
+      type: array
+      items:
+        type: string
+        description: Id del contatto con struttura da eliminare
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  model_entita:
+    title: 'Entità'
+    type: object
+    properties:
+      codice:
+        $ref: '#/definitions/entita_codice'
+      descrizione:
+        type: string
+        description: Descrizione dell'entità da mostrare sulla UI
+  model_note_generali:
+    title: 'Note generali'
+    type: object
+    properties:
+      stato_salute:
+        type: string
+        description: Lo stato di salute inserito dal cittadino
+      stile_vita:
+        type: string
+        description: Lo stile di vita inserito dal cittadino
+      data_creazione:
+        type: string
+        format: date-time
+        description: La data di creazione delle note
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: La data di aggiornamento delle note
+  model_preferenza:
+    title: 'Preferenza'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Id univoco
+      visibile:
+        type: boolean
+        description: Indica se l'utente ha attivato o meno la preferenza
+      entita_codice:
+        $ref: '#/definitions/entita_codice'
+      gruppo_codice:
+        $ref: '#/definitions/rilevazione_gruppo_codice'
+      entita:
+        $ref: '#/definitions/model_entita'
+      gruppo:
+        $ref: '#/definitions/model_rilevazione_gruppo'
+  model_taccuino:
+    title: 'Taccuino'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      oscurato:
+        type: boolean
+        description: |
+          Indica se il taccuino è oscurato o meno nei confronti di terzi.
+          Es. Operatori sanitari e deleganti con delega debole
+      note_generali:
+        $ref: '#/definitions/model_note_generali'
+      preferenze:
+        type: array
+        items:
+          $ref: '#/definitions/model_preferenza'
+          
+  model_evento:
+    title: 'Evento'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      descrizione:
+        type: string
+        description: La descrizione inserita dall'utente
+      data:
+        type: string
+        format: date-time
+        description: La data dell'evento inserita dall'utente
+      data_creazione:
+        type: string
+        format: date-time
+        description: La data di creazione
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: La data dell'ultimo aggiornamento
+  model_sintomo:
+    title: 'Sintomo'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      descrizione:
+        type: string
+        description: La descrizione inserita dall'utente
+      area_interessata:
+        type: string
+        description: L'area interessata inserita dall'utente
+      data_inizio:
+        type: string
+        format: date-time
+        description: La data di inizio del dolore
+      data_fine:
+        type: string
+        format: date-time
+        description: La data di inizio del dolore
+      data_creazione:
+        type: string
+        format: date-time
+        description: La data dell'ultimo aggiornamento
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: La data dell'ultimo aggiornamento
+  model_dolore_intensita:
+    title: 'Dolore intensità'
+    type: object
+    properties:
+      valore:
+        type: integer
+        description: codice univoco dell'intensità
+      descrizione:
+        type: string
+        description: nome del dolore
+  model_dolore:
+    title: 'Dolore'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      descrizione:
+        type: string
+        description: La descrizione inserita dall'utente
+      area_interessata:
+        type: string
+        description: L'area interessata inserita dall'utente
+      data_inizio:
+        type: string
+        format: date-time
+        description: La data di inizio del dolore inserita dall'utente
+      data_fine:
+        type: string
+        format: date-time
+        description: La data di inizio del dolore inserita dall'utente
+      data_creazione:
+        type: string
+        format: date-time
+        description: La data di creazione
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: La data dell'ultimo aggiornamento
+      intensita_valore:
+        type: integer
+        description: Il codice identificativo dell'intensità
+      intensita:
+        $ref: '#/definitions/model_dolore_intensita'
+  model_dieta:
+    title: 'Dieta'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      data:
+        type: string
+        format: date
+        description: La data della dieta inserita dall'utente
+      colazione_descrizione:
+        type: string
+        description: La descrizione della colazione
+      colazione_calorie:
+        type: integer
+        description: Il numero di calorie della colazione
+      pranzo_descrizione:
+        type: string
+        description: La descrizione del pranzo
+      pranzo_calorie:
+        type: integer
+        description: Il numero di calorie del pranzo
+      cena_descrizione:
+        type: string
+        description: La descrizione della cena
+      cena_calorie:
+        type: integer
+        description: Il numero di calorie della cena
+      spuntini_descrizione:
+        type: string
+        description: La descrizione degli spuntini
+      spuntini_calorie:
+        type: integer
+        description: Il numero di calorie degli spuntini
+      data_creazione:
+        type: string
+        format: date-time
+        description: La data di creazione
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: La data dell'ultimo aggiornamento
+  model_farmaco:
+    title: 'Faramco'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      farmaco:
+        type: string
+        description: La descrizione del farmaco inserita dall'utente
+      quantita:
+        type: string
+        description: La quantità in forma descrittiva inserita dall'utente
+      data_assunzione:
+        type: string
+        format: date-time
+        description: La data di assunzione del farmaco inserita dall'utente
+      data_creazione:
+        type: string
+        format: date-time
+        description: La data di creazione
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: La data dell'ultimo aggiornamento
+  model_contatto_tipo:
+    title: 'Contatto tipo'
+    type: object
+    properties:
+      codice:
+        $ref: '#/definitions/contatto_tipo_codice'
+      descrizione:
+        type: string
+        description: La descrizione del tipo di contatto
+  model_contatto_struttura_tipo:
+    title: 'Contatto struttura tipo'
+    type: object
+    properties:
+      codice:
+        $ref: '#/definitions/struttura_tipo_codice'
+      descrizione:
+        type: string
+        description: La descrizione del tipo di struttura
+  model_contatto:
+    title: 'Contatto'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      denominazione:
+        type: string
+        description: La denominazione inserita dall'utente
+      data_contatto_inizio:
+        type: string
+        format: date-time
+        description: La data di inizio contatto
+      data_contatto_fine:
+        type: string
+        format: date-time
+        description: La data di fine contatto
+      motivazione:
+        type: string
+        description: |
+          La motivazione inserita dall'utente
+          Questo campo viene popolato solo in caso cui il tipo contatto è "strutture sanitarie"
+      medicina_non_convenzionale_tipo_contatto:
+        type: string
+        description: |
+          Questo campo viene popolato solo in caso cui il tipo struttura è "medicina non convenzionale"
+      data_creazione:
+        type: string
+        format: date-time
+        description: La data di creazione
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: La data di aggiornamento
+      tipo_contatto_codice:
+        $ref: '#/definitions/contatto_tipo_codice'
+      struttura_tipo_codice:
+        $ref: '#/definitions/struttura_tipo_codice'
+      tipo_contatto:
+        $ref: '#/definitions/model_contatto_tipo'
+      struttura_tipo:
+        $ref: '#/definitions/model_contatto_struttura_tipo'
+  
+  model_rilevazione_gruppo:
+    title: 'Rilevazione gruppo'
+    type: object
+    properties:
+      codice:
+        $ref: '#/definitions/rilevazione_gruppo_codice'
+      descrizione:
+        type: string
+        description: Nome del gruppo
+      descrizione_estesa:
+        type: string
+        description: Descrizione estesa del gruppo
+  model_rilevazione_descrittore:
+    title: 'Rilevazione descrittore'
+    type: object
+    properties:
+      codice:
+        $ref: '#/definitions/rilevazione_descrittore_codice'
+      descrizione:
+        type: string
+        description: Nome del descrittore
+      descrizione_estesa:
+        type: string
+        description: Descrizione estesa del descrittore
+  model_rilevazione_modalita:
+    title: 'Rilevazione modalità'
+    type: object
+    properties:
+      codice:
+        $ref: '#/definitions/rilevazione_modalita_codice'
+      descrizione_regionale:
+        type: string
+        description: Descrizione regionale della modalità
+      descrizione_nazionale:
+        type: string
+        description: Descrizione nazionale della modalità
+  model_rilevazione_unita_misura:
+    title: 'Rilevazione unità di misura'
+    type: object
+    properties:
+      codice:
+        $ref: '#/definitions/unita_misura_codice'
+      descrizione:
+        type: string
+        description: Descrizione dell'unità di misura
+  model_rilevazione:
+    title: 'Rilevazione'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Identificativo univoco
+      valore_numerico:
+        type: number
+        description: Il valore della numerazione
+      valore_testuale:
+        type: string
+        description: Il valore testuale della rilevazione
+      data:
+        type: string
+        format: date-time
+        description: la data della rilevazione presa dall'utente
+      data_creazione:
+        type: string
+        format: date-time
+        description: la data di creazione
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: la data di aggiornamento
+      unita_misura_codice:
+        $ref: '#/definitions/unita_misura_codice'
+      gruppo_codice:
+        $ref: '#/definitions/rilevazione_gruppo_codice'
+      descrittore_codice:
+        $ref: '#/definitions/rilevazione_descrittore_codice'
+      modalita_codice:
+        $ref: '#/definitions/rilevazione_modalita_codice'
+      unita_misura:
+        $ref: '#/definitions/model_rilevazione_unita_misura'
+      gruppo:
+        $ref: '#/definitions/model_rilevazione_gruppo'
+      descrittore:
+        $ref: '#/definitions/model_rilevazione_descrittore'
+      modalita:
+        $ref: '#/definitions/model_rilevazione_modalita'
+  response_rilevazioni:
+    title: 'Response rilevazioni'
+    type: object
+    properties:
+      lista:
+        type: array
+        items:
+          $ref: '#/definitions/model_rilevazione'
+  
+  model_unita_misura_decodifica:
+    title: 'Descrittore Misurazione'
+    type: object
+    properties:
+      entita_codice:
+        type: string
+        description: Descrizione entita
+      gruppo_codice:
+        type: string
+        description: Descrizione del Gruppo
+      descrittore_codice:
+        type: string
+        description: Codice del tipo di misurazione
+      descrittore_descrizione:
+        type: string
+        description: Descrizione del tipo di misurazione
+      descrittore_descrizione_estesa:
+        type: string
+        description: Descrizione del tipo di misurazione estesa
+      unita_misura_codice:
+        $ref: '#/definitions/unita_misura_codice'
+      unita_misura_descrizione:
+        type: string
+        description: Descrizione unita di misurazione
+        
+  entita_codice:
+    type: string
+    description: Codice univoco dell'entità
+    enum:
+      - "RILEVAZIONI"
+      - "SINTOMI"
+      - "DOLORI"
+      - "EVENTI"
+      - "FARMACI"
+      - "DIETA"
+      - "CONTATTI STRUTTURA"
+  unita_misura_codice:
+    type: string
+    description: Codice univoco dell'unità di misura
+      - "kg"
+      - "°C"
+      - "cm"
+      - "mmHg"
+      - "bpm"
+      - "atti per minuto"
+      - "mg/dL"
+      - "mmol/L"
+      - "SpO2%"
+      - "%"
+      - "UI"
+  rilevazione_gruppo_codice:
+    type: string
+    description: Codice univoco del gruppo di rilevazione
+      - "PRES_GR"
+      - "PESO_GR"
+      - "TEMP_GR"
+      - "INS_GR"
+      - "GLIC_GR"
+      - "OSS_GR"
+      - "COL_GR"
+      - "EMO_GR"
+      - "FREQ_RESP_GR"
+  rilevazione_descrittore_codice:
+    type: string
+    description: Codice univoco del gruppo del descrittore
+      - "PRES_DIA"
+      - "PRES_SIST"
+      - "FREQ_CARD"
+      - "OSS"
+      - "GLIC"
+      - "INS"
+      - "INS_FARM"
+      - "TEMP"
+      - "PESO"
+      - "FREQ_RESP"
+      - "CIRC_VITA"
+      - "ALT"
+      - "COL_HDL"
+      - "COL_LDL"
+      - "COL_TOT"
+      - "TRIGL"
+      - "EMO_GLIC"
+  rilevazione_modalita_codice:
+    type: string
+    description: Codice univoco della modalità di rilevazione
+      - "AUT"
+      - "MMG/PLS"
+      - "AZ_SAN"
+      - "ALTRO"
+      - "FARM"
+  struttura_tipo_codice:
+    type: string
+    description: Codice univoco del tipo di struttura
+      - "STRUT_SAN"
+      - "MNC"
+  contatto_tipo_codice:
+    type: string
+    description: Codice univoco del tipo di contatto
+      - "VIS"
+      - "RIC"
+      - "DIA"
+      - "TRATMED"
+      - "PS"
+      - "ALTRO"
+  
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+  dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+tags:
+  - name: Decodifiche
+  - name: Taccuino
+  - name: Eventi
+  - name: Sintomi
+  - name: Dolori
+  - name: Dieta
+  - name: Farmaci
+  - name: Contatti con struttura
+  - name: Rilevazioni

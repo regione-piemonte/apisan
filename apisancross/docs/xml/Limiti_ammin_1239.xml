@@ -1,0 +1,38 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
+<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0">
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="it.csi.smartdata.odata.Limiti_ammin_1239">
+<EntityType Name="DataEntity">
+<Key>
+<PropertyRef Name="internalId"/>
+</Key>
+<Property Name="internalId" Type="Edm.String" Nullable="false"/>
+<Property Name="datasetVersion" Type="Edm.Int32" Nullable="true"/>
+<Property Name="idDataset" Type="Edm.Int64" Nullable="true"/>
+<Property Name="Id_comune" Type="Edm.String" Nullable="true"/>
+<Property Name="Id_comune_next" Type="Edm.String" Nullable="true"/>
+<Property Name="Id_comune_prev" Type="Edm.String" Nullable="true"/>
+<Property Name="D_start" Type="Edm.String" Nullable="true"/>
+<Property Name="D_stop" Type="Edm.String" Nullable="true"/>
+<Property Name="R_status" Type="Edm.String" Nullable="true"/>
+<Property Name="Cod_catasto" Type="Edm.String" Nullable="true"/>
+<Property Name="Istat_comune" Type="Edm.String" Nullable="true"/>
+<Property Name="Desc_comune" Type="Edm.String" Nullable="true"/>
+<Property Name="Cap" Type="Edm.String" Nullable="true"/>
+<Property Name="Altitudine" Type="Edm.String" Nullable="true"/>
+<Property Name="Superficie_hm2" Type="Edm.String" Nullable="true"/>
+<Property Name="Istat_provincia" Type="Edm.String" Nullable="true"/>
+<Property Name="Desc_provincia" Type="Edm.String" Nullable="true"/>
+<Property Name="Sigla_prov" Type="Edm.String" Nullable="true"/>
+<Property Name="Istat_zona_altimetrica" Type="Edm.String" Nullable="true"/>
+<Property Name="Desc_zona_altimetrica" Type="Edm.String" Nullable="true"/>
+<Property Name="Istat_regione" Type="Edm.String" Nullable="true"/>
+<Property Name="Desc_regione" Type="Edm.String" Nullable="true"/>
+<Property Name="Cod_stato" Type="Edm.String" Nullable="true"/>
+<Property Name="Desc_stato" Type="Edm.String" Nullable="true"/>
+</EntityType>
+<EntityContainer Name="SmartDataEntityContainer_it_csi_smartdata_odata_Limiti_ammin_1239" m:IsDefaultEntityContainer="true">
+<EntitySet Name="DataEntities" EntityType="it.csi.smartdata.odata.Limiti_ammin_1239.DataEntity"/>
+</EntityContainer>
+</Schema>
+</edmx:DataServices>
+</edmx:Edmx>

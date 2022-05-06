@@ -1,0 +1,623 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://dmacc.csi.it/" xmlns:ns0="http://dma.csi.it/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://dmacc.csi.it/">
+   <wsdl:types>
+      <xsd:schema xmlns:ns1="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/">
+         <xsd:import namespace="http://dma.csi.it/"></xsd:import>
+         <xsd:complexType name="statoConsensiExtRequeste">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="paziente" type="ns1:paziente"></xsd:element>
+               <xsd:element minOccurs="0" name="richiedente" type="ns1:richiedenteExt"></xsd:element>
+               <xsd:element minOccurs="0" name="statoConsensiIN" type="ns1:statoConsensiIN"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="statoConsensiResponse">
+            <xsd:complexContent>
+               <xsd:extension base="tns:serviceResponse">
+                  <xsd:sequence>
+                     <xsd:element minOccurs="0" name="statoConsensiOUT" type="ns1:statoConsensiOUT"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="serviceResponse">
+            <xsd:sequence>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="codifiche" nillable="true" type="ns1:codifica"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="errori" nillable="true" type="ns1:errore"></xsd:element>
+               <xsd:element minOccurs="0" name="esito" type="ns1:risultatoCodice"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="comunicazioneConsensiExtRequeste">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="comunicazioneConsensiIN" type="ns1:comunicazioneConsensiIN"></xsd:element>
+               <xsd:element minOccurs="0" name="paziente" type="ns1:paziente"></xsd:element>
+               <xsd:element minOccurs="0" name="richiedente" type="ns1:richiedenteExt"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="comunicazioneConsensiResponse">
+            <xsd:complexContent>
+               <xsd:extension base="tns:serviceResponse">
+                  <xsd:sequence>
+                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="opzioniResponse" nillable="true" type="ns1:opzioniType"></xsd:element>
+                     <xsd:element minOccurs="0" name="regioneAssistenza" type="xsd:string"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="recuperoInformativaExtRequeste">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="informativaIN" type="ns1:informativaIN"></xsd:element>
+               <xsd:element minOccurs="0" name="richiedente" type="ns1:richiedenteExt"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="recuperoInformativaResponse">
+            <xsd:complexContent>
+               <xsd:extension base="tns:serviceResponse">
+                  <xsd:sequence>
+                     <xsd:element minOccurs="0" name="informativaOUT" type="ns1:informativaOUT"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:element name="statoConsensi" nillable="true" type="tns:statoConsensiExtRequeste"></xsd:element>
+         <xsd:element name="statoConsensiResponse" nillable="true" type="tns:statoConsensiResponse"></xsd:element>
+         <xsd:element name="comunicazioneConsensi" nillable="true" type="tns:comunicazioneConsensiExtRequeste"></xsd:element>
+         <xsd:element name="comunicazioneConsensiResponse" nillable="true" type="tns:comunicazioneConsensiResponse"></xsd:element>
+         <xsd:element name="recuperoInformativa" nillable="true" type="tns:recuperoInformativaExtRequeste"></xsd:element>
+         <xsd:element name="recuperoInformativaResponse" nillable="true" type="tns:recuperoInformativaResponse"></xsd:element>
+      </xsd:schema>
+      <xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dma.csi.it/" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://dma.csi.it/" version="1.0">
+         <xsd:element name="comunicazioneConsensiIN" type="tns:comunicazioneConsensiIN"></xsd:element>
+         <xsd:element name="consenso" type="tns:consenso"></xsd:element>
+         <xsd:element name="delega" type="tns:delega"></xsd:element>
+         <xsd:element name="informativaIN" type="tns:informativaIN"></xsd:element>
+         <xsd:element name="informativaOUT" type="tns:informativaOUT"></xsd:element>
+         <xsd:element name="modalitaDiAlimentazione" type="tns:modalitaDiAlimentazione"></xsd:element>
+         <xsd:element name="paziente" type="tns:paziente"></xsd:element>
+         <xsd:element name="richiedente" type="tns:richiedente"></xsd:element>
+         <xsd:element name="richiedenteExt" type="tns:richiedenteExt"></xsd:element>
+         <xsd:element name="statoConsensiIN" type="tns:statoConsensiIN"></xsd:element>
+         <xsd:element name="statoConsensiOUT" type="tns:statoConsensiOUT"></xsd:element>
+         <xsd:complexType name="paziente">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="codiceFiscale" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="codiceFiscaleMMG" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="cognome" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="comuneDiNascita" type="tns:comuneDiNascita"></xsd:element>
+               <xsd:element minOccurs="0" ref="tns:consenso"></xsd:element>
+               <xsd:element minOccurs="0" name="dataDecesso" type="xsd:dateTime"></xsd:element>
+               <xsd:element minOccurs="0" name="dataDiNascita" type="xsd:dateTime"></xsd:element>
+               <xsd:element minOccurs="0" name="dataRiconduzione" type="xsd:dateTime"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="deleghe" nillable="true" type="tns:delega"></xsd:element>
+               <xsd:element minOccurs="0" name="flag_registry_incarico" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="idAsr" type="xsd:long"></xsd:element>
+               <xsd:element minOccurs="0" name="idAura" type="xsd:long"></xsd:element>
+               <xsd:element minOccurs="0" name="idIlec" type="xsd:long"></xsd:element>
+               <xsd:element minOccurs="0" name="idIrec" type="xsd:long"></xsd:element>
+               <xsd:element minOccurs="0" name="idPazienteRicondotto" type="xsd:long"></xsd:element>
+               <xsd:element minOccurs="0" name="mailPerAccessoDMA" type="tns:siNo"></xsd:element>
+               <xsd:element minOccurs="0" name="nome" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="sesso" type="tns:sesso"></xsd:element>
+               <xsd:element minOccurs="0" name="statoDiNascita" type="tns:statoDiNascita"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="comuneDiNascita">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="codifica">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="codice" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="descrizione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="riferimento" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="disciplina">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="modalitaDiAlimentazione">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="applicazioneRichiedente">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="tipoEpisodio">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="aziendaSanitaria">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="prestazione">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence>
+                     <xsd:element minOccurs="0" name="idPrestazione" type="xsd:long"></xsd:element>
+                     <xsd:element minOccurs="0" name="branca" type="tns:branca"></xsd:element>
+                     <xsd:element minOccurs="0" name="valoriPrestazione" type="tns:valoriPrestazione"></xsd:element>
+                     <xsd:element minOccurs="0" name="dataOraPrestazione" type="xsd:dateTime"></xsd:element>
+                     <xsd:element minOccurs="0" name="dataOra" type="xsd:dateTime"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="branca">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="valoriPrestazione">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="quantita" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="tipoDocumento">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="unitaOperativaSanitaria">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="strutturaSanitaria">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="errore">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="componenteLocale">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence>
+                     <xsd:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria"></xsd:element>
+                     <xsd:element minOccurs="0" name="componenteLocaleTipo" type="tns:componenteLocaleTipo"></xsd:element>
+                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="servizi" nillable="true" type="tns:componenteLocaleServizio"></xsd:element>
+                     <xsd:element minOccurs="0" name="erroreRegistrazioneConsenso" type="tns:siNo"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="componenteLocaleTipo">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="componenteLocaleServizio">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence>
+                     <xsd:element minOccurs="0" name="urlServizio" type="xsd:string"></xsd:element>
+                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="operazioni" nillable="true" type="tns:componenteLocaleOperazione"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="componenteLocaleOperazione">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence>
+                     <xsd:element minOccurs="0" name="TimeoutMaxElaborazione" type="xsd:long"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="regimeDMA">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="componenteLocaleRispostaStato">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="tipoFileDocumento">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="statoDiNascita">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="ruoloDMA">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence>
+                     <xsd:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria"></xsd:element>
+                     <xsd:element minOccurs="0" name="profilo" type="tns:profilo"></xsd:element>
+                     <xsd:element minOccurs="0" name="flagVisibilePerConsenso" type="xsd:string"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="profilo">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="episodioStato">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="tipoReferto">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="consenso">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="ablConsOpeAmm" type="tns:siNo"></xsd:element>
+               <xsd:element minOccurs="0" name="alimentaFse" type="tns:siNo"></xsd:element>
+               <xsd:element minOccurs="0" name="consensoAllaCostituzioneDMA" type="tns:siNo"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="consensoMatriceRuoli" nillable="true" type="tns:consensoMatriceRuolo"></xsd:element>
+               <xsd:element minOccurs="0" name="dataDiAggiornamento" type="xsd:dateTime"></xsd:element>
+               <xsd:element minOccurs="0" name="dataDiValidazione" type="xsd:dateTime"></xsd:element>
+               <xsd:element minOccurs="0" name="derogaEmergenza" type="tns:siNo"></xsd:element>
+               <xsd:element minOccurs="0" ref="tns:modalitaDiAlimentazione"></xsd:element>
+               <xsd:element minOccurs="0" name="pregresso" type="tns:siNo"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="consensoMatriceRuolo">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="consultazione" type="tns:siNo"></xsd:element>
+               <xsd:element minOccurs="0" name="dataDiAggiornamento" type="xsd:dateTime"></xsd:element>
+               <xsd:element minOccurs="0" name="ruoloDMA" type="tns:ruoloDMA"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="delega">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="codiceServizio" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="dataFineDelega" type="xsd:dateTime"></xsd:element>
+               <xsd:element minOccurs="0" name="dataInizioDelega" type="xsd:dateTime"></xsd:element>
+               <xsd:element minOccurs="0" name="gradoDelega" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="statoDelega" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="tipoDelega" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="richiedenteExt">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="applicazione" type="tns:applicazioneRichiedente"></xsd:element>
+               <xsd:element minOccurs="0" name="codiceFiscale" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="gradoDelega" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="numeroTransazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="regime" type="tns:regimeDMA"></xsd:element>
+               <xsd:element minOccurs="0" name="ruolo" type="tns:ruoloDMA"></xsd:element>
+               <xsd:element minOccurs="0" name="tipoDelega" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="tokenOperazione" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="statoConsensiIN">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="contestoOperativo" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="descrizioneOrganizzazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoAssistitoConsenso" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoAssistitoGenitoreTutore" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoOrganizzazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoUtente" type="xsd:string"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="opzioniRequest" nillable="true" type="tns:opzioniType"></xsd:element>
+               <xsd:element minOccurs="0" name="pinCode" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="presaInCarico" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="ruoloUtente" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="strutturaUtente" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="tipoAttivita" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="opzioniType">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="chiave" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="tipo" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="valore" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="statoConsensiOUT">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="consensoAlimentazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="consensoConsultazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="consensoPregresso" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoAssistitoConsenso" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoInformativaConsensi" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoInformativaCorrente" type="xsd:string"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="opzioniResponse" nillable="true" type="tns:opzioniType"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="comunicazioneConsensiIN">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="consensoAlimentazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="consensoConsultazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="consensoPregresso" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="contestoOperativo" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="descrizioneOrganizzazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoAssistitoConsenso" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoAssistitoGenitoreTutore" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoGenitoreConsenso" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoInformativa" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoOrganizzazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoUtente" type="xsd:string"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="opzioniRequest" nillable="true" type="tns:opzioniType"></xsd:element>
+               <xsd:element minOccurs="0" name="pinCode" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="presaInCarico" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="ruoloUtente" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="strutturaUtente" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="tipoAttivita" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="informativaIN">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="identificativoInformativa" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoOrganizzazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="identificativoUtente" type="xsd:string"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="opzioniRequest" nillable="true" type="tns:opzioniType"></xsd:element>
+               <xsd:element minOccurs="0" name="pinCode" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="ruoloUtente" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="strutturaUtente" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="tipoAttivita" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="informativaOUT">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="identificativoInformativa" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="informativa" type="xsd:base64Binary"></xsd:element>
+               <xsd:element minOccurs="0" name="modulistica" type="xsd:base64Binary"></xsd:element>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="opzioniResponse" nillable="true" type="tns:opzioniType"></xsd:element>
+               <xsd:element minOccurs="0" name="tipoMimeInformativa" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="tipoMimeModulistica" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="richiedente">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" name="applicazione" type="tns:applicazioneRichiedente"></xsd:element>
+               <xsd:element minOccurs="0" name="codiceFiscale" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="numeroTransazione" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="regime" type="tns:regimeDMA"></xsd:element>
+               <xsd:element minOccurs="0" name="ruolo" type="tns:ruoloDMA"></xsd:element>
+               <xsd:element minOccurs="0" name="tokenOperazione" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="ArrayOfpazientepaziente">
+            <xsd:sequence>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="paziente" nillable="true" type="tns:paziente"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="componenteLocaleRisposta">
+            <xsd:complexContent>
+               <xsd:extension base="tns:componenteLocale">
+                  <xsd:sequence>
+                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="errori" nillable="true" type="tns:errore"></xsd:element>
+                     <xsd:element minOccurs="0" name="stato" type="tns:componenteLocaleRispostaStato"></xsd:element>
+                     <xsd:element name="tempoMaxAttesaCLInSec" type="xsd:long"></xsd:element>
+                     <xsd:element name="tempoMaxRestituzioneDatiInSec" type="xsd:long"></xsd:element>
+                  </xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="ArrayOfcodificacodifica">
+            <xsd:sequence>
+               <xsd:element maxOccurs="unbounded" minOccurs="0" name="codifica" nillable="true" type="tns:codifica"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="consensoMatriceTipoDato">
+            <xsd:complexContent>
+               <xsd:extension base="tns:codifica">
+                  <xsd:sequence></xsd:sequence>
+               </xsd:extension>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:simpleType name="siNo">
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="SI"></xsd:enumeration>
+               <xsd:enumeration value="NO"></xsd:enumeration>
+               <xsd:enumeration value="NA"></xsd:enumeration>
+            </xsd:restriction>
+         </xsd:simpleType>
+         <xsd:simpleType name="sesso">
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="M"></xsd:enumeration>
+               <xsd:enumeration value="F"></xsd:enumeration>
+            </xsd:restriction>
+         </xsd:simpleType>
+         <xsd:simpleType name="risultatoCodice">
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="SUCCESSO"></xsd:enumeration>
+               <xsd:enumeration value="FALLIMENTO"></xsd:enumeration>
+            </xsd:restriction>
+         </xsd:simpleType>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="recuperoInformativa">
+      <wsdl:part name="recuperoInformativa" element="tns:recuperoInformativa"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="recuperoInformativaResponse">
+      <wsdl:part name="recuperoInformativaResponse" element="tns:recuperoInformativaResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="statoConsensi">
+      <wsdl:part name="statoConsensi" element="tns:statoConsensi"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="statoConsensiResponse">
+      <wsdl:part name="statoConsensiResponse" element="tns:statoConsensiResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="comunicazioneConsensi">
+      <wsdl:part name="comunicazioneConsensi" element="tns:comunicazioneConsensi"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="comunicazioneConsensiResponse">
+      <wsdl:part name="comunicazioneConsensiResponse" element="tns:comunicazioneConsensiResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:portType name="CCConsensoINIExtServicePortType">
+      <wsdl:operation name="recuperoInformativa">
+         <wsdl:input message="tns:recuperoInformativa" wsaw:Action="http://dmacc.csi.it/recuperoInformativaExt"></wsdl:input>
+         <wsdl:output message="tns:recuperoInformativaResponse" wsaw:Action="http://dmacc.csi.it/ConsensoINIExtService/recuperoInformativaResponse"></wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="statoConsensi">
+         <wsdl:input message="tns:statoConsensi" wsaw:Action="http://dmacc.csi.it/statoConsensiExt"></wsdl:input>
+         <wsdl:output message="tns:statoConsensiResponse" wsaw:Action="http://dmacc.csi.it/ConsensoINIExtService/statoConsensiResponse"></wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="comunicazioneConsensi">
+         <wsdl:input message="tns:comunicazioneConsensi" wsaw:Action="http://dmacc.csi.it/comunicazioneConsensiExt"></wsdl:input>
+         <wsdl:output message="tns:comunicazioneConsensiResponse" wsaw:Action="http://dmacc.csi.it/ConsensoINIExtService/comunicazioneConsensiResponse"></wsdl:output>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="CCConsensoINIExtServiceSoap11Binding" type="tns:CCConsensoINIExtServicePortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+      <wsdl:operation name="recuperoInformativa">
+         <soap:operation soapAction="http://dmacc.csi.it/recuperoInformativaExt" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="statoConsensi">
+         <soap:operation soapAction="http://dmacc.csi.it/statoConsensiExt" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="comunicazioneConsensi">
+         <soap:operation soapAction="http://dmacc.csi.it/comunicazioneConsensiExt" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCConsensoINIExtServiceSoap12Binding" type="tns:CCConsensoINIExtServicePortType">
+      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
+      <wsdl:operation name="recuperoInformativa">
+         <soap12:operation soapAction="http://dmacc.csi.it/recuperoInformativaExt" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="statoConsensi">
+         <soap12:operation soapAction="http://dmacc.csi.it/statoConsensiExt" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="comunicazioneConsensi">
+         <soap12:operation soapAction="http://dmacc.csi.it/comunicazioneConsensiExt" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCConsensoINIExtServiceHttpBinding" type="tns:CCConsensoINIExtServicePortType">
+      <http:binding verb="POST"></http:binding>
+      <wsdl:operation name="recuperoInformativa">
+         <http:operation location="recuperoInformativa"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="statoConsensi">
+         <http:operation location="statoConsensi"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="comunicazioneConsensi">
+         <http:operation location="comunicazioneConsensi"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="CCConsensoINIExtService">
+      <wsdl:port name="CCConsensoINIExtServiceHttpsSoap11Endpoint" binding="tns:CCConsensoINIExtServiceSoap11Binding">
+         <soap:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCConsensoINIExtService.CCConsensoINIExtServiceHttpsSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCConsensoINIExtServiceHttpSoap11Endpoint" binding="tns:CCConsensoINIExtServiceSoap11Binding">
+         <soap:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCConsensoINIExtService.CCConsensoINIExtServiceHttpSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCConsensoINIExtServiceHttpsSoap12Endpoint" binding="tns:CCConsensoINIExtServiceSoap12Binding">
+         <soap12:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCConsensoINIExtService.CCConsensoINIExtServiceHttpsSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCConsensoINIExtServiceHttpSoap12Endpoint" binding="tns:CCConsensoINIExtServiceSoap12Binding">
+         <soap12:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCConsensoINIExtService.CCConsensoINIExtServiceHttpSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCConsensoINIExtServiceHttpEndpoint" binding="tns:CCConsensoINIExtServiceHttpBinding">
+         <http:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCConsensoINIExtService.CCConsensoINIExtServiceHttpEndpoint"></http:address>
+      </wsdl:port>
+      <wsdl:port name="CCConsensoINIExtServiceHttpsEndpoint" binding="tns:CCConsensoINIExtServiceHttpBinding">
+         <http:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCConsensoINIExtService.CCConsensoINIExtServiceHttpsEndpoint"></http:address>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

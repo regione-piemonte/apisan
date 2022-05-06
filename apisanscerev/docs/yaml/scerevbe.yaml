@@ -1,0 +1,2382 @@
+swagger: '2.0'
+info:
+  title: Scerev
+  version: 1.0.3
+  description: |
+
+   
+    # Note versione 2.0
+    * aggiunto boolean rinnovoAssistenza su payload_controllo_combinazione, payload_richiesta_cambio_medico e model_cambio_medico_richiesta
+    
+    # Note modifica 1.0.6
+    ---
+    * Aggiunta api scarica allegato
+    
+    # Note modifica 1.0.5
+    ---
+    * Modificata api revoca medico; diventata una post invece che una delete a cui è stato aggiunto un payload.
+    
+    # Note modifica 1.0.4 (24 Novembre)
+    ---
+    * Modifica servizio Monitora medico: modificato payload payload_monitora_medico aggiunto fa riferimento a model_monitora_medico model_disponibilita_medico_monitorato che contiene flag relativi alla disponibilita
+    * Modificato flag cittadini_comunitari in cittadiniComunitari su model_motivazione_soggiorno
+      
+    # Note modifica 1.0.3 (04 Novembre)
+    ---
+    * Modifica risposta servizio `GET Medici monitorati` che ora restituisce il nuovo model `ModelMedicoMonitorato` che contiene
+        * `id` de medico
+        * `codiceFiscale` del medico
+        * `nome` del medico
+        * `cognome` del medico
+      
+    # Note modifica 1.0.2 (17 settembre)
+    ---
+    * Modifica payload rettifica richiesta e richiesta cambio medico: il campo allegati diventa un array
+    * Aggiunti campi "tipo", "descrizione" e "stranieri" e modificato campo nome a nome_file in model_documento
+    * Aggiunti campi "tipo" e "descrizione"  e modificato campo nome a nome_file in  model_documento_lettura
+    * Modificato campo "id" a "tipo" e aggiunto campo "stranieri" in model_allegato_tipo
+
+
+       # Note modifica 1.0.2 (15 settembre)
+       ---
+       * Aggiunto campo 'cittadini_comunitari' sul model_motivazione_soggiorno
+       * Aggiunto endpoint "controllo-allegati"
+       * Aggiunto model_controllo_allegati
+       * Aggiunto model_allegato_tipo
+       * Aggiunto campo 'comunitario' sul model model_cittadinanza
+       * Modificato campo in variazione_asl su model_controllo_combinazione
+    
+     # Note modifica 1.0.0 (27 maggio)
+    ---
+    * Aggiunto il campo "recapiti" nei seguenti servizi:
+       * Struttura dati delle info cittadino
+       * payload e struttura dati di richiesta nuovo medico
+       * payload modulo delegante
+
+    
+    # Note versione 1.0.0 (23 Apr 2020)
+    ---
+    * Aggiunti alcuni model e rimossi altri model
+    * Tolte le api di richiamo a loccsi in quanto deciso che il richiamo viene effettuato dall'orchestratore
+    * Modellato tutto lo YAML sull'idea che lo strato rosso deve passare al giallo più dati possibili per evitare interazioni tra beck-end SCEREV e LOCCSI.
+
+    
+    # Note versione 0.2.0 (14 Apr 2020)
+    ---
+    * Aggiunto tag "Stage 2" per segnare gli endpoint relativi alle funzionalità posticipate
+    * Modificato model "Medico" che ora non contiene più i campi relativi alla disponibilità:
+       * monitorabile
+       * selezionabile
+       * selezionabile_ricongiungimento_familiare
+       * selezionabile_assistenza_temporanea
+       * selezionabile_infanzia
+    * Modificato model "Ambulatorio" per adeguarsi alla struttura dati di LOCCSI
+    * Modificato model "Associazione" per adeguarsi ai dati restituiti dai servizi OPESAN
+    * Aggiunto endpoint GET "Associazioni medico" che permette di ottenere le associazioni di un medico
+    
+    # Note versione 0.1.0 (10 Apr 2020)
+    ---
+    * Rimosso endpoint GET "Lista medici"
+    * Aggiunto endpoint GET "Lista ambulatori"
+    * Aggiunto endpoint POST "Disponibilità"
+    * Rimossi i campi "score"
+    
+    # Note versione 0.0.9 (02 Apr 2020)
+    ---
+    * La payload "richiesta cambio medico" contiene i campi che riguardano l'assistenza precedente (Medico altra regione)
+    * Aggiunto il campo "email" nella struttura dati dell'ambulatorio del medico.
+    * Aggiunto endpoint "Stampa richiesta"
+    
+    
+    # Note versione 0.0.7 (02 Mar 2020)
+    ---
+    * Il payload della POST "Controllo combinazione" contiene il domicilio e la residenza con campi separati (comune, cap, indirizzo e civico) anziché come unica stringa
+    * Il payload della POST "Richiesta cambio medico" contiene il domicilio e la residenza con campi separati (comune, cap, indirizzo e civico) anziché come unica stringa. Aggiunto anche il campo "medico_altra_regione" che era mancante
+    * La response di "Richiesta cambio medico" contiene il domicilio e la residenza con campi separati (comune, cap, indirizzo e civico) anziché come unica stringa. Aggiunto anche il campo "medico_altra_regione" che era mancante
+    * Nella GET "Informazioni assistito" il domicilio e la residenza con campi separati (comune, cap, indirizzo e civico) anziché come unica stringa. Anche nel campo "richiesta_cambio" il domicilio e la residenza con campi separati (comune, cap, indirizzo e civico) anziché come unica stringa. Inoltre in "richiesta_cambio" è stato aggiunto il campo "medico_altra_regione" che era mancante
+    * Nella DELETE "Rimuovi medico monitorato" la response non è necessaria e si è deciso di rimuoverla
+    
+    # Note versione 0.0.6 (20 Feb 2020)
+    ---
+    * Aggiunto query param opzionale "tipologia" nella GET lista medici
+    
+    # Note versione 0.0.5 (19 Feb 2020)
+    ---
+    * Aggiunta documentazione negli endpoint ed in alcuni campi delle strutture dati
+    
+    # Note versione 0.0.4 (17 Feb 2020)
+    ---
+    * Aggiunta data_revoca_medico
+    * Aggiunto endpoint "Annulla richiesta / Rimuovi bozza"
+    * Aggiunto il campo booleano "annullabile" nella risorsa "richiesta cambio medico"
+    * Aggiunta documentazione nella proprietà "score" della risorsa "Medico"
+    * Aggiunta paginazione dell'elenco dei medici tramite 2 nuovi query params opzionali "limit" ed "offset" e 4 header di risposta "X-Page", "X-Page-Size", "X-Total-Pages" e "X-Total-Elements"
+    
+    # Note versione 0.0.3 (11 Feb 2020)
+    ---
+    * Aggiunto il campo "selezionabile_infanzia" nella struttura dati del medico.
+      Questo campo dice al front-end se il medico (di solito il pediatra) può essere selezionato
+      per bambini fino ai 6 anni.
+      
+    
+    <br>
+    <sub>
+    Note: Questo YAML è stato pensato per il back-end
+    destinato al cittadino.
+    </sub>
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanscerev/api/v1
+schemes:
+  - https
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+       
+  '/cittadinanze':
+    get:
+      summary: Lista cittadinanze
+      description:  |
+        Restituisce la lista delle cittadinanze.
+        Permette al front-end di popolare la select da cui il cittadino seleziona la cittadinanza.
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_cittadinanza'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/motivazioni-soggiorno':
+    get:
+      summary: Lista motivazioni del soggiorno
+      description:  |
+        Restituisce la lista delle motivazioni di soggiorno.
+        Permette al front-end di popolare la select da cui il cittadino dovrà scegliere la motivazione del soggiorno.
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_motivazione_soggiorno'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/motivazioni-domicilio':
+    get:
+      summary: Lista motivazioni del domicilio
+      description:  |
+        Restituisce la lista delle motivazioni del domicilio.
+        Permette al front-end di popolare la select da cui il cittadino seleziona la motivazione del domicilio.
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_motivazione_domicilio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-medico':
+    get:
+      summary: Lista delle tipologie medico
+      description:  |
+        Lista delle tipologie di medico disponibile.
+        Permette al front-end di popolare la select che il cittadino potrà usare
+        per filtrare i risultati della ricerca della lista medici.
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_medico_tipologia'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/disponibilita':
+    post:
+      summary: Disponibilità
+      description:  |
+        Restituisce informazioni relative alle disponibilità dei medici
+      consumes:
+        - application/json                    
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/payload_disponibilita'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_disponibilita'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/medici/{medico_id}/associazioni':
+    get:
+      summary: Associazioni medico
+      tags:
+        - Verifica      
+      description:  |
+        Restituisce l'elenco delle associazioni di un medico
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_medico_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_associazione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/info':
+    get:
+      summary: Informazioni assistito
+      description:  |
+        Restituisce dati informativi sull'assistito.
+        
+        Permette al front-end di ottenere tutte le informazioni del cittadino e di conoscere la sua situazione di assistenza sanitaria. In particolare, oltre ai dati anagrafici sono presenti i dati del medico attuale (se esiste), di una eventuale richiesta di cambio medico pendente o in bozza ed altre informazioni relative alla sua assistenza, come data di inizio/fine assistenza, lo stato dell'assistenza ecc.
+        
+        Grazie a questi dati il front-end può popolare la homepage dell'assistito autenticato
+        mostrando le sue informazioni angarafiche, il suo attuale medico, la sua situazione di assistenza ed eventuali richieste di cambio pendenti o in bozza.
+        
+        Inoltre sono presenti anche alcuni dati che permettono al front-end di capire quale strada prendere nel flusso di richiesta cambio medico. Ad esempio se il cittadino ha data_revoca_assistenza impostata il front-end presume che si tratti di un'assistenza temporanea e si comporterà di conseguenza; Se id_aura è null, il front-end presume che il cittadino non è presente su AURA e che i suoi dati arrivano da TS.
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_cittadino_info'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/info/richiesta_cambio/{richiesta_id}':
+    delete:
+      summary: Annulla richiesta / Rimuovi bozza
+      description:  |
+        Permette di annullare una richiesta non ancora presa in carico dall'operatore oppure permette di rimuovere la bozza.
+        
+        In questo modo il front-end può mettere a disposizione del cittadino la funzionalità "Rimuovi bozza" e "Annulla richiesta".
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'        
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/revoca-medico':
+    post:
+      summary: Revoca medico
+      description:  |
+        Revoca il medico dell'assistito.
+        
+        Permette al front-end di fornire la funzionalità di "Revoca del medico".
+        La revoca del medico comporta anche il popolamento del campo "data_revoca_medico" nelle info del cittadino. Viene permesso sul payload di specificare il motivo della revoca del medico.
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/payload_revoca_medico'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/assistenza':
+    delete:
+      summary: Revoca assistenza
+      description:  |
+        Revoca l'assistenza dell'assistito. Revocando l'assistenza viene revocato automaticamente anche il medico.
+        
+        Permette al front-end di fornire la funzionalità di "Revoca assistenza".
+        La revoca di assistenza comporta l'aggiornamento automatico dei campi "data_revoca_medico" e "data_revoca_assistenza".
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/medici-monitorati':
+    get:
+      summary: Medici monitorati
+      tags:
+        - Stage 2
+      description:  |
+        Restituisce l'elenco dei medici monitorati
+        
+        Permette al front-end di mostrare all'utente l'elenco dei medici che sta monitorando.
+      produces:
+        - application/json                            
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_medico_monitorato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Monitora medico
+      tags:
+        - Stage 2
+      description:  |
+        Aggiunge un medico alla lista dei medici monitorati dall'assistito.
+        
+        Permette al cittadino di aggiungere un nuovo medico tra quelli monitorati.
+      consumes:
+        - application/json                    
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/payload_monitora_medico'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/medici-monitorati/{medico_id}':
+    delete:
+      summary: Rimuovi medico monitorato
+      tags:
+        - Stage 2
+      description:  |
+        Rimuove un medico dalla lista dei medici monitorati dall'assistito.
+        
+        Permette al cittadino di rimuovere uno tra i medici monitorati.
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_medico_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/tesserino-medico/pdf':
+    get:
+      summary: Stampa tesserino medico
+      description:  |
+        Restituisce il PDF con il tesserino del medico.
+        
+        Permette al front-end di visualizzare il PDF con il tesserino del medico.
+        Tale PDF va generato lato back-end.
+        La response HTTP dovrà avere gli header:
+        * Content-Type: application/pdf
+        * Content-Disposition: attachment; filename="tesserino-medico.pdf" 
+        
+        Tra l'altro il comportamento dell'header Content-Disposition potrà essere
+        pilotato dal front-end attraverso il query params opzionale content_disposition che potrebbe
+        assumere il valore "inline". In questo caso gli header della response HTTP
+        dovranno essere:
+        * Content-Type: application/pdf
+        * Content-Disposition: inline; filename="tesserino-medico.pdf" 
+      produces:
+        - application/pdf
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_content_disposition'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            Content-Disposition:
+              type: string
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/certificato-revoca/pdf':
+    get:
+      summary: Stampa il certificato di revoca
+      description:  |
+        Restituisce il PDF con il certificato di revoca.
+        
+        Permette al front-end di visualizzare il PDF con il certificato di revoca.
+        Tale PDF va generato lato back-end.
+        La response HTTP dovrà avere gli header:
+        * Content-Type: application/pdf
+        * Content-Disposition: attachment; filename="certificato-revoca.pdf" 
+        
+        Tra l'altro il comportamento dell'header Content-Disposition potrà essere
+        pilotato dal front-end attraverso il query params opzionale content_disposition che potrebbe
+        assumere il valore "inline". In questo caso gli header della response HTTP
+        dovranno essere:
+        * Content-Type: application/pdf
+        * Content-Disposition: inline; filename="certificato-revoca.pdf" 
+      produces:
+        - application/pdf
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_content_disposition'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            Content-Disposition:
+              type: string
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/controllo-combinazione':
+    post:
+      summary: Controllo combinazione
+      description:  |
+        Restituisce informazioni relative alla combinazione richiesta.
+        
+        Grazie ai dati nella response il front-end è in grado di richiedere i dati
+        corretti al cittadino e di mostrargli le giuste pagine.
+        
+        Questo endpoint sarà chiamato dal front-end solo dopo che il cittadino:
+        * Ha selezionato il nuovo medico
+        * Ha inserito/modificato/confermato cittadinanza, domicilio e residenza
+      consumes:
+        - application/json                    
+      produces:
+        - application/json        
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/payload_controllo_combinazione'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_controllo_combinazione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/cambio-medico/richiesta':
+    post:
+      summary: Richiesta nuovo medico
+      description:  |
+        Permette all'assistito di richiedere un nuovo medico o di salvare in bozza una richiesta.
+        
+        In particolare se il cittadino sta salvando una bozza, il campo "bozza" del payload della
+        request sarà valorizzato a true. Questo dovrebbe permettere al back-end di capire che il
+        cittadino sta provando a salvare una bozza e non intende ancora inviare la richiesta di
+        cambio medico perché probabilmente non ha a disposizione tutti i documenti necessari.
+        
+        Inoltre, dal momento che i dati inseriti dal cittadino variano in base a svariate condizioni,
+        non tutti i campi presenti nel payload della request saranno valorizzati.
+        Verosimilmente, se il cittadino intende fare una richiesta di cambio medico per motivi
+        di lavoro, probabilmente tutti i dati aggiuntivi che iniziano con lavoro_ saranno popolati
+        a differenza di tutti quelli che iniziano con studio_ o ricongiungimento_.
+        
+        Infine, il campo assistenza_temporanea_data_fine_validita sarà popolato solo se, il front-end
+        dopo aver capito che si tratta di un'assistenza temporanea ha chiesto al cittadino se rinnovarla
+        e quest'ultimo ha deciso di rinnovarla impostando la nuova data di scadenza.
+        
+        Lo stesso discorso vale per gli allegati. Nella request saranno presenti solo quelli
+        inseriti dal cittadino.
+      consumes:
+        - application/json                    
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/payload_richiesta_cambio_medico'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_cambio_medico_richiesta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/cambio-medico/richiesta/{richiesta_id}/rettifica':
+    post:
+      summary: Rettifica richiesta
+      description:  |
+        Permette all'assistito di richiedere la rettifica di una richiesta di cambio medico.
+        
+        In pratica l'assistito effettua una richiesta cambio medico destinata al back-office,
+        un operatore analizza tale richiesta e richiede all'assistito una rettifica per vari motivi (es. uno dei documenti allegati non è abbastanza leggibile). A questo punto la richiesta di cambio medico dovrebbe trovarsi in uno stato di rettifica (es. RETTIFICA_RICHIESTA) ed il front-end mostrerà all'assistito il bottone "Rettifica" per permettergli di rettificarla.
+        
+        Una rettifica consiste nella modifica parziale o totale degli allegati già presenti con una nota a corredo.
+        
+      consumes:
+        - application/json                    
+      produces:
+        - application/json              
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'
+        - $ref: '#/parameters/payload_richiesta_rettifica'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_cambio_medico_richiesta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/cambio-medico/richiesta/{richiesta_id}/pdf':
+    get:
+      summary: Stampa richiesta
+      description:  |
+        Restituisce il PDF con la richiesta di cambio medico.
+
+        Permette al front-end di visualizzare il PDF con la richiesta del cambio medico.
+        Tale PDF va generato lato back-end.
+        La response HTTP dovrà avere gli header:
+        * Content-Type: application/pdf
+        * Content-Disposition: attachment
+
+        Tra l'altro il comportamento dell'header Content-Disposition potrà essere
+        pilotato dal front-end attraverso il query params opzionale content_disposition che potrebbe
+        assumere il valore "inline". In questo caso gli header della response HTTP
+        dovranno essere:
+        * Content-Type: application/pdf
+        * Content-Disposition: inline
+      produces:
+        - application/pdf
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'
+        - $ref: '#/parameters/query_content_disposition'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            Content-Disposition:
+              type: string
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/modulo-delegante/pdf':
+    post:
+      summary: Stampa del modulo delegante
+      consumes:
+        - application/pdf      
+      produces:
+        - application/pdf
+        - application/json
+      description:  |
+        Permette all'assistito di scaricare un modulo da far firmare al delegante.
+        Tale PDF va generato lato back-end.
+        La response HTTP dovrà avere gli header:
+        * Content-Type: application/pdf
+        * Content-Disposition: attachment; filename="modulo-delegante.pdf" 
+        
+        Tra l'altro il comportamento dell'header Content-Disposition potrà essere
+        pilotato dal front-end attraverso il query params opzionale content_disposition che potrebbe
+        assumere il valore "inline". In questo caso gli header della response HTTP
+        dovranno essere:
+        * Content-Type: application/pdf
+        * Content-Disposition: inline; filename="modulo-delegante.pdf" 
+        
+        Il front-end passerà come payload della request tutti i dati chiesti fino a quel momento
+        al cittadino e che dovrebbero permettere al back-end di precompilare il modulo
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_content_disposition'
+        - $ref: '#/parameters/payload_modulo_delegante'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/controllo-allegati':
+    post:
+      summary: Controllo allegati
+      description:  |
+        Restituisce l'elenco degli allegati richiesti ai cittadini stranieri e il tipo di assistenza.
+
+        Grazie ai dati nella response il front-end è in grado di richiedere gli allegati
+        corretti al cittadino e di sapere se l'utente avrà assistenza temporanea o illimitata per poter mostrargli le giuste pagine.
+
+        Questo endpoint sarà chiamato dal front-end solo dopo che il cittadino:
+        * Ha selezionato il nuovo medico
+        * Ha inserito/modificato/confermato cittadinanza, domicilio e residenza
+        * Se l'utente è straniero
+        * Il controllo assistenza e scelta motivazione di soggiorno
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/payload_controllo_allegati'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_controllo_allegati'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError' 
+  '/cittadini/{cit_id}/allegato/{allegato_id}':
+    get:
+      summary: Scarica allegato
+      description:  |
+        Restituisce l'allegato richiesto.
+        Da inserire negli header di risposta 
+        Content-Disposition attachment; filename  
+      produces:
+        - application/json
+        - application/pdf
+        - image/png
+        - image/gif
+        - image/jpeg
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_allegato_id'
+      
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            Content-Disposition:
+              type: string
+              description: filename nome del file completo di estensione
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  path_cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  path_medico_id:
+    in: path
+    name: medico_id
+    type: string
+    required: true
+    description: l'id del medico
+  path_richiesta_id:
+    in: path
+    name: richiesta_id
+    type: string
+    required: true
+    description: l'id della richiesta
+  path_allegato_id:
+    in: path
+    name: allegato_id
+    type: string
+    required: true
+    description: id del documento allegato del cittadino
+  query_format:
+    in: query
+    name: format
+    type: string
+    required: false
+    description: |
+      Permette di definire il formato di ritorno. Di default è json, ma può essere impostato a pdf
+  query_content_disposition:
+    in: query
+    name: content_disposition
+    type: string
+    required: false
+    description: |
+      Permette di definire l'header Content-Disposition che il servizio deve restituire. Di default è 'attachment', ma può essere impostato ad 'inline' per far scatenare il download
+  query_limit:
+    in: query
+    name: limit
+    type: integer
+    required: false
+    description: |
+      Imposta un limite al numero di record restituiti.
+      Permette di paginare i risultati.
+  query_offset:
+    in: query
+    name: offset
+    type: integer
+    required: false
+    description: |
+      Imposta l'indice del primo elemento della lista restituita.
+      Permette di paginare i risultati.
+  payload_monitora_medico:
+    in: body
+    name: payload_monitora_medico
+    required: true
+    description: | 
+      I dati che il client deve passare al servizio per aggiungere un medico alla lista dei monitorati
+    schema:
+      $ref: '#/definitions/model_monitora_medico'
+  payload_controllo_combinazione:
+    in: body
+    name: payload
+    required: true
+    description: | 
+      I dati che il client deve passare al servizio per richiedere un controllo combinazione
+    schema:
+      type: object
+      properties:
+        medicoAltraRegione:
+          type: boolean
+          description:  true se il cittadino ha un medico in altra regione, false altrimenti
+          example: true
+        rinnovoAssistenza:
+          type: boolean
+          description: indica se si tratta o meno di un rinnovo dell'assistenza
+        cittadinanza:
+          $ref: '#/definitions/model_cittadinanza'
+        domicilio:
+          $ref: '#/definitions/model_cittadino_domicilio'
+        residenza:
+          $ref: '#/definitions/model_cittadino_residenza'
+        medico:
+          $ref: '#/definitions/model_ambulatorio_loccsi_medico'
+
+      required:
+        - medico
+        - medico_altra_regione
+        - cittadinanza
+        - domicilio
+        - residenza
+  payload_richiesta_cambio_medico:
+    in: body
+    name: payload
+    required: true
+    description: | 
+      I dati che il client deve passare al servizio per richiedere un controllo combinazione
+    schema:
+      type: object
+      properties:
+        bozza:
+          type: boolean
+          description: true se si tratta di una bozza, false altrimenti
+        rinnovoAssistenza:
+          type: boolean
+          description: indica se si tratta o meno di un rinnovo dell'assistenza   
+        controlloCombinazione:
+          $ref: '#/definitions/model_controllo_combinazione'
+        medico:
+          $ref: '#/definitions/model_ambulatorio_loccsi_medico'
+        cittadinanza:
+          $ref: '#/definitions/model_cittadinanza'
+        domicilio:
+          $ref: '#/definitions/model_cittadino_domicilio'
+        residenza:
+          $ref: '#/definitions/model_cittadino_residenza'
+        recapiti:
+          $ref: '#/definitions/model_cittadino_recapiti'
+        medicoAltraRegione:
+          $ref: '#/definitions/model_cambio_medico_medico_altra_regione'
+        datiAggiuntivi:
+          $ref: '#/definitions/model_cambio_medico_richiesta_dati_aggiuntivi'
+        delegato:
+          $ref: '#/definitions/model_delegato'
+        allegati:
+          $ref: '#/definitions/model_allegati'
+      required:
+        - medico
+        - controlloCombinazione
+        - medicoAltraRegione
+        - cittadinanza
+        - domicilio
+        - residenza
+        - bozza
+  payload_richiesta_rettifica:
+    in: body
+    name: payload
+    required: true
+    description: | 
+      I dati che il client deve passare al servizio per segnalare una rettifica nella richiesta di cambio medico
+    schema:
+      type: object
+      properties:
+        note:
+          type: string
+          description: Eventuali note che l'utente inserisce per comunicare con l'operatore
+          example: 'Ho caricato di nuovo il documento come richiesto'
+        allegati:
+          $ref: '#/definitions/model_allegati'
+  payload_modulo_delegante:
+    in: body
+    name: payload
+    required: true
+    description: | 
+      I dati che il client deve passare al servizio per richiedere un controllo combinazione
+    schema:
+      type: object
+      properties:
+        medico:
+          $ref: '#/definitions/model_ambulatorio_loccsi_medico'
+        cittadinanza:
+          $ref: '#/definitions/model_cittadinanza'
+        domicilio:
+          $ref: '#/definitions/model_cittadino_domicilio'
+        residenza:
+          $ref: '#/definitions/model_cittadino_residenza'
+        recapiti:
+          $ref: '#/definitions/model_cittadino_recapiti'
+        medicoAltraRegione:
+          $ref: '#/definitions/model_cambio_medico_medico_altra_regione'
+        generalitaAssistito:
+          $ref: '#/definitions/model_generalita_assistito'
+        datiAggiuntivi:
+          $ref: '#/definitions/model_cambio_medico_richiesta_dati_aggiuntivi'
+      required:
+        - medico
+        - cittadinanza
+        - domicilio
+        - residenza
+  payload_disponibilita:
+    in: body
+    name: payload
+    required: true
+    description: | 
+      I dati dei medici di cui si vuole ottenre le disponibilità
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/model_ambulatorio_loccsi_medico'
+  payload_controllo_allegati:
+    in: body
+    name: payload
+    required: true
+    description: |
+      I dati che il client deve passare al servizio per richiedere un controllo allegati
+    schema:
+      type: object
+      properties:
+        cittadinanza:
+          $ref: '#/definitions/model_cittadinanza'
+        motivazioneSoggiorno:
+          $ref: '#/definitions/model_motivazione_soggiorno'
+        aslIscrizione:
+          $ref: '#/definitions/model_asl'
+        aslDomicilio:
+            $ref: '#/definitions/model_asl'
+        aslResidenza:
+            $ref: '#/definitions/model_asl'
+      required:
+        - cittadinanza
+        - motivazione_soggiorno
+        - asl_iscrizione
+        - asl_domicilio
+        - asl_residenza
+  payload_revoca_medico:
+    in: body
+    name: payloadRevocaMedico
+    description: Motivazione pre la revoca del medico
+    schema:
+      type: object
+      properties:
+        motivoRevoca:
+          type: string
+          description: Motivazione per la revoca del medico
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizioAttivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  model_asl:
+    title: 'Asl'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '208'
+      descrizione:
+        type: string
+        description: descrizione della cittadinanza
+        example: 'ASL Biella'
+  model_cittadinanza:
+    title: 'Cittadinanza'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: 'IT'
+      descrizione:
+        type: string
+        description: descrizione della cittadinanza
+        example: 'Italiana'
+      comunitario:
+        type: boolean
+        description: true se si tratta di un Paese comunitario, false altrimenti
+        example: true        
+  model_motivazione_soggiorno:
+    title: 'Motivazione soggiorno'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '0018'
+      descrizione:
+        type: string
+        description: testo della motivazione
+        example: 'Lavoro autonomo'
+      cittadiniComunitari:
+        type: boolean
+        description: true se la motivazione di soggiorno è per cittadini comunitari, false altrimenti
+        example: true        
+  model_motivazione_domicilio:
+    title: 'Motivazione domicilio'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '85'
+      descrizione:
+        type: string
+        description: testo della motivazione
+        example: 'Lavoro'
+  model_cittadino_domicilio:
+    title: Cittadino Domicilio
+    description: Rappresenta il domicilio del cittadino
+    type: object
+    properties:
+      comune:
+        type: string
+        description: Il nome del comune inserito dall'utente
+        example: Torino
+      codComune:
+        type: string
+        description: codice istat comune
+        example: 001272               
+      cap:
+        type: string
+        description: Il CAP inserito dall'uente
+        example: 10100
+      indirizzo:
+        type: string
+        description: L'indirizzo inserito dall'utente
+        example: 'Corso unione sovietica'
+      civico:
+        type: string
+        description: Il numero civico inserito dall'utente
+        example: 18A
+  model_cittadino_recapiti:
+    title: Cittadino Recapiti
+    description: Rappresenta i recapiti del cittadino
+    type: object
+    properties:
+      telefono:
+        type: string
+        description: Il numero di telefono inserito dall'utente
+        example: '3384258847'
+      telefonoSecondario:
+        type: string
+        description: Il numero di telefono secondario inserito dall'utente
+        example: '0119875985'
+      indirizzoEmail:
+        type: string
+        description: L'indirizzo email inserito dall'utente
+        example: 'alessandro.napoli@email.com'        
+  model_cittadino_residenza:
+    title: Cittadino Residenza
+    description: Rappresenta la residenza del cittadino
+    type: object
+    properties:
+      nazione:
+        type: string
+        description: La nazione inserita dall'utente
+        example: Italia
+      regione:
+        type: string
+        description: Il nome della regione inserito dall'utente
+        example: Lombardia
+      comune:
+        type: string
+        description: Il nome del comune inserito dall'utente
+        example: Milano
+      codComune:
+        type: string
+        description: codice istat comune
+        example: 001272                       
+      cap:
+        type: string
+        description: Il CAP inserito dall'uente
+        example: 20090
+      indirizzo:
+        type: string
+        description: L'indirizzo inserito dall'utente
+        example: Via Roma
+      civico:
+        type: string
+        description: Il numero civico inserito dall'utente
+        example: 3
+  model_cittadino_info_medico:
+    title: 'Cittadino Info Medico'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '6545486'
+      codiceFiscale:
+        type: string
+        description: Il codice fiscale del medico
+        example: 'MRARSS78M14I235F'
+  model_cittadino_info:
+    title: 'Cittadino info'
+    type: object
+    properties:
+      idAura:
+        type: number
+        description: |
+          L'id dell'assistito su AURA se presente, altrimenti null
+        example: null
+      codiceFiscale:
+        type: string
+        description: Il codice fiscale del cittadino
+        example: 'NPLLSN90M14I804E'
+      nome:
+        type: string
+        description: Nome del cittadino
+        example: 'Alessandro'
+      cognome:
+        type: string
+        description: Cognome del cittadino
+        example: 'Napoli'
+      dataNascita:
+        type: string
+        format: date
+        description: La data di nascita del cittadino
+        example: '1990-08-14'
+      sesso:
+        type: string
+        description: Il sesso del cittadino
+        example: 'M'
+      dataInizioAssistenza:
+        type: string
+        format: date
+        description: La data di inizio dell'assistenza
+        example: '2020-01-01'
+      dataFineAssistenza:
+        type: string
+        format: date
+        description: La data di fine assistenza o null se l'assistenza è illimitata. Se la data_fine_assistenza è impostata allora si tratta di assistenza temporanea.
+        example: '2020-06-01'
+      dataInizioAssistenzaMedico:
+        type: string
+        format: date
+        description: La data di inizio assistenza con il medico attuale
+        example: '2020-01-01'
+      comuneNascita:
+        type: string
+        description: Il comune di nascita
+        example: "Roma"
+      medicoAltraRegione:
+        type: boolean
+        description: true se il cittadino ha un medico in un'altra regione, false altrimenti
+        example: false
+      dataRevocaMedico:
+        type: string
+        format: date
+        description: La data di reovoca del medico
+        example: null
+      dataRevocaAssistenza:
+        type: string
+        format: date
+        description: La data di reovoca assistenza. Se valorizzato vuol dire che l'assistenza è nello stato "Revocata"
+        example: null
+      statoAssistenza:
+        type: string
+        description: Lo stato dell'assitenza
+        example: 'ATTIVA'
+      aslAssistenza:
+        $ref: '#/definitions/model_asl'
+      cittadinanza:
+        $ref: '#/definitions/model_cittadinanza'
+      domicilio:
+        $ref: '#/definitions/model_cittadino_domicilio'
+      residenza:
+        $ref: '#/definitions/model_cittadino_residenza'
+      recapiti:
+        $ref: '#/definitions/model_cittadino_recapiti'
+      medico:
+        $ref: '#/definitions/model_cittadino_info_medico'
+      richiestaCambio:
+        $ref: '#/definitions/model_cambio_medico_richiesta'
+  model_allegati:
+    type: array
+    items:
+      $ref: '#/definitions/model_documento'        
+  model_documento:
+    title: 'Documento'
+    type: object
+    properties:
+      tipo:
+        type: string
+        description: Identificativo univoco - Tipologia dell'allegato richiesto
+        example: '17'
+      nomeFile:
+        type: string
+        description: il nome del file
+        example: 'nome-file.pdf'
+      descrizione:
+        type: string
+        description: Descrizione dell'allegato richiesto
+        example: 'Attestato di soggiorno permanente'
+      base64:
+        type: string
+        description: Il file codificato in base_64
+        example: 'ZGVsZmlubyBjdXJpb3NvIDop'
+      stranieri:
+        type: boolean
+        description: true se il documento è richiesto solo per i cittadini stranieri, false se per tutte le cittadinanze
+        example: true
+  model_documento_lettura:
+    title: '[Lettura] Documento'
+    type: object
+    properties:
+      id:
+        type: string
+        example: 1    
+      tipo:
+        type: string
+        description: Identificativo univoco - Tipologia dell'allegato richiesto
+        example: '17'
+      descrizione:
+        type: string
+        description: Descrizione dell'allegato richiesto
+        example: 'Attestato di soggiorno permanente'
+      nomeFile:
+        type: string
+  model_monitora_medico:
+    title: 'Ambulatorio LOCCSI Medico'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '6545486'
+      nome:
+        type: string
+        description: Il nome del medico trovato
+        example: 'Mario'
+      cognome:
+        type: string
+        description: Il cognome del medico trovato
+        example: 'Rossi'
+      sesso:
+        type: string
+        description: Il sesso del medico
+        example: 'M'
+      dataNascita:
+        type: string
+        description: La data di nascita del medico
+        format: date
+        example: "1978-02-07"
+      codiceFiscale:
+        type: string
+        description: Il codice fiscale del medico
+        example: 'MRARSS78M14I235F'
+      mail:
+        type: string
+        description: La mail del medico
+        example: 'mario.rossi@biella.asl.it'
+      specializzazioni:
+        type: string
+        description: Le specializzazioni del medico
+      autolimitato:
+        type: boolean
+        description: true se il medico si è autolimitato, fale altrimenti
+        example: true
+      massimale:
+        type: integer
+        description: Il massimale del medico
+        example: 1500
+      massimaleDeroga:
+        type: integer
+        description: Il massimale del medico per deroghe
+        example: 1575
+      massimaleAssistenzaTemporanea:
+        type: integer
+        description: Il massimale per le assistenze temporanee
+        example: 0
+      massimaleInfanzia:
+        type: integer
+        description: Il massimale per minorenni in una determinata fascia di età
+        example: 0
+      codiceRegionale:
+        type: string
+        description: Un codice univoco del medico a livello regionale
+        example: "018623U"
+      distretto:
+        $ref: '#/definitions/model_medico_distretto'
+      ambito:
+        $ref: '#/definitions/model_medico_ambito'
+      tipologia:
+        $ref: '#/definitions/model_medico_tipologia'
+      asl:
+        $ref: '#/definitions/model_asl'
+      disponibilita:
+        $ref: '#/definitions/model_disponibilita_medico_monitorato'
+  model_ambulatorio_loccsi_medico:
+    title: 'Ambulatorio LOCCSI Medico'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '6545486'
+      nome:
+        type: string
+        description: Il nome del medico trovato
+        example: 'Mario'
+      cognome:
+        type: string
+        description: Il cognome del medico trovato
+        example: 'Rossi'
+      sesso:
+        type: string
+        description: Il sesso del medico
+        example: 'M'
+      dataNascita:
+        type: string
+        description: La data di nascita del medico
+        format: date
+        example: "1978-02-07"
+      codiceFiscale:
+        type: string
+        description: Il codice fiscale del medico
+        example: 'MRARSS78M14I235F'
+      mail:
+        type: string
+        description: La mail del medico
+        example: 'mario.rossi@biella.asl.it'
+      specializzazioni:
+        type: string
+        description: Le specializzazioni del medico
+      autolimitato:
+        type: boolean
+        description: true se il medico si è autolimitato, fale altrimenti
+        example: true
+      massimale:
+        type: integer
+        description: Il massimale del medico
+        example: 1500
+      massimaleDeroga:
+        type: integer
+        description: Il massimale del medico per deroghe
+        example: 1575
+      massimaleAssistenzaTemporanea:
+        type: integer
+        description: Il massimale per le assistenze temporanee
+        example: 0
+      massimaleInfanzia:
+        type: integer
+        description: Il massimale per minorenni in una determinata fascia di età
+        example: 0
+      codiceRegionale:
+        type: string
+        description: Un codice univoco del medico a livello regionale
+        example: "018623U"
+      distretto:
+        $ref: '#/definitions/model_medico_distretto'
+      ambito:
+        $ref: '#/definitions/model_medico_ambito'
+      tipologia:
+        $ref: '#/definitions/model_medico_tipologia'
+      asl:
+        $ref: '#/definitions/model_asl'
+  model_medico_distretto:
+    title: 'Medico Distretto'
+    type: object
+    properties:
+      codice:
+        type: integer
+        description: Il codice del distretto di appartenenza del medico
+      descrizione:
+        type: string
+        description: Descrizione testuale del distretto di appartenenza del medico
+  model_medico_ambito:
+    title: 'Medico Ambito'
+    type: object
+    properties:
+      ambitoCodice:
+        type: string
+        description: Il codice dell'ambito del medico
+        example: 2G
+      ambitoDescrizione:
+        type: string
+        description: Una descrizione testuale dell'ambito del medico
+        example: Ambito MMG 2G - Gassino Torinese
+  model_medico_tipologia:
+    title: 'Medico tipologia'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: 'MG'
+      descrizione:
+        type: string
+        description: Descrizione della tipologia
+        example: 'Medico'
+  model_associazione:
+    title: 'Associazione'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '32568'
+      nome:
+        type: string
+        description: Il nome dell'associazione
+        example: 'ASL TO ASS. 130'
+      cap:
+        type: string
+        description: Il CAP dell'associazione
+      comune:
+        type: string
+        description: Il comune dell'associazione
+      indirizzo:
+        type: string
+        description: L'indirizzo dell'associazione
+      numeroCivico:
+        type: string
+        description: Il numero civico dell'associazione
+      telefono:
+        type: string
+        description: Il telefono dell'associazione
+      medici:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Identificativo univoco
+              example: '32568'
+            codiceFiscale:
+              type: string
+              description: Il codice fiscale del medico
+            nome:
+              type: string
+              description: Il nome del medico
+              example: 'Luigi'
+            cognome:
+              type: string
+              description: Il cognome del medico
+              example: 'Verdi'
+            sesso:
+              type: string
+              description: Il sesso del medico
+            dataNascita:
+              type: string
+              format: date
+              description: La data di nascita del medico
+  model_disponibilita:
+    title: 'Disponibilita'
+    type: object
+    properties:
+      monitorabile:
+        type: boolean
+        description: true se il medico è monitorabile, false altrimenti
+        example: true
+      selezionabile:
+        type: boolean
+        description: true se è possibile selezionare il medico, false altrimenti
+        example: false
+      selezionabileRicongiungimentoFamiliare:
+        type: boolean
+        description: true se è possibile selezionare il medico per un ricongiungimento familiare, false altrimenti
+        example: true
+      selezionabileAssistenzaTemporanea:
+        type: boolean
+        description: true se è possibile selezionare il medico per assistenza temporanea, false altrimenti
+      selezionabileInfanzia:
+        type: boolean
+        description: true se è possibile selezionare il medico (solitamente il pediatra) per assistenza di bambini da 0 a 6 anni, false altrimenti
+      medicoId:
+        type: string
+        description: L'id del medico
+      medicoCodiceFiscale:
+        type: string
+        description: Il codice fiscale del medico
+  model_controllo_combinazione:
+    title: 'Controllo combinazione'
+    type: object
+    properties:
+      ammessa:
+        type: boolean
+        description: |
+          true se la combinazione è ammessa, false altrimenti.
+          
+          Se false il front-end blocca la procedura notificando all'utente
+          l'inammissibilità della soluzione scelta
+        example: true
+      derogaTerritoriale:
+        type: boolean
+        description: |
+          true se c'è deroga territoriale, false altrimenti.
+          
+          Se true il front-end richiederà all'utente il consenso del medico
+        example: true
+      derogaAssociazione:
+        type: boolean
+        description: |
+          true se c'è deroga per associazione, false altrimenti
+          
+          Se true il front-end richiederà all'utente il consenso del medico
+        example: false
+      derogaPls:
+        type: boolean
+        description: |
+          true se c'è deroga per pediatra, false altrimenti
+          
+          Se true il front-end richiederà all'utente il consenso del medico
+        example: false
+      derogaMmg:
+        type: boolean
+        description: |
+          true se c'è deroga per medico generale, false altrimenti
+          
+          Se true il front-end richiederà all'utente il consenso del medico
+        example: false
+      variazioneAsl:
+        type: boolean
+        description: |
+          true se c'è una variazione dell'asl di domicilio o residenza rispetto a quelle presenti nel sistema, false altrimenti
+        example: true
+      ricusazione:
+        type: boolean
+        description: |
+         Indica se il medico non vuole più essere scelto da un assistito
+      aslIscrizione:
+        $ref: '#/definitions/model_asl'
+      aslDomicilio:
+        $ref: '#/definitions/model_asl'
+      aslResidenza:
+        $ref: '#/definitions/model_asl'
+  model_cambio_medico_richiesta:
+    title: 'Richiesta cambio medico'
+    description: |
+      La richiesta cambio medico rappresenta sia le richieste in bozza, sia le richieste pendenti, cioè quelle richieste che sono in attesa di verifica da parte di un operatore di back-office.
+      
+      Per distinguere tra richieste pendenti ed in bozza è presente il flag "bozza" che verrà impostato dal front-end al momento della richiesta.
+      
+      I dati_aggiuntivi e gli allegati sono dati che vengono passati dal front-end al momento della richiesta
+      e sono inseriti dal cittadino in base alla natura della richiesta cambio medico (lavoro, studio, delega, ricnongiungimento ecc.).
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '464151'
+      tipologia:
+        type: string
+        description: Indica la tipologia di richiesta
+        enum:
+          - BOZZA
+          - AUTOMATICA
+          - BACK-OFFICE
+        example: BACK-OFFICE
+      bozza:
+          type: boolean
+          description: |
+            true se si tratta di una bozza, false altrimenti
+            
+            Permette di distinguere tra bozza e richiesta pendente
+      annullabile:
+          type: boolean
+          description: |
+            true se la richiesta è annullabile, false altrimenti
+            ri
+            Permette al front-end di mostrare o meno il bottone "annulla" sulla richiesta del medico.
+      rettificabile:
+          type: boolean
+          description: |
+            true se è possibile rettificare la richiesta, false altrimenti
+            
+            Permette al front-end di mostrare o meno il bottone "rettifica" sulla richiesta del medico.
+      rinnovoAssistenza:
+          type: boolean
+          description: indica se si tratta o meno di un rinnovo dell'assistenza   
+      stato:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Identificativo univoco
+            example: 'RICHIESTA'
+          nome:
+            type: string
+            description: Il nome dello stato
+            example: 'Richiesta'
+      cittadinanza:
+        $ref: '#/definitions/model_cittadinanza'
+      domicilio:
+        $ref: '#/definitions/model_cittadino_domicilio'
+      residenza:
+        $ref: '#/definitions/model_cittadino_residenza'
+      recapiti:
+        $ref: '#/definitions/model_cittadino_recapiti'
+      medico:
+        $ref: '#/definitions/model_cittadino_info_medico'
+      medicoAltraRegione:
+        $ref: '#/definitions/model_cambio_medico_medico_altra_regione'
+      datiAggiuntivi:
+        $ref: '#/definitions/model_cambio_medico_richiesta_dati_aggiuntivi'
+      allegati:
+        type: array
+        items:
+          $ref: '#/definitions/model_documento_lettura'
+      chatOperatore:
+        type: array
+        items:
+          $ref: '#/definitions/model_cambio_medico_richiesta_chat_operatore'
+  model_cambio_medico_richiesta_dati_aggiuntivi:
+    title: 'Dati aggiuntivi richiesta'
+    type: object
+    properties:
+      motivazioneSoggiorno:
+        $ref: '#/definitions/model_motivazione_soggiorno'
+      motivazioneDomicilio:
+        $ref: '#/definitions/model_motivazione_domicilio'
+      assitenzaTemporaneaDataFineValidita:
+        type: string
+        format: date
+        description: |
+          La nuova data di scadenza dell'assistenza temporanea.
+          Nel caso in cui il front-end capisce che il cittadino sta operando in assistenza temporanea
+          gli chiederà se intende rinnovare tale assistenza.
+          Il cittadino, se decide di rinnovare, potrà impostare la nuova data di scadenza.
+        example: '2020-12-31'
+      motivazioneDomanda:
+        type: string
+        description: motivazione per le domande in deroga di ambito
+      note: 
+        type: string
+        description: Note inserite dall'utente e destinate all'operatore
+        example: "Ho allegato carta d'identità e consenso medico"
+        
+      # IN CASO motivo_domicilio CORRISPONDA AL LAVORO
+      # ----------------------------------------------
+      lavoroTipologia:
+        type: string
+        description: un codice che identifica la tipologia di lavoro selezionato dall'utente
+        enum:
+          - AUTONOMO
+          - SUBORDINATO
+        example: 'SUBORDINATO'
+      lavoroProfessione:
+        type: string
+        description: La professione dichiarata
+        example: 'Web Developer'
+      lavoroPartitaIva:
+        type: string
+        description: La partita iva del cittadino
+        example: '1234567891234'
+      lavoroNumeroIscrizione:
+        type: string
+        description: Il numero dell'iscrizione all'ordine professionale / collegio / camera di commercio
+        example: '956568486'
+      lavoroAzienda:
+        type: string
+        description: L'azienda presso cui lavora l'assistito o il suo datore di lavoro
+        example: 'CSI Piemonte'
+      lavoroAziendaTelefono:
+        type: string
+        description: Il numero del datore di lavoro
+        example: null
+      lavoroAziendaProvincia:
+        type: string
+        description: La provincia dell'azienda
+        example: 'Torino'
+      lavoroAziendaComune:
+        type: string
+        description: Il comune dell'azienda
+        example: 'Torino'
+      lavoroAziendaIndirizzo:
+        type: string
+        description: L'indirizzo dell'azienda
+        example: 'Corso Unione Sovietica'
+      lavoroAziendaCivico:
+        type: string
+        description: Il civico dell'azienda
+        example: '13'
+      lavoroDataFineValiditaContratto:
+        type: string
+        format: date
+        description: La data del termine del contratto
+        example: '2020-12-31'
+        
+      # IN CASO motivo_domicilio CORRISPONDA ALLO STUDIO
+      # ----------------------------------------------
+      studioNomeIstituto:
+        type: string
+        description: Il nome dell'istituto presso cui dichiara di studiare il cittadino
+        example: 'Politecnico di Torino'
+      studioIstitutoProvincia:
+        type: string
+        description: La provincia dell'azienda
+        example: 'Torino'
+      studioIstitutoComune:
+        type: string
+        description: Il comune dell'azienda
+        example: 'Torino'
+      studioIstitutoIndirizzo:
+        type: string
+        description: L'indirizzo dell'azienda
+        example: 'Corso Unione Sovietica'
+      studioIstitutoCivico:
+        type: string
+        description: Il civico dell'azienda
+        example: '13'
+      studioDataTermineIscrizione:
+        type: string
+        format: date
+        description: La data della scadenza dell'iscrizione presso l'istutito
+        example: '2020-09-01'
+      
+      # IN CASO motivo_domicilio CORRISPONDA AL RICONIUNGIMENTO FAMILIARE
+      # -------------------------------------------------------
+      ricongiungimentoNome:
+        type: string
+        description: Il nome del parente
+        example: 'Paolo'
+      ricongiungimentoCognome:
+        type: string
+        description: Il cognome del parente
+        example: 'Bianchi'
+      ricongiungimentoCodiceFiscale:
+        type: string
+        description: Il nome del parente
+        example: 'PLOBNC88M14I987S'
+      ricongiungimentoParentela:
+        type: string
+        description: Il rapporto di parentela con il parente
+        example: 'Padre'
+  model_cambio_medico_richiesta_chat_operatore:
+    title: Chat operatore richiesta
+    description: |
+      Rappresenta l'elenco delle note scambiate tra il cittadino e l'operatore su una richiesta di cambio medico.
+      
+      Tramite questi dati il front-end può mostrare al cittadino delle informazioni utili (soprattutto in caso di rettifica) per completare con successo il cambio del medico.
+    type: object
+    properties:
+      cittadino:
+        type: boolean
+        description: true se il messaggio/nota appartiene al cittadino, false altrimenti
+        example: true
+      data:
+        type: string
+        format: datetime
+        description: La data in cui è stato mandato il messaggio/nota
+        example: "2020-02-07T14:14:39.420Z"
+      testo:
+        type: string
+        description: Il testo della nota
+        example: "Ho allegato la carta d'identità"
+  model_cambio_medico_medico_altra_regione:
+    title: Dati del medico precedente
+    description: |
+      Rappresenta le informazioni del medico precedente. (nel caso si tratti di un medico di altra regione).
+    type: object
+    properties:
+      regione:
+        type: string
+        description: regione di appartenenza del medico.
+        example: 'Toscana'
+      aziendaSanitaria:
+        type: string
+        description: Azienda samìnitaria di appartenenza del medico.
+        example: 'Azienda USL Toscana Nord-Ovest'
+      nome:
+        type: string
+        description: Nome del medico.
+        example: 'Carlotta'
+      cognome:
+        type: string
+        description: Cognome del medico.
+        example: 'Rissone'
+  model_generalita_assistito:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del cittadino
+        example: 'Mario'
+      cognome:
+        type: string
+        description: cognome del cittadino
+        example: 'Rossi'
+      dataNascita:
+        type: string
+        format: date
+        description: data di nascita del cittadino
+      comuneNascita:
+        type: string
+  model_controllo_allegati:
+    title: 'Controllo allegati'
+    type: object
+    properties:
+      allegati:
+        type: array
+        items:
+          $ref: '#/definitions/model_allegato_tipo'
+      assistenzaTemporaneaStranieri:
+        type: boolean
+        description: |
+          true se l'assistenza è temporanea, false se illimitata.
+
+          Se true il front-end verificherà i massimali dei temporanei.
+        example: true
+  model_allegato_tipo:
+    title: 'Tipo di Allegato richiesto'
+    type: object
+    properties:
+      tipo:
+        type: string
+        description: Identificativo univoco - Tipologia dell'allegato richiesto
+        example: '17'
+      descrizione:
+        type: string
+        description: Descrizione dell'allegato richiesto
+        example: 'Attestato di soggiorno permanente'
+      stranieri:
+        type: boolean
+        description: true se il documento è richiesto solo per i cittadini stranieri, false se per tutte le cittadinanze
+        example: true        
+  model_delegato:
+    type: object
+    properties:
+      codiceFiscale: 
+        type: string 
+        description: codice fiscale del delegato
+        example: 'MRARSS78M14I235F'
+      nome:
+        type: string
+        description: nome del delegato
+        example: 'Mario'
+      cognome:
+        type: string
+        description: cognome del delegato
+        example: 'Rossi'
+  model_medico_monitorato:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+        example: '6545486'
+      codiceFiscale:
+        type: string
+        description: Il codice fiscale del medico
+        example: 'MRARSS78M14I235F'
+      nome:
+        type: string
+        description: Il nome del medico
+        example: 'Mario'
+      cognome:
+        type: string
+        description: Il cognome del medico
+        example: 'Rossi'
+  model_disponibilita_medico_monitorato:
+    title: 'Disponibilita medico monitorato'
+    type: object
+    properties:
+      selezionabile:
+        type: boolean
+        description: true se è possibile selezionare il medico, false altrimenti
+        example: false
+      selezionabileRicongiungimentoFamiliare:
+        type: boolean
+        description: true se è possibile selezionare il medico per un ricongiungimento familiare, false altrimenti
+        example: true
+      selezionabileAssistenzaTemporanea:
+        type: boolean
+        description: true se è possibile selezionare il medico per assistenza temporanea, false altrimenti
+      selezionabileInfanzia:
+        type: boolean
+        description: true se è possibile selezionare il medico (solitamente il pediatra) per assistenza di bambini da 0 a 6 anni, false altrimenti
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+  filtri_stringhe:
+    title: '[FILTRI][CRITERI] Stringhe'
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  filtri_numeri:
+    title: '[FILTRI][CRITERI] Numeri'
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  filtri_date:
+    title: '[FILTRI][CRITERI] Date'
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  filtri_booleani:
+    title: '[FILTRI][CRITERI] Booleani'
+    type: object
+    properties:
+      eq:
+        type: boolean
+      ne:
+        type: boolean
+tags:
+  - name: Stage 2
+    description: |
+      Endpoint posticipati per velocizzare i tempi del rilascio.
+      Questi endpoint saranno molto probabilmente da modificare in seguito
+  - name: Verifica
+    description: |
+     Verificare se deve essere richiamato verso il back end o se lo espone solamente l'orchestratore 
+    
+

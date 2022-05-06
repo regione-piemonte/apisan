@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="ElencoAssociazioni" targetNamespace="http://opessan.opessanws.services.csi.it/" xmlns:ns1="http://opessan.opessanws.def.csi.it/" xmlns:ns2="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://opessan.opessanws.services.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:import location="https://server:port/opessanws/services/elencoAssociazioniUserTkn?wsdl=ElencoAssociazioni.wsdl" namespace="http://opessan.opessanws.def.csi.it/">
+    </wsdl:import>
+  <wsdl:binding name="ElencoAssociazioniSoapBinding" type="ns1:ElencoAssociazioni">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getAssociazioniAggregazioni">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAssociazioniAggregazioni">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAssociazioniAggregazioniResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ElencoAssociazioni">
+    <wsdl:port binding="tns:ElencoAssociazioniSoapBinding" name="ElencoAssociazioniCXFImplPort">
+      <soap:address location="https://server:port/opessanws/services/elencoAssociazioniUserTkn" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

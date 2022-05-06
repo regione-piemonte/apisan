@@ -1,0 +1,504 @@
+swagger: '2.0'
+info:
+  title: PROFILO_API
+  description: API per gestire profilo anagrafico e sanitario del cittadino.
+  version: 1.0.0
+host: tst-srv-xxx.xxx.csi.it
+schemes:
+  - https
+basePath: /apisanprof/api/v1
+produces:
+  - application/json
+paths:
+  '/servizio-attivo':
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'
+  '/cittadini/{cf}/profilo':
+    parameters:
+      - $ref: '#/parameters/shib_identita_codice_fiscale'
+      - $ref: '#/parameters/x_request_id'
+      - $ref: '#/parameters/x_codice_servizio'
+      - name: cf
+        in: path
+        type: string
+        required: true
+    get:
+      description: >
+        Restituisce i dati relativi al profilo anagrafico e sanitario del
+        cittadino orchestra due chiamate ai servizi di aura
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/profilo'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{cf}/verifica-team':
+    parameters:
+      - $ref: '#/parameters/shib_identita_codice_fiscale'
+      - $ref: '#/parameters/x_request_id'
+      - $ref: '#/parameters/x_codice_servizio'
+      - name: cf
+        in: path
+        type: string
+        required: true    
+      - name: team
+        in: query
+        type: string
+        required: true
+      - name: servizio
+        in: query
+        description: codice del servizio da utilizzare per verificare se una persona delegata per quel servizio possa o meno accedere alla uri
+        required: false
+        type: string
+        format: string        
+    get:
+      description: >
+          Restituisce se la tessera sanitaria passata in input corrisponde o meno al cf passato in path param
+      responses:
+        '200':
+          description: >
+            Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/verifica_team'
+  '/cittadini/{cf}/medico/studi_medici':
+    parameters:
+      - $ref: '#/parameters/shib_identita_codice_fiscale'
+      - $ref: '#/parameters/x_request_id'
+      - $ref: '#/parameters/x_codice_servizio'
+      - name: cf
+        in: path
+        type: string
+        required: true
+    get:
+      description: >
+        Restituisce i dati relativi agli studi medici dove opera il medico
+        associato al cittadino passato come parametro. 
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/studio_medico'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/Errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/Errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Errore'
+        default:
+          description: Unexpected error
+parameters:
+  shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  x_request_id:
+    in: header
+    name: X-Request-ID
+    description: Contiene un id univoco (`uuid v4`) della chiamata HTTP
+    type: string
+    required: true
+  x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    type: string
+    required: true
+definitions:
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test   
+  verifica_team:
+    type: object
+    properties:
+      desc_risposta:
+        type: string
+  dati_primari:
+    type: object
+    properties:
+      cod_cittadinanza:
+        type: string
+      cod_comune_nascita:
+        type: string
+      cod_stato_nascita:
+        type: string
+      codice_fiscale:
+        type: string
+      cognome:
+        type: string
+      data_decesso:
+        type: string
+        format: date-time
+      data_nascita:
+        type: string
+        format: date-time
+      desc_cittadinanza:
+        type: string
+      desc_comune_nascita:
+        type: string
+      desc_stato_nascita:
+        type: string
+      nome:
+        type: string
+      sesso:
+        type: string
+      sigla_prov_nascita:
+        type: string
+      stato_codice_fiscale:
+        type: string
+      stato_profilo_anagrafico:
+        type: string
+  dati_secondari:
+    type: object
+    properties:
+      cap:
+        type: string
+      cod_comune:
+        type: string
+      cod_stato:
+        type: string
+      desc_comune:
+        type: string
+      desc_stato:
+        type: string
+      indirizzo:
+        type: string
+      num_civico:
+        type: string
+      stato_residenza:
+        type: string
+      telefono:
+        type: string
+      data_inizio:
+        type: string
+        format: date-time
+      data_fine:
+        type: string
+        format: date-time
+  info_anagrafiche:
+    type: object
+    properties:
+      dati_primari:
+        $ref: '#/definitions/dati_primari'
+      domicilio:
+        $ref: '#/definitions/dati_secondari'
+      residenza:
+        $ref: '#/definitions/dati_secondari'
+  info_sanitarie:
+    type: object
+    properties:
+      asl_assistenza:
+        type: string
+      codice_fiscale_medico:
+        type: string
+      codice_tessera_team:
+        type: string
+      cod_regionale_medico:
+        type: string
+      cognome_medico:
+        type: string
+      data_fine_asl:
+        type: string
+        format: date-time
+      data_fine_ass_medico:
+        type: string
+        format: date-time
+      data_fine_ssn:
+        type: string
+        format: date-time
+      data_inizio_asl:
+        type: string
+        format: date-time
+      data_inizio_ass_medico:
+        type: string
+        format: date-time
+      data_inizio_ssn:
+        type: string
+        format: date-time
+      nome_medico:
+        type: string
+      id_profilo_sanitario:
+        type: number
+      cod_tipo_profilo_sanitario:
+        type: string
+      desc_tipo_profilo_sanitario:
+        type: string
+      asl_residenza:
+        type: string
+      asl_domicilio:
+        type: string
+      cod_distretto_domicilio:
+        type: string
+      desc_distretto_domicilio:
+        type: string
+      tipo_movimento:
+        type: string
+      data_movimento:
+        type: string
+        format: date-time
+      data_decorrenza:
+        type: string
+        format: date-time
+      motivo_fine_assistenza:
+        type: string
+      stato_invio_mef:
+        type: string
+      codice_tessera_regionale:
+        type: string
+      cod_distretto_residenza:
+        type: string
+      desc_distretto_residenza:
+        type: string
+  orario:
+    type: object
+    properties:
+      orario_inizio:
+        type: string
+        format: date-time
+      orario_fine:
+        type: string
+        format: date-time
+  giorno_apertura:
+    type: object
+    properties:
+      giorno:
+        type: string
+      fasce_orarie:
+        type: array
+        items:
+          $ref: '#/definitions/orario'
+  studio_medico:
+    type: object
+    properties:
+      denominazione:
+        type: string
+      qualifica:
+        type: string
+      tipo:
+        type: integer
+      indicatore_amb_condiviso:
+        type: string
+      indicatore_amb_pubblico:
+        type: string
+      indirizzo:
+        type: string
+      num_civico:
+        type: string
+      comune:
+        type: string
+      cap:
+        type: string
+      cod_asl:
+        type: string
+      asl:
+        type: string
+      email:
+        type: string
+      tel_primario:
+        type: string
+      tel_secondario:
+        type: string
+      giorni_apertura:
+        type: array
+        items:
+          $ref: '#/definitions/giorno_apertura'
+  profilo:
+    type: object
+    properties:
+      idAura:
+        type: number
+        description: valutare se mettere o meno idAura del medico
+      info_anag:
+        $ref: '#/definitions/info_anagrafiche'
+      info_san:
+        $ref: '#/definitions/info_sanitarie'
+  string_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  integer_crit:
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  date_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  Errore:
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/Dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  Dettaglio:
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string

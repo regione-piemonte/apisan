@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://dmacc.csi.it/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://dmaccbl.csi.it/" name="FarmaciaService" targetNamespace="http://dmacc.csi.it/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/">
+  <xs:import namespace="http://dma.csi.it/"/>
+  <xs:element name="getFarmacieAderentiRequest" type="tns:getFarmacieAderentiRequest"/>
+  <xs:element name="getFarmacieAderentiResponse" type="tns:getFarmacieAderentiResponse"/>
+  <xs:element name="verificaFarmacistaRequest" type="tns:verificaFarmacistaRequest"/>
+  <xs:element name="verificaFarmacistaResponse" type="tns:verificaFarmacistaResponse"/>
+  <xs:complexType name="getFarmacieAderentiRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ns1:richiedente"/>
+      <xs:element minOccurs="0" ref="ns1:datiFarmacia"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="richiedente">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicazioneChiamante" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceFiscaleRichiedente" type="xs:string"/>
+      <xs:element minOccurs="0" name="ip" type="xs:string"/>
+      <xs:element minOccurs="0" name="uuid" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="datiFarmacia">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="codiceFarmacia" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="comune" type="xs:string"/>
+      <xs:element minOccurs="0" name="indirizzo" type="xs:string"/>
+      <xs:element minOccurs="0" name="nome" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getFarmacieAderentiResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="ns1:farmacie"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="serviceResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:Ens_Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="ns1:errori"/>
+          <xs:element minOccurs="0" name="esito" type="tns:risultatoCodice"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:codifiche"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Ens_Response">
+    <xs:complexContent>
+      <xs:extension base="tns:Ens_Messagebody">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Ens_Messagebody">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="farmacie">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="farmaciaAderente" nillable="true" type="tns:farmaciaAderente"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="farmaciaAderente">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codice" type="xs:string"/>
+      <xs:element minOccurs="0" name="indirizzo" type="tns:indirizzo"/>
+      <xs:element minOccurs="0" name="nome" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="indirizzo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cap" type="xs:string"/>
+      <xs:element minOccurs="0" name="comune" type="xs:string"/>
+      <xs:element minOccurs="0" name="descrizioneIndirizzo" type="xs:string"/>
+      <xs:element minOccurs="0" name="provincia" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="errori">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:errore"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Ens_Request">
+    <xs:complexContent>
+      <xs:extension base="tns:Ens_Messagebody">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="verificaFarmacistaRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ns1:farmacia"/>
+      <xs:element minOccurs="0" ref="ns1:codiceFiscaleFarmacista"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="farmacia">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codice" type="xs:string"/>
+      <xs:element minOccurs="0" name="partitaIVA" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="verificaFarmacistaResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="risultatoCodice">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SUCCESSO"/>
+      <xs:enumeration value="FALLIMENTO"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dma.csi.it/" xmlns:ns1="http://dmacc.csi.it/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dma.csi.it/">
+  <xs:import namespace="http://dmacc.csi.it/"/>
+  <xs:element name="codiceFiscaleFarmacista" type="xs:string"/>
+  <xs:element name="codifiche" type="tns:codifica"/>
+  <xs:element name="datiFarmacia" type="ns1:datiFarmacia"/>
+  <xs:element name="errore" type="tns:errore"/>
+  <xs:element name="errori" type="ns1:errori"/>
+  <xs:element name="farmacia" type="ns1:farmacia"/>
+  <xs:element name="farmacie" type="ns1:farmacie"/>
+  <xs:element name="richiedente" type="ns1:richiedente"/>
+  <xs:complexType name="errore">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="codifica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codice" type="xs:string"/>
+      <xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+      <xs:element minOccurs="0" name="riferimento" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dmacc.csi.it/" xmlns="http://dmaccbl.csi.it/" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://dmaccbl.csi.it/">
+  <xsd:import namespace="http://dmacc.csi.it/"/>
+  <xsd:element name="getFarmacieAderentiRequest" nillable="true" type="tns:getFarmacieAderentiRequest"/>
+  <xsd:element name="verificaFarmacistaRequest" nillable="true" type="tns:verificaFarmacistaRequest"/>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getFarmacieAderenti">
+    <wsdl:part element="ns1:getFarmacieAderentiRequest" name="getFarmacieAderentiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getFarmacieAderentiResponse">
+    <wsdl:part element="tns:getFarmacieAderentiResponse" name="getFarmacieAderentiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verificaFarmacistaResponse">
+    <wsdl:part element="tns:verificaFarmacistaResponse" name="verificaFarmacistaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verificaFarmacista">
+    <wsdl:part element="ns1:verificaFarmacistaRequest" name="verificaFarmacistaRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="FarmaciaService">
+    <wsdl:operation name="getFarmacieAderenti">
+      <wsdl:input message="tns:getFarmacieAderenti" name="getFarmacieAderenti">
+    </wsdl:input>
+      <wsdl:output message="tns:getFarmacieAderentiResponse" name="getFarmacieAderentiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verificaFarmacista">
+      <wsdl:input message="tns:verificaFarmacista" name="verificaFarmacista">
+    </wsdl:input>
+      <wsdl:output message="tns:verificaFarmacistaResponse" name="verificaFarmacistaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FarmaciaServiceSoapBinding" type="tns:FarmaciaService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getFarmacieAderenti">
+      <soap12:operation soapAction="http://dmaccbl.csi.it/getFarmacieAderenti" style="document"/>
+      <wsdl:input name="getFarmacieAderenti">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getFarmacieAderentiResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verificaFarmacista">
+      <soap12:operation soapAction="http://dmaccbl.csi.it/verificaFarmacista" style="document"/>
+      <wsdl:input name="verificaFarmacista">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verificaFarmacistaResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FarmaciaService">
+    <wsdl:port binding="tns:FarmaciaServiceSoapBinding" name="FarmaciaService">
+      <soap12:address location="https://be-lcce-rupar.isan.csi.it/lccews/FarmaciaService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

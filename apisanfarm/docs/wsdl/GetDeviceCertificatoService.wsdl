@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="GetDeviceCertificatoServiceImplService" targetNamespace="http://getdevicecertificato.msg.interfacews.farmab.dma.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://getdevicecertificato.msg.interfacews.farmab.dma.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema targetNamespace="http://getdevicecertificato.msg.interfacews.farmab.dma.csi.it/" version="1.0" xmlns:tns="http://getdevicecertificato.msg.interfacews.farmab.dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="getDeviceCertificato" type="tns:getDeviceCertificatoRequest"/>
+<xs:element name="getDeviceCertificatoRequest" type="tns:getDeviceCertificatoRequest"/>
+<xs:element name="getDeviceCertificatoResponse" type="tns:getDeviceCertificatoResponse"/>
+<xs:complexType name="getDeviceCertificatoRequest">
+<xs:complexContent>
+<xs:extension base="tns:serviceRequest">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="cfCittadino" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="serviceRequest">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="richiedente" type="tns:richiedente"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="richiedente">
+<xs:sequence>
+<xs:element minOccurs="0" name="applicativoVerticale" type="tns:tipoCodice"/>
+<xs:element minOccurs="0" name="applicazione" type="tns:tipoCodice"/>
+<xs:element minOccurs="0" name="codiceFiscale" type="xs:string"/>
+<xs:element minOccurs="0" name="ip" type="xs:string"/>
+<xs:element minOccurs="0" name="numeroTransazione" type="xs:string"/>
+<xs:element minOccurs="0" name="ruolo" type="tns:tipoCodice"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="tipoCodice">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getDeviceCertificatoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="statoCertificazione" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="datiCertificazione" type="tns:certificazioneType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="esito" type="xs:string"/>
+<xs:element minOccurs="0" name="elencoErrori" type="tns:elencoErroriType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="certificazioneType">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:string"/>
+<xs:element minOccurs="0" name="uuidDevice" type="xs:string"/>
+<xs:element minOccurs="0" name="dataCertificazione" type="xs:string"/>
+<xs:element minOccurs="0" name="fonte" type="tns:codifica"/>
+<xs:element minOccurs="0" name="numTelefono" type="xs:string"/>
+<xs:element minOccurs="0" name="cfCittadino" type="xs:string"/>
+<xs:element minOccurs="0" name="dispositivo" type="tns:dispositivo"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dispositivo">
+<xs:sequence>
+<xs:element minOccurs="0" name="sistemaOperativo" type="xs:string"/>
+<xs:element minOccurs="0" name="browser" type="xs:string"/>
+<xs:element minOccurs="0" name="modello" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="elencoErroriType">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="errore" type="tns:errore"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="errore">
+<xs:sequence>
+<xs:element name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getDeviceCertificatoResponse">
+    <wsdl:part element="tns:getDeviceCertificatoResponse" name="getDeviceCertificatoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDeviceCertificato">
+    <wsdl:part element="tns:getDeviceCertificato" name="getDeviceCertificato">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GetDeviceCertificatoService">
+    <wsdl:operation name="getDeviceCertificato">
+      <wsdl:input message="tns:getDeviceCertificato" name="getDeviceCertificato">
+    </wsdl:input>
+      <wsdl:output message="tns:getDeviceCertificatoResponse" name="getDeviceCertificatoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GetDeviceCertificatoServiceImplServiceSoapBinding" type="tns:GetDeviceCertificatoService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getDeviceCertificato">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDeviceCertificato">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDeviceCertificatoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GetDeviceCertificatoServiceImplService">
+    <wsdl:port binding="tns:GetDeviceCertificatoServiceImplServiceSoapBinding" name="GetDeviceCertificatoPort">
+      <soap:address location="https://xxx-dma.xxx.csi.it/farmab/GetDeviceCertificatoService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

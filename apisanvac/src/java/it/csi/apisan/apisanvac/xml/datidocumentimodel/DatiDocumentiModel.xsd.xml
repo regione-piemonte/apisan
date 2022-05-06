@@ -1,0 +1,28 @@
+<DatiDocumentiModel>
+  <!--Optional:-->
+  <Documento>
+    <ID>3</ID>
+    <DataArchiviazione>2008-09-29T03:49:45</DataArchiviazione>
+    <!--Optional:-->
+    <Descrizione>string</Descrizione>
+    <!--Optional:-->
+    <Tipologia>string</Tipologia>
+    <!--Optional:-->
+    <NomeDocumento>string</NomeDocumento>
+    <!--Optional:-->
+    <StatoDocumentoDescrizione>string</StatoDocumentoDescrizione>
+    <StatoDocumentoId>3</StatoDocumentoId>
+    <!--Optional:-->
+    <CodicePaziente>string</CodicePaziente>
+    <!--Optional:-->
+    <Documento64>string</Documento64>
+    <!--Optional:-->
+    <SoggettoEmittente>string</SoggettoEmittente>
+  </Documento>
+  <!--Optional:-->
+  <Result>
+    <Success>true</Success>
+    <!--Optional:-->
+    <Message>string</Message>
+  </Result>
+</DatiDocumentiModel>

@@ -1,0 +1,655 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://consprefbe.csi.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ConsensoBeService" targetNamespace="http://consprefbe.csi.it/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="statoNotifica" version="1.0">
+
+  <xs:complexType name="statoNotifica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="consId" type="xs:int"/>
+      <xs:element minOccurs="0" name="uuid" type="xs:string"/>
+      <xs:element minOccurs="0" name="codASR" type="xs:string"/>
+      <xs:element minOccurs="0" name="dipartimentale" type="xs:string"/>
+      <xs:element minOccurs="0" name="statoConsenso" type="xs:string"/>
+      <xs:element minOccurs="0" name="statoNotifica" type="xs:string"/>
+      <xs:element minOccurs="0" name="statoDecodificato" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://consprefbe.csi.it/" xmlns:ns4="statoNotifica" xmlns:ns3="consensoCittadino" xmlns:ns2="fonteCittadino" xmlns:ns1="erroreCittadino" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://consprefbe.csi.it/">
+  <xs:import namespace="erroreCittadino"/>
+  <xs:import namespace="fonteCittadino"/>
+  <xs:import namespace="consensoCittadino"/>
+  <xs:import namespace="statoNotifica"/>
+  <xs:complexType name="consultaCodificaBe">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceRequest">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="serviceRequest">
+    <xs:sequence>
+      <xs:element name="richiedente" type="tns:richiedente"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="richiedente">
+    <xs:sequence>
+      <xs:element name="servizio" type="tns:applicazioneRichiedente"/>
+      <xs:element name="codiceFiscale" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="applicazioneRichiedente">
+    <xs:complexContent>
+      <xs:extension base="tns:applicazione">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="applicazione">
+    <xs:sequence>
+      <xs:element name="codice" type="xs:string"/>
+      <xs:element name="idRequest" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="consultaStatoBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="stati" nillable="true" type="tns:tipoStato"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="serviceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="esito" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="elencoErrori" nillable="true" type="ns1:errore"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="tipoStato">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="codifica">
+    <xs:complexContent>
+      <xs:extension base="tns:entita">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codice" type="xs:string"/>
+          <xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="entita">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dataCreazione" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="dataModifica" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="dataCancellazione" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="loginOperazione" type="xs:string"/>
+      <xs:element minOccurs="0" name="ruoloOperazione" type="tns:ruoloOperazione"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ruoloOperazione">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="consultaProfiloBe">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceRequest">
+        <xs:sequence>
+          <xs:element name="cfOperatore" type="xs:string"/>
+          <xs:element name="operatore" type="tns:operatore"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="operatore">
+    <xs:sequence>
+      <xs:element name="tipoOperatore" type="xs:string"/>
+      <xs:element name="codiceOperatore" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="consultaProfiloBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="operatore" type="tns:operatore"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inserisciConsensoBe">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="operatore" type="xs:string"/>
+          <xs:element name="consenso" type="ns3:consenso"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="tipoFonte">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="informativa">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="idInformativa" type="xs:int"/>
+      <xs:element minOccurs="0" name="tipoConsenso" type="tns:tipoConsenso"/>
+      <xs:element minOccurs="0" name="sottoTipoConsenso" type="tns:sottoTipoConsenso"/>
+      <xs:element minOccurs="0" name="pdfInformativa" type="xs:string"/>
+      <xs:element minOccurs="0" name="dataDecorrenza" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="dataScadenza" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="descInformativa" type="xs:string"/>
+      <xs:element minOccurs="0" name="htmlInformativa" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="tipoConsenso">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="sottoTipoConsenso">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="valoreConsenso">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="tipoASR">
+    <xs:complexContent>
+      <xs:extension base="tns:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inserisciConsensoBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="consenso" type="ns3:consenso"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="consultaInformativa">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceRequest">
+        <xs:sequence>
+          <xs:element name="codiceTipoConsenso" type="xs:string"/>
+          <xs:element name="codiceSottotipoConsenso" type="xs:string"/>
+          <xs:element name="dataRiferimento" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="consultaInformativaResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="informative">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="informativa" type="tns:informativa"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="consultaAsrBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="asr">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="asr" type="tns:tipoASR"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="consultaConsensoBe">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceRequest">
+        <xs:sequence>
+          <xs:element name="cfCittadino" type="xs:string"/>
+          <xs:element minOccurs="0" name="cfDelegato" type="xs:string"/>
+          <xs:element minOccurs="0" name="operatore" type="tns:operatore"/>
+          <xs:element name="fonte" type="ns2:fonte"/>
+          <xs:element minOccurs="0" name="codiceTipoConsenso" type="xs:string"/>
+          <xs:element minOccurs="0" name="codiceSottotipoConsenso" type="xs:string"/>
+          <xs:element minOccurs="0" name="idInformativa" type="xs:string"/>
+          <xs:element minOccurs="0" name="codAsr" type="xs:string"/>
+          <xs:element name="verificaAura" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ConsultaConsensoBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="consensi">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="consenso" type="ns3:consenso"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="modificaConsensoBe">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceRequest">
+        <xs:sequence>
+          <xs:element name="cfCittadino" type="xs:string"/>
+          <xs:element name="idAura" type="xs:string"/>
+          <xs:element minOccurs="0" name="cfDelegato" type="xs:string"/>
+          <xs:element name="operatore" type="tns:operatore"/>
+          <xs:element name="fonte" type="ns2:fonte"/>
+          <xs:element name="dataAcquisizione" type="xs:dateTime"/>
+          <xs:element name="idInformativa" type="xs:int"/>
+          <xs:element name="tipoStato" type="tns:tipoStato"/>
+          <xs:element name="valoreConsenso" type="tns:valoreConsenso"/>
+          <xs:element name="asr" type="tns:tipoASR"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="modificaConsensoBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="consenso" type="ns3:consenso"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="consultaTipoBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="tipiConsenso" nillable="true" type="tns:tipoConsenso"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ConsultaNotificheBe">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceRequest">
+        <xs:sequence>
+          <xs:element name="cfCittadino" type="xs:string"/>
+          <xs:element minOccurs="0" name="cfDelegato" type="xs:string"/>
+          <xs:element minOccurs="0" name="operatore" type="tns:operatore"/>
+          <xs:element name="fonte" type="ns2:fonte"/>
+          <xs:element minOccurs="0" name="codiceTipoConsenso" type="xs:string"/>
+          <xs:element minOccurs="0" name="codiceSottotipoConsenso" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" name="uuid" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ConsultaNotificheBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="cfCittadino" type="xs:string"/>
+          <xs:element minOccurs="0" name="statoNotifiche">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="statoNotifica" type="ns4:statoNotifica"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="consultaSottoTipoBeResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="sottotipiConsenso" nillable="true" type="tns:sottoTipoConsenso"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="risultatoCodice">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SUCCESSO"/>
+      <xs:enumeration value="FALLIMENTO"/>
+      <xs:enumeration value="BLOCCANTE"/>
+      <xs:enumeration value="AVVISO"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="consultaStatoBeRequest" nillable="true" type="tns:consultaCodificaBe"/>
+  <xs:element name="consultaStatoBeResponse" nillable="true" type="tns:consultaStatoBeResponse"/>
+  <xs:element name="consultaProfiloBeRequest" nillable="true" type="tns:consultaProfiloBe"/>
+  <xs:element name="consultaProfiloBeResponse" nillable="true" type="tns:consultaProfiloBeResponse"/>
+  <xs:element name="inserisciConsensoBeRequest" nillable="true" type="tns:inserisciConsensoBe"/>
+  <xs:element name="inserisciConsensoBeResponse" nillable="true" type="tns:inserisciConsensoBeResponse"/>
+  <xs:element name="consultaInformativa" nillable="true" type="tns:consultaInformativa"/>
+  <xs:element name="consultaInformativaResponse" nillable="true" type="tns:consultaInformativaResponse"/>
+  <xs:element name="consultaAsrBeRequest" nillable="true" type="tns:consultaCodificaBe"/>
+  <xs:element name="consultaAsrBeResponse" nillable="true" type="tns:consultaAsrBeResponse"/>
+  <xs:element name="consultaConsensoBe" nillable="true" type="tns:consultaConsensoBe"/>
+  <xs:element name="consultaConsensoBeResponse" nillable="true" type="tns:ConsultaConsensoBeResponse"/>
+  <xs:element name="modificaConsensoBeRequest" nillable="true" type="tns:modificaConsensoBe"/>
+  <xs:element name="modificaConsensoBeResponse" nillable="true" type="tns:modificaConsensoBeResponse"/>
+  <xs:element name="consultaTipoBeRequest" nillable="true" type="tns:consultaCodificaBe"/>
+  <xs:element name="consultaTipoBeResponse" nillable="true" type="tns:consultaTipoBeResponse"/>
+  <xs:element name="consultaNotificheBe" nillable="true" type="tns:ConsultaNotificheBe"/>
+  <xs:element name="consultaNotificheBeResponse" nillable="true" type="tns:ConsultaNotificheBeResponse"/>
+  <xs:element name="consultaSottoTipoBeRequest" nillable="true" type="tns:consultaCodificaBe"/>
+  <xs:element name="consultaSottoTipoBeResponse" nillable="true" type="tns:consultaSottoTipoBeResponse"/>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://consprefbe.csi.it/" xmlns="fonteCittadino" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="fonteCittadino">
+  <xs:import namespace="http://consprefbe.csi.it/"/>
+  <xs:complexType name="fonte">
+    <xs:complexContent>
+      <xs:extension base="ns1:codifica">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="tipoFonte" type="ns1:tipoFonte"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://consprefbe.csi.it/" xmlns="erroreCittadino" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="erroreCittadino">
+  <xs:import namespace="http://consprefbe.csi.it/"/>
+  <xs:complexType name="errore">
+    <xs:complexContent>
+      <xs:extension base="ns1:codifica">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns2="fonteCittadino" xmlns:ns1="http://consprefbe.csi.it/" xmlns="consensoCittadino" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="consensoCittadino">
+  <xs:import namespace="http://consprefbe.csi.it/"/>
+  <xs:import namespace="fonteCittadino"/>
+  <xs:complexType name="consenso">
+    <xs:sequence>
+      <xs:element name="cfCittadino" type="xs:string"/>
+      <xs:element minOccurs="0" name="cfDelegato" type="xs:string"/>
+      <xs:element minOccurs="0" name="idAura" type="xs:string"/>
+      <xs:element minOccurs="0" name="nome" type="xs:string"/>
+      <xs:element minOccurs="0" name="cognome" type="xs:string"/>
+      <xs:element name="dataAcquisizione" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="operatore" type="ns1:operatore"/>
+      <xs:element name="fonte" type="ns2:fonte"/>
+      <xs:element name="tipoStato" type="ns1:tipoStato"/>
+      <xs:element minOccurs="0" name="informativa" type="ns1:informativa"/>
+      <xs:element minOccurs="0" name="valoreConsenso" type="ns1:valoreConsenso"/>
+      <xs:element minOccurs="0" name="tipoAsr" type="ns1:tipoASR"/>
+      <xs:element minOccurs="0" name="uuid" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="consultaSottoTipoBeServiceResponse">
+    <wsdl:part element="tns:consultaSottoTipoBeResponse" name="consultaSottoTipoBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaProfiloBeServiceResponse">
+    <wsdl:part element="tns:consultaProfiloBeResponse" name="consultaProfiloBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaStatoBeService">
+    <wsdl:part element="tns:consultaStatoBeRequest" name="consultaStatoBeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaProfiloBeService">
+    <wsdl:part element="tns:consultaProfiloBeRequest" name="consultaProfiloBeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaAsrBeServiceResponse">
+    <wsdl:part element="tns:consultaAsrBeResponse" name="consultaAsrBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaConsensoBeServiceResponse">
+    <wsdl:part element="tns:consultaConsensoBeResponse" name="consultaConsensoBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modificaConsensoBeServiceResponse">
+    <wsdl:part element="tns:modificaConsensoBeResponse" name="modificaConsensoBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaTipoBeServiceResponse">
+    <wsdl:part element="tns:consultaTipoBeResponse" name="consultaTipoBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inserisciConsensoBeService">
+    <wsdl:part element="tns:inserisciConsensoBeRequest" name="inserisciConsensoBeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaAsrBeService">
+    <wsdl:part element="tns:consultaAsrBeRequest" name="consultaAsrBeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaConsensoBeService">
+    <wsdl:part element="tns:consultaConsensoBe" name="consultaConsensoBe">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modificaConsensoBeService">
+    <wsdl:part element="tns:modificaConsensoBeRequest" name="modificaConsensoBeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaNotificheBeService">
+    <wsdl:part element="tns:consultaNotificheBe" name="consultaNotificheBe">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inserisciConsensoBeServiceResponse">
+    <wsdl:part element="tns:inserisciConsensoBeResponse" name="inserisciConsensoBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaSottoTipoBeService">
+    <wsdl:part element="tns:consultaSottoTipoBeRequest" name="consultaSottoTipoBeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaStatoBeServiceResponse">
+    <wsdl:part element="tns:consultaStatoBeResponse" name="consultaStatoBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaInformativaBeService">
+    <wsdl:part element="tns:consultaInformativa" name="consultaInformativa">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaNotificheBeServiceResponse">
+    <wsdl:part element="tns:consultaNotificheBeResponse" name="consultaNotificheBeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaTipoBeService">
+    <wsdl:part element="tns:consultaTipoBeRequest" name="consultaTipoBeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consultaInformativaBeServiceResponse">
+    <wsdl:part element="tns:consultaInformativaResponse" name="consultaInformativaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ConsensoBeService">
+    <wsdl:operation name="consultaStatoBeService">
+      <wsdl:input message="tns:consultaStatoBeService" name="consultaStatoBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaStatoBeServiceResponse" name="consultaStatoBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaProfiloBeService">
+      <wsdl:input message="tns:consultaProfiloBeService" name="consultaProfiloBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaProfiloBeServiceResponse" name="consultaProfiloBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciConsensoBeService">
+      <wsdl:input message="tns:inserisciConsensoBeService" name="inserisciConsensoBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:inserisciConsensoBeServiceResponse" name="inserisciConsensoBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaInformativaBeService">
+      <wsdl:input message="tns:consultaInformativaBeService" name="consultaInformativaBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaInformativaBeServiceResponse" name="consultaInformativaBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaAsrBeService">
+      <wsdl:input message="tns:consultaAsrBeService" name="consultaAsrBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaAsrBeServiceResponse" name="consultaAsrBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaConsensoBeService">
+      <wsdl:input message="tns:consultaConsensoBeService" name="consultaConsensoBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaConsensoBeServiceResponse" name="consultaConsensoBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificaConsensoBeService">
+      <wsdl:input message="tns:modificaConsensoBeService" name="modificaConsensoBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:modificaConsensoBeServiceResponse" name="modificaConsensoBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaTipoBeService">
+      <wsdl:input message="tns:consultaTipoBeService" name="consultaTipoBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaTipoBeServiceResponse" name="consultaTipoBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaNotificheBeService">
+      <wsdl:input message="tns:consultaNotificheBeService" name="consultaNotificheBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaNotificheBeServiceResponse" name="consultaNotificheBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaSottoTipoBeService">
+      <wsdl:input message="tns:consultaSottoTipoBeService" name="consultaSottoTipoBeService">
+    </wsdl:input>
+      <wsdl:output message="tns:consultaSottoTipoBeServiceResponse" name="consultaSottoTipoBeServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ConsensoBeServiceSoapBinding" type="tns:ConsensoBeService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="consultaStatoBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaStatoBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaStatoBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaProfiloBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaProfiloBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaProfiloBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciConsensoBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="inserisciConsensoBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="inserisciConsensoBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaInformativaBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaInformativaBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaInformativaBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaAsrBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaAsrBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaAsrBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaConsensoBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaConsensoBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaConsensoBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificaConsensoBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="modificaConsensoBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="modificaConsensoBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaTipoBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaTipoBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaTipoBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaNotificheBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaNotificheBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaNotificheBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="consultaSottoTipoBeService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consultaSottoTipoBeService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consultaSottoTipoBeServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ConsensoBeService">
+    <wsdl:port binding="tns:ConsensoBeServiceSoapBinding" name="ConsensoBeServiceImplPort">
+      <soap:address location="http://server:port/consprefbe-web/ConsensoBeService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

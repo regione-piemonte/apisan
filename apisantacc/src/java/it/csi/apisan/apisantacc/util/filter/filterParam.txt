@@ -1,0 +1,4 @@
+{ 
+  "nome": {"eq": "Domenico"}, 
+  "scarpe": {"gt":35, "lt":40}
+}

@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="DocumentoPersonaleService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:element name="deleteDocumentoPersonale" type="tns:deleteDocumentoPersonale" />
+   <xs:element name="deleteDocumentoPersonaleResponse" type="tns:deleteDocumentoPersonaleResponse" />
+   <xs:element name="getDocumentoPersonale" type="tns:getDocumentoPersonale" />
+   <xs:element name="getDocumentoPersonaleResponse" type="tns:getDocumentoPersonaleResponse" />
+   <xs:element name="richiedenteInfo" type="ns1:richiedenteInfo" />
+   <xs:element name="setDocumentoPersonale" type="tns:setDocumentoPersonale" />
+   <xs:element name="setDocumentoPersonaleResponse" type="tns:setDocumentoPersonaleResponse" />
+   <xs:complexType name="getDocumentoPersonale">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="idDocumento" type="xs:string" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicativoVerticale">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="codifica">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codice" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicazioneRichiedente">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getDocumentoPersonaleResponse">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="documento" type="ns1:documentoPersonale" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="errore">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="setDocumentoPersonale">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="documento" type="ns1:documentoPersonale" />
+         <xs:element minOccurs="0" name="metadatiDocumento" type="ns1:metadatiDocumentoPersonale" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="tipoDocumento">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="tipoContributo">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="setDocumentoPersonaleResponse">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="idDocumento" type="xs:string" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="deleteDocumentoPersonale">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="idDocumento" type="xs:string" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="deleteDocumentoPersonaleResponse">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:simpleType name="risultatoCodice">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SUCCESSO" />
+         <xs:enumeration value="FALLIMENTO" />
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema><xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dma.csi.it/" xmlns:ns1="http://dmacc.csi.it/" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dmacc.csi.it/" />
+   <xs:complexType name="richiedenteInfo">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="applicativoVerticale" type="ns1:applicativoVerticale" />
+         <xs:element minOccurs="0" name="applicazione" type="ns1:applicazioneRichiedente" />
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="ip" type="xs:string" />
+         <xs:element minOccurs="0" name="numeroTransazione" type="xs:string" />
+         <xs:element minOccurs="0" name="ruolo" type="tns:ruolo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ruolo">
+      <xs:complexContent>
+         <xs:extension base="ns1:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:sequence>
+         <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="errori" type="ns1:errore" />
+         <xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="documentoPersonale">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="allegato" type="xs:base64Binary" />
+         <xs:element minOccurs="0" name="tipoAllegato" type="xs:string" />
+         <xs:element minOccurs="0" name="trascrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="dataOraAggiornamento" type="xs:dateTime" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="metadatiDocumentoPersonale">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="tipoDocumento" type="ns1:tipoDocumento" />
+         <xs:element minOccurs="0" name="dataEmissione" type="xs:date" />
+         <xs:element minOccurs="0" name="struttura" type="xs:string" />
+         <xs:element minOccurs="0" name="unita" type="xs:string" />
+         <xs:element minOccurs="0" name="medico" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoContributo" type="ns1:tipoContributo" />
+         <xs:element minOccurs="0" name="dataOraAggiornamento" type="xs:dateTime" />
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="getDocumentoPersonale">
+    <wsdl:part element="tns:getDocumentoPersonale" name="getDocumentoPersonale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDocumentoPersonaleResponse">
+    <wsdl:part element="tns:getDocumentoPersonaleResponse" name="getDocumentoPersonaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteDocumentoPersonale">
+    <wsdl:part element="tns:deleteDocumentoPersonale" name="deleteDocumentoPersonale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteDocumentoPersonaleResponse">
+    <wsdl:part element="tns:deleteDocumentoPersonaleResponse" name="deleteDocumentoPersonaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDocumentoPersonaleResponse">
+    <wsdl:part element="tns:setDocumentoPersonaleResponse" name="setDocumentoPersonaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDocumentoPersonale">
+    <wsdl:part element="tns:setDocumentoPersonale" name="setDocumentoPersonale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="DocumentoPersonaleService">
+    <wsdl:operation name="getDocumentoPersonale">
+      <wsdl:input message="tns:getDocumentoPersonale" name="getDocumentoPersonale">
+    </wsdl:input>
+      <wsdl:output message="tns:getDocumentoPersonaleResponse" name="getDocumentoPersonaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDocumentoPersonale">
+      <wsdl:input message="tns:setDocumentoPersonale" name="setDocumentoPersonale">
+    </wsdl:input>
+      <wsdl:output message="tns:setDocumentoPersonaleResponse" name="setDocumentoPersonaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteDocumentoPersonale">
+      <wsdl:input message="tns:deleteDocumentoPersonale" name="deleteDocumentoPersonale">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteDocumentoPersonaleResponse" name="deleteDocumentoPersonaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DocumentoPersonaleServiceSoapBinding" type="tns:DocumentoPersonaleService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getDocumentoPersonale">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getDocumentoPersonale">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getDocumentoPersonaleResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDocumentoPersonale">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setDocumentoPersonale">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setDocumentoPersonaleResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteDocumentoPersonale">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="deleteDocumentoPersonale">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteDocumentoPersonaleResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DocumentoPersonaleService">
+    <wsdl:port binding="tns:DocumentoPersonaleServiceSoapBinding" name="DocumentoPersonaleServicePort">
+      <soap12:address location="https://xxx-dma.xxx.csi.it/dmacc/DocumentoPersonaleService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

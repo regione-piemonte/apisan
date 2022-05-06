@@ -1,0 +1,991 @@
+swagger: '2.0'
+info:
+  title: Consensi 
+  description: >-
+    API per il servizio di consensi. <br><br>
+    
+    ### Breve descrizione delle servizio
+    
+    Permette al cittadino di accettare o revocare i consensi.   
+    In particolare i consensi possono essere di due tipologie di validita:<br>
+     * **AZIENDALE**: il singolo consenso può essere accettato o negato a livello di singola AZIENDA
+      * **Regionale**: quando il cittadino accetta o nega il consenso, la sua scelta si ripercuote su tutte le strutture sanitarie regionali
+      
+    Dal momento che il cittadino deve poter esplicitamente negare un consenso, si è deciso di usare
+    degli stati. Attualmente quelli ipotizzati sono:
+      * **NON_ESPRESSO**: Il consenso è nuovo ed il cittadino non ha mai espresso una scelta  
+      * **ATTIVO**: Il cittadino ha dato un consenso ed è attivo
+      * **REVOCATO**: Il cittadino ha revocato il consenso
+      * **SCADUTO**: Il consenso è scaduto (es. è stato aggiornato e richiede una nuova scelta del cittadino)
+    
+    <br><br><br>
+    <sub> Note: Questo YAML è stato pensato esclusivamente per il front-end
+    destinato al cittadino. </sub>
+     
+  version: 1.0.0
+host: tst-srv-xxx.xxx.csi.it
+schemes:
+  - https
+basePath: /consensi/api/v1
+produces:
+  - application/json
+paths:
+  '/servizio-attivo':
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'  
+  '/stati-consenso':
+    get:
+      summary: Lista degli stati associati ai consensi
+      description: |
+        Restituisce la lista degli stati possibili del consenso; nella versione attuale è un elenco statico e quindi non si tengono in considerazione le logiche pertinenti le date di creazione/modifica
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'        
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente
+            gli stati del consenso
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/tipo_stato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/asr':
+    get:
+      summary: Lista asr
+      description: |
+        Restituisca la lista delle asr per popolare la select del filtro
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/x_request_id'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente
+            le asr
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  description: Il nome delle asr
+                codice:
+                  type: string
+                  description: Il codice della asr
+              required:
+                - nome
+                - codice
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-validita':
+    get:
+      summary: Lista delle tipologie di validità
+      description: |
+        Restituiscee il tipo del consenso, possibili valori
+          * A - AZIENDALE
+          * R - REGIONALE
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/x_request_id'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente
+            le tipologie di validità
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/tipo_consenso'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie':
+    get:
+      summary: Lista delle tipologie dei consensi
+      description: |
+          Definisce il sottotipo possibili valori
+            * ROL - RITIRO REFERTI ON-LINE
+            * CPROL - Consenso Permanente ROL
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/x_request_id'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente
+            le tipologie dei consensi
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/sotto_tipo_consenso'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/informative':
+    get:
+      summary: Lista delle informative valide
+      description: >
+        Restituisce la lista dele informative velide per le quali il cittadino puo' esprimere un consenso
+      parameters:
+       - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+       - $ref: '#/parameters/x_codice_servizio'
+       - $ref: '#/parameters/x_request_id'
+       - $ref: '#/parameters/x_forwarded_for'              
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente i
+            consensi del cittadino
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/informativa'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError' 
+  '/cittadino/{cf}/consensi-informative':
+    get:
+      summary: Lista dei consensi 
+      description: >
+        Restituisce la lista dei consensi che il cittadino ha dato legati a un'informativa; 
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/cf'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisc l'array contenente le informative e i relativi consensi espressi dal cittadino
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/consenso-informativa'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'              
+            
+  '/cittadino/{cf}/consensi':
+    get:
+      summary: Lista consensi
+      description: >
+        Restituisce la lista dei consensi associati al cittadino con codice
+        fiscale == {cf} che sono attivi quindi con tipo_stato = A. Parametro filter deve essere di tipo id_informativa_filter, necessario nel caso (praticamente sempre) in cui si cercano i consensi di un cittadino
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/cf'
+        - $ref: '#/parameters/filter'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente i
+            consensi del cittadino
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/consenso'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      description: > 
+        Inserisce un consenso di un cittadino richeista di restituire al posto dell'errore il onsenso passato come post. I campi da valorizzare sono  
+        
+        * cfcittadino
+        
+        * idAura
+        
+        * tipostato
+        
+        * id informativa
+        
+        * Asr
+        
+        * valoreconsenso 
+        Possibili codici di errore lato server (codice 500) sono
+        
+        * ERR_0028 ID_AURA e cf non corrispondono
+        
+        * CONS.E09  Trovato piu' di un risultato
+        
+        
+      parameters:
+        - $ref: '#/parameters/cf'  
+        - in: body
+          name: cosenso
+          schema:
+             $ref: '#/definitions/consenso'
+      responses:
+        '201':
+          description: > 
+            l'inserimento è andato a buon fine
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+            Location:
+              type: string
+              description: uri alla nuova risorsa creata
+        '400':
+          $ref: '#/definitions/errore_consenso'
+        '403':
+          $ref: '#/definitions/errore_consenso'
+        '404':
+          $ref: '#/definitions/errore_consenso'
+        '500':
+          $ref: '#/definitions/errore_consenso'          
+  '/cittadino/{cf}/consensi/{id_informativa}/asl/{id_asl}':
+    get:
+      summary: Singolo consenso
+      description: |
+        Restituisce il consenso con uuid_versione == {uuid_versione_consenso}
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/cf'
+        - $ref: '#/parameters/id_informativa'
+        - $ref: '#/parameters/id_asl'
+      responses:
+        '200':
+          description: >-
+            L'operazione è andata a buon fine e viene restituito l'oggetto
+            del consenso
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            $ref: '#/definitions/consenso'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    put:
+      summary: Modifica un consenso
+      description: |
+        Modifica del consenso con uuid  == {uuid_consenso} 
+        Al momento è consentita solo la revoca di un consenso del cittadino. Dati obbligatori sono 
+        * idAura
+        * tipostato
+        * valoreconsenso
+        Possibili codici di errore lato server (codice 500) sono
+        * ERR_0028 ID_AURA e cf non corrispondono
+        * CONS.E09  Trovato piu' di un risultato
+        * CONS.R08 Valore non previsto
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/cf'
+        - $ref: '#/parameters/id_informativa'
+        - $ref: '#/parameters/id_asl'
+        - in: body
+          name: consenso
+          description: Le modifiche da apportare al consenso
+          schema:
+            $ref: '#/definitions/consenso'
+      responses:
+        '200':
+          description: >-
+            la modifica è stata effettuata con successo e viene restituita la
+            nuova versione del consenso 
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            $ref: '#/definitions/consenso'
+        '400':
+          $ref: '#/definitions/errore_consenso'
+        '403':
+          $ref: '#/definitions/errore_consenso'
+        '404':
+          $ref: '#/definitions/errore_consenso'
+        '500':
+          $ref: '#/definitions/errore_consenso'          
+  '/informative/informativa-pdf':
+    get:
+      summary: Download del pdf del consenso
+      description: | 
+          Restituisce il pdf del consenso dati il codice del tipo_consenso , il codice del sotto_tipo_consenso inseriti nel filter param (obbligatorio) di tipo informativa_filter. Al momento non so dire se possiamo ottenere il pdf o se c'è una redirect
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/filter'
+        - in: header
+          name: X-Content-Disposition
+          type: string
+          description: >
+            header che permette di richiedere l'header di risposta
+            Content-Disposition: "attachment".
+
+            Se questo header viene passato nella request con valore
+            "attachment", allora nella response
+
+            dovrà essere presente l'header con "Content-Disposition: attachment"
+            magari aggiungendo il nome del
+
+            file da scaricare.
+
+            Se non viene passato nella request o passato con un valore diverso
+            da "attachment", allora nella response
+
+            non dovrà essere presente l'header "Content-Disposition"
+      produces:
+        - application/pdf
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce lo stream di dati
+            del pdf.
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+            Content-Disposition:
+              type: string
+              description: >-
+                https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+            Content-length:
+              type: string
+              description: >-
+                https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-length
+          schema:
+            type: file
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/informative/informativa-html':
+    get:
+      summary: Download del pdf del consenso
+      description: | 
+          Restituisce l'html del consenso dati il codice del tipo_consenso , il codice del sotto_tipo_consenso inseriti nel filter param (obbligatorio) di tipo informativa_filter. 
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'        
+        - $ref: '#/parameters/filter'
+        - in: header
+          name: X-Content-Disposition
+          type: string
+          description: >
+            header che permette di richiedere l'header di risposta
+            Content-Disposition: "attachment".
+
+            Se questo header viene passato nella request con valore
+            "attachment", allora nella response
+
+            dovrà essere presente l'header con "Content-Disposition: attachment"
+            magari aggiungendo il nome del
+
+            file da scaricare.
+
+            Se non viene passato nella request o passato con un valore diverso
+            da "attachment", allora nella response
+
+            non dovrà essere presente l'header "Content-Disposition"
+      produces:
+        - application/html
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce lo stream di dati
+            del pdf.
+          headers:
+            X-Request-Id:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: file
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'          
+parameters:
+  shibIdentitaCodiceFiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  accept:
+    in: header
+    name: Accept
+    type: string
+    required: false
+    description: >-
+      Stabilisce qual è il tipo di ritorno atteso (`application/json`,
+      `application/pdf`, ecc)
+  x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: >-
+      Contiene l'ip del client
+    type: string
+    required: false
+  cf:
+    in: path
+    name: cf
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  id_informativa:
+    in: path
+    name: id_informativa
+    type: string
+    required: true
+    description: >
+      L'id dell'informativa  
+  id_asl:
+    in: path
+    name: id_asl
+    type: string
+    required: true
+    description: >
+      L'id dell'asr
+  uuid_consenso:
+    in: path
+    name: uuid_consenso
+    type: string
+    format: uuid
+    required: true
+    description: >
+      L'uuid della famiglia del consenso. Cioè il consenso e tutta la sua
+      storia.
+  nre:
+    in: path
+    name: nre
+    type: string
+    required: true
+    description: Identificativo della ricetta (NRE)
+  filter:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: >
+      Un oggetto JSON encoded come definito nel model <code>[Filtri]
+      ricetta</code>
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-Id:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-Id:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-Id:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-Id:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  string_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+        description: (contains, ignore case)
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  integer_crit:
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  number_crit:
+    type: object
+    properties:
+      eq:
+        type: number
+      ne:
+        type: number
+      lt:
+        type: number
+      lte:
+        type: number
+      gt:
+        type: number
+      gte:
+        type: number
+      in:
+        type: array
+        items:
+          type: number
+      nin:
+        type: array
+        items:
+          type: number
+  date_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  id_informativa_filter:
+    type: object
+    properties:
+      id_informativa:
+        $ref: '#/definitions/integer_crit'
+  informativa_filter:
+    type: object
+    properties:
+      codice_tipo_consenso:
+        $ref: '#/definitions/string_crit'
+      codice_sotto_tipo_consenso:
+        $ref: '#/definitions/string_crit'
+  consenso-informativa:
+    type: object
+    properties:
+      informativa:
+        $ref: '#/definitions/informativa'
+      consensi:
+        type: array
+        items:
+         $ref: '#/definitions/consenso'
+  consenso:
+    type: object
+    properties:
+      cf_cittadino:
+        type: string
+      cf_delegato:
+        type: string
+      nome_delegato:
+        type: string
+      cognome_delegato:
+        type: string
+      id_aura:
+        type: string
+      nome:
+        type: string
+      cognome:
+        type: string
+      data_acquisizione:
+        type: string
+        format: date-time
+      tipo_stato:
+        $ref: '#/definitions/tipo_stato'
+      id_informativa:
+        type: integer
+      uuid:
+        type: string
+        format: uuid
+      asr:
+        $ref: '#/definitions/tipo_asr'
+      valore_consenso:
+        $ref: '#/definitions/valore_consenso'
+  tipo_stato:
+    description: |
+      Definisce lo stato del consenso. Attualmente i possibili valori sono
+      * A - ATTIVO
+      * R - REVOCATO
+      * S - SCADUTO
+    allOf:
+      - $ref: '#/definitions/codifica'
+  informativa:
+    properties:
+      id_informativa:
+        type: integer
+      tipo_consenso:
+        $ref: '#/definitions/tipo_consenso'
+      sotto_tipo_consenso:
+        $ref: '#/definitions/sotto_tipo_consenso'
+      desc_informativa:
+        type: string
+      data_decorrenza:
+        type: string
+        format: date-time
+      data_scadenza:
+        type: string
+        format: date-time
+  tipo_consenso:
+    description: |
+      Definisce il tipo del consenso possibili valori
+      * A - AZIENDALE
+      * R - REGIONALE
+    allOf:
+      - $ref: '#/definitions/codifica'
+  sotto_tipo_consenso:
+    description: |
+      Definisce il sottotipo possibili valori
+      * ROL - RITIRO REFERTI ON-LINE
+      * CPROL - Consenso Permanente ROL
+    allOf:
+      - $ref: '#/definitions/codifica'    
+  tipo_asr:
+    allOf:
+      - $ref: '#/definitions/codifica' 
+  valore_consenso:
+    allOf:
+      - $ref: '#/definitions/codifica'    
+  fonte:
+    allOf:
+      - $ref: '#/definitions/codifica'
+    type: object
+    properties:
+      prova:
+        type: string
+      tipo_fonte:
+        allOf:
+          - $ref: '#/definitions/codifica'
+  entita:
+    type: object
+    properties:
+      data_creazione:
+        type: string
+        format: date-time
+      data_modifica:
+        type: string
+        format: date-time      
+      data_cancellazione:
+        type: string
+        format: date-time
+      login_operazione:
+        type: string
+      ruolo_operazione:
+        $ref: '#/definitions/ruolo_operazione'
+  codifica:
+    type: object
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+  ruolo_operazione:
+    properties:
+      data_creazione:
+        type: string
+        format: date-time
+      data_modifica:
+        type: string
+        format: date-time      
+      data_cancellazione:
+        type: string
+        format: date-time
+      login_operazione:
+        type: string 
+  errore_consenso:
+    title: 'Errore per post e put consenso'
+    type: object
+    properties:
+      status:
+        type: integer
+        description: >-
+          Questo campo contiene lo status HTTP che rappresenta lo stato della
+          risposta. <br/><br/> Es. <ul>
+            <li>200: Ok</li>
+            <li>201: Created</li>
+            <li>400: Bad request</li>
+            <li>400: Bad request</li>
+            <li>403: Forbidden</li>
+            <li>404: Not found</li>
+            <li>500: Internal server error</li>
+          </ul>
+      code:
+        type: string
+        description: >-
+          Un codice univoco che permette di riconoscere e rintracciare l'errore
+          ad esempio nei logs
+      title:
+        type: string
+        description: Una descrizione user-friendly dell'errore
+      detail:
+        description: L'elenco dei singoli errori
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        description: Eventuali link alla documentazione degli errori
+        items:
+          type: string
+          description: Il link alla documentazione
+      consenso:
+        $ref: '#/definitions/consenso'
+    required:
+      - status
+      - code
+      - title
+      - detail
+      - links        
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+        description: >-
+          Questo campo contiene lo status HTTP che rappresenta lo stato della
+          risposta. <br/><br/> Es. <ul>
+            <li>200: Ok</li>
+            <li>201: Created</li>
+            <li>400: Bad request</li>
+            <li>400: Bad request</li>
+            <li>403: Forbidden</li>
+            <li>404: Not found</li>
+            <li>500: Internal server error</li>
+          </ul>
+      code:
+        type: string
+        description: >-
+          Un codice univoco che permette di riconoscere e rintracciare l'errore
+          ad esempio nei logs
+      title:
+        type: string
+        description: Una descrizione user-friendly dell'errore
+      detail:
+        description: L'elenco dei singoli errori
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        description: Eventuali link alla documentazione degli errori
+        items:
+          type: string
+          description: Il link alla documentazione
+    required:
+      - status
+      - code
+      - title
+      - detail
+      - links
+  dettaglio:
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string

@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="SetFarmaciaAbitualeServiceImplService" targetNamespace="http://setfarmaciaabituale.msg.interfacews.farmab.dma.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://setfarmaciaabituale.msg.interfacews.farmab.dma.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema targetNamespace="http://setfarmaciaabituale.msg.interfacews.farmab.dma.csi.it/" version="1.0" xmlns:tns="http://setfarmaciaabituale.msg.interfacews.farmab.dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="setFarmaciaAbituale" type="tns:setFarmaciaAbitualeRequest"/>
+<xs:element name="setFarmaciaAbitualeResponse" type="tns:setFarmaciaAbitualeResponse"/>
+<xs:complexType name="setFarmaciaAbitualeRequest">
+<xs:complexContent>
+<xs:extension base="tns:serviceRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="cfCittadino" type="xs:string"/>
+<xs:element minOccurs="0" name="azione" type="xs:string"/>
+<xs:element minOccurs="0" name="idFarmaciaAbituale" type="xs:string"/>
+<xs:element minOccurs="0" name="codiceFarmacia" type="xs:string"/>
+<xs:element minOccurs="0" name="dataInizioValidita" type="xs:string"/>
+<xs:element minOccurs="0" name="dataFineValidita" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="serviceRequest">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="richiedente" type="tns:richiedente"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="richiedente">
+<xs:sequence>
+<xs:element minOccurs="0" name="applicativoVerticale" type="tns:tipoCodice"/>
+<xs:element minOccurs="0" name="applicazione" type="tns:tipoCodice"/>
+<xs:element minOccurs="0" name="codiceFiscale" type="xs:string"/>
+<xs:element minOccurs="0" name="ip" type="xs:string"/>
+<xs:element minOccurs="0" name="numeroTransazione" type="xs:string"/>
+<xs:element minOccurs="0" name="ruolo" type="tns:tipoCodice"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="tipoCodice">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setFarmaciaAbitualeResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="farmaciaAbituale" type="tns:farmacia"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="esito" type="xs:string"/>
+<xs:element minOccurs="0" name="elencoErrori" type="tns:elencoErroriType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="farmacia">
+<xs:sequence>
+<xs:element name="id" type="xs:string"/>
+<xs:element minOccurs="0" name="dataInizioVal" type="xs:string"/>
+<xs:element minOccurs="0" name="dataFineVal" type="xs:string"/>
+<xs:element minOccurs="0" name="codFarmacia" type="xs:string"/>
+<xs:element minOccurs="0" name="descrFarmacia" type="xs:string"/>
+<xs:element minOccurs="0" name="indirizzoFarmacia" nillable="true" type="tns:indirizzoType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="indirizzoType">
+<xs:sequence>
+<xs:element minOccurs="0" name="provincia" type="xs:string"/>
+<xs:element minOccurs="0" name="comune" type="xs:string"/>
+<xs:element minOccurs="0" name="cap" type="xs:string"/>
+<xs:element minOccurs="0" name="indirizzo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="elencoErroriType">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="errore" type="tns:errore"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="errore">
+<xs:sequence>
+<xs:element name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="elencoFarmacieType">
+<xs:sequence>
+<xs:element minOccurs="0" name="farmaciaAbituale" type="tns:farmacia"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="setFarmaciaAbitualeResponse">
+    <wsdl:part element="tns:setFarmaciaAbitualeResponse" name="setFarmaciaAbitualeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setFarmaciaAbituale">
+    <wsdl:part element="tns:setFarmaciaAbituale" name="setFarmaciaAbituale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="SetFarmaciaAbitualeService">
+    <wsdl:operation name="setFarmaciaAbituale">
+      <wsdl:input message="tns:setFarmaciaAbituale" name="setFarmaciaAbituale">
+    </wsdl:input>
+      <wsdl:output message="tns:setFarmaciaAbitualeResponse" name="setFarmaciaAbitualeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SetFarmaciaAbitualeServiceImplServiceSoapBinding" type="tns:SetFarmaciaAbitualeService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="setFarmaciaAbituale">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setFarmaciaAbituale">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setFarmaciaAbitualeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SetFarmaciaAbitualeServiceImplService">
+    <wsdl:port binding="tns:SetFarmaciaAbitualeServiceImplServiceSoapBinding" name="SetFarmaciaAbitualePort">
+      <soap:address location="https://xxx-dma.xxx.csi.it/farmab/SetFarmaciaAbitualeService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

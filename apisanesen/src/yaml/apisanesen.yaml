@@ -1,0 +1,1129 @@
+swagger: '2.0'
+info:
+  description: Api risorse per gestire le esenzioni ticket per reddito
+  version: 1.0.0
+  title: Esenzione per reddito
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanred/api/v1
+schemes:
+  - https
+paths:
+  '/servizio-attivo':
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'
+  '/configurazione':
+    get:
+      tags:
+        - Necessari
+      summary: Dati di configurazione e accessori
+      description: |-
+        Contiene i dati di configurazione e accessori per il front-end.
+        Ad esempio può contentere informazioni come testi di aiuto da mostrare
+        sulla UI, dati che permettano di capire lo stato attuale del servizio ecc.
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            Restiutisce tutti i dati di configurazione
+          schema:
+            $ref: '#/definitions/configurazione'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/disclaimer':
+    get:
+      tags:
+        - Necessari
+      summary: Testo del disclaimer
+      description: Disclaimer da far approvare al cittadino
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            Restituisce il testo del disclaimer ed eventualmente la versione (ad
+            oggi non è previsto un versionemento del disclaimer, è un record
+            nella tabella ESENRED_C_PARAMETRI)
+          schema:
+            $ref: '#/definitions/disclaimer'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/rapporti-familiari':
+    get:
+      tags:
+        - Necessari
+      summary: Lista rapporti familiari
+      description: >-
+        Lista di possibili relazioni con i familiari che permettono la richiesta
+        di esenzione di terzi
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            Restituisce la lista dei possibili rapporti familiari ammessi dalle
+            esenzioni.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/rapporto_familiare'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/stati-esenzione':
+    get:
+      tags:
+        - Necessari
+      summary: Lista stati esenzione
+      description: Lista dei possibili stati di un'esenzione
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Restituisce la lista dei possibili stati di un'esenzione.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/stato_esenzione'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/codici-esenzione':
+    get:
+      tags:
+        - Necessari
+      summary: Lista codici esenzione
+      description: Lista codici esenzione
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Restituisce la lista dei codici delle esenzioni.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/codice_esenzione'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/cittadini/{cf}/info':
+    get:
+      tags:
+        - Necessari
+      summary: Informazioni
+      description: >-
+        Contiene informazioni inerenti all'utente per il servizio ma che non si
+        riferiscono a nessuna delle risorse
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/pathCf'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Restituisce le informazioni.
+          schema:
+            $ref: '#/definitions/info'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/cittadini/{cf}/beneficiari':
+    get:
+      tags:
+        - Necessari
+      summary: Lista beneficiari
+      description: >-
+        Restituisce l'elenco di beneficiari delle esenzioni relative al
+        cittadino con il `{cf}` passato nel path
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/pathCf'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            Restituisce l'elenco dei beneficiari del cittadino identificato dal
+            {cf} nel path.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/cittadino'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/cittadini/{cf}/titolari':
+    get:
+      tags:
+        - Necessari
+      summary: Lista titolari
+      description: |-
+        Restituisce l'elenco dei titolari delle esenzioni relative al
+        cittadino con il `{cf}` passato nel path
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/pathCf'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            Restituisce l'elenco dei titolari delle esenzioni del cittadino identificato dal
+            {cf} nel path.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/cittadino'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/cittadini/{cf}/esenzioni':
+    get:
+      tags:
+        - Necessari
+      summary: Lista esenzioni
+      description: Lista esenzioni con ricerca
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/pathCf'
+        - $ref: '#/parameters/filtriEsenzione'
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            Restituisce l'elenco delle esenzioni relative al cittadino
+            identificato dal {cf} che rispettano i filtri passati nella
+            querystring tramite il parametro `filter`.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/esenzione'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+    post:
+      tags:
+        - Necessari
+      summary: Crea esenzione
+      description: Crea una nuova esenzione
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/pathCf'
+        - in: body
+          name: esenzione
+          description: >
+            Il payload necessario alla creazione di una nuova esenzione.
+
+            Gli altri campi (`id`, `protocollo`, `data_scadenza`, ecc) vengono
+            generati automaticamente in base alla logica di business.
+
+            Il codice fiscale dell'utente che ha creato l'esenzione è
+            un'informazione abbastanza forte dal momento che viene fornita dal
+            provider di autenticazione (SPID ecc.).
+
+            Il cittadino per cui stiamo creando l'esenzione, invece, viene
+            creato tramite dati inseriti dall'utente. 
+          schema:
+            $ref: '#/definitions/esenzione_post'
+      responses:
+        '201':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Crea l'esenzione e la restituisce.
+          schema:
+            $ref: '#/definitions/esenzione'
+        '202':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: L'esenzione è in stato "in verifica".
+          schema:
+            $ref: '#/definitions/esenzione'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/cittadini/{cf}/esenzioni/{id}':
+    get:
+      tags:
+        - Necessari
+      summary: Esenzione
+      description: >
+        Corrisponde alla singola esenzione.
+
+        Se invocato con il paramentro __`format=pdf`__ restituisce il PDF
+        dell'esenzione.
+      produces:
+        - application/json
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/accept'
+        - $ref: '#/parameters/pathCf'
+        - $ref: '#/parameters/idEsenzione'
+        - $ref: '#/parameters/cf_beneficiario'        
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >
+            Restituisce l'esenzione identificata tramite `{id}` nel path. Attenzione che sull'id viene effettuata una trasformazione nel richiamo del servizio di back end. Se ricevo solo l'identificativo antepongo 000- all'identificativo e l'id diventa 000- + id, se riceve numero protocollo, codice esenzione e data inizio validita verifico se il numero protocollo inizia per 010 o no. 
+            se inizia per 010 antepongo 002- e passo tutti e tre i dati separati dal trattino 
+            se non inizia per 010 antepongo 001- e passo soltanto il numero protocollo.
+            L'id passato nel path param deve essere composto da id (se presente nella get precedente) oppure da {protocollo}-{codice_esenzione}-{data_inizio_validita} nel caso in cui l'id nella get precedente non fosse presente
+            Se invece viene valorizzato l'header `Accept: application/pdf`,
+            ritorna
+
+            il PDF dell'esenzione.
+          schema:
+            $ref: '#/definitions/esenzione'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+  '/cittadini/{cf}/esenzioni/{id}/revoca':
+    put:
+      tags:
+        - Necessari
+      summary: Revoca esenzione
+      description: Revoca esenzione
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/pathCf'
+        - $ref: '#/parameters/idEsenzione'
+        - in: body
+          name: revoca
+          description: >-
+           Servizio di revoca; deve essere passato l'id dell'esenzione che deve essere composto da id (se presente nella get precedente) oppure da {protocollo}-{codice_esenzione}-{data_inizio_validita} nel caso in cui l'id nella get precedente non fosse presente.
+          schema:
+            title: Revoca
+            type: object
+            properties:
+              motivazione_revoca:
+                type: string
+                description: >-
+                  La motivazione delle revoca inserita probabilmente dal
+                  cittadino
+                example: questa è la motivazione della revoca inserita dal cittadino
+              codice_esenzione:
+                type: string
+                description: >- 
+                  Codice esenzione obbligatorio per la revoca di esenzioni certificate ovvero quelle a cui manca l'id
+              cf_beneficiario:
+                  type: string
+                  description: >-
+                    codice fiscale del beneficiario obbligatorio per esenzioni autocertificate
+            required:
+              - motivazione_revoca
+      responses:
+        '200':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            Restituisce l'esenzione revocata con le modifiche apportate dal
+            backend
+          schema:
+            $ref: '#/definitions/esenzione'
+        '202':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: >-
+            L'esenzione è in stato "in verifica",  la modifica verrà effettuata
+            appena possibile.
+          schema:
+            $ref: '#/definitions/esenzione'
+        '400':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al client (richiesta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+        '500':
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          description: Generico errore relativo al server (risposta errata)
+          schema:
+            $ref: '#/definitions/Errore'
+parameters:
+  shibIdentitaCodiceFiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  xCodiceServizio:
+    in: header
+    name: X-Codice-Servizio
+    description: >-
+      Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  xRequestId:
+    in: header
+    name: X-Request-ID
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  accept:
+    in: header
+    name: Accept
+    type: string
+    required: false
+    description: >-
+      Stabilisce qual è il tipo di ritorno atteso (`application/json`,
+      `application/pdf`, ecc)
+  pathCf:
+    in: path
+    name: cf
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  idEsenzione:
+    in: path
+    name: id
+    type: string
+    required: true
+    description: L'id dell'esenzione su cui operare
+  cf_beneficiario:
+    in: query
+    name: cf_beneficiario
+    type: string
+    required: true
+    description: Il codice fiscale del beneficiario
+  filtriEsenzione:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un oggetto JSON encoded.
+      Per i filtri ammessi vedere il model `filtro_esenzioni`.
+      Esempi di filtro: 
+      ```javascript
+      {stato: {in: ['1', '4']}}
+      ```
+      <br/>
+      ```javascript
+      {
+        data_inizio_validita: {gte: '2018-01-29T13:52:25+00:00'}, 
+        data_scadenza: {lte: '2019-04-29T13:52:25+00:00'}
+      }
+      ```
+      <br/>
+      ```javascript
+      {
+        data_inizio_validita: {
+          gte: '2018-01-29T13:52:25+00:00',
+          lte: '2019-04-29T13:52:25+00:00'
+        },
+        rapporto_familiare: {eq: '5'},
+        codice_esenzione: {ne: 'E01'},
+        creato_per: {in: ['AAAAAA00B77B000F', 'XXXXXX00B77B000F']}
+      }
+      ```
+  codice:
+    in: path
+    name: codice
+    type: string
+    required: true
+    description: Il codice che identifica la risorsa
+definitions:
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test        
+  configurazione:
+    title: Configurazione
+    type: object
+    description: |-
+      Risorsa che contiene i dati di configurazione del front-end.
+      Ad esempio può contenere delle stringhe "helper" da mostrare sulla UI
+      per facilitare la comprensione dell'utente. Potrebbe contenere in futuro
+      dei dati che permettono di capire lo stato del servizio (es. se è in manutenzione)
+    properties:
+      descrizione_titolare:
+        type: string
+        description: |
+          Contiene il testo, anche HTML, che descrive chi è il titolare di un'esenzione
+  disclaimer:
+    title: Disclaimer
+    type: object
+    description: Testo e versione del disclaimer
+    properties:
+      testo_informativa:
+        type: string
+        description: |
+          Contiene il testo, anche HTML, dell'informativa che l'utente dovrà accettare
+      versione_informativa:
+        type: string
+        description: |
+          Contiene la versione dell'informativa
+      testo_privacy:
+        type: string
+        description: |
+          Contiene il testo, anche HTML, dell'informativa sulla privacy che l'utente dovrà accettare
+      versione_privacy:
+        type: string
+        description: |
+          Contiene la versione dell'informativa sulla privacy
+  info:
+    title: Info
+    type: object
+    description: >-
+      Una risorsa che ci permette di avere dati aggiuntivi sulla configurazione
+      che un cittadino ha su questo servizio
+    properties:
+      scadenza:
+        type: string
+        format: date
+        description: >-
+          indica la data di scadenza delle esenzioni, che è una *costante*
+          costruita a partire dal valore della tabella ESENRED_C_PARAMETRI con
+          CODICE = DATA_SCADENZA_PARAMETRIZZATA
+        example: '2019-03-31'
+      bloccato:
+        type: boolean
+        description: indica se l'utente può creare una nuova esenzione o meno
+        example: false
+      data_sblocco:
+        type: string
+        format: date-time
+        description: >-
+          Permette di mostrare all'utente quando potrà tornare a creare
+          esenzioni
+        example: '2018-08-22T15:25:00+02:00'
+    required:
+      - bloccato
+      - scadenza
+  esenzione:
+    title: Esenzione
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Identificativo univoco
+        example: 123
+      protocollo:
+        type: integer
+        description: |
+          numero di protocollo Sogei 
+          (valorizzato solo nella risposta)
+        example: 321654987
+      data_richiesta:
+        type: string
+        format: date-time
+        description: Quando è stata richiesta l'esenzione?
+        example: '2018-07-22T15:25:00+02:00'
+      data_inizio_validita:
+        type: string
+        description: Da quando è valida l'esenzione?
+        format: date-time
+        example: '2018-07-23T15:25:00+02:00'
+      data_scadenza:
+        type: string
+        description: Quando scade questa esenzione?
+        format: date-time
+        example: '2019-07-23T15:25:00+02:00'
+      data_revoca:
+        type: string
+        format: date-time
+        description: Quando è stata revocata questa esenzione?
+        example: '2018-12-06T10:55:00+02:00'
+      motivazione_revoca:
+        type: string
+        description: >-
+          fornita dal cittadino, viene riportata nelle varie richieste se
+          preesente
+        example: questa è la motivazione della revoca inserita dal cittadino
+      revocabile:
+        type: boolean
+        description: |
+          È possibile revocare questa esenzione?
+          (Valorizzato solo nella risposta)
+        example: true
+      stampabile:
+        type: boolean
+        description: |
+          È una esenzione stampabile?
+          (Valorizzato solo nella risposta)
+        example: true
+      stato:
+        $ref: '#/definitions/stato_esenzione'
+      codice_esenzione:
+        $ref: '#/definitions/codice_esenzione'
+      creato_da:
+        $ref: '#/definitions/cittadino'
+      creato_per:
+        $ref: '#/definitions/cittadino'
+      titolare:
+        $ref: '#/definitions/cittadino'
+      rapporto_familiare:
+        $ref: '#/definitions/rapporto_familiare'
+  cittadino:
+    title: Cittadino
+    type: object
+    description: >-
+      nel caso di richiesta esenzione per se stessi l'unico campo valorizzato è
+      il codice fiscale, il resto dei dati vengono forniti solo in caso di
+      richiesta per altri
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale
+        example: AAAAAA00B77B000F
+      nome:
+        type: string
+        description: nome
+        example: Nome
+      cognome:
+        type: string
+        description: cognome
+        example: Cognome
+      sesso:
+        type: string
+        description: sesso
+        example: M
+      data_nascita:
+        type: string
+        format: date
+        example: '1947-07-23'
+      luogo_nascita:
+        $ref: '#/definitions/luogo_nascita'
+  luogo_nascita:
+    title: Luogo di nascita
+    type: object
+    description: Model che rappresenta un luogo di nascita
+    properties:
+      codice:
+        type: string
+        example: L219
+      descrizione:
+        type: string
+        example: Torino
+  stato_esenzione:
+    title: Stato dell'esenzione
+    type: object
+    description: Questo model rappresenta lo stato dell'esenzione
+    properties:
+      codice:
+        type: string
+        description: >-
+          Un codename univoco che permette di identificare univocamente lo
+          stato.
+        example: '1'
+      descrizione:
+        type: string
+        description: Una descrizione testuale da mostrare all'utente.
+        example: Non valida
+  codice_esenzione:
+    title: Codice dell'esenzione
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice dell'esenzione.
+        example: E01
+      descrizione:
+        type: string
+        example: Cittadini con meno di 6 anni o più di 65 anni
+      motivo:
+        type: string
+        description: Una descrizione testuale da mostrare all'utente.
+        example: >-
+          Cittadini di età inferiore a sei anni e superiore a sessantacinque
+          anni, appartenenti ad un nucleo familiare con reddito annuo
+          complessivo non superiore a 36.151,98 euro.
+      familiare:
+        type: boolean
+        description: |-
+          Indica se la tipologia di esenzione definita dal codice è relativa al nucleo familiare
+        example: false
+      valido:
+        type: boolean
+        description: |-
+          Indica se il codice è attualmente valido o se deve essere utilizzato solo per la ricerca delle esenzioni vecchie
+        example: true
+      data_attivazione:
+        type: string
+        format: datetime
+        example: '2018-07-23T15:25:00+02:00'
+        description: |-
+          Indica quando è stata attivato o verrà attivato il codice esenzione. Potrebbe essere utile per mostrare l'informazione all'utente
+        x-commento-verde: |-
+          Se non è possibile reperire il dato questo campo può essere anche tolto dallo YAML. Si tratta solo
+      data_scadenza:
+        type: string
+        format: datetime
+        example: '2018-07-23T15:25:00+02:00'
+        description: |-
+          Indica quando scade il codice esenzione. Potrebbe essere utile per mostrare l'informazione all'utente
+        x-commento-verde: |-
+          Se non è possibile reperire il dato questo campo può essere anche tolto dallo YAML. Si tratta solo di un'ipotesi
+  rapporto_familiare:
+    title: Rapporto familiare
+    type: object
+    description: >
+      Il rapporto familiare esistente tra il cittadino che crea l'esenzione ed
+      il beneficiario.
+
+      Nel caso in cui un cittadino crea un'esenzione per sè, questo campo sarà
+      null
+    properties:
+      codice:
+        type: string
+        description: >-
+          Un codename univoco che permette di identificare univocamente il
+          rapporto familiare.
+        example: '1'
+      descrizione:
+        type: string
+        description: Una descrizione testuale da mostrare all'utente.
+        example: Genitore eservente la potestà
+  esenzione_post:
+    title: '[POST] Esenzione'
+    description: |
+      Descrive il payload che il client può passare in fase di creazione di un'esenzione.<br>
+      * Il campo "creato_per" se non popolato si riferisce all'utente il cui 
+      codice fiscale {cf} è presente nel path
+      * Il campo "titolare" se non popolato si riferisce all'utente il cui 
+      codice fiscale {cf} è presente nel path 
+    type: object
+    properties:
+      codice_esenzione:
+        type: string
+        description: La proprietà `codice` del codice dell'esenzione
+        example: E01
+      rapporto_familiare:
+        type: string
+        description: codice del rapporto familiare
+      disclaimer:
+        type: boolean
+        description: Presa visione del disclaimer (eventualmente integer con versione?)
+        example: true
+      creato_per:
+        $ref: '#/definitions/cittadino_post'
+      titolare:
+        $ref: '#/definitions/cittadino_post'
+        
+    required:
+      - codice_esenzione
+      - creato_da
+  cittadino_post:
+    title: "[POST] Cittadino"
+    description: |-
+      Questa risorsa descrive la struttura relativa al cittadino usata solitamente nelle "POST"
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale
+        example: AAAAAA00B77B000F
+      nome:
+        type: string
+        description: nome
+        example: Nome
+      cognome:
+        type: string
+        description: cognome
+        example: Cognome
+      sesso:
+        type: string
+        description: sesso
+        example: M
+      data_nascita:
+        type: string
+        format: date
+        example: '1947-07-23'
+      luogo_nascita:
+        $ref: '#/definitions/luogo'
+  luogo:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: codice del comune
+        example: 001156
+      descrizione:
+        type: string
+        description: descrizione del comune
+        example: MONCALIERI
+    required:
+      - codice_fiscale
+      - nome
+      - cognome
+      - sesso
+      - data_nascita
+      - luogo_nascita
+      
+  filtro_esenzioni:
+    title: '[FILTRI] Esenzioni'
+    type: object
+    properties:
+      stato:
+        $ref: '#/definitions/string_crit'
+      codice_esenzione:
+        $ref: '#/definitions/string_crit'
+      rapporto_familiare:
+        $ref: '#/definitions/string_crit'
+      data_richiesta:
+        $ref: '#/definitions/date_crit'
+      data_inizio_validita:
+        $ref: '#/definitions/date_crit'
+      data_scadenza:
+        $ref: '#/definitions/date_crit'
+      data_revoca:
+        $ref: '#/definitions/date_crit'
+      creato_da:
+        $ref: '#/definitions/string_crit'
+      creato_per:
+        $ref: '#/definitions/string_crit'
+  string_crit:
+    title: '[FILTRI][CRITERI] Stringhe'
+    type: object
+    properties:
+      eq:
+        type: string
+        description: Equal (=)
+      ne:
+        type: string
+        description: Not Equal (<>)
+      in:
+        type: array
+        description: In Array
+        items:
+          type: string
+      nin:
+        type: array
+        description: Not In Array
+        items:
+          type: string
+  date_crit:
+    title: '[FILTRI][CRITERI] Date'
+    type: object
+    properties:
+      eq:
+        description: Equal (=)
+        type: string
+        format: date
+      ne:
+        description: Not Equal (<>)
+        type: string
+        format: date
+      lt:
+        description: Less Then (<)
+        type: string
+        format: date
+      lte:
+        description: Less Then Or Equal (<=)
+        type: string
+        format: date
+      gt:
+        description: Greater Then (>)
+        type: string
+        format: date
+      gte:
+        description: Greater Then Or Equal (>=)
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          description: In Array
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          description: Not In Array
+          type: string
+          format: date
+  Errore:
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/Dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 400
+        code: NON_AUTORIZZATO
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 400
+        code: AURA_NON_TROVATO
+        title: Cittadino non trovato dal servizio Aura
+        detail:
+          - E0010: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+      - status: 500
+        code: AURA_GENERICO
+        title: Errore del servizio Aura
+        detail:
+          - E00*: Descrizione fornita da Aura
+        links: []
+      - status: 500
+        code: AURA_NON_RAGGIUNGIBILE
+        title: Servizio Aura non raggiungibile
+        detail: []
+        links: []
+  Dettaglio:
+    type: object
+    additionalProperties:
+      type: string
+tags:
+  - name: Necessari
+    description: Insieme di endpoint necessari per l'implementazione con il design attuale

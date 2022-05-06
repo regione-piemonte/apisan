@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="ArruolabileFSEService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" xmlns="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:element name="fascicoloArruolabile" type="ns1:fascicoloArruolabile" />
+   <xs:element name="isArruolabile" type="ns1:isArruolabile" />
+   <xs:element name="isArruolabileResponse" type="ns1:isArruolabileResponse" />
+   <xs:element name="richiedenteArruolamento" type="ns1:richiedenteArruolamento" />
+   <xs:element name="Exception" type="Exception" />
+   <xs:complexType name="Exception">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="message" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="getPreferenzeArruolabilita" nillable="true" type="xs:string" />
+   <xs:element name="getPreferenzeArruolabilitaResponse" nillable="true" type="xs:string" />
+   <xs:element name="setPreferenzeConsultazione" nillable="true" type="xs:string" />
+   <xs:element name="setPreferenzeConsultazioneResponse" nillable="true" type="xs:string" />
+   <xs:element name="setPreferenzeArruolabilita" nillable="true" type="xs:string" />
+   <xs:element name="setPreferenzeArruolabilitaResponse" nillable="true" type="xs:string" />
+</xs:schema><xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dma.csi.it/" xmlns:ns1="http://dmacc.csi.it/" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dmacc.csi.it/" />
+   <xs:complexType name="isArruolabile">
+      <xs:sequence>
+         <xs:element name="codiceFiscale" type="xs:string" />
+         <xs:element name="richiedente" type="tns:richiedenteArruolamento" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="richiedenteArruolamento">
+      <xs:sequence>
+         <xs:element name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="ruolo" type="xs:string" />
+         <xs:element name="tipoDelega" type="xs:string" />
+         <xs:element minOccurs="0" name="gradoDelega" type="xs:string" />
+         <xs:element minOccurs="0" name="requestID" type="xs:string" />
+         <xs:element minOccurs="0" name="codiceServizio" type="xs:string" />
+         <xs:element minOccurs="0" name="ipRichiedente" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="isArruolabileResponse">
+      <xs:sequence>
+         <xs:element name="fascicoloArruolabile" type="tns:fascicoloArruolabile" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="fascicoloArruolabile">
+      <xs:sequence>
+         <xs:element name="codiceRisposta" type="xs:string" />
+         <xs:element name="risposta" type="xs:string" />
+         <xs:element name="dettaglioRisposta" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="isArruolabileResponse">
+    <wsdl:part element="tns:isArruolabileResponse" name="isArruolabileResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPreferenzeArruolabilita">
+    <wsdl:part element="tns:getPreferenzeArruolabilita" name="getPreferenzeArruolabilita">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setPreferenzeArruolabilitaResponse">
+    <wsdl:part element="tns:setPreferenzeArruolabilitaResponse" name="setPreferenzeArruolabilitaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Exception">
+    <wsdl:part element="tns:Exception" name="Exception">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setPreferenzeConsultazione">
+    <wsdl:part element="tns:setPreferenzeConsultazione" name="setPreferenzeConsultazione">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPreferenzeArruolabilitaResponse">
+    <wsdl:part element="tns:getPreferenzeArruolabilitaResponse" name="getPreferenzeArruolabilitaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setPreferenzeConsultazioneResponse">
+    <wsdl:part element="tns:setPreferenzeConsultazioneResponse" name="setPreferenzeConsultazioneResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="isArruolabile">
+    <wsdl:part element="tns:isArruolabile" name="isArruolabile">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setPreferenzeArruolabilita">
+    <wsdl:part element="tns:setPreferenzeArruolabilita" name="setPreferenzeArruolabilita">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ArruolabileFSEService">
+    <wsdl:operation name="getPreferenzeArruolabilita">
+      <wsdl:input message="tns:getPreferenzeArruolabilita" name="getPreferenzeArruolabilita">
+    </wsdl:input>
+      <wsdl:output message="tns:getPreferenzeArruolabilitaResponse" name="getPreferenzeArruolabilitaResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:Exception" name="Exception">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="isArruolabile">
+      <wsdl:input message="tns:isArruolabile" name="isArruolabile">
+    </wsdl:input>
+      <wsdl:output message="tns:isArruolabileResponse" name="isArruolabileResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:Exception" name="Exception">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setPreferenzeConsultazione">
+      <wsdl:input message="tns:setPreferenzeConsultazione" name="setPreferenzeConsultazione">
+    </wsdl:input>
+      <wsdl:output message="tns:setPreferenzeConsultazioneResponse" name="setPreferenzeConsultazioneResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:Exception" name="Exception">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setPreferenzeArruolabilita">
+      <wsdl:input message="tns:setPreferenzeArruolabilita" name="setPreferenzeArruolabilita">
+    </wsdl:input>
+      <wsdl:output message="tns:setPreferenzeArruolabilitaResponse" name="setPreferenzeArruolabilitaResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:Exception" name="Exception">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ArruolabileFSEServiceSoapBinding" type="tns:ArruolabileFSEService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getPreferenzeArruolabilita">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getPreferenzeArruolabilita">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPreferenzeArruolabilitaResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap12:fault name="Exception" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="isArruolabile">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="isArruolabile">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="isArruolabileResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap12:fault name="Exception" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setPreferenzeConsultazione">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setPreferenzeConsultazione">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setPreferenzeConsultazioneResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap12:fault name="Exception" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setPreferenzeArruolabilita">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setPreferenzeArruolabilita">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setPreferenzeArruolabilitaResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap12:fault name="Exception" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ArruolabileFSEService">
+    <wsdl:port binding="tns:ArruolabileFSEServiceSoapBinding" name="ArruolabileFSEServicePort">
+      <soap12:address location="https://xxx-dma.xxx.csi.it/dmacc/ArruolabileFSEService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

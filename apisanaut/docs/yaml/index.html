@@ -1,0 +1,3233 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Deleghe ######</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Deleghe</h1>
+    <div class="app-desc"><h1>VERSIONE 1.1</h1>
+<p>MODIFICHE:</p>
+<h2>model: delega_servizio aggiunti: tipo e grado
+Aggiunte api di decodifica
+model: dichiarazione aggiunti numero_documento, autorita, data_inizio_tutela,
+data_fine_tutela
+model documento: aggiunti: data_scadenza_doc, data_rilascio, doc_tipo_id,
+doc_desc</h2>
+</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/apisanaut/api/v1</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Decodifiche">Decodifiche</a></h4>
+  <ul>
+  <li><a href="#statiDelegheGet"><code><span class="http-method">get</span> /stati-deleghe</code></a></li>
+  <li><a href="#statiDichiarazioneGet"><code><span class="http-method">get</span> /stati-dichiarazione</code></a></li>
+  <li><a href="#tipiDelegheGet"><code><span class="http-method">get</span> /tipi-deleghe</code></a></li>
+  <li><a href="#tipiDichiarazioneGet"><code><span class="http-method">get</span> /tipi-dichiarazione</code></a></li>
+  </ul>
+  <h4><a href="#Default">Default</a></h4>
+  <ul>
+  <li><a href="#cittadiniCfAssistitoPiemonteseGet"><code><span class="http-method">get</span> /cittadini/{cf}/assistito-piemontese</code></a></li>
+  <li><a href="#cittadiniCfPut"><code><span class="http-method">put</span> /cittadini/{cf}</code></a></li>
+  <li><a href="#cittadiniGet"><code><span class="http-method">get</span> /cittadini</code></a></li>
+  <li><a href="#cittadiniPost"><code><span class="http-method">post</span> /cittadini</code></a></li>
+  <li><a href="#servizioAttivoGet"><code><span class="http-method">get</span> /servizio-attivo</code></a></li>
+  </ul>
+  <h4><a href="#GestioneDeleghe">GestioneDeleghe</a></h4>
+  <ul>
+  <li><a href="#cittadiniCfDelegantiCfdeleganteGet"><code><span class="http-method">get</span> /cittadini/{cf}/deleganti/{cfdelegante}</code></a></li>
+  <li><a href="#cittadiniCfDelegantiCfdeleganteServiziUuidPut"><code><span class="http-method">put</span> /cittadini/{cf}/deleganti/{cfdelegante}/servizi/{uuid}</code></a></li>
+  <li><a href="#cittadiniCfDelegantiGet"><code><span class="http-method">get</span> /cittadini/{cf}/deleganti</code></a></li>
+  <li><a href="#cittadiniCfDelegatiCfdelegatoGet"><code><span class="http-method">get</span> /cittadini/{cf}/delegati/{cfdelegato}</code></a></li>
+  <li><a href="#cittadiniCfDelegatiCfdelegatoPut"><code><span class="http-method">put</span> /cittadini/{cf}/delegati/{cfdelegato}</code></a></li>
+  <li><a href="#cittadiniCfDelegatiDelegheValideGet"><code><span class="http-method">get</span> /cittadini/{cf}/delegati/deleghe-valide</code></a></li>
+  <li><a href="#cittadiniCfDelegatiGet"><code><span class="http-method">get</span> /cittadini/{cf}/delegati</code></a></li>
+  <li><a href="#cittadiniCfDelegatiPost"><code><span class="http-method">post</span> /cittadini/{cf}/delegati</code></a></li>
+  </ul>
+  <h4><a href="#GestioneDichiarazioni">GestioneDichiarazioni</a></h4>
+  <ul>
+  <li><a href="#cittadiniCfDichiarazioniGet"><code><span class="http-method">get</span> /cittadini/{cf}/dichiarazioni</code></a></li>
+  <li><a href="#cittadiniCfDichiarazioniPost"><code><span class="http-method">post</span> /cittadini/{cf}/dichiarazioni</code></a></li>
+  <li><a href="#cittadiniCfDichiarazioniUuidDichiarazionePut"><code><span class="http-method">put</span> /cittadini/{cf}/dichiarazioni/{uuid_dichiarazione}</code></a></li>
+  </ul>
+
+  <h1><a name="Decodifiche">Decodifiche</a></h1>
+  <div class="method"><a name="statiDelegheGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /stati-deleghe</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">statiDelegheGet</span>)</div>
+    <div class="method-notes">Ricerca tutti i possibili stati della dichiarazione es VALIDA, REVOCATA, SCADUTA</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#delega_stato">delega_stato</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ "", "" ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="statiDichiarazioneGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /stati-dichiarazione</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">statiDichiarazioneGet</span>)</div>
+    <div class="method-notes">Ricerca tutti i possibili stati della dichiarazione es VALIDA, REVOCATA, SCADUTA</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#dichiarazione_stato">dichiarazione_stato</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ "", "" ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="tipiDelegheGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /tipi-deleghe</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">tipiDelegheGet</span>)</div>
+    <div class="method-notes">Ricerca tutti i possibili tipi di deleghe es AMMSOSTEGNO, TUTELA_MAG18</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#delega_tipo">delega_tipo</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ "", "" ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="tipiDichiarazioneGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /tipi-dichiarazione</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">tipiDichiarazioneGet</span>)</div>
+    <div class="method-notes">Ritorna tutti i possibili tipi di dichiarazione es CONGIUNTA, GENITOREMONO, TUTELA, AMMSOSTEGNO, TUTELA_MAG18</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#dichiarazione_tipo">dichiarazione_tipo</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ "", "" ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Default">Default</a></h1>
+  <div class="method"><a name="cittadiniCfAssistitoPiemonteseGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/assistito-piemontese</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfAssistitoPiemonteseGet</span>)</div>
+    <div class="method-notes">ritora se un cittadino è piemontese o meno</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#assistito_piemontese">assistito_piemontese</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "piemontese" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#assistito_piemontese">assistito_piemontese</a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfPut"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /cittadini/{cf}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfPut</span>)</div>
+    <div class="method-notes">Aggiorna un cittadino</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">cittadino <a href="#cittadino">cittadino</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#cittadino">cittadino</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "asl_assistenza" : "asl_assistenza",
+  "codice_fiscale" : "AAAAAA00B77B000F",
+  "cognome" : "cognome",
+  "data_nascita" : "2000-01-23",
+  "sesso" : "sesso",
+  "documento" : {
+    "tipo" : "",
+    "data_rilascio" : "2000-01-23",
+    "file" : {
+      "dimensione_in_bytes" : 1,
+      "nome" : "nome",
+      "base_file" : "base_file"
+    },
+    "data_scadenza_doc" : "2000-01-23",
+    "numero_documento" : "numero_documento",
+    "doc_desc" : "carta d\\'identita",
+    "id" : 6,
+    "doc_tipo_id" : 1,
+    "autorita" : "autorita",
+    "desc" : "desc"
+  },
+  "nome" : "nome",
+  "id_aura" : 0,
+  "comune_nascita" : "comune_nascita"
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#cittadino">cittadino</a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniGet</span>)</div>
+    <div class="method-notes">Ricerca cittadini</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#cittadino">cittadino</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "asl_assistenza" : "asl_assistenza",
+  "codice_fiscale" : "AAAAAA00B77B000F",
+  "cognome" : "cognome",
+  "data_nascita" : "2000-01-23",
+  "sesso" : "sesso",
+  "documento" : {
+    "tipo" : "",
+    "data_rilascio" : "2000-01-23",
+    "file" : {
+      "dimensione_in_bytes" : 1,
+      "nome" : "nome",
+      "base_file" : "base_file"
+    },
+    "data_scadenza_doc" : "2000-01-23",
+    "numero_documento" : "numero_documento",
+    "doc_desc" : "carta d\\'identita",
+    "id" : 6,
+    "doc_tipo_id" : 1,
+    "autorita" : "autorita",
+    "desc" : "desc"
+  },
+  "nome" : "nome",
+  "id_aura" : 0,
+  "comune_nascita" : "comune_nascita"
+}, {
+  "asl_assistenza" : "asl_assistenza",
+  "codice_fiscale" : "AAAAAA00B77B000F",
+  "cognome" : "cognome",
+  "data_nascita" : "2000-01-23",
+  "sesso" : "sesso",
+  "documento" : {
+    "tipo" : "",
+    "data_rilascio" : "2000-01-23",
+    "file" : {
+      "dimensione_in_bytes" : 1,
+      "nome" : "nome",
+      "base_file" : "base_file"
+    },
+    "data_scadenza_doc" : "2000-01-23",
+    "numero_documento" : "numero_documento",
+    "doc_desc" : "carta d\\'identita",
+    "id" : 6,
+    "doc_tipo_id" : 1,
+    "autorita" : "autorita",
+    "desc" : "desc"
+  },
+  "nome" : "nome",
+  "id_aura" : 0,
+  "comune_nascita" : "comune_nascita"
+} ]</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniPost</span>)</div>
+    <div class="method-notes">Inserisce un cittadino</div>
+
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">cittadino <a href="#cittadino">cittadino</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#dichiarazione">dichiarazione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "stato" : "",
+  "tipo" : "",
+  "data_fine_tutela" : "2000-01-23",
+  "data_inizio_tutela" : "2000-01-23",
+  "numero_documento" : "numero_documento",
+  "dettagli" : [ {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  }, {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  } ],
+  "cittadino" : {
+    "asl_assistenza" : "asl_assistenza",
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "cognome",
+    "data_nascita" : "2000-01-23",
+    "sesso" : "sesso",
+    "documento" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "nome" : "nome",
+    "id_aura" : 0,
+    "comune_nascita" : "comune_nascita"
+  },
+  "uuid" : "uuid",
+  "autorita" : "autorita",
+  "modo" : ""
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Operazione eseguita con successo
+        <a href="#dichiarazione">dichiarazione</a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="servizioAttivoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /servizio-attivo</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">servizioAttivoGet</span>)</div>
+    <div class="method-notes">Serve per verificare se il servizio risponde o meno</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#info_servizio">info_servizio</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "descrizione" : "descrizione",
+  "data" : "2000-01-23",
+  "nome" : "nome",
+  "servizio_attivo" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    OK
+        <a href="#info_servizio">info_servizio</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="GestioneDeleghe">GestioneDeleghe</a></h1>
+  <div class="method"><a name="cittadiniCfDelegantiCfdeleganteGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/deleganti/{cfdelegante}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegantiCfdeleganteGet</span>)</div>
+    <div class="method-notes">Corrisponde alla risorsa  singola del delegato  rappresenta uno 'shortcut' alla uri deleganti. Il codice fiscale dell'header deve essere verificato con il cf passato nel path param se sono diversi ritorna errore 401. I deleganti ritornati hanno ognuno un elenco di deleghe; il codice fiscale non viene ripetuto per ogni delega.Verificare
+X-Request-ID deve essere usato anche nella response o serve solo per
+l'audit? Aggiunto codice servizio nell'header per requisito sicurezza proveniente dal giallo
+I filtri ammissibili sono i seguenti</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div><div class="param">cfdelegante (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#delega_cittadino">delega_cittadino</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+}, {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDelegantiCfdeleganteServiziUuidPut"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /cittadini/{cf}/deleganti/{cfdelegante}/servizi/{uuid}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegantiCfdeleganteServiziUuidPut</span>)</div>
+    <div class="method-notes">Esegue una rinuncia a una delega ricevuta; il cf passato come path param viene verificato con il cf dell'header se non coincidono ritorna errore 401, e corrisponde alla persona che rinuncia alla delega precedentemente conferitagli dal delegante passato nel path param cfdelegante.
+Il codice servizio rappresenta il servizio a cui il cittadino
+rinuncia a essere delegante. Non effettua una delete su database ma inserisce una data di fine validita = alla data odierna. Il parametro uuid rappresenta la chiave della delega (verificare)</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; cf del delegante </div><div class="param">cfdelegante (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; codice servizio del servizio a cui il delegato rinuncia </div><div class="param">uuid (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Metodo di modifica di una delega di un cittadino, permette ad esempio di cambiare lo stato alla delega. </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">deleghe-servizio <a href="#delega_servizio">delega_servizio</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDelegantiGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/deleganti</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegantiGet</span>)</div>
+    <div class="method-notes">Fornisce l'elenco delle persone che hanno delegato il cf passato in path param a compiere operazioni sui servizi sanitari. Il codice fiscale dell'header deve essere verificato con il cf passato nel path param se sono diversi ritorna errore 401. Viene ritornato un array di cittadino-deleghe che rappresenta le persone che hanno compiuto l'operazione di delegare il cittadino su un servizio. Il codice fiscale non viene ripetuto per ogni delega. codice fiscale non viene ripetuto per ogni delega.Verificare X-Request-ID deve essere usato anche nella response o serve solo per l'audit? Aggiunto codice servizio nell'header per requisito sicurezza proveniente dal giallo. Il filtro viene consentito per codice_fiscale, per stato_delega e sul codice servizio come definito sull'oggetto delega_filter</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Codice servizio viene passato dal verde e serve allo strato giallo per fare audit </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#delega_cittadino">delega_cittadino</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+}, {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDelegatiCfdelegatoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/delegati/{cfdelegato}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegatiCfdelegatoGet</span>)</div>
+    <div class="method-notes">Corrisponde alla risorsa  singola del delegato  rappresenta uno 'shortcut' alla uri delegati  Il codice fiscale dell'header deve essere verificato con il cf passato nel path param, se sono diversi ritorna errore 401. Ogni delegante ritornato ha un elenco di deleghe;</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div><div class="param">cfdelegato (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#delega_cittadino">delega_cittadino</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    operazione eseguita con successo
+        <a href="#delega_cittadino">delega_cittadino</a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDelegatiCfdelegatoPut"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /cittadini/{cf}/delegati/{cfdelegato}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegatiCfdelegatoPut</span>)</div>
+    <div class="method-notes">Modifica le deleghe di un delegato è possibile non avere una delega in stato attiva. Nell'header viene passato un codice fiscale che deve essere verificato con il codice fiscale passato nel path, se non corrispondono ritorna errore 401.Gli stati possibili sono
+* ATTIVA
+* IN_SCADENZA
+* SCADUTA
+* RIFIUTATA
+* REVOCATA</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cfdelegato (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; cf della persona delegata </div><div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; cf della persona delegante </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">cittadino-delega <a href="#delega_cittadino">delega_cittadino</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; <p>I campi obbligatori da valorizzare sono</p>
+<ul>
+<li>uuid</li>
+<li>codice_fiscale_delega</li>
+<li>nome_delega</li>
+<li>cognome_delega</li>
+<li>data_nascita_delega</li>
+<li>luogo_nascita_delega</li>
+<li>sesso_delega</li>
+<li>stato_anagrafica -&gt; stati possibili indicati in descrizione del servizio
+deleghe
+<ul>
+<li>uuid nel caso in cui presente da precedente get</li>
+<li>codice_servizio</li>
+<li>data_inizio_delega</li>
+<li>data_fine_delega</li>
+<li>stato_delega possibili valori su descrizione del servizio</li>
+</ul>
+</li>
+</ul>
+ </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#delega_cittadino">delega_cittadino</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#delega_cittadino">delega_cittadino</a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDelegatiDelegheValideGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/delegati/deleghe-valide</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegatiDelegheValideGet</span>)</div>
+    <div class="method-notes">Fornisce l'elenco delle persone che il cf ha delegato a compiere operazioni sui servizi sanitari per il codice fiscale fornito nel path param che hanno una delega valida (stati Attiva e in Scadenza). Il codice fiscale dell'header deve essere verificato con il cf passato nel path param, se sono diversi ritorna errore 401. Ogni delegante ritornato  ha un elenco di deleghe; il codice fiscale e i dati anagrafici non vengono ripetuti per ogni delega.Il filtro viene consentito per codice_fiscale e codice_servizio come definito nell'oggetto delega_valida_filter</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Il filtro puo essere applicato sul codice_fiscale e/o sul codice servizio; per entrambi i filtri ho previsto dei metodi 'shortcut' </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#delega_cittadino">delega_cittadino</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+}, {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDelegatiGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/delegati</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegatiGet</span>)</div>
+    <div class="method-notes">Fornisce l'elenco delle persone che il cf ha delegato a compiere operazioni sui servizi sanitari per il codice fiscale fornito nel path param. Il codice fiscale dell'header deve essere verificato con il cf passato nel path param, se sono diversi ritorna errore 401. Ogni delegante ritornato  ha un elenco di deleghe; il codice fiscale e i dati anagrafici non vengono ripetuti per ogni delega.Il filtro viene consentito per codice_fiscale, stato_delega e codice_servizio come definito nell'oggetto delega_filter</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Il filtro puo essere applicato sul codice_fiscale e/o sul codice servizio; per entrambi i filtri ho previsto dei metodi 'shortcut' </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#delega_cittadino">delega_cittadino</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+}, {
+  "codice_fiscale_delega" : "AAAAAA00B77B000F",
+  "deleghe" : [ {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  }, {
+    "data_revoca_delega" : "2000-01-23",
+    "stato_delega" : "stato_delega",
+    "data_fine_delega" : "2000-01-23",
+    "tipo_delega" : "ADULTO",
+    "grado_delega" : "FORTE",
+    "codice_servizio" : "codice_servizio",
+    "data_rinuncia_delega" : "2000-01-23",
+    "uuid" : "uuid",
+    "data_inizio_delega" : "2000-01-23"
+  } ],
+  "cognome_delega" : "cognome_delega",
+  "luogo_nascita_delega" : "luogo_nascita_delega",
+  "nome_delega" : "nome_delega",
+  "stato_anagrafica" : "stato_anagrafica",
+  "sesso_delega" : "sesso_delega",
+  "data_nascita_delega" : "2000-01-23",
+  "uuid" : "uuid"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDelegatiPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cf}/delegati</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDelegatiPost</span>)</div>
+    <div class="method-notes"><p>inserisce almeno un delegato che deve avere almeno una delega in stato attiva. Nell'header viene passato un codice fiscale che deve essere verificato con il codice fiscale passato nel path, se non corrispondono ritorna errore 401. Il cittadino che compie l'operazione viene reperito dal servizio tramite chiamata ad aura in quanto possono inserire deleghe e delegati unicamente cittadini piemontesi. Stati delega consentiti (al front end). Non è da  valorizare il campo grado_delega in quanto lo calcola da sistema.</p>
+<ul>
+<li>Attiva</li>
+</ul>
+</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; cf della persona delegante </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">delegati <a href="#delega_cittadino">delega_cittadino</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; <p>I campi obbligatori da valorizzare sono</p>
+<ul>
+<li>codice_fiscale_delega</li>
+<li>nome_delega</li>
+<li>cognome_delega</li>
+<li>data_nascita_delega</li>
+<li>luogo_nascita_delega</li>
+<li>sesso_delega
+deleghe
+<ul>
+<li>codice_servizio</li>
+<li>data_inizio_delega -&gt; deve essere data odierna</li>
+<li>data_fine_delega -&gt; il massimo possibile deve essere preso dal servizio apisancross/servizi con data inizio delega + numero_giorni_delegabile</li>
+<li>stato_delega -&gt; in inserimento deve essere ATTIVA</li>
+</ul>
+</li>
+</ul>
+ </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Operazione eseguita con successo
+type: array
+items:
+$ref: '#/definitions/delega_cittadino'
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="GestioneDichiarazioni">GestioneDichiarazioni</a></h1>
+  <div class="method"><a name="cittadiniCfDichiarazioniGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/dichiarazioni</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDichiarazioniGet</span>)</div>
+    <div class="method-notes">Ricerca di dichiarazioni di un cittadino</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#dichiarazione">dichiarazione</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "stato" : "",
+  "tipo" : "",
+  "data_fine_tutela" : "2000-01-23",
+  "data_inizio_tutela" : "2000-01-23",
+  "numero_documento" : "numero_documento",
+  "dettagli" : [ {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  }, {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  } ],
+  "cittadino" : {
+    "asl_assistenza" : "asl_assistenza",
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "cognome",
+    "data_nascita" : "2000-01-23",
+    "sesso" : "sesso",
+    "documento" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "nome" : "nome",
+    "id_aura" : 0,
+    "comune_nascita" : "comune_nascita"
+  },
+  "uuid" : "uuid",
+  "autorita" : "autorita",
+  "modo" : ""
+}, {
+  "stato" : "",
+  "tipo" : "",
+  "data_fine_tutela" : "2000-01-23",
+  "data_inizio_tutela" : "2000-01-23",
+  "numero_documento" : "numero_documento",
+  "dettagli" : [ {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  }, {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  } ],
+  "cittadino" : {
+    "asl_assistenza" : "asl_assistenza",
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "cognome",
+    "data_nascita" : "2000-01-23",
+    "sesso" : "sesso",
+    "documento" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "nome" : "nome",
+    "id_aura" : 0,
+    "comune_nascita" : "comune_nascita"
+  },
+  "uuid" : "uuid",
+  "autorita" : "autorita",
+  "modo" : ""
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDichiarazioniPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cf}/dichiarazioni</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDichiarazioniPost</span>)</div>
+    <div class="method-notes">Inserisce una dichiarazione nel body devono essere presenti 2 dettagli uno per il genitore 1, ovvero lo stesso del path param, e l'altro per il secondo genitore. Cittadino1 del web service corrisponde sempre a genitore_tutore_curatore, figlio_tutelato_curato corrisponde a cittadino2 del web service.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">dichiarazione <a href="#dichiarazione">dichiarazione</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; <p>I campi obbligatori sono</p>
+<ul>
+<li>tipo
+<ul>
+<li>codice -&gt; deve essere CONGIUNTA</li>
+</ul>
+</li>
+<li>stato
+<ul>
+<li>codice -&gt; deve essere DA_COMPLETARE</li>
+</ul>
+</li>
+<li>modo
+<ul>
+<li>codice -&gt; deve essere valorizzato ON_LINE</li>
+</ul>
+</li>
+<li>cittadino
+<ul>
+<li>deve essere cittadino dichiarantw</li>
+<li>documento del cittadino -&gt; deve essere lo stato id famiglia</li>
+</ul>
+</li>
+<li>dettagli
+<ul>
+<li>stato
+<ul>
+<li>codice -&gt; deve essere DA_APPROVARE</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>genitore_tutore_curatore
+<ul>
+<li>codice_fiscale</li>
+</ul>
+</li>
+<li>ruolo_genitore_curatore
+<ul>
+<li>codice -&gt; deve essere  GENITORE_1 o GENITORE_2</li>
+<li>documento -&gt; documento identita</li>
+</ul>
+</li>
+<li>figlio_tutelato_curato
+<ul>
+<li>codice_fiscale</li>
+<li>dosumento -&gt; documento identita</li>
+</ul>
+</li>
+<li>ruolo_figlio_tutelato_curato
+<ul>
+<li>codice deve essere passato FIGLIO</li>
+</ul>
+</li>
+</ul>
+ </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#dichiarazione">dichiarazione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "stato" : "",
+  "tipo" : "",
+  "data_fine_tutela" : "2000-01-23",
+  "data_inizio_tutela" : "2000-01-23",
+  "numero_documento" : "numero_documento",
+  "dettagli" : [ {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  }, {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  } ],
+  "cittadino" : {
+    "asl_assistenza" : "asl_assistenza",
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "cognome",
+    "data_nascita" : "2000-01-23",
+    "sesso" : "sesso",
+    "documento" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "nome" : "nome",
+    "id_aura" : 0,
+    "comune_nascita" : "comune_nascita"
+  },
+  "uuid" : "uuid",
+  "autorita" : "autorita",
+  "modo" : ""
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Operazione eseguita con successo
+        <a href="#dichiarazione">dichiarazione</a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfDichiarazioniUuidDichiarazionePut"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /cittadini/{cf}/dichiarazioni/{uuid_dichiarazione}</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">cittadiniCfDichiarazioniUuidDichiarazionePut</span>)</div>
+    <div class="method-notes">Aggiorna una dichiarazione</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div><div class="param">uuid_dichiarazione (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">dichiarazione <a href="#dichiarazione">dichiarazione</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; <p>I campi obbligatori sono</p>
+<ul>
+<li>tipo
+<ul>
+<li>codice -&gt; deve essere CONGIUNTA</li>
+</ul>
+</li>
+<li>stato
+<ul>
+<li>codice -&gt; deve essere DA_COMPLETARE, ATTIVA, REVOCATA, SCADUTA</li>
+</ul>
+</li>
+<li>modo
+<ul>
+<li>codice -&gt; deve essere valorizzato ON_LINE</li>
+</ul>
+</li>
+<li>dettagli
+<ul>
+<li>stato
+<ul>
+<li>codice -&gt; deve essere DA_APPROVARE, VALIDA, DA_APPROVARE, REVOCATA_BLOCCO, REVOCATA, SCADUTA</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>genitore_tutore_curatore
+<ul>
+<li>codice_fiscale</li>
+</ul>
+</li>
+<li>ruolo_genitore_curatore
+<ul>
+<li>codice -&gt; deve essere  GENITORE_1 o GENITORE_2</li>
+</ul>
+</li>
+<li>figlio_tutelato_curato
+<ul>
+<li>codice_fiscale</li>
+</ul>
+</li>
+<li>ruolo_figlio_tutelato_curato
+<ul>
+<li>codice deve essere passato FIGLIO</li>
+</ul>
+</li>
+</ul>
+ </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#dichiarazione">dichiarazione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "stato" : "",
+  "tipo" : "",
+  "data_fine_tutela" : "2000-01-23",
+  "data_inizio_tutela" : "2000-01-23",
+  "numero_documento" : "numero_documento",
+  "dettagli" : [ {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  }, {
+    "stato" : "",
+    "figlio_tutelato_curato" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "ruolo_genitore_tutore_curatore" : "",
+    "ruolo_figlio_tutelato_curato" : "",
+    "genitore_tutore_curatore" : {
+      "asl_assistenza" : "asl_assistenza",
+      "codice_fiscale" : "AAAAAA00B77B000F",
+      "cognome" : "cognome",
+      "data_nascita" : "2000-01-23",
+      "sesso" : "sesso",
+      "documento" : {
+        "tipo" : "",
+        "data_rilascio" : "2000-01-23",
+        "file" : {
+          "dimensione_in_bytes" : 1,
+          "nome" : "nome",
+          "base_file" : "base_file"
+        },
+        "data_scadenza_doc" : "2000-01-23",
+        "numero_documento" : "numero_documento",
+        "doc_desc" : "carta d\\'identita",
+        "id" : 6,
+        "doc_tipo_id" : 1,
+        "autorita" : "autorita",
+        "desc" : "desc"
+      },
+      "nome" : "nome",
+      "id_aura" : 0,
+      "comune_nascita" : "comune_nascita"
+    },
+    "documento_famiglia" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "uuid" : "uuid"
+  } ],
+  "cittadino" : {
+    "asl_assistenza" : "asl_assistenza",
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "cognome",
+    "data_nascita" : "2000-01-23",
+    "sesso" : "sesso",
+    "documento" : {
+      "tipo" : "",
+      "data_rilascio" : "2000-01-23",
+      "file" : {
+        "dimensione_in_bytes" : 1,
+        "nome" : "nome",
+        "base_file" : "base_file"
+      },
+      "data_scadenza_doc" : "2000-01-23",
+      "numero_documento" : "numero_documento",
+      "doc_desc" : "carta d\\'identita",
+      "id" : 6,
+      "doc_tipo_id" : 1,
+      "autorita" : "autorita",
+      "desc" : "desc"
+    },
+    "nome" : "nome",
+    "id_aura" : 0,
+    "comune_nascita" : "comune_nascita"
+  },
+  "uuid" : "uuid",
+  "autorita" : "autorita",
+  "modo" : ""
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Operazione eseguita con successo
+        <a href="#dichiarazione">dichiarazione</a>
+    <h4 class="field-label">400</h4>
+    bad request
+        <a href="#errore">errore</a>
+    <h4 class="field-label">401</h4>
+    Utente non autorizzato a compiere l'operazione
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Risorsa non trovata
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Internal Server Error
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#assistito_piemontese"><code>assistito_piemontese</code> - </a></li>
+    <li><a href="#cittadino"><code>cittadino</code> - </a></li>
+    <li><a href="#cittadino_delegati"><code>cittadino_delegati</code> - </a></li>
+    <li><a href="#cittadino_filter"><code>cittadino_filter</code> - </a></li>
+    <li><a href="#codifica"><code>codifica</code> - </a></li>
+    <li><a href="#date_crit"><code>date_crit</code> - </a></li>
+    <li><a href="#delega_cittadino"><code>delega_cittadino</code> - </a></li>
+    <li><a href="#delega_filter"><code>delega_filter</code> - </a></li>
+    <li><a href="#delega_servizio"><code>delega_servizio</code> - </a></li>
+    <li><a href="#delega_valida_filter"><code>delega_valida_filter</code> - </a></li>
+    <li><a href="#dettaglio"><code>dettaglio</code> - </a></li>
+    <li><a href="#dichiarazione"><code>dichiarazione</code> - </a></li>
+    <li><a href="#dichiarazione_dettaglio"><code>dichiarazione_dettaglio</code> - </a></li>
+    <li><a href="#dichiarazione_filter"><code>dichiarazione_filter</code> - </a></li>
+    <li><a href="#documento"><code>documento</code> - </a></li>
+    <li><a href="#documento_file"><code>documento_file</code> - </a></li>
+    <li><a href="#errore"><code>errore</code> - </a></li>
+    <li><a href="#info_servizio"><code>info_servizio</code> - </a></li>
+    <li><a href="#integer_crit"><code>integer_crit</code> - </a></li>
+    <li><a href="#string_crit"><code>string_crit</code> - </a></li>
+    <li><a href="#delega_stato"><code>delega_stato</code> - </a></li>
+    <li><a href="#delega_tipo"><code>delega_tipo</code> - </a></li>
+    <li><a href="#dichiarazione_dettaglio_stato"><code>dichiarazione_dettaglio_stato</code> - </a></li>
+    <li><a href="#dichiarazione_modo"><code>dichiarazione_modo</code> - </a></li>
+    <li><a href="#dichiarazione_ruolo"><code>dichiarazione_ruolo</code> - </a></li>
+    <li><a href="#dichiarazione_stato"><code>dichiarazione_stato</code> - </a></li>
+    <li><a href="#dichiarazione_tipo"><code>dichiarazione_tipo</code> - </a></li>
+    <li><a href="#documento_tipo"><code>documento_tipo</code> - </a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="assistito_piemontese"><code>assistito_piemontese</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">piemontese (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> indica se il cittadino sia assistito in piemonte o meno </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="cittadino"><code>cittadino</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice fiscale </div>
+<div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> cognome </div>
+<div class="param">data_nascita (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> data di nascita format: date</div>
+<div class="param">comune_nascita (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> comune di nascita </div>
+<div class="param">sesso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> sesso questo campo non è obbligatorio </div>
+<div class="param">id_aura (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> idAura questo campo non è obbligatorio </div>
+<div class="param">asl_assistenza (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice dell'asl di assistenza </div>
+<div class="param">documento (optional)</div><div class="param-desc"><span class="param-type"><a href="#documento">documento</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="cittadino_delegati"><code>cittadino_delegati</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">cittadino (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino">cittadino</a></span>  </div>
+<div class="param">delegati (optional)</div><div class="param-desc"><span class="param-type"><a href="#delega_cittadino">array[delega_cittadino]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="cittadino_filter"><code>cittadino_filter</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="codifica"><code>codifica</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="date_crit"><code>date_crit</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">eq (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">ne (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">lt (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">lte (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">gt (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">gte (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">in (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">array[date]</a></span>  format: date</div>
+<div class="param">nin (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">array[date]</a></span>  format: date</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="delega_cittadino"><code>delega_cittadino</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">uuid (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">codice_fiscale_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice fiscale </div>
+<div class="param">nome_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome </div>
+<div class="param">cognome_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> cognome </div>
+<div class="param">data_nascita_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> data di nascita questo campo non è obbligatorio format: date</div>
+<div class="param">luogo_nascita_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> luogo di nascita questo campo non è obbligatorio </div>
+<div class="param">sesso_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> sesso questo campo non è obbligatorio </div>
+<div class="param">stato_anagrafica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> gestisce cancellazione o attivazione valori possibili attivi, eliminato </div>
+<div class="param">deleghe (optional)</div><div class="param-desc"><span class="param-type"><a href="#delega_servizio">array[delega_servizio]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="delega_filter"><code>delega_filter</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+<div class="param">stato_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+<div class="param">codice_servizio (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="delega_servizio"><code>delega_servizio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">uuid (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">codice_servizio (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">data_inizio_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">data_fine_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">data_revoca_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">data_rinuncia_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">stato_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> i possibili valori dello stato delega modificabili sono  ATTIVA, REVOCATA, RIFIUTATA. Altri valori restituibili dalla business ma non modificabili sono IN SCADENZA e SCADUTA. </div>
+<div class="param">tipo_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> tipologia della delega POSSIBILI VALORI ADULTO, GENITOREMONO, CONGIUNTA, TUTELA_MAG18, AMMSOSTEGNO </div>
+<div class="param">grado_delega (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> grado della delega possibili valori FORTE, DEBOLE </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="delega_valida_filter"><code>delega_valida_filter</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+<div class="param">codice_servizio (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dettaglio"><code>dettaglio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">chiave (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">valore (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione"><code>dichiarazione</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">uuid (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">tipo (optional)</div><div class="param-desc"><span class="param-type"><a href="#dichiarazione_tipo">dichiarazione_tipo</a></span>  </div>
+<div class="param">stato (optional)</div><div class="param-desc"><span class="param-type"><a href="#dichiarazione_stato">dichiarazione_stato</a></span>  </div>
+<div class="param">modo (optional)</div><div class="param-desc"><span class="param-type"><a href="#dichiarazione_modo">dichiarazione_modo</a></span>  </div>
+<div class="param">cittadino (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino">cittadino</a></span>  </div>
+<div class="param">numero_documento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> numero del documento </div>
+<div class="param">autorita (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> autorita che ha emesso il documento </div>
+<div class="param">data_inizio_tutela (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> data di inizio tutela valorizzata solo per le tutele indica la data di inizio tutela format: date</div>
+<div class="param">data_fine_tutela (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> data di fine tutela valorizzata solo per le tutele indica la data di inizio tutela format: date</div>
+<div class="param">dettagli (optional)</div><div class="param-desc"><span class="param-type"><a href="#dichiarazione_dettaglio">array[dichiarazione_dettaglio]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione_dettaglio"><code>dichiarazione_dettaglio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">uuid (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">stato (optional)</div><div class="param-desc"><span class="param-type"><a href="#dichiarazione_dettaglio_stato">dichiarazione_dettaglio_stato</a></span>  </div>
+<div class="param">genitore_tutore_curatore (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino">cittadino</a></span>  </div>
+<div class="param">ruolo_genitore_tutore_curatore (optional)</div><div class="param-desc"><span class="param-type"><a href="#dichiarazione_ruolo">dichiarazione_ruolo</a></span>  </div>
+<div class="param">figlio_tutelato_curato (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino">cittadino</a></span>  </div>
+<div class="param">ruolo_figlio_tutelato_curato (optional)</div><div class="param-desc"><span class="param-type"><a href="#dichiarazione_ruolo">dichiarazione_ruolo</a></span>  </div>
+<div class="param">documento_famiglia (optional)</div><div class="param-desc"><span class="param-type"><a href="#documento">documento</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione_filter"><code>dichiarazione_filter</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="documento"><code>documento</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">desc (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">data_scadenza_doc (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">data_rilascio (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> data rilascio del documento format: date</div>
+<div class="param">doc_tipo_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> tipo del documento 1 carta d'identita 2 patente </div>
+<div class="param">doc_desc (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del documento </div>
+<div class="param">numero_documento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> numero del documento </div>
+<div class="param">autorita (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> autorita che ha emesso il documento </div>
+<div class="param">tipo (optional)</div><div class="param-desc"><span class="param-type"><a href="#documento_tipo">documento_tipo</a></span> tipo del documento codice TIPO_1 carta identita TIPO_2 patente </div>
+<div class="param">file (optional)</div><div class="param-desc"><span class="param-type"><a href="#documento_file">documento_file</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="documento_file"><code>documento_file</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">dimensione_in_bytes (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">base_file (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="errore"><code>errore</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">title (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">detail (optional)</div><div class="param-desc"><span class="param-type"><a href="#dettaglio">array[dettaglio]</a></span>  </div>
+<div class="param">links (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="info_servizio"><code>info_servizio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome del servizio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del servizio </div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">servizio_attivo (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> boolean di utilita per eventuali test </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="integer_crit"><code>integer_crit</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">eq (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">ne (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">lt (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">lte (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">gt (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">gte (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">in (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span>  </div>
+<div class="param">nin (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="string_crit"><code>string_crit</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">eq (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">ne (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">lt (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">lte (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">gt (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">gte (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">in (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">nin (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">c (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">ci (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">s (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">si (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">e (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">ei (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="delega_stato"><code>delega_stato</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>STATO di una delega es ATTIVA, SCADUTA</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="delega_tipo"><code>delega_tipo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>tipo di una delega es ADULTO, GENITOREMONO CONGIUNTA</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione_dettaglio_stato"><code>dichiarazione_dettaglio_stato</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>possibili valori del codice {DA_APPROVARE, VALIDA, REVOCATA, REVOCATA_BLOCCO, SCADUTA}</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione_modo"><code>dichiarazione_modo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>possibili valori del codice {ON LINE, SPORTELLO}</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione_ruolo"><code>dichiarazione_ruolo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>genitore, figlio, tutore, tutelato, curatore, curato.</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione_stato"><code>dichiarazione_stato</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>possibili valori del codice {DA_COMPLETARE, ATTIVA, REVOCATA, SCADUTA}</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="dichiarazione_tipo"><code>dichiarazione_tipo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>codice per ora consentito solo CONGIUNTA. Obbligatorio in post</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="documento_tipo"><code>documento_tipo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> campo obbligatorio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

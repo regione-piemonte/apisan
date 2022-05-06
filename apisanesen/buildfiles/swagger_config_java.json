@@ -1,0 +1,16 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.apisan.apisanesen.business.apisanesen",
+"modelPackage":  "it.csi.apisan.apisanesen.dto.apisanesen",
+"invokerPackage": "it.csi.apisan.apisanesen.business.apisanesen",
+"implFolder": "implfolder",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"attributeSerializationStrategy": "explicit-as-modeled", 
+"accessHttpHeaders": true
+}

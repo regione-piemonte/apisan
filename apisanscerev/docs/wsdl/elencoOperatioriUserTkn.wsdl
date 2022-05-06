@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="ElencoOperatiori" targetNamespace="http://opessan.opessanws.services.csi.it/" xmlns:ns1="http://opessan.opessanws.def.csi.it/" xmlns:ns2="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://opessan.opessanws.services.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:import location="https://server:port/opessanws/services/elencoOperatioriUserTkn?wsdl=ElencoOperatiori.wsdl" namespace="http://opessan.opessanws.def.csi.it/">
+    </wsdl:import>
+  <wsdl:binding name="ElencoOperatioriSoapBinding" type="ns1:ElencoOperatiori">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="findOperatoriPerAssociazione">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="findOperatoriPerAssociazione">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="findOperatoriPerAssociazioneResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ElencoOperatiori">
+    <wsdl:port binding="tns:ElencoOperatioriSoapBinding" name="ElencoOperatioriCXFImplPort">
+      <soap:address location="https://server:port/opessanws/services/elencoOperatioriUserTkn" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

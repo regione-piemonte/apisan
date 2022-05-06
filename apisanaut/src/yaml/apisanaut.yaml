@@ -1,0 +1,1511 @@
+swagger: '2.0'
+info:
+  title: Deleghe 
+  version: 1.0.0
+  description: |
+
+    # VERSIONE 1.1
+    MODIFICHE:
+    
+    model: delega_servizio aggiunti: tipo e grado
+    Aggiunte api di decodifica
+    model: dichiarazione aggiunti numero_documento, autorita, data_inizio_tutela, 
+          data_fine_tutela
+    model documento: aggiunti: data_scadenza_doc, data_rilascio, doc_tipo_id, 
+    doc_desc
+    ---
+    
+  
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanaut/api/v1
+schemes:
+  - https
+paths:
+  '/servizio-attivo':
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'
+  '/cittadini/{cf}/deleganti':
+    get:
+      description: >
+        Fornisce l'elenco delle persone che hanno delegato il cf passato in path
+        param a compiere operazioni sui servizi sanitari. Il codice fiscale
+        dell'header deve essere verificato con il cf passato nel path param se
+        sono diversi ritorna errore 401. Viene ritornato un array di
+        cittadino-deleghe che rappresenta le persone che hanno compiuto
+        l'operazione di delegare il cittadino su un servizio. Il codice fiscale
+        non viene ripetuto per ogni delega. codice fiscale non viene ripetuto
+        per ogni delega.Verificare X-Request-ID deve essere usato anche nella
+        response o serve solo per l'audit? Aggiunto codice servizio nell'header
+        per requisito sicurezza proveniente dal giallo. Il filtro viene
+        consentito per codice_fiscale, per stato_delega e sul codice servizio
+        come definito sull'oggetto delega_filter
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+        - in: query
+          name: filter
+          type: string
+          description: >
+            Codice servizio viene passato dal verde e serve allo strato giallo
+            per fare audit
+      tags:
+        - Gestione Deleghe
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/delega_cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/deleganti/{cfdelegante}':
+    get:
+      description: >
+        Corrisponde alla risorsa  singola del delegato  rappresenta uno
+        'shortcut' alla uri deleganti. Il codice fiscale dell'header deve essere
+        verificato con il cf passato nel path param se sono diversi ritorna
+        errore 401. I deleganti ritornati hanno ognuno un elenco di deleghe; il
+        codice fiscale non viene ripetuto per ogni delega.Verificare
+          X-Request-ID deve essere usato anche nella response o serve solo per
+          l'audit? Aggiunto codice servizio nell'header per requisito sicurezza proveniente dal giallo
+          I filtri ammissibili sono i seguenti  
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+        - in: path
+          name: cfdelegante
+          type: string
+          required: true
+      tags:
+        - Gestione Deleghe
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/delega_cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/deleganti/{cfdelegante}/servizi/{uuid}':
+    put:
+      description: >
+        Esegue una rinuncia a una delega ricevuta; il cf passato come path param
+        viene verificato con il cf dell'header se non coincidono ritorna errore
+        401, e corrisponde alla persona che rinuncia alla delega precedentemente
+        conferitagli dal delegante passato nel path param cfdelegante.
+         Il codice servizio rappresenta il servizio a cui il cittadino
+        rinuncia a essere delegante. Non effettua una delete su database ma
+        inserisce una data di fine validita = alla data odierna. Il parametro
+        uuid rappresenta la chiave della delega (verificare)
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+          description: cf del delegante
+        - in: path
+          name: cfdelegante
+          type: string
+          required: true
+          description: codice servizio del servizio a cui il delegato rinuncia
+        - in: path
+          name: uuid
+          type: string
+          required: true
+          description: >-
+            Metodo di modifica di una delega di un cittadino, permette ad
+            esempio di cambiare lo stato alla delega.
+        - in: body
+          name: deleghe-servizio
+          required: true
+          schema:
+            $ref: '#/definitions/delega_servizio'
+      tags:
+        - Gestione Deleghe
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/delegati':
+    get:
+      description: >
+        Fornisce l'elenco delle persone che il cf ha delegato a compiere
+        operazioni sui servizi sanitari per il codice fiscale fornito nel path
+        param. Il codice fiscale dell'header deve essere verificato con il cf
+        passato nel path param, se sono diversi ritorna errore 401. Ogni
+        delegante ritornato  ha un elenco di deleghe; il codice fiscale e i dati
+        anagrafici non vengono ripetuti per ogni delega.Il filtro viene
+        consentito per codice_fiscale, stato_delega e codice_servizio come
+        definito nell'oggetto delega_filter
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+        - in: query
+          name: filter
+          type: string
+          required: false
+          description: >
+            Il filtro puo essere applicato sul codice_fiscale e/o sul codice
+            servizio; per entrambi i filtri ho previsto dei metodi \'shortcut\'
+      tags:
+        - Gestione Deleghe
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/delega_cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+    post:
+      description: >
+        inserisce almeno un delegato che deve avere almeno una delega in stato attiva.
+        Nell'header viene passato un codice fiscale che deve essere verificato con il codice fiscale passato nel path, se non corrispondono ritorna errore 401. Il cittadino che compie l'operazione viene reperito dal servizio tramite chiamata ad aura in quanto possono inserire deleghe e delegati unicamente cittadini piemontesi. Stati delega consentiti (al front end).
+        Non è da  valorizare il campo grado_delega in quanto lo calcola da sistema.
+         * Attiva
+      consumes:
+        - application/json            
+      produces:
+        - application/json                     
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+          description: cf della persona delegante
+        - in: body
+          name: delegati
+          required: true
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/delega_cittadino'
+          description: >
+            I campi obbligatori da valorizzare sono
+            
+            * codice_fiscale_delega
+            
+            * nome_delega
+            
+            * cognome_delega
+            
+            * data_nascita_delega
+            
+            * luogo_nascita_delega
+            
+            * sesso_delega
+            
+            deleghe
+              * codice_servizio
+              * data_inizio_delega -> deve essere data odierna 
+              * data_fine_delega -> il massimo possibile deve essere preso dal servizio apisancross/servizi con data inizio delega + numero_giorni_delegabile 
+              * stato_delega -> in inserimento deve essere ATTIVA
+      tags:
+        - Gestione Deleghe
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+            type: array
+            items:
+              $ref: '#/definitions/delega_cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/delegati/deleghe-valide':
+    get:
+      description: >
+        Fornisce l'elenco delle persone che il cf ha delegato a compiere
+        operazioni sui servizi sanitari per il codice fiscale fornito nel path
+        param che hanno una delega valida (stati Attiva e in Scadenza). Il
+        codice fiscale dell'header deve essere verificato con il cf passato nel
+        path param, se sono diversi ritorna errore 401. Ogni delegante
+        ritornato  ha un elenco di deleghe; il codice fiscale e i dati
+        anagrafici non vengono ripetuti per ogni delega.Il filtro viene
+        consentito per codice_fiscale e codice_servizio come definito
+        nell'oggetto delega_valida_filter
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+        - in: query
+          name: filter
+          type: string
+          required: false
+          description: >
+            Il filtro puo essere applicato sul codice_fiscale e/o sul codice
+            servizio; per entrambi i filtri ho previsto dei metodi \'shortcut\'
+      tags:
+        - Gestione Deleghe
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/delega_cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/delegati/{cfdelegato}':
+    get:
+      description: >
+        Corrisponde alla risorsa  singola del delegato  rappresenta uno
+        'shortcut' alla uri delegati  Il codice fiscale dell'header deve essere
+        verificato con il cf passato nel path param, se sono diversi ritorna
+        errore 401. Ogni delegante ritornato ha un elenco di deleghe;
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+        - in: path
+          name: cfdelegato
+          type: string
+          required: true
+      tags:
+        - Gestione Deleghe
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/delega_cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+    put:
+      description: >
+        Modifica le deleghe di un delegato è possibile non avere una delega in stato attiva. Nell'header viene passato un codice fiscale che deve essere verificato con il codice fiscale passato nel path, se non corrispondono ritorna errore 401.Gli stati possibili sono
+            * ATTIVA
+            * IN_SCADENZA
+            * SCADUTA
+            * RIFIUTATA
+            * REVOCATA
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: path
+          name: cfdelegato
+          type: string
+          required: true
+          description: cf della persona delegata
+        - in: path
+          name: cf
+          type: string
+          required: true
+          description: cf della persona delegante
+        - in: body
+          name: cittadino-delega
+          required: true
+          schema:
+            $ref: '#/definitions/delega_cittadino'
+          description: >
+            I campi obbligatori da valorizzare sono 
+              * uuid
+              * codice_fiscale_delega
+              * nome_delega
+              * cognome_delega
+              * data_nascita_delega
+              * luogo_nascita_delega
+              * sesso_delega
+              * stato_anagrafica -> stati possibili indicati in descrizione del servizio
+               deleghe
+                * uuid nel caso in cui presente da precedente get 
+                * codice_servizio
+                * data_inizio_delega
+                * data_fine_delega
+                * stato_delega possibili valori su descrizione del servizio
+      tags:
+        - Gestione Deleghe
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/delega_cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/dichiarazioni':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: path
+        name: cf
+        type: string
+        required: true
+    get:
+      description: Ricerca di dichiarazioni di un cittadino
+      produces:
+        - application/json      
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: false
+      tags:
+        - Gestione Dichiarazioni
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/dichiarazione'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+    post:
+      description: Inserisce una dichiarazione nel body devono essere presenti 2 dettagli uno per il genitore 1, ovvero lo stesso del path param, e l'altro per il secondo genitore. Cittadino1 del web service corrisponde sempre a genitore_tutore_curatore, figlio_tutelato_curato corrisponde a cittadino2 del web service. 
+      consumes:
+        - application/json            
+      produces:
+        - application/json                           
+      parameters:
+        - in: body
+          name: dichiarazione
+          schema:
+            $ref: '#/definitions/dichiarazione'
+          description: >
+           I campi obbligatori sono
+            * tipo
+              * codice -> deve essere CONGIUNTA
+            * stato
+              * codice -> deve essere DA_COMPLETARE
+            * modo
+              * codice -> deve essere valorizzato ON_LINE
+            * cittadino
+              * deve essere cittadino dichiarantw
+              * documento del cittadino -> deve essere lo stato id famiglia
+            * dettagli
+              * stato
+                * codice -> deve essere DA_APPROVARE
+            * genitore_tutore_curatore 
+              * codice_fiscale 
+            * ruolo_genitore_curatore 
+              * codice -> deve essere  GENITORE_1 o GENITORE_2
+              * documento -> documento identita
+            * figlio_tutelato_curato 
+              * codice_fiscale 
+              * dosumento -> documento identita
+            * ruolo_figlio_tutelato_curato 
+              * codice deve essere passato FIGLIO
+      tags:
+        - Gestione Dichiarazioni
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/dichiarazione'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/dichiarazioni/{uuid_dichiarazione}':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: path
+        name: cf
+        type: string
+        required: true
+      - in: path
+        name: uuid_dichiarazione
+        type: string
+        # format: uuid
+        required: true
+    put:
+      description: Aggiorna una dichiarazione
+      consumes:
+        - application/json            
+      produces:
+        - application/json                  
+      parameters:
+        - in: body
+          name: dichiarazione
+          schema:
+            $ref: '#/definitions/dichiarazione'
+          description: >
+           I campi obbligatori sono
+            * tipo
+              * codice -> deve essere CONGIUNTA
+            * stato
+              * codice -> deve essere DA_COMPLETARE, ATTIVA, REVOCATA, SCADUTA
+            * modo
+              * codice -> deve essere valorizzato ON_LINE
+            * dettagli
+              * stato
+                * codice -> deve essere DA_APPROVARE, VALIDA, DA_APPROVARE, REVOCATA_BLOCCO, REVOCATA, SCADUTA
+            * genitore_tutore_curatore 
+              * codice_fiscale 
+            * ruolo_genitore_curatore 
+              * codice -> deve essere  GENITORE_1 o GENITORE_2
+            * figlio_tutelato_curato 
+              * codice_fiscale 
+            * ruolo_figlio_tutelato_curato 
+              * codice deve essere passato FIGLIO
+          
+      tags:
+        - Gestione Dichiarazioni
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/dichiarazione'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  /cittadini:
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+    get:
+      description: Ricerca cittadini
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+    post:
+      description: Inserisce un cittadino
+      parameters:
+        - in: body
+          name: cittadino
+          schema:
+            $ref: '#/definitions/cittadino'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/dichiarazione'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: path
+        name: cf
+        type: string
+        required: true
+    put:
+      description: Aggiorna un cittadino
+      parameters:
+        - in: body
+          name: cittadino
+          schema:
+            $ref: '#/definitions/cittadino'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/cittadino'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/assistito-piemontese':
+    get:
+      description: ritora se un cittadino è piemontese o meno
+      produces:
+        - application/json
+      parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: path
+        name: cf
+        type: string
+        required: true
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/assistito_piemontese'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'        
+    
+  /tipi-dichiarazione:
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true    
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+    get:
+      description: Ritorna tutti i possibili tipi di dichiarazione es CONGIUNTA, GENITOREMONO, TUTELA, AMMSOSTEGNO, TUTELA_MAG18
+      produces:
+        - application/json      
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: false
+      tags:
+        - Decodifiche          
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/dichiarazione_tipo'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  /tipi-deleghe:
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true    
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+    get:
+      description: Ricerca tutti i possibili tipi di deleghe es AMMSOSTEGNO, TUTELA_MAG18
+      produces:
+        - application/json            
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: false
+      tags:
+        - Decodifiche          
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/delega_tipo'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'            
+  /stati-dichiarazione:
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true    
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+    get:
+      description: Ricerca tutti i possibili stati della dichiarazione es VALIDA, REVOCATA, SCADUTA
+      produces:
+        - application/json            
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: false
+      tags:
+        - Decodifiche          
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/dichiarazione_stato'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'                        
+  /stati-deleghe:
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true    
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+    get:
+      description: Ricerca tutti i possibili stati della dichiarazione es VALIDA, REVOCATA, SCADUTA
+      produces:
+        - application/json            
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: false
+      tags:
+        - Decodifiche          
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/delega_stato'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'                                    
+definitions:
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test        
+  cittadino_delegati:
+    type: object
+    properties:
+      cittadino:
+        $ref: '#/definitions/cittadino'
+      delegati:
+        type: array
+        items:
+          $ref: '#/definitions/delega_cittadino'
+  cittadino:
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale
+        example: AAAAAA00B77B000F
+      nome:
+        type: string
+        description: nome
+      cognome:
+        type: string
+        description: cognome
+      data_nascita:
+        type: string
+        format: date
+        description: data di nascita
+      comune_nascita:
+        type: string
+        description: comune di nascita
+      sesso:
+        type: string
+        description: sesso questo campo non è obbligatorio
+      id_aura:
+        type: integer
+        description: idAura questo campo non è obbligatorio
+      asl_assistenza:
+        type: string
+        description: codice dell'asl di assistenza
+      documento:
+        $ref: '#/definitions/documento'        
+  cittadino_filter:
+    type: object
+    properties:
+      codice_fiscale:
+        $ref: '#/definitions/string_crit'
+  assistito_piemontese:
+    type: object
+    properties:
+      piemontese:
+        type: boolean
+        description: indica se il cittadino sia assistito in piemonte o meno
+        example: true
+  delega_cittadino:
+    type: object
+    properties:
+      uuid:
+        type: string
+      codice_fiscale_delega:
+        type: string
+        description: codice fiscale
+        example: AAAAAA00B77B000F
+      nome_delega:
+        type: string
+        description: nome
+      cognome_delega:
+        type: string
+        description: cognome
+      data_nascita_delega:
+        type: string
+        format: date
+        description: data di nascita questo campo non è obbligatorio
+      luogo_nascita_delega:
+        type: string
+        description: luogo di nascita questo campo non è obbligatorio
+      sesso_delega:
+        type: string
+        description: sesso questo campo non è obbligatorio
+      stato_anagrafica:
+        type: string
+        description: >-
+          gestisce cancellazione o attivazione valori possibili attivi,
+          eliminato
+      deleghe:
+        type: array
+        items:
+          $ref: '#/definitions/delega_servizio'
+  delega_servizio:
+    type: object
+    properties:
+      uuid:
+        type: string
+      codice_servizio:
+        type: string
+      data_inizio_delega:
+        type: string
+        format: date
+      data_fine_delega:
+        type: string
+        format: date
+      data_revoca_delega:
+        type: string
+        format: date
+      data_rinuncia_delega:
+        type: string
+        format: date
+      stato_delega:
+        type: string
+        description: >-
+          i possibili valori dello stato delega modificabili sono  ATTIVA, REVOCATA, RIFIUTATA. Altri valori restituibili
+          dalla business ma non modificabili sono IN SCADENZA e SCADUTA.
+      tipo_delega:
+        type: string
+        description: tipologia della delega POSSIBILI VALORI ADULTO, GENITOREMONO, CONGIUNTA, TUTELA_MAG18, AMMSOSTEGNO
+        example: ADULTO 
+      grado_delega:
+        type: string
+        description: grado della delega possibili valori FORTE, DEBOLE
+        example: FORTE
+  delega_filter:
+    type: object
+    properties:
+      codice_fiscale:
+        $ref: '#/definitions/string_crit'
+      stato_delega:
+        $ref: '#/definitions/string_crit'
+      codice_servizio:
+        $ref: '#/definitions/string_crit'
+  delega_valida_filter:
+    type: object
+    properties:
+      codice_fiscale:
+        $ref: '#/definitions/string_crit'
+      codice_servizio:
+        $ref: '#/definitions/string_crit'
+  dichiarazione:
+    type: object
+    properties:
+      uuid:
+        type: string
+        # format: uuid
+      tipo:
+        $ref: '#/definitions/dichiarazione_tipo'
+      stato:
+        $ref: '#/definitions/dichiarazione_stato'
+      modo:
+        $ref: '#/definitions/dichiarazione_modo'
+      cittadino:
+        $ref: '#/definitions/cittadino'
+      numero_documento:
+        type: string
+        description: numero del documento
+      autorita:
+        type: string
+        description: autorita che ha emesso il documento
+      data_inizio_tutela:
+        type: string
+        format: date
+        description: data di inizio tutela valorizzata solo per le tutele indica la data di inizio tutela
+      data_fine_tutela:
+        type: string
+        format: date
+        description: data di fine tutela valorizzata solo per le tutele indica la data di inizio tutela      
+      dettagli:
+        type: array
+        items:
+          $ref: '#/definitions/dichiarazione_dettaglio'
+          description: obbligatorio inserire almeno 2 dettagli
+  dichiarazione_dettaglio:
+    type: object
+    properties:
+      uuid:
+        type: string
+        # format: uuid
+      stato:
+        $ref: '#/definitions/dichiarazione_dettaglio_stato'
+      genitore_tutore_curatore:
+        $ref: '#/definitions/cittadino'
+      ruolo_genitore_tutore_curatore:
+        $ref: '#/definitions/dichiarazione_ruolo'
+      figlio_tutelato_curato:
+        $ref: '#/definitions/cittadino'
+      ruolo_figlio_tutelato_curato:
+        $ref: '#/definitions/dichiarazione_ruolo'
+      documento_famiglia:
+        $ref: '#/definitions/documento'
+  dichiarazione_dettaglio_stato:
+    description: >-
+      possibili valori del codice {DA_APPROVARE, VALIDA, REVOCATA,
+      REVOCATA_BLOCCO, SCADUTA}
+    allOf:
+      - $ref: '#/definitions/codifica'
+  dichiarazione_tipo:
+    description: codice per ora consentito solo CONGIUNTA. Obbligatorio in post
+    allOf:
+      - $ref: '#/definitions/codifica'
+  dichiarazione_stato:
+    description: 'possibili valori del codice {DA_COMPLETARE, ATTIVA, REVOCATA, SCADUTA}'
+    allOf:
+      - $ref: '#/definitions/codifica'
+  dichiarazione_modo:
+    description: 'possibili valori del codice {ON LINE, SPORTELLO}'
+    allOf:
+      - $ref: '#/definitions/codifica'
+  dichiarazione_ruolo:
+    description: 'genitore, figlio, tutore, tutelato, curatore, curato.'
+    allOf:
+      - $ref: '#/definitions/codifica'
+  delega_tipo:
+      description: 'tipo di una delega es ADULTO, GENITOREMONO CONGIUNTA'
+      allOf:
+        - $ref: '#/definitions/codifica'
+  delega_stato:
+      description: 'STATO di una delega es ATTIVA, SCADUTA'
+      allOf:
+        - $ref: '#/definitions/codifica'    
+  dichiarazione_filter:
+    type: object
+    properties:
+      codice_fiscale:
+        $ref: '#/definitions/string_crit'
+  documento:
+    type: object
+    properties:
+      id:
+        type: integer
+      desc:
+        type: string
+      data_scadenza_doc:
+        type: string
+        format: date
+      data_rilascio:
+        type: string
+        format: date
+        description: data rilascio del documento
+      doc_tipo_id:
+        type: integer
+        description:  tipo del documento 1 carta d\'identita 2 patente
+        example: 1
+      doc_desc:
+        type: string
+        description: descrizione del documento
+        example: carta d\'identita
+      numero_documento:
+        type: string
+        description: numero del documento
+      autorita:
+        type: string
+        description: autorita che ha emesso il documento
+      tipo:
+        $ref: '#/definitions/documento_tipo'
+        description: tipo del documento codice TIPO_1 carta identita TIPO_2 patente
+      file:
+        $ref: '#/definitions/documento_file'
+  documento_tipo:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  documento_file:
+    type: object
+    properties:
+      nome:
+        type: string
+      dimensione_in_bytes:
+        type: integer
+      base_file:
+        type: string
+  codifica:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: campo obbligatorio
+      descrizione:
+        type: string
+  string_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  integer_crit:
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  date_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  errore:
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  dettaglio:
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'

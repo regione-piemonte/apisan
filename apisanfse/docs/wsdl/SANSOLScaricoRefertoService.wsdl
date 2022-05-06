@@ -1,0 +1,79 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://ws.apache.org/axis2" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://ws.apache.org/axis2">
+   <wsdl:types></wsdl:types>
+   <wsdl:message name="in"></wsdl:message>
+   <wsdl:message name="out"></wsdl:message>
+   <wsdl:portType name="SANSOLScaricoRefertoServicePortType">
+      <wsdl:operation name="mediate">
+         <wsdl:input message="tns:in" wsaw:Action="urn:mediate"></wsdl:input>
+         <wsdl:output message="tns:out" wsaw:Action="urn:mediateResponse"></wsdl:output>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="SANSOLScaricoRefertoServiceSoap11Binding" type="tns:SANSOLScaricoRefertoServicePortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+      <wsdl:operation name="mediate">
+         <soap:operation soapAction="urn:mediate" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="SANSOLScaricoRefertoServiceSoap12Binding" type="tns:SANSOLScaricoRefertoServicePortType">
+      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
+      <wsdl:operation name="mediate">
+         <soap12:operation soapAction="urn:mediate" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="SANSOLScaricoRefertoServiceHttpBinding" type="tns:SANSOLScaricoRefertoServicePortType">
+      <http:binding verb="POST"></http:binding>
+      <wsdl:operation name="mediate">
+         <http:operation location="mediate"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="SANSOLScaricoRefertoService">
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttp_apiSoap11Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap11Binding">
+         <soap:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttp_apiSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttps_apiSoap11Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap11Binding">
+         <soap:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttps_apiSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttpsSoap11Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap11Binding">
+         <soap:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttpsSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttpSoap11Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap11Binding">
+         <soap:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttpSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttps_apiSoap12Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap12Binding">
+         <soap12:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttps_apiSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttpSoap12Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap12Binding">
+         <soap12:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttpSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttpsSoap12Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap12Binding">
+         <soap12:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttpsSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttp_apiSoap12Endpoint" binding="tns:SANSOLScaricoRefertoServiceSoap12Binding">
+         <soap12:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttp_apiSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttpEndpoint" binding="tns:SANSOLScaricoRefertoServiceHttpBinding">
+         <http:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttpEndpoint"></http:address>
+      </wsdl:port>
+      <wsdl:port name="SANSOLScaricoRefertoServiceHttpsEndpoint" binding="tns:SANSOLScaricoRefertoServiceHttpBinding">
+         <http:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/SANSOLScaricoRefertoService.SANSOLScaricoRefertoServiceHttpsEndpoint"></http:address>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

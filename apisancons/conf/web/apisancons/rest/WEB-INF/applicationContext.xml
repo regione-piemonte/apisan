@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<!--PROTECTED REGION ID(R-1054124068) ENABLED START-->
+	<!-- Insert here your custom Spring Beans -->
+	
+	<context:property-placeholder location="WEB-INF/*.properties"/>
+	<context:annotation-config/>
+	
+	<context:component-scan base-package="it.csi.apisan.apisancons" />
+	
+	<bean id="ConsprefService"
+		  class="it.csi.apisan.apisancons.integration.conspref.consprefbe.ConsensoBeService"
+		  factory-bean="cxfConsprefServiceClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfConsprefServiceClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisancons.integration.conspref.consprefbe.ConsensoBeService"/>
+		<property name="address" value="@serviceConsprefbe@" />
+		<property name="username" value="@userConsPref@"/>
+		<property name="password" value="@passConsPref@"/>
+			<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />
+					<!--  <ref bean="wss4jOutConsPrefSecured" /> -->
+					
+				</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+				
+			</list>
+	</property>		
+	</bean>
+
+	<bean id="logIn" class="org.apache.cxf.interceptor.LoggingInInterceptor" /> 
+  	<bean id="logOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor" /> 
+  	
+  	<!--  verificare bene come impostare la wssecurity -->
+ 	<bean id="AnagrafeFindSoap"
+		  class="it.csi.aura.auraws.services.central.anagrafefind.AnagrafeFindSoap"
+		  factory-bean="cxfAnagFindSecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfAnagFindSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.aura.auraws.services.central.anagrafefind.AnagrafeFindSoap"/>
+		<property name="address" value="@serviceAnagrafeFindUrl@" />
+			<property name="inInterceptors">
+				<list>
+				    <ref bean="logIn" />
+				</list>
+			</property>
+			<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />
+					<ref bean="wss4jOutAuraSecured" />
+					
+				</list>
+		</property>
+	</bean>
+	
+	<bean id="AnagrafeSanitariaSoap"
+		  class="it.csi.aura.auraws.services.central.anagrafesanitaria.AnagrafeSanitariaSoap"
+		  factory-bean="cxfGetProfiloSecuredClientFactory"
+		  factory-method="create"/>	
+	
+	<bean id="cxfGetProfiloSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.aura.auraws.services.central.anagrafesanitaria.AnagrafeSanitariaSoap"/>
+		<property name="address" value="@serviceGetProfiloUrl@" />
+			<property name="inInterceptors">
+				<list>
+				    <ref bean="logIn" />
+				</list>
+			</property>
+			<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />
+					<ref bean="wss4jOutAuraSecured" />
+					
+				</list>
+		</property>
+	</bean>
+	
+	<bean id="DelegheCittadiniService"
+	  class="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"
+	  factory-bean="cxfdelegheCittadiniSecuredClientFactory"
+	  factory-method="create"/>	
+	
+	<bean id="cxfdelegheCittadiniSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"/>
+		<property name="address" value="@endpointurl@" />
+		
+		@wssDeleghebe.start@
+		<property name="username" value="@userDeleghebe@"/>
+		<property name="password" value="@passDeleghebe@"/>
+		@wssDeleghebe.end@
+		
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="wss4jOutAuraSecured" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value=" UsernameToken " />
+				<entry key="user" value="@userAura@" />
+				<entry key="passwordCallbackRef"  value-ref="passwordCallbackAura" />
+				<entry key="passwordType" value="PasswordText" />
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	
+	
+	<bean id="passwordCallbackAura" class="it.csi.apisan.apisancons.integration.facade.SimplePasswordCallbackHandler">
+		<property name="password" value="@passAura@"></property>
+	</bean> 	
+  	<!--  fine verificare  -->
+  	<!-- 
+	 	<bean id="wss4jOutSigned" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value=" Signature " />
+				<entry key="user" value="@cxfapp1signed.user.signed@" />
+					
+				<entry key="passwordCallbackClass"
+				value="it.csi.jeetest.cxforch1.integration.cxforch1.cxfapp1.callback.OutInterceptorCallbackSigned"/> -->
+					
+				<!-- SIGNATURE PROPERTIES -->
+			<!--		<entry key="signaturePropFile" value="/cxfapp1signed.ks.properties" />
+				</map>
+			</constructor-arg>
+	</bean>  -->
+	
+<!--    <bean id="wss4jInSigned" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value=" Signature "/>
+				<entry key="user" value="@cxfapp1signed.user.signed@" />
+				<entry key="passwordCallbackClass"
+				value="it.csi.jeetest.cxforch1.integration.cxforch1.cxfapp1.callback.InInterceptorCallbackSigned"/> -->
+						
+				<!-- SIGNATURE PROPERTIES -->
+			<!--	<entry key="signaturePropFile" value="/cxfapp1signed.ts.properties" />
+				</map>
+			</constructor-arg> 
+	</bean>  -->
+  	
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+  <deployment>
+	<!-- spring 4.1.1 è presente nell'archivio, quindi non deve essere usato quello del server
+	<dependencies>
+      <module name="org.springframework.spring" export="true" meta-inf="export"/>
+    </dependencies> 
+    -->
+  </deployment>
+</jboss-deployment-structure>

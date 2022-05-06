@@ -1,0 +1,515 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanceliachia/api/v1
+schemes:
+  - https
+info:
+  title: 'Celiachia'
+  version: 1.0.0
+  description: |
+  
+    # Avvertenze
+    ---
+    1. Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino
+    2. Questo YAML è un contratto tra lo strato verde e lo strato rosso
+    3. Deve essere ancora definita la tipologia di QR Code da usare, il livello di correzione errore e come comporre la stringa che poi diventerà l'immagine QR Code
+
+    
+    # Domande
+    ---
+    1. L'esporta in CSV va implementato? Se sì, da quale strato?
+    
+
+
+    # Prototipo Interfaccia
+    ---
+    http://dev-prototipi.csi.it/2020/sanita%20-%20Estratto%20Conto%20-%20Celiachia/html/#id=apqobv&p=home-_celiachia&g=1
+    
+    # Note versione 1.0.0 (16 Lug 2020)
+    ---
+    * Rimosso endpoint `Informazioni cittadino` che rappresentava una versione alternativa della progettazione.
+    
+    
+    * Rimosso endpoint `Dettaglio autorizzazione`. Ora i dati dell'autorizzazione sono nell'endpoint `Cedolino corrente`
+    
+    
+    * Nelle `Erogazioni` sono state aggiunte informazioni relative alla struttura:
+        * `id`
+        * `provincia`
+        * `comune`
+        * `cap` (da verificare se presente come dato separato)
+        * `indirizzo` 
+        * `civico` (da verificare se presente come dato separato)
+        
+    
+    
+    * Cambio naming per avere un vocabolario comune su tutti gli strati:
+        * `Buono` → `Cedolino`
+        * `Transazioni` → `Erogazioni`
+    
+    
+    # Note versione 0.0.2 (15 Lug 2020)
+    ---
+    * Aggiunto endpoint `Codice QR` che permette di ottenere i dati necessari per generare correttamente l'immagine del codice QR
+    
+    
+    * Aggiunto endpoint `Dettaglio autorizzazione` che permette di ottenere i dati relativi all'autorizzazione
+    
+    
+    * Aggiunto endpoint `Informazioni cittadino` che rappresenta una versione alternativa della progettazione.
+    
+    
+    # Note versione 0.0.1 (13 Lug 2020)
+    ---
+    * Prima implementazione
+
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json    
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+  '/cittadini/{cit_id}/cedolini/corrente':
+    get:
+      summary: Cedolino corrente
+      description:  |
+        Permette di ottenere il cedolino corrente con i suoi metadati.
+        
+        Se il cittadino non ha un buono corrente valido questo servizio restituisce `404`.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_cedolino'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/erogazioni':
+    get:
+      summary: Lista erogazioni
+      description:  |
+        Permette di ottenere l'elenco delle erogazioni (movimenti) effettuate da un cittadino.
+        
+        Questo elenco è filtrabile per data di inizio e fine. In questo modo è possibile estrapolare l'elenco delle erogazioni di un cedolino andando a filtrare per la data di inizio e la data di fine del cedolino.
+        
+        Se il cittadino non ha erogazioni o non ci sono erogazioni in base ai filtri impostati questo servizio restituisce comunque `200` e lista vuota `[]`
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_erogazione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/pin':
+    get:
+      summary: Dettaglio PIN
+      description:  |
+        Permette di ottenere il pin dell'utente
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_pin'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: Nuovo pin
+      description:  |
+        Permette di chiedere la creazione di un nuovo pin
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_pin'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/codice-qr':
+    get:
+      summary: Codice QR
+      description:  |
+        Permette di ottenere il codice da usare per genereare il QR Code
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_codice_qr'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  
+  path_cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+    
+  query_da:
+    in: query
+    name: 'da'
+    type: string
+    required: false
+    description: |
+      Permette di filtrare per un range di date. Formato che deve essere passato 
+       * yyyy-MM-dd
+       * yyyy-MM-ddTHH:mm:ssZ
+       
+  query_a:
+    in: query
+    name: 'a'
+    type: string
+    required: false
+    description: |
+      Permette di filtrare per un range di date. Formato che deve essere passsato
+       * yyyy-MM-dd
+       * yyyy-MM-ddTHH:mm:ssZ      
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  model_struttura:
+    title: 'Struttura'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco della struttura
+      nome:
+        type: string
+        description: Il nome della struttura
+      provincia:
+        type: string
+        description: Il codice della provincia alla quale appartiene la struttura
+      comune:
+        type: string
+        description: Il nome del comune al quale appartiene la struttura
+      cap:
+        type: string
+        description: il CAP associato alla struttura
+      indirizzo:
+        type: string
+        description: L'indirizzo della struttura
+      civico:
+        type: string
+        description: Il civico della struttura
+  model_autorizzazione:
+    title: 'Autorizzazione'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice dell'autorizzazione
+      data_validita_inizio:
+        type: string
+        format: date-time
+        description: La data di inizio validità dell'autorizzazione
+      data_validita_fine:
+        type: string
+        format: date-time
+        description: La data di fine validità dell'autorizzazione 
+
+  model_cedolino:
+    title: 'Cedolino'
+    type: object
+    properties:
+      importo_totale:
+        type: number
+        description: Il valore del cedolino
+        example: 100
+      importo_disponibile:
+        type: number
+        description: L'importo ancora disponibile sul cedolino
+        example: 60
+      data_inizio:
+        type: string
+        format: date
+        description: La data di inizio del cedolino
+      data_fine:
+        type: string
+        format: date
+        description: La data di inizio del cedolino
+      autorizzazione:
+        $ref: '#/definitions/model_autorizzazione'
+  model_erogazione:
+    title: 'Erogazione'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+      importo:
+        type: number
+        description: L'importo dell'erogazione
+        example: 100
+      data:
+        type: string
+        format: date-time
+        description: La data in cui è avvenuta l'erogazione
+      struttura:
+        $ref: '#/definitions/model_struttura'
+  model_pin:
+    title: 'Pin'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice che identifica il pin
+  model_codice_qr:
+    title: 'Codice QR'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice che verrà usato per generare il QR Code
+      tipologia:
+        type: string
+        description: |
+          La tipologia di QR Code da generare.
+          https://www.qrcode.com/en/codes/
+        enum:
+          - "QR"
+          - "MICRO QR"
+          - "IQR"
+          - "SQRC"
+          - "FRAME QR"
+      livello_correzione:
+        type: string
+        description: |
+          Il codice del livello di correzione da usare per generare il QR Code.
+          https://www.qrcode.com/en/about/error_correction.html
+        enum:
+          - "M"
+          - "L"
+          - "Q"
+          - "H"
+      
+  
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+

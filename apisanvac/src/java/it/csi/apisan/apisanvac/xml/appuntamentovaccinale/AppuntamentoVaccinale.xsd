@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="AppuntamentoVaccinale" nillable="true" type="AppuntamentoVaccinale" />
+  <xs:complexType name="AppuntamentoVaccinale">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="AppuntamentiVaccinali" type="ArrayOfDTOAppuntamento" />
+      <xs:element minOccurs="0" maxOccurs="1" name="StampaAppuntamento" type="DTOAppuntamentoStampa" />
+      <xs:element minOccurs="0" maxOccurs="1" name="GenericResult" type="ResultSetPost" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PropostaVac" type="PropostaVaccinazione" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PropostaVar" type="PropostaVariazione" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RicercaPeriodiLiberi" type="ArrayOfDTOPropostaDiAppuntamento" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PropAppuntamento" type="DTOPropostaDateSpostamento" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Prenotazione" type="DTOPrenotazione" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Spostamento" type="DTOPrenotazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTOAppuntamento">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTOAppuntamento" nillable="true" type="DTOAppuntamento" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOAppuntamento">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="IdAppuntamento" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vaccini" type="ArrayOfDTOVaccino" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ResultMessage" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Data" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Luogo" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTOVaccino">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTOVaccino" nillable="true" type="DTOVaccino" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOVaccino">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceVaccino" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneVaccino" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOAppuntamentoStampa">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Tiket" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AvvisoPdf" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IdAppuntamento" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ResultSetPost">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Success" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Message" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PropostaVaccinazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceFiscaleRichiedente" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Cognome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Nome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Mail" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceFiscaleVaccinato" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Note" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IdAppuntamento" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TipoRichiesta" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MotivoVariazione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vaccini" type="ArrayOfDTOVaccino" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PropostaVariazione">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="IdAppuntamento" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Cognome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Nome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceFiscale" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Tipo" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceFiscaleDelVaccinato" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Mail" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Note" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Motivo" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTOPropostaDiAppuntamento">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTOPropostaDiAppuntamento" nillable="true" type="DTOPropostaDiAppuntamento" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOPropostaDiAppuntamento">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="DataAppuntamento" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataFineAppuntamento" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vaccinazioni" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Codice" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOPropostaDateSpostamento">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="CodicePaziente" type="xs:long" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CodiceAmbulatorio" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceConsultorio" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataInizio" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataFine" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOPrenotazione">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="CodicePaziente" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataConvocazione" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataAppuntamento" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NoteAppuntamento" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DurataAppuntamento" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceConsultorio" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CodiceAmbulatorio" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Motivazione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vaccini" type="ArrayOfDTOVaccino" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

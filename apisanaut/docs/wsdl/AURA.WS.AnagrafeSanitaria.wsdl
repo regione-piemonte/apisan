@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://AnagrafeSanitaria.central.services.auraws.aura.csi.it" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://AnagrafeSanitaria.central.services.auraws.aura.csi.it">
+    <types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://AnagrafeSanitaria.central.services.auraws.aura.csi.it">
+            <s:element name="GetProfiloSanitario">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="AURAid" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetProfiloSanitarioResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="GetProfiloSanitarioResult" type="s0:soggettoAuraMsg"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="soggettoAuraMsg">
+                <s:complexContent>
+                    <s:extension base="s0:Ens_Response">
+                        <s:sequence>
+                            <s:element minOccurs="0" name="header" type="s0:Header"/>
+                            <s:element minOccurs="0" name="body" type="s0:SoggettoAuraBody"/>
+                            <s:element minOccurs="0" name="footer" type="s0:Footer"/>
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="Ens_Response">
+                <s:complexContent>
+                    <s:extension base="s0:Ens_Messagebody"/>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="Ens_Messagebody"/>
+            <s:complexType name="Header">
+                <s:sequence>
+                    <s:element minOccurs="0" name="idAuraRicondotto" type="s:decimal"/>
+                    <s:element minOccurs="0" name="numeroTicket" type="s:string"/>
+                    <s:element minOccurs="0" name="idNotifica" type="s:string"/>
+                    <s:element minOccurs="0" name="codiceRitorno" type="s:string"/>
+                    <s:element minOccurs="0" name="requestDateTime" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="eventi" type="s0:ArrayOfeventoEvento"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfeventoEvento">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="evento" nillable="true" type="s0:Evento"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Evento">
+                <s:sequence>
+                    <s:element minOccurs="0" name="codice" type="s:string"/>
+                    <s:element minOccurs="0" name="descrizione" type="s:string"/>
+                    <s:element minOccurs="0" name="idAura" type="s:decimal"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="SoggettoAuraBody">
+                <s:sequence>
+                    <s:element minOccurs="0" name="idAura" type="s:decimal"/>
+                    <s:element minOccurs="0" name="infoAnag" type="s0:InfoAnagrafiche"/>
+                    <s:element minOccurs="0" name="infoSan" type="s0:InfoSanitarie"/>
+                    <s:element minOccurs="0" name="infoEsenzioni" type="s0:ArrayOfinfoesenzioneInfoEsenzione"/>
+                    <s:element minOccurs="0" name="altreInfo" type="s0:ArrayOfinformazioniAltreInfo"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="InfoAnagrafiche">
+                <s:sequence>
+                    <s:element minOccurs="0" name="datiPrimari" type="s0:DatiPrimari"/>
+                    <s:element minOccurs="0" name="domicilio" type="s0:DatiSecondari"/>
+                    <s:element minOccurs="0" name="residenza" type="s0:DatiSecondari"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="DatiPrimari">
+                <s:sequence>
+                    <s:element minOccurs="0" name="codCittadinanza" type="s:string"/>
+                    <s:element minOccurs="0" name="codComuneNascita" type="s:string"/>
+                    <s:element minOccurs="0" name="codStatoNascita" type="s:string"/>
+                    <s:element minOccurs="0" name="codiceFiscale" type="s:string"/>
+                    <s:element minOccurs="0" name="cognome" type="s:string"/>
+                    <s:element minOccurs="0" name="dataDecesso" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataNascita" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="descCittadinanza" type="s:string"/>
+                    <s:element minOccurs="0" name="descComuneNascita" type="s:string"/>
+                    <s:element minOccurs="0" name="descStatoNascita" type="s:string"/>
+                    <s:element minOccurs="0" name="nome" type="s:string"/>
+                    <s:element minOccurs="0" name="sesso" type="s:string"/>
+                    <s:element minOccurs="0" name="siglaProvNascita" type="s:string"/>
+                    <s:element minOccurs="0" name="statoCodiceFiscale" type="s:string"/>
+                    <s:element minOccurs="0" name="statoProfiloAnagrafico" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="DatiSecondari">
+                <s:sequence>
+                    <s:element minOccurs="0" name="cap" type="s:string"/>
+                    <s:element minOccurs="0" name="codComune" type="s:string"/>
+                    <s:element minOccurs="0" name="codStato" type="s:string"/>
+                    <s:element minOccurs="0" name="descComune" type="s:string"/>
+                    <s:element minOccurs="0" name="descStato" type="s:string"/>
+                    <s:element minOccurs="0" name="indirizzo" type="s:string"/>
+                    <s:element minOccurs="0" name="numCivico" type="s:string"/>
+                    <s:element minOccurs="0" name="statoResidenza" type="s:string"/>
+                    <s:element minOccurs="0" name="telefono" type="s:string"/>
+                    <s:element minOccurs="0" name="dataInizio" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataFine" type="s:dateTime"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="InfoSanitarie">
+                <s:sequence>
+                    <s:element minOccurs="0" name="aslAssistenza" type="s:string"/>
+                    <s:element minOccurs="0" name="codiceFiscaleMedico" type="s:string"/>
+                    <s:element minOccurs="0" name="codiceTesseraTEAM" type="s:string"/>
+                    <s:element minOccurs="0" name="codRegionaleMedico" type="s:string"/>
+                    <s:element minOccurs="0" name="cognomeMedico" type="s:string"/>
+                    <s:element minOccurs="0" name="dataFineASL" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataFineAssMedico" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataFineSSN" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataInizioASL" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataInizioAssMedico" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataInizioSSN" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="idMedico" type="s:decimal"/>
+                    <s:element minOccurs="0" name="idProfiloSanitario" type="s:decimal"/>
+                    <s:element minOccurs="0" name="nomeMedico" type="s:string"/>
+                    <s:element minOccurs="0" name="codTipoProfiloSanitario">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="2"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="descTipoProfiloSanitario">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="100"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="aslResidenza" type="s:string"/>
+                    <s:element minOccurs="0" name="aslDomicilio" type="s:string"/>
+                    <s:element minOccurs="0" name="codDistrettoDomicilio">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="6"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="descDistrettoDomicilio">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="100"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="tipoMovimento" type="s:string"/>
+                    <s:element minOccurs="0" name="dataMovimento" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataDecorrenza" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="motivoFineAssistenza">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="100"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="statoInvioMEF">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="100"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="codiceTesseraRegionale">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="16"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="codDistrettoResidenza">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="6"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="descDistrettoResidenza">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="100"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfinfoesenzioneInfoEsenzione">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="infoesenzione" nillable="true" type="s0:InfoEsenzione"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="InfoEsenzione">
+                <s:sequence>
+                    <s:element minOccurs="0" name="codEsenzione" type="s:string"/>
+                    <s:element minOccurs="0" name="descEsenzione">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="100"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="codDiagnosi">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="5"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                    <s:element minOccurs="0" name="diagnosi" type="s:string"/>
+                    <s:element minOccurs="0" name="fineValEsenzione" type="s:string"/>
+                    <s:element minOccurs="0" name="idEsenzione" type="s:decimal"/>
+                    <s:element minOccurs="0" name="inizioValEsenzione" type="s:string"/>
+                    <s:element minOccurs="0" name="dataEmissione" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataScadenza" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="dataSospensione" type="s:dateTime"/>
+                    <s:element minOccurs="0" name="codAttestato" type="s:string"/>
+                    <s:element minOccurs="0" name="fonte">
+                        <s:simpleType>
+                            <s:restriction base="s:string">
+                                <s:maxLength value="6"/>
+                            </s:restriction>
+                        </s:simpleType>
+                    </s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfinformazioniAltreInfo">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="informazioni" nillable="true" type="s0:AltreInfo"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="AltreInfo">
+                <s:sequence>
+                    <s:element minOccurs="0" name="codInformazione" type="s:string"/>
+                    <s:element minOccurs="0" name="descInformazione" type="s:string"/>
+                    <s:element minOccurs="0" name="valInformazione" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Footer">
+                <s:sequence>
+                    <s:element minOccurs="0" name="messages" type="s0:ArrayOfmessageMessage"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfmessageMessage">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="message" nillable="true" type="s0:Message"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Message">
+                <s:sequence>
+                    <s:element minOccurs="0" name="codice" type="s:string"/>
+                    <s:element minOccurs="0" name="descrizione" type="s:string"/>
+                    <s:element minOccurs="0" name="tipo" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+        </s:schema>
+    </types>
+    <message name="GetProfiloSanitarioSoapIn">
+        <part name="parameters" element="s0:GetProfiloSanitario"/>
+    </message>
+    <message name="GetProfiloSanitarioSoapOut">
+        <part name="parameters" element="s0:GetProfiloSanitarioResponse"/>
+    </message>
+    <portType name="AnagrafeSanitariaSoap">
+        <operation name="GetProfiloSanitario">
+            <input message="s0:GetProfiloSanitarioSoapIn"/>
+            <output message="s0:GetProfiloSanitarioSoapOut"/>
+        </operation>
+    </portType>
+    <binding name="AnagrafeSanitariaSoap" type="s0:AnagrafeSanitariaSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="GetProfiloSanitario">
+            <soap:operation soapAction="http://AnagrafeSanitaria.central.services.auraws.aura.csi.it/AURA.WS.AnagrafeSanitaria.GetProfiloSanitario" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="AnagrafeSanitaria">
+        <port name="AnagrafeSanitariaSoap" binding="s0:AnagrafeSanitariaSoap">
+            <soap:address location="https://portale.xxx.it/sanitxens/AURA.WS.AnagrafeSanitaria.cls"/>
+        </port>
+    </service>
+</definitions>

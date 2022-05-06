@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ptwsrvavvisopagamento.webservice.business.ptwsrv.csi.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ptwsrvavvisopagamento" targetNamespace="http://ptwsrvavvisopagamento.webservice.business.ptwsrv.csi.it/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ptwsrvavvisopagamento.webservice.business.ptwsrv.csi.it/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ptwsrvavvisopagamento.webservice.business.ptwsrv.csi.it/">
+  <xs:element name="avvisoPagamento" type="tns:avvisoPagamento"/>
+  <xs:element name="avvisoPagamentoResponse" type="tns:avvisoPagamentoResponse"/>
+  <xs:complexType name="avvisoPagamento">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="arg0" type="tns:ItemStampaAvvisoPagamento"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ItemStampaAvvisoPagamento">
+    <xs:sequence/>
+    <xs:attribute name="key" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="avvisoPagamentoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="outputAvvisoPagamento" type="tns:outputAvvisoPagamento"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="outputAvvisoPagamento">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+      <xs:element minOccurs="0" name="errore" type="xs:string"/>
+      <xs:element minOccurs="0" name="outputavviso" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AvvisoPagamentoException" type="tns:AvvisoPagamentoException"/>
+  <xs:complexType name="AvvisoPagamentoException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="avvisoPagamento">
+    <wsdl:part element="tns:avvisoPagamento" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="avvisoPagamentoResponse">
+    <wsdl:part element="tns:avvisoPagamentoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AvvisoPagamentoException">
+    <wsdl:part element="tns:AvvisoPagamentoException" name="AvvisoPagamentoException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="IPtwsrvServiceAvvisoPagamentoWS">
+    <wsdl:operation name="avvisoPagamento">
+      <wsdl:input message="tns:avvisoPagamento" name="avvisoPagamento">
+    </wsdl:input>
+      <wsdl:output message="tns:avvisoPagamentoResponse" name="avvisoPagamentoResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:AvvisoPagamentoException" name="AvvisoPagamentoException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ptwsrvavvisopagamentoSoapBinding" type="tns:IPtwsrvServiceAvvisoPagamentoWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="avvisoPagamento">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="avvisoPagamento">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="avvisoPagamentoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="AvvisoPagamentoException">
+        <soap:fault name="AvvisoPagamentoException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ptwsrvavvisopagamento">
+    <wsdl:port binding="tns:ptwsrvavvisopagamentoSoapBinding" name="ptwsrvavvisopagamentoPort">
+      <soap:address location="https://xxx-ptw.xxx.csi./ptwsrvavvisopagamento/ws/ptwsrvavvisopagamento"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

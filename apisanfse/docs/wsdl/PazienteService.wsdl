@@ -1,0 +1,1691 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="PazienteService" targetNamespace="http://dmaccbl.csi.it/" xmlns:ns1="http://dmacc.csi.it/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmaccbl.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmaccbl.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmaccbl.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:element name="GetAccessi2Request" type="tns:GetAccessi2Request" />
+   <xs:element name="GetAccessi2Response" type="tns:GetAccessi2Response" />
+   <xs:element name="GetAccessiResponse" type="tns:getAccessiResponse" />
+   <xs:element name="getAccessi" type="tns:getAccessi" />
+   <xs:element name="richiedenteInfo" type="ns1:richiedenteInfo" />
+   <xs:element name="riepilogoPaziente" type="ns1:riepilogoPaziente" />
+   <xs:complexType name="getPazienteByIdIREC">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="pazienteIdIrec" type="xs:long" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getPazienteByIdIRECResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="paziente" nillable="true" type="ns1:paziente" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="codifiche" nillable="true" type="ns1:codifica" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="errori" nillable="true" type="ns1:errore" />
+         <xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="setDatiNotificaMMG">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:codFiscaleMMg" />
+         <xs:element minOccurs="0" ref="ns1:indirizzoEmailMmg" />
+         <xs:element minOccurs="0" ref="ns1:flagAbilitaInvioMailMmg" />
+         <xs:element minOccurs="0" ref="ns1:flagAbilitaInvioMailMmgFse" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="setDatiNotificaMMGResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="notificaDocumentoScaricabile">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+         <xs:element minOccurs="0" name="componenteLocale" type="ns1:componenteLocale" />
+         <xs:element minOccurs="0" name="idDocumento" type="xs:string" />
+         <xs:element minOccurs="0" name="pinCode" type="xs:string" />
+         <xs:element minOccurs="0" name="codiceFiscalePaziente" type="xs:string" />
+         <xs:element name="numeroGiorniDownload" type="xs:int" />
+         <xs:element minOccurs="0" name="tipoNotifica" type="ns1:notificaDocumentoScaricabileTipo" />
+         <xs:element minOccurs="0" name="codiceDocumentoDipartimentale" type="xs:string" />
+         <xs:element minOccurs="0" name="idDocumentoParent" type="xs:string" />
+         <xs:element minOccurs="0" name="dataInizio" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataDisponibilitaReferto" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataInserimentoInCL" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataSostituzione" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="codiceDipartimentale" type="xs:string" />
+         <xs:element minOccurs="0" name="codiceAsr" type="xs:string" />
+         <xs:element minOccurs="0" name="ticketPagato" type="xs:float" />
+         <xs:element minOccurs="0" name="ticketDaPagare" type="xs:float" />
+         <xs:element minOccurs="0" name="pagatoTicket" type="xs:string" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="infoAddendumReferto" nillable="true" type="tns:infoAddendumReferto" />
+         <xs:element minOccurs="0" name="dataEsame" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="tipoDocumento" type="xs:string" />
+         <xs:element minOccurs="0" name="strutturaSanitaria" type="ns1:strutturaSanitaria" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="infoAddendumReferto">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:codiceDipartimentaleDocumento" />
+         <xs:element minOccurs="0" ref="ns1:id" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="notificaRefertoScaricabileResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="invioNotifichePazienti">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+         <xs:element minOccurs="0" name="tipoOperazioneNotifica" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="invioNotifichePazientiResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getInfoPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:paziente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getInfoPazienteResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" ref="ns1:contattiPaziente" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="notificaPresenzaDatiILEC">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+         <xs:element minOccurs="0" name="paziente" type="ns1:paziente" />
+         <xs:element minOccurs="0" name="componenteLocale" type="ns1:componenteLocale" />
+         <xs:element name="numeroEpisodi" type="xs:int" />
+         <xs:element name="numeroDocumenti" type="xs:int" />
+         <xs:element minOccurs="0" name="tipo" type="ns1:notificaPresenzaDatiTipo" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="presenzaDatiILECRuoli" nillable="true" type="ns1:presenzaDatiILECRuolo" />
+         <xs:element minOccurs="0" name="flagEsenzioniOscurato" type="xs:string" />
+         <xs:element minOccurs="0" name="flagLeggiSpeciali" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="notificaPresenzaDatiILECResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="alimentazioneElencoCodiciFiscali">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:listaElencoCodiciFiscali" />
+         <xs:element minOccurs="0" ref="ns1:paziente" />
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="alimentazioneElencoCodiciFiscaliResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getAccessi">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:paziente" />
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" name="dataInizioRicerca" type="xs:date" />
+         <xs:element minOccurs="0" name="dataFineRicerca" type="xs:date" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getAccessiResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" nillable="true" ref="ns1:consultazioni" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" nillable="true" ref="ns1:operazioni" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getDoNotificaMMG">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:tipoDati" />
+         <xs:element minOccurs="0" ref="ns1:dataInizioRicerca" />
+         <xs:element minOccurs="0" ref="ns1:dataFineRicerca" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getDoNotificaMMGResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="metadatiMedicoPazienti" nillable="true" type="ns1:metadatiMedicoPaziente" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="hashMap">
+      <xs:complexContent>
+         <xs:extension base="tns:abstractMap">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="abstractMap">
+      <xs:sequence />
+   </xs:complexType>
+   <xs:complexType name="ricercaPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="paziente" type="ns1:paziente" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ricercaPazienteResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="pazienti" nillable="true" type="ns1:paziente" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getRiepilogo">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:paziente" />
+         <xs:element minOccurs="0" name="dataInizio" type="xs:date" />
+         <xs:element minOccurs="0" name="dataFine" type="xs:date" />
+         <xs:element name="timeoutChiamanteInSec" type="xs:int" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getRiepilogoResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="riepilogoPaziente" type="ns1:riepilogoPaziente" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="SintesiElemento">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:tipo" />
+         <xs:element ref="ns1:cardinalita" />
+         <xs:element minOccurs="0" ref="ns1:data" />
+         <xs:element minOccurs="0" ref="ns1:stato" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getCLDaInvocare">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="includiTipiCL" nillable="true" type="xs:string" />
+         <xs:element minOccurs="0" name="pazienteIdAura" type="xs:long" />
+         <xs:element minOccurs="0" name="pazienteIdIrec" type="xs:long" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getCLDaInvocareResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="componenteLocale" nillable="true" type="ns1:componenteLocale" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="GetAccessi2Request">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="dataInizioRicerca" type="xs:date" />
+         <xs:element minOccurs="0" name="dataFineRicerca" type="xs:date" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="GetAccessi2Response">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" nillable="true" ref="ns1:consultazioni" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" nillable="true" ref="ns1:operazioni" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="setInfoPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:paziente" />
+         <xs:element minOccurs="0" ref="ns1:contattiPaziente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="setInfoPazienteResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getDatiNotificaMMG">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:codFiscaleMMg" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getDatiNotificaMMGResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" ref="ns1:indirizzoEmailMmg" />
+               <xs:element minOccurs="0" ref="ns1:flagAbilitaInvioMailMmg" />
+               <xs:element minOccurs="0" ref="ns1:flagAbilitaInvioMailMmgFse" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getMMGPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="paziente" type="ns1:paziente" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="getMMGPazienteResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="haMedico" type="ns1:siNo" />
+               <xs:element minOccurs="0" name="medico" type="ns1:medico" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:simpleType name="sintesiElementoTipo">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="EPISODI" />
+         <xs:enumeration value="DOCUMENTI" />
+         <xs:enumeration value="ROPVA" />
+         <xs:enumeration value="FARMACI" />
+         <xs:enumeration value="VACCINAZIONI" />
+         <xs:enumeration value="SCREENING" />
+         <xs:enumeration value="ESENZIONI" />
+         <xs:enumeration value="PABI" />
+         <xs:enumeration value="MARARE" />
+         <xs:enumeration value="DOCUMENTI_PERSONALI" />
+         <xs:enumeration value="MISURAZIONI" />
+         <xs:enumeration value="RILEVAZIONI_ALIMENTARI" />
+         <xs:enumeration value="NOTE" />
+         <xs:enumeration value="ASSUNZIONE_FARMACI" />
+         <xs:enumeration value="APPREG" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:element name="getPazienteByIdIrec" nillable="true" type="tns:getPazienteByIdIREC" />
+   <xs:element name="getPazienteByIdIrecResponse" nillable="true" type="tns:getPazienteByIdIRECResponse" />
+   <xs:element name="setDatiNotificaMMG" nillable="true" type="tns:setDatiNotificaMMG" />
+   <xs:element name="setDatiNotificaMMGResponse" nillable="true" type="tns:setDatiNotificaMMGResponse" />
+   <xs:element name="notificaDocumentoScaricabile" nillable="true" type="tns:notificaDocumentoScaricabile" />
+   <xs:element name="notificaDocumentoScaricabileResponse" nillable="true" type="tns:notificaRefertoScaricabileResponse" />
+   <xs:element name="verificaRefertiInScadenza" nillable="true" type="tns:invioNotifichePazienti" />
+   <xs:element name="verificaRefertiInScadenzaResponse" nillable="true" type="tns:invioNotifichePazientiResponse" />
+   <xs:element name="invioNotifichePazientiNR" nillable="true" type="tns:invioNotifichePazienti" />
+   <xs:element name="invioNotifichePazientiNRResponse" nillable="true" type="tns:invioNotifichePazientiResponse" />
+   <xs:element name="getInfoPaziente" nillable="true" type="tns:getInfoPaziente" />
+   <xs:element name="getInfoPazienteResponse" nillable="true" type="tns:getInfoPazienteResponse" />
+   <xs:element name="notificaPresenzaDatiILEC" nillable="true" type="tns:notificaPresenzaDatiILEC" />
+   <xs:element name="notificaPresenzaDatiILECResponse" nillable="true" type="tns:notificaPresenzaDatiILECResponse" />
+   <xs:element name="getDoNotificaMMG" nillable="true" type="tns:getDoNotificaMMG" />
+   <xs:element name="getDoNotificaMMGResponse" nillable="true" type="tns:getDoNotificaMMGResponse" />
+   <xs:element name="preparaNotifichePazientiNR" nillable="true" type="tns:invioNotifichePazienti" />
+   <xs:element name="preparaNotifichePazientiNRResponse" nillable="true" type="tns:invioNotifichePazientiResponse" />
+   <xs:element name="ricercaPaziente" nillable="true" type="tns:ricercaPaziente" />
+   <xs:element name="ricercaPazienteResponse" nillable="true" type="tns:ricercaPazienteResponse" />
+   <xs:element name="getRiepilogo" nillable="true" type="tns:getRiepilogo" />
+   <xs:element name="getRiepilogoResponse" nillable="true" type="tns:getRiepilogoResponse" />
+   <xs:element name="getCLDaInvocare" nillable="true" type="tns:getCLDaInvocare" />
+   <xs:element name="getCLDaInvocareResponse" nillable="true" type="tns:getCLDaInvocareResponse" />
+   <xs:element name="invioNotifichePazientiNF" nillable="true" type="tns:invioNotifichePazienti" />
+   <xs:element name="invioNotifichePazientiNFResponse" nillable="true" type="tns:invioNotifichePazientiResponse" />
+   <xs:element name="invioNotifichePazientiNA" nillable="true" type="tns:invioNotifichePazienti" />
+   <xs:element name="invioNotifichePazientiNAResponse" nillable="true" type="tns:invioNotifichePazientiResponse" />
+   <xs:element name="setInfoPaziente" nillable="true" type="tns:setInfoPaziente" />
+   <xs:element name="setInfoPazienteResponse" nillable="true" type="tns:setInfoPazienteResponse" />
+   <xs:element name="getDatiNotificaMMG" nillable="true" type="tns:getDatiNotificaMMG" />
+   <xs:element name="getDatiNotificaMMGResponse" nillable="true" type="tns:getDatiNotificaMMGResponse" />
+   <xs:element name="getMMGPaziente" nillable="true" type="tns:getMMGPaziente" />
+   <xs:element name="getMMGPazienteResponse" nillable="true" type="tns:getMMGPazienteResponse" />
+   <xs:element name="invioNotifichePazienti" nillable="true" type="tns:invioNotifichePazienti" />
+   <xs:element name="invioNotifichePazientiResponse" nillable="true" type="tns:invioNotifichePazientiResponse" />
+</xs:schema><xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns0="http://dmaccbl.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:import namespace="http://dmaccbl.csi.it/" />
+   <xs:complexType name="NotificaOscuramentoNRERequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:paziente" />
+         <xs:element minOccurs="0" ref="ns1:componenteLocale" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:nre" />
+         <xs:element minOccurs="0" ref="ns1:idDocumentoIlec" />
+         <xs:element minOccurs="0" ref="ns1:fonteOscuramento" />
+         <xs:element minOccurs="0" ref="ns1:oscurato" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="notificaOscuramentoNREResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:Ens_Response">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:errori" />
+               <xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:codifiche" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="Ens_Response">
+      <xs:complexContent>
+         <xs:extension base="tns:Ens_Messagebody">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="Ens_Messagebody">
+      <xs:sequence />
+   </xs:complexType>
+   <xs:complexType name="Ens_Request">
+      <xs:complexContent>
+         <xs:extension base="tns:Ens_Messagebody">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="applicativoVerticale">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="codifica">
+      <xs:sequence>
+         <xs:element form="unqualified" minOccurs="0" name="codice" type="xs:string" />
+         <xs:element form="unqualified" minOccurs="0" name="descrizione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicazioneRichiedente">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="errore">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="NotificaDocumentoNonScaricabileRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="ns1:richiedente" />
+         <xs:element minOccurs="0" ref="ns1:idDocumento" />
+         <xs:element minOccurs="0" ref="ns1:codiceFiscalePaziente" />
+         <xs:element minOccurs="0" ref="ns1:tipoEventoNotifica" />
+         <xs:element minOccurs="0" ref="ns1:componenteLocale" />
+         <xs:element minOccurs="0" ref="ns1:oscuraDocumento" />
+         <xs:element minOccurs="0" ref="ns1:oscuraScaricoCittadino" />
+         <xs:element minOccurs="0" ref="ns1:dataEsame" />
+         <xs:element minOccurs="0" ref="ns1:tipoDocumento" />
+         <xs:element minOccurs="0" ref="ns1:strutturaSanitaria" />
+         <xs:element minOccurs="0" ref="ns1:flagScaricabile" />
+         <xs:element minOccurs="0" ref="ns1:pagatoTicket" />
+         <xs:element minOccurs="0" ref="ns1:ticketPagato" />
+         <xs:element minOccurs="0" ref="ns1:ticketDaPagare" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:nreList" />
+         <xs:element minOccurs="0" ref="ns1:codiceDocumentoDipartimentale" />
+         <xs:element minOccurs="0" ref="ns1:consultazione" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="notificaDocumentoNonScaricabileResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:simpleType name="risultatoCodice">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SUCCESSO" />
+         <xs:enumeration value="FALLIMENTO" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:element name="AlimentazioneElencoCodiciFiscaliRequest" nillable="true" type="ns0:alimentazioneElencoCodiciFiscali" />
+   <xs:element name="AlimentazioneElencoCodiciFiscaliResponse" nillable="true" type="ns0:alimentazioneElencoCodiciFiscaliResponse" />
+   <xs:element name="NotificaOscuramentoNRERequest" nillable="true" type="tns:NotificaOscuramentoNRERequest" />
+   <xs:element name="NotificaOscuramentoNREResponse" nillable="true" type="tns:notificaOscuramentoNREResponse" />
+   <xs:element name="NotificaDocumentoNonScaricabileRequest" nillable="true" type="tns:NotificaDocumentoNonScaricabileRequest" />
+   <xs:element name="NotificaDocumentoNonScaricabileResponse" nillable="true" type="tns:notificaDocumentoNonScaricabileResponse" />
+</xs:schema><xs:schema elementFormDefault="qualified" targetNamespace="http://dma.csi.it/" version="1.0" xmlns:ns1="http://dmaccbl.csi.it/" xmlns:ns2="http://dmacc.csi.it/" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dmaccbl.csi.it/" />
+   <xs:import namespace="http://dmacc.csi.it/" />
+   <xs:element name="cardinalita" type="xs:int" />
+   <xs:element name="codFiscaleMMg" type="xs:string" />
+   <xs:element name="codiceDipartimentaleDocumento" type="xs:string" />
+   <xs:element name="codiceDocumentoDipartimentale" type="xs:string" />
+   <xs:element name="codiceFiscalePaziente" type="xs:string" />
+   <xs:element name="codifiche" type="tns:codifica" />
+   <xs:element name="componenteLocale" nillable="true" type="xs:anyType" />
+   <xs:element name="consenso" type="tns:consenso" />
+   <xs:element name="consultazione" type="xs:string" />
+   <xs:element name="consultazioni" type="tns:accessoConsultazione" />
+   <xs:element name="contattiPaziente" type="tns:contattiPaziente" />
+   <xs:element name="data" type="xs:dateTime" />
+   <xs:element name="dataEsame" type="xs:dateTime" />
+   <xs:element name="dataFineRicerca" type="xs:dateTime" />
+   <xs:element name="dataInizioRicerca" type="xs:dateTime" />
+   <xs:element name="delega" type="tns:delega" />
+   <xs:element name="errori" type="tns:errore" />
+   <xs:element name="flagAbilitaInvioMailMmg" type="tns:siNo" />
+   <xs:element name="flagAbilitaInvioMailMmgFse" type="tns:siNo" />
+   <xs:element name="flagScaricabile" type="xs:string" />
+   <xs:element name="fonteOscuramento" type="xs:string" />
+   <xs:element name="id" type="xs:string" />
+   <xs:element name="idDocumento" type="xs:long" />
+   <xs:element name="idDocumentoIlec" type="xs:long" />
+   <xs:element name="indirizzoEmailMmg" type="xs:string" />
+   <xs:element name="listaElencoCodiciFiscali" type="tns:elencoCFAssistitoType" />
+   <xs:element name="modalitaDiAlimentazione" type="tns:modalitaDiAlimentazione" />
+   <xs:element name="nre" type="xs:string" />
+   <xs:element name="nreList" type="xs:string" />
+   <xs:element name="operazioni" type="tns:accessoOperazione" />
+   <xs:element name="oscuraDocumento" type="xs:string" />
+   <xs:element name="oscuraScaricoCittadino" type="xs:string" />
+   <xs:element name="oscurato" type="xs:string" />
+   <xs:element name="pagatoTicket" type="xs:string" />
+   <xs:element name="paziente" type="tns:paziente" />
+   <xs:element name="richiedente" type="tns:richiedente" />
+   <xs:element name="stato" type="tns:componenteLocaleRispostaStato" />
+   <xs:element name="strutturaSanitaria" type="tns:strutturaSanitaria" />
+   <xs:element name="ticketDaPagare" type="xs:float" />
+   <xs:element name="ticketPagato" type="xs:float" />
+   <xs:element name="tipo" type="ns1:sintesiElementoTipo" />
+   <xs:element name="tipoDati" type="xs:string" />
+   <xs:element name="tipoDocumento" type="xs:string" />
+   <xs:element name="tipoEventoNotifica" type="tns:eventoNotificaTipoCodice" />
+   <xs:complexType name="richiedente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="applicativoVerticale" type="tns:applicativoVerticale" />
+         <xs:element minOccurs="0" name="applicazione" type="tns:applicazioneRichiedente" />
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="ip" type="xs:string" />
+         <xs:element minOccurs="0" name="numeroTransazione" type="xs:string" />
+         <xs:element minOccurs="0" name="regime" type="tns:regimeDMA" />
+         <xs:element minOccurs="0" name="ruolo" type="tns:ruoloDMA" />
+         <xs:element minOccurs="0" name="tokenOperazione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicativoVerticale">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codice" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicazioneRichiedente">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="codifica">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codice" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="riferimento" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="disciplina">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="modalitaDiAlimentazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="tipoEpisodio">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="aziendaSanitaria">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="prestazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="idPrestazione" type="xs:long" />
+               <xs:element minOccurs="0" name="branca" type="tns:branca" />
+               <xs:element minOccurs="0" name="valoriPrestazione" type="tns:valoriPrestazione" />
+               <xs:element minOccurs="0" name="dataOraPrestazione" type="xs:dateTime" />
+               <xs:element minOccurs="0" name="dataOra" type="xs:dateTime" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="branca">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="valoriPrestazione">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="quantita" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="tipoDocumento">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="unitaOperativaSanitaria">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="comuneDiNascita">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="strutturaSanitaria">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="errore">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocale">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria" />
+               <xs:element minOccurs="0" name="componenteLocaleTipo" type="tns:componenteLocaleTipo" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="servizi" nillable="true" type="tns:componenteLocaleServizio" />
+               <xs:element minOccurs="0" name="erroreRegistrazioneConsenso" type="tns:siNo" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleTipo">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleServizio">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="urlServizio" type="xs:string" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="operazioni" nillable="true" type="tns:componenteLocaleOperazione" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleOperazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="TimeoutMaxElaborazione" type="xs:long" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="regimeDMA">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleRispostaStato">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="tipoFileDocumento">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="statoDiNascita">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ruoloDMA">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria" />
+               <xs:element minOccurs="0" name="profilo" type="tns:profilo" />
+               <xs:element minOccurs="0" name="flagVisibilePerConsenso" type="xs:string" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="profilo">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="episodioStato">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="tipoReferto">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="paziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="codiceFiscaleMMG" type="xs:string" />
+         <xs:element minOccurs="0" name="cognome" type="xs:string" />
+         <xs:element minOccurs="0" name="comuneDiNascita" type="tns:comuneDiNascita" />
+         <xs:element minOccurs="0" ref="tns:consenso" />
+         <xs:element minOccurs="0" name="dataDecesso" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataDiNascita" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataRiconduzione" type="xs:dateTime" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="deleghe" nillable="true" type="tns:delega" />
+         <xs:element minOccurs="0" name="flag_registry_incarico" type="xs:string" />
+         <xs:element minOccurs="0" name="idAsr" type="xs:long" />
+         <xs:element minOccurs="0" name="idAura" type="xs:long" />
+         <xs:element minOccurs="0" name="idIlec" type="xs:long" />
+         <xs:element minOccurs="0" name="idIrec" type="xs:long" />
+         <xs:element minOccurs="0" name="idPazienteRicondotto" type="xs:long" />
+         <xs:element minOccurs="0" name="mailPerAccessoDMA" type="tns:siNo" />
+         <xs:element minOccurs="0" name="nome" type="xs:string" />
+         <xs:element minOccurs="0" name="sesso" type="tns:sesso" />
+         <xs:element minOccurs="0" name="statoDiNascita" type="tns:statoDiNascita" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="consenso">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="ablConsOpeAmm" type="tns:siNo" />
+         <xs:element minOccurs="0" name="alimentaFse" type="tns:siNo" />
+         <xs:element minOccurs="0" name="consensoAllaCostituzioneDMA" type="tns:siNo" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="consensoMatriceRuoli" nillable="true" type="tns:consensoMatriceRuolo" />
+         <xs:element minOccurs="0" name="dataDiAggiornamento" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataDiValidazione" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="derogaEmergenza" type="tns:siNo" />
+         <xs:element minOccurs="0" ref="tns:modalitaDiAlimentazione" />
+         <xs:element minOccurs="0" name="pregresso" type="tns:siNo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="consensoMatriceRuolo">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="consultazione" type="tns:siNo" />
+         <xs:element minOccurs="0" name="dataDiAggiornamento" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="ruoloDMA" type="tns:ruoloDMA" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="delega">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceServizio" type="xs:string" />
+         <xs:element minOccurs="0" name="dataFineDelega" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataInizioDelega" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="gradoDelega" type="xs:string" />
+         <xs:element minOccurs="0" name="statoDelega" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoDelega" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="notificaDocumentoScaricabileTipo">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="contattiPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="indirizzoEmail" type="xs:string" />
+         <xs:element minOccurs="0" name="telefono" type="xs:string" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="notificheAPaziente" nillable="true" type="tns:notificaAPaziente" />
+         <xs:element minOccurs="0" name="foto" type="xs:base64Binary" />
+         <xs:element minOccurs="0" name="cittadinanza" type="xs:string" />
+         <xs:element minOccurs="0" name="aslDiResidenza" type="xs:string" />
+         <xs:element minOccurs="0" name="residenza" type="tns:indirizzo" />
+         <xs:element minOccurs="0" name="aslDiDomicilio" type="xs:string" />
+         <xs:element minOccurs="0" name="domicilio" type="tns:indirizzo" />
+         <xs:element minOccurs="0" name="numeroTesseraTeam" type="xs:string" />
+         <xs:element minOccurs="0" name="numeroTesseraSanitaria" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="notificaAPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="canaleNotifica" type="tns:canaleNotifica" />
+         <xs:element minOccurs="0" name="eventoNotifica" type="tns:eventoNotifica" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="canaleNotifica">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="eventoNotifica">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="indirizzo">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="cap" type="xs:string" />
+         <xs:element minOccurs="0" name="descrComune" type="xs:string" />
+         <xs:element minOccurs="0" name="descrStato" type="xs:string" />
+         <xs:element minOccurs="0" name="indirizzo" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="presenzaDatiILECRuolo">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceRuolo" type="xs:string" />
+         <xs:element name="numDocumenti" type="xs:int" />
+         <xs:element name="numEpisodi" type="xs:int" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="elencoCFAssistitoType">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="cfAssistito" nillable="true" type="tns:cfAssistitoType" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="cfAssistitoType">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="attivo" type="xs:string" />
+         <xs:element minOccurs="0" name="cf" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="accessoConsultazione">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceFiscaleOperatore" type="xs:string" />
+         <xs:element minOccurs="0" name="cognomeOperatore" type="xs:string" />
+         <xs:element minOccurs="0" name="collocazione" type="xs:string" />
+         <xs:element minOccurs="0" name="dataAccesso" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="idAccesso" type="xs:string" />
+         <xs:element minOccurs="0" name="nomeOperatore" type="xs:string" />
+         <xs:element minOccurs="0" name="regime" type="tns:regimeDMA" />
+         <xs:element minOccurs="0" name="ruolo" type="tns:ruoloDMA" />
+         <xs:element minOccurs="0" name="tipoConsultazione" type="tns:tipoAccessoConsultazione" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="tipoAccessoConsultazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="accessoOperazione">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="applicazioneVerticale" type="xs:string" />
+         <xs:element minOccurs="0" name="codiceFiscaleOperatore" type="xs:string" />
+         <xs:element minOccurs="0" name="cognomeOperatore" type="xs:string" />
+         <xs:element minOccurs="0" name="collocazione" type="xs:string" />
+         <xs:element minOccurs="0" name="dataAccesso" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="idAccesso" type="xs:string" />
+         <xs:element minOccurs="0" name="nomeOperatore" type="xs:string" />
+         <xs:element minOccurs="0" name="regime" type="tns:regimeDMA" />
+         <xs:element minOccurs="0" name="ruolo" type="tns:ruoloDMA" />
+         <xs:element minOccurs="0" name="tipoOperazione" type="tns:tipoAccessoOperazione" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="tipoAccessoOperazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="metadatiMedicoPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="cognomeMMG" type="xs:string" />
+         <xs:element minOccurs="0" name="emailMMG" type="xs:string" />
+         <xs:element minOccurs="0" name="flagInvioNotificaMMG" type="tns:siNo" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="metadatiPazienti" nillable="true" type="tns:metadatiPaziente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="metadatiPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="cognome" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizioneCl" type="xs:string" />
+         <xs:element minOccurs="0" name="idAura" type="xs:long" />
+         <xs:element name="mapNotifiche">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                     <xs:complexType>
+                        <xs:sequence>
+                           <xs:element minOccurs="0" name="key" type="xs:string" />
+                           <xs:element minOccurs="0" name="value" type="ns1:hashMap" />
+                        </xs:sequence>
+                     </xs:complexType>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="nome" type="xs:string" />
+         <xs:element minOccurs="0" name="numeroDocumenti" type="xs:long" />
+         <xs:element minOccurs="0" name="numeroEpisodi" type="xs:long" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="riepilogoPaziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="contattiPaziente" type="tns:contattiPaziente" />
+         <xs:element minOccurs="0" name="taccuino" type="tns:taccuino" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="gruppiMisurazioni" type="tns:gruppoMisurazioni" />
+         <xs:element minOccurs="0" name="sintesiDocumenti" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiDocumentiROPVA" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiScreening" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiFarmaci" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiEpisodi" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiEsenzioni" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiDisabilita" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiVaccinazioni" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiMalattieRare" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiDocumentiPersonali" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiMisurazioni" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiRilevazioniAlimentari" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiAssunzioniFarmaci" type="ns1:SintesiElemento" />
+         <xs:element minOccurs="0" name="sintesiNote" type="ns1:SintesiElemento" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="taccuino">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="idTaccuino" type="xs:long" />
+         <xs:element minOccurs="0" name="idPaziente" type="xs:long" />
+         <xs:element name="assunzioniFarmaciVisibili" type="xs:boolean" />
+         <xs:element name="noteVisibili" type="xs:boolean" />
+         <xs:element name="profiloClinicoVisibile" type="xs:boolean" />
+         <xs:element name="rilevazioniAlimentariVisibili" type="xs:boolean" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="gruppoMisurazioni">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="idGruppoMisurazioni" type="xs:long" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizioneBreve" type="xs:string" />
+         <xs:element minOccurs="0" name="colore" type="xs:string" />
+         <xs:element minOccurs="0" name="icona" type="xs:string" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="descrittoriMisurazioni" nillable="true" type="tns:descrittoreMisurazione" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="descrittoreMisurazione">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="idDescrittoreMisurazione" type="xs:long" />
+         <xs:element minOccurs="0" name="idGruppoMisurazioni" type="xs:long" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizioneBreve" type="xs:string" />
+         <xs:element minOccurs="0" name="unitaMisura" type="xs:string" />
+         <xs:element minOccurs="0" name="valoreMax" type="xs:float" />
+         <xs:element minOccurs="0" name="valoreMin" type="xs:float" />
+         <xs:element minOccurs="0" name="valoreNormale" type="xs:float" />
+         <xs:element minOccurs="0" name="formattazione" type="xs:string" />
+         <xs:element name="valoreNumerico" type="xs:boolean" />
+         <xs:element name="posizione" type="xs:int" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="richiedenteInfo">
+      <xs:sequence>
+         <xs:element form="unqualified" minOccurs="0" name="applicativoVerticale" type="ns2:applicativoVerticale" />
+         <xs:element form="unqualified" minOccurs="0" name="applicazione" type="ns2:applicazioneRichiedente" />
+         <xs:element form="unqualified" minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element form="unqualified" minOccurs="0" name="ip" type="xs:string" />
+         <xs:element form="unqualified" minOccurs="0" name="numeroTransazione" type="xs:string" />
+         <xs:element form="unqualified" minOccurs="0" name="ruolo" type="tns:ruolo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ruolo">
+      <xs:complexContent>
+         <xs:extension base="ns2:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="errori" type="ns2:errore" />
+         <xs:element form="unqualified" minOccurs="0" name="esito" type="ns2:risultatoCodice" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="medico">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="cognome" type="xs:string" />
+         <xs:element minOccurs="0" name="email" type="xs:string" />
+         <xs:element minOccurs="0" name="idAura" type="xs:string" />
+         <xs:element minOccurs="0" name="nome" type="xs:string" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="studi" nillable="true" type="tns:studioMedico" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="studioMedico">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="ambulatorioPubblico" type="tns:siNo" />
+         <xs:element minOccurs="0" name="denominazione" type="xs:string" />
+         <xs:element minOccurs="0" name="email" type="xs:string" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="giorniApertura" nillable="true" type="tns:giornoAperturaStudio" />
+         <xs:element minOccurs="0" name="indirizzoStudio" type="tns:indirizzo" />
+         <xs:element minOccurs="0" name="telPrimario" type="xs:string" />
+         <xs:element minOccurs="0" name="telSecondario" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoStudio" type="tns:tipoStudio" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="giornoAperturaStudio">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="giorno" type="xs:string" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="orari" nillable="true" type="tns:orarioAperturaStudio" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="orarioAperturaStudio">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="nota" type="xs:string" />
+         <xs:element minOccurs="0" name="orarioFine" type="xs:string" />
+         <xs:element minOccurs="0" name="orarioInizio" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="tipoStudio">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ArrayOfcodificacodifica">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="codifica" nillable="true" type="tns:codifica" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ArrayOfpazientepaziente">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="paziente" nillable="true" type="tns:paziente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleRisposta">
+      <xs:complexContent>
+         <xs:extension base="tns:componenteLocale">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="errori" nillable="true" type="tns:errore" />
+               <xs:element minOccurs="0" name="stato" type="tns:componenteLocaleRispostaStato" />
+               <xs:element name="tempoMaxAttesaCLInSec" type="xs:long" />
+               <xs:element name="tempoMaxRestituzioneDatiInSec" type="xs:long" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="consensoMatriceTipoDato">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:simpleType name="siNo">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SI" />
+         <xs:enumeration value="NO" />
+         <xs:enumeration value="NA" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="sesso">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="M" />
+         <xs:enumeration value="F" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="risultatoCodice">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SUCCESSO" />
+         <xs:enumeration value="FALLIMENTO" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="notificaPresenzaDatiTipo">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="AS" />
+         <xs:enumeration value="ROPVA" />
+         <xs:enumeration value="IMR" />
+         <xs:enumeration value="DOCUMENTI_PERSONALI" />
+         <xs:enumeration value="MISURAZIONI" />
+         <xs:enumeration value="RILEVAZIONI_ALIMENTARI" />
+         <xs:enumeration value="ASSUNZIONE_FARMACI" />
+         <xs:enumeration value="NOTE" />
+         <xs:enumeration value="APPLICAZIONE_REGIONALE" />
+         <xs:enumeration value="UNDEFINED_VALUE" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="eventoNotificaTipoCodice">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="NUOVO_DOCUMENTO" />
+         <xs:enumeration value="ANNULLA_DOCUMENTO" />
+         <xs:enumeration value="SOSTITUZIONE_DOCUMENTO" />
+         <xs:enumeration value="SCADENZA_DOCUMENTO" />
+         <xs:enumeration value="NUOVO_DOCUMENTO_RIMBORSO_IMPORTI" />
+         <xs:enumeration value="NUOVO_DOCUMENTO_RIMBORSO" />
+         <xs:enumeration value="AGGIORNAMENTO_STATO_TICKET" />
+         <xs:enumeration value="SOSTITUZIONE_DOCUMENTO_RIMBORSO_IMPORTI" />
+         <xs:enumeration value="SOSTITUZIONE_DOCUMENTO_RIMBORSO" />
+         <xs:enumeration value="NUOVO_DOCUMENTO_NON_SCARICABILE" />
+         <xs:enumeration value="ANNULLAMENTO_DOCUMENTO_NON_SCARICABILE" />
+         <xs:enumeration value="SOSTITUZIONE_DOCUMENTO_NON_SCARICABILE" />
+         <xs:enumeration value="AGGIORNAMENTO_STATO_TICKET_NON_SCARICABILE" />
+         <xs:enumeration value="UNDEFINED_VALUE" />
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="notificaOscuramentoNREResponse">
+    <wsdl:part element="ns1:NotificaOscuramentoNREResponse" name="NotificaOscuramentoNREResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaDocumentoScaricabile">
+    <wsdl:part element="tns:notificaDocumentoScaricabile" name="notificaDocumentoScaricabile">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazientiNRResponse">
+    <wsdl:part element="tns:invioNotifichePazientiNRResponse" name="invioNotifichePazientiNRResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAccessiResponse">
+    <wsdl:part element="tns:GetAccessiResponse" name="GetAccessiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getMMGPazienteResponse">
+    <wsdl:part element="tns:getMMGPazienteResponse" name="getMMGPazienteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInfoPazienteResponse">
+    <wsdl:part element="tns:getInfoPazienteResponse" name="getInfoPazienteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaPresenzaDatiILECResponse">
+    <wsdl:part element="tns:notificaPresenzaDatiILECResponse" name="notificaPresenzaDatiILECResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaDocumentoScaricabileResponse">
+    <wsdl:part element="tns:notificaDocumentoScaricabileResponse" name="notificaDocumentoScaricabileResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazientiNFResponse">
+    <wsdl:part element="tns:invioNotifichePazientiNFResponse" name="invioNotifichePazientiNFResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAccessi">
+    <wsdl:part element="tns:getAccessi" name="getAccessi">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDatiNotificaMMGResponse">
+    <wsdl:part element="tns:setDatiNotificaMMGResponse" name="setDatiNotificaMMGResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCLDaInvocareResponse">
+    <wsdl:part element="tns:getCLDaInvocareResponse" name="getCLDaInvocareResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaOscuramentoNRE">
+    <wsdl:part element="ns1:NotificaOscuramentoNRERequest" name="NotificaOscuramentoNRERequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="preparaNotifichePazientiNR">
+    <wsdl:part element="tns:preparaNotifichePazientiNR" name="preparaNotifichePazientiNR">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRiepilogo">
+    <wsdl:part element="tns:getRiepilogo" name="getRiepilogo">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDoNotificaMMGResponse">
+    <wsdl:part element="tns:getDoNotificaMMGResponse" name="getDoNotificaMMGResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setInfoPaziente">
+    <wsdl:part element="tns:setInfoPaziente" name="setInfoPaziente">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPazienteByIdIrecResponse">
+    <wsdl:part element="tns:getPazienteByIdIrecResponse" name="getPazienteByIdIrecResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verificaRefertiInScadenzaResponse">
+    <wsdl:part element="tns:verificaRefertiInScadenzaResponse" name="verificaRefertiInScadenzaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazienti">
+    <wsdl:part element="tns:invioNotifichePazienti" name="invioNotifichePazienti">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPazienteByIdIrec">
+    <wsdl:part element="tns:getPazienteByIdIrec" name="getPazienteByIdIrec">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazientiNAResponse">
+    <wsdl:part element="tns:invioNotifichePazientiNAResponse" name="invioNotifichePazientiNAResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDatiNotificaMMG">
+    <wsdl:part element="tns:setDatiNotificaMMG" name="setDatiNotificaMMG">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verificaRefertiInScadenza">
+    <wsdl:part element="tns:verificaRefertiInScadenza" name="verificaRefertiInScadenza">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazientiNR">
+    <wsdl:part element="tns:invioNotifichePazientiNR" name="invioNotifichePazientiNR">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInfoPaziente">
+    <wsdl:part element="tns:getInfoPaziente" name="getInfoPaziente">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaPresenzaDatiILEC">
+    <wsdl:part element="tns:notificaPresenzaDatiILEC" name="notificaPresenzaDatiILEC">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRiepilogoResponse">
+    <wsdl:part element="tns:getRiepilogoResponse" name="getRiepilogoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDatiNotificaMMGResponse">
+    <wsdl:part element="tns:getDatiNotificaMMGResponse" name="getDatiNotificaMMGResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="alimentazioneElencoCodiciFiscali">
+    <wsdl:part element="ns1:AlimentazioneElencoCodiciFiscaliRequest" name="AlimentazioneElencoCodiciFiscaliRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazientiResponse">
+    <wsdl:part element="tns:invioNotifichePazientiResponse" name="invioNotifichePazientiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaDocumentoNonScaricabileResponse">
+    <wsdl:part element="ns1:NotificaDocumentoNonScaricabileResponse" name="NotificaDocumentoNonScaricabileResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setInfoPazienteResponse">
+    <wsdl:part element="tns:setInfoPazienteResponse" name="setInfoPazienteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDoNotificaMMG">
+    <wsdl:part element="tns:getDoNotificaMMG" name="getDoNotificaMMG">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ricercaPaziente">
+    <wsdl:part element="tns:ricercaPaziente" name="ricercaPaziente">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCLDaInvocare">
+    <wsdl:part element="tns:getCLDaInvocare" name="getCLDaInvocare">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazientiNF">
+    <wsdl:part element="tns:invioNotifichePazientiNF" name="invioNotifichePazientiNF">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="preparaNotifichePazientiNRResponse">
+    <wsdl:part element="tns:preparaNotifichePazientiNRResponse" name="preparaNotifichePazientiNRResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAccessi2">
+    <wsdl:part element="tns:GetAccessi2Request" name="GetAccessi2Request">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="invioNotifichePazientiNA">
+    <wsdl:part element="tns:invioNotifichePazientiNA" name="invioNotifichePazientiNA">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificaDocumentoNonScaricabile">
+    <wsdl:part element="ns1:NotificaDocumentoNonScaricabileRequest" name="NotificaDocumentoNonScaricabileRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ricercaPazienteResponse">
+    <wsdl:part element="tns:ricercaPazienteResponse" name="ricercaPazienteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDatiNotificaMMG">
+    <wsdl:part element="tns:getDatiNotificaMMG" name="getDatiNotificaMMG">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="alimentazioneElencoCodiciFiscaliResponse">
+    <wsdl:part element="ns1:AlimentazioneElencoCodiciFiscaliResponse" name="AlimentazioneElencoCodiciFiscaliResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAccessi2Response">
+    <wsdl:part element="tns:GetAccessi2Response" name="GetAccessi2Response">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getMMGPaziente">
+    <wsdl:part element="tns:getMMGPaziente" name="getMMGPaziente">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PazienteService">
+    <wsdl:operation name="getPazienteByIdIrec">
+      <wsdl:input message="tns:getPazienteByIdIrec" name="getPazienteByIdIrec">
+    </wsdl:input>
+      <wsdl:output message="tns:getPazienteByIdIrecResponse" name="getPazienteByIdIrecResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDatiNotificaMMG">
+      <wsdl:input message="tns:setDatiNotificaMMG" name="setDatiNotificaMMG">
+    </wsdl:input>
+      <wsdl:output message="tns:setDatiNotificaMMGResponse" name="setDatiNotificaMMGResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaDocumentoScaricabile">
+      <wsdl:input message="tns:notificaDocumentoScaricabile" name="notificaDocumentoScaricabile">
+    </wsdl:input>
+      <wsdl:output message="tns:notificaDocumentoScaricabileResponse" name="notificaDocumentoScaricabileResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verificaRefertiInScadenza">
+      <wsdl:input message="tns:verificaRefertiInScadenza" name="verificaRefertiInScadenza">
+    </wsdl:input>
+      <wsdl:output message="tns:verificaRefertiInScadenzaResponse" name="verificaRefertiInScadenzaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazientiNR">
+      <wsdl:input message="tns:invioNotifichePazientiNR" name="invioNotifichePazientiNR">
+    </wsdl:input>
+      <wsdl:output message="tns:invioNotifichePazientiNRResponse" name="invioNotifichePazientiNRResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInfoPaziente">
+      <wsdl:input message="tns:getInfoPaziente" name="getInfoPaziente">
+    </wsdl:input>
+      <wsdl:output message="tns:getInfoPazienteResponse" name="getInfoPazienteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaPresenzaDatiILEC">
+      <wsdl:input message="tns:notificaPresenzaDatiILEC" name="notificaPresenzaDatiILEC">
+    </wsdl:input>
+      <wsdl:output message="tns:notificaPresenzaDatiILECResponse" name="notificaPresenzaDatiILECResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="alimentazioneElencoCodiciFiscali">
+      <wsdl:input message="tns:alimentazioneElencoCodiciFiscali" name="alimentazioneElencoCodiciFiscali">
+    </wsdl:input>
+      <wsdl:output message="tns:alimentazioneElencoCodiciFiscaliResponse" name="alimentazioneElencoCodiciFiscaliResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccessi">
+      <wsdl:input message="tns:getAccessi" name="getAccessi">
+    </wsdl:input>
+      <wsdl:output message="tns:getAccessiResponse" name="getAccessiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDoNotificaMMG">
+      <wsdl:input message="tns:getDoNotificaMMG" name="getDoNotificaMMG">
+    </wsdl:input>
+      <wsdl:output message="tns:getDoNotificaMMGResponse" name="getDoNotificaMMGResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaOscuramentoNRE">
+      <wsdl:input message="tns:notificaOscuramentoNRE" name="notificaOscuramentoNRE">
+    </wsdl:input>
+      <wsdl:output message="tns:notificaOscuramentoNREResponse" name="notificaOscuramentoNREResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="preparaNotifichePazientiNR">
+      <wsdl:input message="tns:preparaNotifichePazientiNR" name="preparaNotifichePazientiNR">
+    </wsdl:input>
+      <wsdl:output message="tns:preparaNotifichePazientiNRResponse" name="preparaNotifichePazientiNRResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaPaziente">
+      <wsdl:input message="tns:ricercaPaziente" name="ricercaPaziente">
+    </wsdl:input>
+      <wsdl:output message="tns:ricercaPazienteResponse" name="ricercaPazienteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRiepilogo">
+      <wsdl:input message="tns:getRiepilogo" name="getRiepilogo">
+    </wsdl:input>
+      <wsdl:output message="tns:getRiepilogoResponse" name="getRiepilogoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCLDaInvocare">
+      <wsdl:input message="tns:getCLDaInvocare" name="getCLDaInvocare">
+    </wsdl:input>
+      <wsdl:output message="tns:getCLDaInvocareResponse" name="getCLDaInvocareResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazientiNF">
+      <wsdl:input message="tns:invioNotifichePazientiNF" name="invioNotifichePazientiNF">
+    </wsdl:input>
+      <wsdl:output message="tns:invioNotifichePazientiNFResponse" name="invioNotifichePazientiNFResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccessi2">
+      <wsdl:input message="tns:getAccessi2" name="getAccessi2">
+    </wsdl:input>
+      <wsdl:output message="tns:getAccessi2Response" name="getAccessi2Response">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazientiNA">
+      <wsdl:input message="tns:invioNotifichePazientiNA" name="invioNotifichePazientiNA">
+    </wsdl:input>
+      <wsdl:output message="tns:invioNotifichePazientiNAResponse" name="invioNotifichePazientiNAResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaDocumentoNonScaricabile">
+      <wsdl:input message="tns:notificaDocumentoNonScaricabile" name="notificaDocumentoNonScaricabile">
+    </wsdl:input>
+      <wsdl:output message="tns:notificaDocumentoNonScaricabileResponse" name="notificaDocumentoNonScaricabileResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInfoPaziente">
+      <wsdl:input message="tns:setInfoPaziente" name="setInfoPaziente">
+    </wsdl:input>
+      <wsdl:output message="tns:setInfoPazienteResponse" name="setInfoPazienteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDatiNotificaMMG">
+      <wsdl:input message="tns:getDatiNotificaMMG" name="getDatiNotificaMMG">
+    </wsdl:input>
+      <wsdl:output message="tns:getDatiNotificaMMGResponse" name="getDatiNotificaMMGResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMMGPaziente">
+      <wsdl:input message="tns:getMMGPaziente" name="getMMGPaziente">
+    </wsdl:input>
+      <wsdl:output message="tns:getMMGPazienteResponse" name="getMMGPazienteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazienti">
+      <wsdl:input message="tns:invioNotifichePazienti" name="invioNotifichePazienti">
+    </wsdl:input>
+      <wsdl:output message="tns:invioNotifichePazientiResponse" name="invioNotifichePazientiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PazienteServiceSoapBinding" type="tns:PazienteService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getPazienteByIdIrec">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getPazienteByIdIrec">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPazienteByIdIrecResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDatiNotificaMMG">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setDatiNotificaMMG">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setDatiNotificaMMGResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaDocumentoScaricabile">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="notificaDocumentoScaricabile">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="notificaDocumentoScaricabileResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verificaRefertiInScadenza">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="verificaRefertiInScadenza">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="verificaRefertiInScadenzaResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazientiNR">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="invioNotifichePazientiNR">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="invioNotifichePazientiNRResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInfoPaziente">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getInfoPaziente">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getInfoPazienteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaPresenzaDatiILEC">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="notificaPresenzaDatiILEC">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="notificaPresenzaDatiILECResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="alimentazioneElencoCodiciFiscali">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="alimentazioneElencoCodiciFiscali">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="alimentazioneElencoCodiciFiscaliResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccessi">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getAccessi">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAccessiResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDoNotificaMMG">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getDoNotificaMMG">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getDoNotificaMMGResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaOscuramentoNRE">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="notificaOscuramentoNRE">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="notificaOscuramentoNREResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="preparaNotifichePazientiNR">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="preparaNotifichePazientiNR">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="preparaNotifichePazientiNRResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaPaziente">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="ricercaPaziente">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ricercaPazienteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRiepilogo">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getRiepilogo">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getRiepilogoResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCLDaInvocare">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getCLDaInvocare">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCLDaInvocareResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazientiNF">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="invioNotifichePazientiNF">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="invioNotifichePazientiNFResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccessi2">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getAccessi2">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAccessi2Response">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazientiNA">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="invioNotifichePazientiNA">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="invioNotifichePazientiNAResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notificaDocumentoNonScaricabile">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="notificaDocumentoNonScaricabile">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="notificaDocumentoNonScaricabileResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInfoPaziente">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setInfoPaziente">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setInfoPazienteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDatiNotificaMMG">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getDatiNotificaMMG">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getDatiNotificaMMGResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMMGPaziente">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getMMGPaziente">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMMGPazienteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioNotifichePazienti">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="invioNotifichePazienti">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="invioNotifichePazientiResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PazienteService">
+    <wsdl:port binding="tns:PazienteServiceSoapBinding" name="PazienteServicePort">
+      <soap12:address location="https://xxx-dma.xxx.csi.it/dmacc/PazienteService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

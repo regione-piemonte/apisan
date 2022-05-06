@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="VaccinazioneEsclusa" nillable="true" type="VaccinazioneEsclusa" />
+  <xs:complexType name="VaccinazioneEsclusa">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="VaccinazioniEsclusePerImmunizzazione" type="ArrayOfDTOVaccinazioneEsclusa" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTOVaccinazioneEsclusa">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTOVaccinazioneEsclusa" nillable="true" type="DTOVaccinazioneEsclusa" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOVaccinazioneEsclusa">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="CodicePaziente" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataVisita" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceVaccinazione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneVaccinazione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceMotivoEsclusione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneMotivoEsclusione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceOperatore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneOperatore" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataScadenza" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CodicePazientePrecedente" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceUslInserimento" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FlagVisibilità" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NoteAcquisizioneDatiVaccinaliCentrale" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataResistrazione" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IdUtenteRegistrazione" type="xs:long" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataModifica" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IdUtenteModifica" nillable="true" type="xs:long" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataEliminAzione" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IdUtenteEliminazione" nillable="true" type="xs:long" />
+      <xs:element minOccurs="1" maxOccurs="1" name="NumeroDose" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Note" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

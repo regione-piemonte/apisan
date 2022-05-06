@@ -1,0 +1,476 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="OscuramentoService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:element name="setOscuramento" type="tns:SetOscuramento" />
+   <xs:element name="setOscuramentoResponse" type="tns:SetOscuramentoResponse" />
+   <xs:complexType name="VerificaBloccoDeoscuramento">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="oscuramento" nillable="true" type="ns1:oscuramento" />
+         <xs:element minOccurs="0" name="paziente" type="ns1:paziente" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="VerificaBloccoDeoscuramentoResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:conflittoOscuramentoDocumenti" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:Ens_Response">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:errori" />
+               <xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="ns1:codifiche" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="Ens_Response">
+      <xs:complexContent>
+         <xs:extension base="tns:Ens_Messagebody">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="Ens_Messagebody">
+      <xs:sequence />
+   </xs:complexType>
+   <xs:complexType name="verificaBloccoOscuramentoMsg">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codCl" type="xs:string" />
+         <xs:element minOccurs="0" name="dataValidazione" type="xs:string" />
+         <xs:element minOccurs="0" name="descrAzienda" type="xs:string" />
+         <xs:element minOccurs="0" name="descrStruttura" type="xs:string" />
+         <xs:element minOccurs="0" name="descrTipoDoc" type="xs:string" />
+         <xs:element minOccurs="0" name="idDocumentoIlec" type="xs:long" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Ens_Request">
+      <xs:complexContent>
+         <xs:extension base="tns:Ens_Messagebody">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="SetOscuramento">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="oscuramento" nillable="true" type="ns1:oscuramento" />
+         <xs:element minOccurs="0" name="paziente" type="ns1:paziente" />
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="SetOscuramentoResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="verificaBloccoDeoscuramento" nillable="true" type="tns:VerificaBloccoDeoscuramento" />
+   <xs:element name="verificaBloccoDeoscuramentoResponse" nillable="true" type="tns:VerificaBloccoDeoscuramentoResponse" />
+</xs:schema><xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://dma.csi.it/" xmlns:ns1="http://dmacc.csi.it/" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dmacc.csi.it/" />
+   <xs:element name="codifiche" type="tns:codifica" />
+   <xs:element name="conflittoOscuramentoDocumenti" type="ns1:verificaBloccoOscuramentoMsg" />
+   <xs:element name="consenso" type="tns:consenso" />
+   <xs:element name="delega" type="tns:delega" />
+   <xs:element name="errori" type="tns:errore" />
+   <xs:element name="modalitaDiAlimentazione" type="tns:modalitaDiAlimentazione" />
+   <xs:element name="paziente" type="tns:paziente" />
+   <xs:element name="richiedente" type="tns:richiedente" />
+   <xs:complexType name="oscuramento">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="fonteOscuramento" type="xs:string" />
+         <xs:element minOccurs="0" name="id1" type="xs:string" />
+         <xs:element minOccurs="0" name="id2" type="xs:string" />
+         <xs:element minOccurs="0" name="id3" type="xs:string" />
+         <xs:element minOccurs="0" name="id4" type="xs:string" />
+         <xs:element minOccurs="0" name="id5" type="xs:string" />
+         <xs:element minOccurs="0" name="oscurato" type="tns:siNo" />
+         <xs:element minOccurs="0" name="tipoDiDato" type="tns:consensoMatriceTipoDato" />
+         <xs:element minOccurs="0" name="valoreCalcolato" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="consensoMatriceTipoDato">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="codifica">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codice" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="riferimento" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="disciplina">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="modalitaDiAlimentazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="applicazioneRichiedente">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="tipoEpisodio">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="aziendaSanitaria">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="prestazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="idPrestazione" type="xs:long" />
+               <xs:element minOccurs="0" name="branca" type="tns:branca" />
+               <xs:element minOccurs="0" name="valoriPrestazione" type="tns:valoriPrestazione" />
+               <xs:element minOccurs="0" name="dataOraPrestazione" type="xs:dateTime" />
+               <xs:element minOccurs="0" name="dataOra" type="xs:dateTime" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="branca">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="valoriPrestazione">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="quantita" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="tipoDocumento">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="unitaOperativaSanitaria">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="comuneDiNascita">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="strutturaSanitaria">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="errore">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocale">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria" />
+               <xs:element minOccurs="0" name="componenteLocaleTipo" type="tns:componenteLocaleTipo" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="servizi" nillable="true" type="tns:componenteLocaleServizio" />
+               <xs:element minOccurs="0" name="erroreRegistrazioneConsenso" type="tns:siNo" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleTipo">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleServizio">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="urlServizio" type="xs:string" />
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="operazioni" nillable="true" type="tns:componenteLocaleOperazione" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleOperazione">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="TimeoutMaxElaborazione" type="xs:long" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="regimeDMA">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleRispostaStato">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="tipoFileDocumento">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="statoDiNascita">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ruoloDMA">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="aziendaSanitaria" type="tns:aziendaSanitaria" />
+               <xs:element minOccurs="0" name="profilo" type="tns:profilo" />
+               <xs:element minOccurs="0" name="flagVisibilePerConsenso" type="xs:string" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="profilo">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="episodioStato">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="tipoReferto">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="paziente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="codiceFiscaleMMG" type="xs:string" />
+         <xs:element minOccurs="0" name="cognome" type="xs:string" />
+         <xs:element minOccurs="0" name="comuneDiNascita" type="tns:comuneDiNascita" />
+         <xs:element minOccurs="0" ref="tns:consenso" />
+         <xs:element minOccurs="0" name="dataDecesso" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataDiNascita" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataRiconduzione" type="xs:dateTime" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="deleghe" nillable="true" type="tns:delega" />
+         <xs:element minOccurs="0" name="flag_registry_incarico" type="xs:string" />
+         <xs:element minOccurs="0" name="idAsr" type="xs:long" />
+         <xs:element minOccurs="0" name="idAura" type="xs:long" />
+         <xs:element minOccurs="0" name="idIlec" type="xs:long" />
+         <xs:element minOccurs="0" name="idIrec" type="xs:long" />
+         <xs:element minOccurs="0" name="idPazienteRicondotto" type="xs:long" />
+         <xs:element minOccurs="0" name="mailPerAccessoDMA" type="tns:siNo" />
+         <xs:element minOccurs="0" name="nome" type="xs:string" />
+         <xs:element minOccurs="0" name="sesso" type="tns:sesso" />
+         <xs:element minOccurs="0" name="statoDiNascita" type="tns:statoDiNascita" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="consenso">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="ablConsOpeAmm" type="tns:siNo" />
+         <xs:element minOccurs="0" name="alimentaFse" type="tns:siNo" />
+         <xs:element minOccurs="0" name="consensoAllaCostituzioneDMA" type="tns:siNo" />
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="consensoMatriceRuoli" nillable="true" type="tns:consensoMatriceRuolo" />
+         <xs:element minOccurs="0" name="dataDiAggiornamento" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataDiValidazione" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="derogaEmergenza" type="tns:siNo" />
+         <xs:element minOccurs="0" ref="tns:modalitaDiAlimentazione" />
+         <xs:element minOccurs="0" name="pregresso" type="tns:siNo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="consensoMatriceRuolo">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="consultazione" type="tns:siNo" />
+         <xs:element minOccurs="0" name="dataDiAggiornamento" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="ruoloDMA" type="tns:ruoloDMA" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="delega">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceServizio" type="xs:string" />
+         <xs:element minOccurs="0" name="dataFineDelega" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="dataInizioDelega" type="xs:dateTime" />
+         <xs:element minOccurs="0" name="gradoDelega" type="xs:string" />
+         <xs:element minOccurs="0" name="statoDelega" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoDelega" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="richiedente">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="applicativoVerticale" type="tns:applicativoVerticale" />
+         <xs:element minOccurs="0" name="applicazione" type="tns:applicazioneRichiedente" />
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="ip" type="xs:string" />
+         <xs:element minOccurs="0" name="numeroTransazione" type="xs:string" />
+         <xs:element minOccurs="0" name="regime" type="tns:regimeDMA" />
+         <xs:element minOccurs="0" name="ruolo" type="tns:ruoloDMA" />
+         <xs:element minOccurs="0" name="tokenOperazione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicativoVerticale">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codice" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ArrayOfpazientepaziente">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="paziente" nillable="true" type="tns:paziente" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="componenteLocaleRisposta">
+      <xs:complexContent>
+         <xs:extension base="tns:componenteLocale">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="errori" nillable="true" type="tns:errore" />
+               <xs:element minOccurs="0" name="stato" type="tns:componenteLocaleRispostaStato" />
+               <xs:element name="tempoMaxAttesaCLInSec" type="xs:long" />
+               <xs:element name="tempoMaxRestituzioneDatiInSec" type="xs:long" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ArrayOfcodificacodifica">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="codifica" nillable="true" type="tns:codifica" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name="siNo">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SI" />
+         <xs:enumeration value="NO" />
+         <xs:enumeration value="NA" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="sesso">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="M" />
+         <xs:enumeration value="F" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="risultatoCodice">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SUCCESSO" />
+         <xs:enumeration value="FALLIMENTO" />
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="setOscuramentoResponse">
+    <wsdl:part element="tns:setOscuramentoResponse" name="setOscuramentoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verificaBloccoDeoscuramentoResponse">
+    <wsdl:part element="tns:verificaBloccoDeoscuramentoResponse" name="verificaBloccoDeoscuramentoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verificaBloccoDeoscuramento">
+    <wsdl:part element="tns:verificaBloccoDeoscuramento" name="verificaBloccoDeoscuramento">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setOscuramento">
+    <wsdl:part element="tns:setOscuramento" name="setOscuramento">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="OscuramentoService">
+    <wsdl:operation name="verificaBloccoDeoscuramento">
+      <wsdl:input message="tns:verificaBloccoDeoscuramento" name="verificaBloccoDeoscuramento">
+    </wsdl:input>
+      <wsdl:output message="tns:verificaBloccoDeoscuramentoResponse" name="verificaBloccoDeoscuramentoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setOscuramento">
+      <wsdl:input message="tns:setOscuramento" name="setOscuramento">
+    </wsdl:input>
+      <wsdl:output message="tns:setOscuramentoResponse" name="setOscuramentoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OscuramentoServiceSoapBinding" type="tns:OscuramentoService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="verificaBloccoDeoscuramento">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="verificaBloccoDeoscuramento">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="verificaBloccoDeoscuramentoResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setOscuramento">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setOscuramento">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setOscuramentoResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OscuramentoService">
+    <wsdl:port binding="tns:OscuramentoServiceSoapBinding" name="OscuramentoServicePort">
+      <soap12:address location="https://xxx-dma.xxx.csi.it/dmacc/OscuramentoService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

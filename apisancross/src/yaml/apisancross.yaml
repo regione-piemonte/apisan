@@ -1,0 +1,780 @@
+swagger: '2.0'
+info:
+  description: Api risorse per gestire i servizi trasversali
+  version: 1.0.0
+  title: Servizi trasversali
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisancross/api/v1
+schemes:
+  - https
+paths:
+  /servizio-attivo:
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'    
+  /comuni:
+    get:
+      description: >
+        Fornisce l'elenco delle descrizoni dei comuni e i relativi codici istat.
+        Il filtro viene gestito per i campi definiti nell'oggetto comune_filter,
+        se  valorizzata la data_validita vengono filtrati tutti i dati aventi
+        data_inizio_validita <= data_validita e data_fine_validita >=
+        data_validita || data_fine_validita == null
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: query
+          name: offset
+          type: integer
+        - in: query
+          name: limit
+          type: integer
+        - in: query
+          name: filter
+          type: string
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          headers:
+            X-Totale-Elementi:
+              type: integer
+              description: totale elementi trovati
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/comune'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  /province:
+    get:
+      description: >
+        Fornisce l'elenco delle province. Da verificare se esiste il servizio di
+        back end. Il filter viene permesso con eq sul codice della provincia
+      produces:
+        - applications/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: query
+          name: offset
+          type: integer
+        - in: query
+          name: limit
+          type: integer
+        - in: query
+          name: filter
+          type: string
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          headers:
+            X-Totale-Elementi:
+              type: integer
+              description: totale elementi trovati
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/provincia'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  /regioni:
+    get:
+      description: >
+        Fornisce l'elenco delle regioni da verificare se esiste il servizio di
+        back end. Il filter viene permesso con eq su codice 
+      produces:
+        - applications/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: query
+          name: offset
+          type: integer
+        - in: query
+          name: limit
+          type: integer
+        - in: query
+          name: filter
+          type: string
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          headers:
+            X-Totale-Elementi:
+              type: integer
+              description: totale elementi trovati
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/regione'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  /nazioni:
+    get:
+      description: |
+        Fornisce l'elenco delle nazioni e i relativi codici
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: query
+          name: offset
+          type: integer
+        - in: query
+          name: limit
+          type: integer
+        - in: query
+          name: filter
+          type: string
+      responses:
+        '200':
+          headers:
+            X-Totale-Elementi:
+              type: integer
+              description: totale elementi trovati
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/nazione'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  /servizi:
+    get:
+      description: >-
+        Fornisce l'elenco dei servizi delegabili. Il filter permesso viene
+        gestito per i  campi definiti sull'oggetto servizio_filter
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: query
+          name: filter
+          type: string
+          required: false
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/servizio'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/indirizzi/_search':
+    get:
+      summary: Suggest indirizzi/comuni
+      description:  |
+        Ricerca di indirizzi/comuni.
+        Permette al front-end di fornire al cittadino un suggest con il nome degli indirizzi/comuni.
+        Inoltre, grazie ai dati presenti nella response, permette al front-end di richiedere la lista
+        dei medici.
+      produces:
+        - application/json            
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: query
+          name: indirizzo
+          type: string          
+        - in: query
+          name: offset
+          type: integer
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          default: 20
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_suggest_indirizzo'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+definitions:
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test con asset
+      data:
+        type: string
+        format: date    
+  string_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  integer_crit:
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  boolean_crit:
+    type: object
+    properties:
+      eq:
+        type: boolean
+  date_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  comune_filter:
+    type: object
+    properties:
+      desc:
+        $ref: '#/definitions/string_crit'
+        description: descrizione del comune (in like o eq)
+      codice_catasto:
+        $ref: '#/definitions/string_crit'
+        description: codice catastale del comune
+      data_validita:
+        $ref: '#/definitions/date_crit'
+        description: >-
+          data di validita del comune compresa tra  data_inizio_validita e
+          data_fine_validita
+  nazione_filter:
+    type: object
+    properties:
+      desc:
+        $ref: '#/definitions/string_crit'
+        description: descrizione della nazione (in si o eq)
+      codice_istat:
+        $ref: '#/definitions/string_crit'
+        description: codice istat della nazione
+      territorio:
+        $ref: '#/definitions/string_crit'
+        description: descrizione del territorio della nazione (in si o eq)
+      data_validita:
+        $ref: '#/definitions/date_crit'
+        description: >-
+          data di validita del comune compresa tra  data_inizio_validita e
+          data_fine_validita
+  servizio_filter:
+    type: object
+    properties:
+      codice_servizio:
+        $ref: '#/definitions/string_crit'
+      notificabile:
+        $ref: '#/definitions/boolean_crit'
+      delegabile:
+        $ref: '#/definitions/boolean_crit'
+      arruolabile:
+        $ref: '#/definitions/boolean_crit'
+        description: >-
+          true/false a seconda se bisogna o meno chiamare il servizio
+          arruolamento
+      obbligatorio_arruolamento:
+        $ref: '#/definitions/boolean_crit'
+        description: >-
+          indica se per tale servizio sia obbligatorio o meno dare il consenso
+          all'arruolamento       
+  comune:
+    type: object
+    properties:
+      codice_istat:
+        type: string
+        description: codice istat del comune
+      desc:
+        type: string
+        description: denominazione del comune
+      codice_catasto:
+        type: string
+        description: codice catastale del comune
+      codice_cap:
+        type: string
+        description: cap del comune
+      data_inizio_validita:
+        type: string
+        format: date
+        description: data inizio validita
+      data_fine_validita:
+        type: string
+        format: date
+        description: data fine validita
+      provincia:
+        $ref: '#/definitions/provincia'
+    example:
+      codice_istat: '001272'
+      desc: TORINO
+      codice_catasto: L219
+      codice_cap: '10100'
+      data_inizio_validita: '2006-09-20'
+      data_fine_validita: null
+  provincia:
+    type: object
+    properties:
+      codice_istat:
+        type: string
+        description: codice della provincia di appartenenza
+      desc:
+        type: string
+        description: descrizione della provincia
+      sigla:
+        type: string
+        description: sigla della provincia
+      regione:
+        $ref: '#/definitions/regione'
+    example:
+      codice_istat: '001'
+      desc: TORINO
+      sigla: TO
+  regione:
+    type: object
+    properties:
+      codice_istat:
+        type: string
+        description: codice della regione
+      desc:
+        type: string
+        description: descrizione della regione
+      nazione:
+        $ref: '#/definitions/nazione'
+    example:
+      codice_istat: '01'
+      desc: PIEMONTE
+  nazione:
+    type: object
+    properties:
+      codice_istat:
+        type: string
+        description: codice istat della nazione
+      desc:
+        type: string
+        description: nome della nazione
+      territorio: 
+        type: string
+        description: descrizione territorio
+      data_inizio_validita:
+        type: string
+        format: date
+        description: data inizio validita
+      data_fine_validita:
+        type: string
+        format: date
+        description: data fine validita
+      continente:
+        type: string
+        description: descrizione del continente
+    example:
+      codice_istat: '001'
+      nome: ITALIA
+  model_suggest_indirizzo:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: id del catalogo
+      name:
+        type: string
+        description: nome del catalogo
+      catalogs:
+        type: array
+        items:
+          type: string
+      featureCollection:
+        $ref:  '#/definitions/featureCollection'
+  featureCollection:
+    type: object
+    properties:
+      type: 
+        type: string
+      features:
+        type: array
+        items:
+          $ref: '#/definitions/feature'
+      crs:
+        $ref: '#/definitions/crs'
+      bbox:
+        type: array
+        items: 
+          type: string
+  properti_crs:
+    type: object
+    properties:
+      name:
+       type: string          
+  crs:
+    type: object
+    properties:
+      properties:
+        $ref: '#/definitions/properti_crs'
+  feature:
+    type: object
+    properties:
+      type:
+        type: string
+      geometry:
+        $ref: '#/definitions/geometry'
+      properties:
+        $ref: '#/definitions/property'
+      id:
+       type: integer
+       format: int32
+  geometry:
+    type: object
+    properties:
+      type:
+        type: string
+      coordinates:
+        type: array
+        items:
+          type: string          
+  property:
+    type: object
+    properties:
+      localita:
+        type: string
+        example:  "ROCCAVIONE"
+      comune: 
+        type: string
+        example: "ROCCAVIONE"
+      loccsi_label: 
+        type: string
+        example: "VIA PROVINCIALE ROASCHIA 1 , ROCCAVIONE"
+      civico_num: 
+        type: integer
+        example: "1"
+      nome_via: 
+        type: string
+        example: "ROASCHIA"
+      civico_sub:
+        type: string
+      tipo_via: 
+        type: string
+        example: "VIA PROVINCIALE"
+  servizio:
+    type: object
+    properties:
+      codice_servizio:
+        type: string
+      descrizione:
+        type: string
+        description: nome del servizio
+      descrizione_estesa:
+        type: string
+        description: descrizione estesa del servizio
+      notificabile:
+        type: boolean
+      delegabile:
+        type: boolean
+      arruolabile:
+        type: boolean
+        description: >-
+          true/false a seconda se bisogna o meno chiamare il servizio
+          arruolamento
+      obbligatorio_arruolamento:
+        type: boolean
+        description: >-
+          indica se per tale servizio sia obbligatorio o meno dare il consenso
+          all'arruolamento
+      data_inizio_validita:
+        type: string
+        format: date
+        description: data di nizio validita del servizio
+      data_fine_validita:
+        type: string
+        format: date
+        description: data fine validita del servizio
+      numero_giorni_delegabile:
+        type: integer
+        description: massimo numero di giorni per cui il servizio può essere delegato
+      url:
+        type: string
+
+  errore:
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  dettaglio:
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'

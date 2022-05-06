@@ -1,0 +1,824 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanassistenza/api/v1
+schemes:
+  - https
+info:
+  title: 'Assistenza'
+  version: 0.0.5
+  description: |
+
+    # Avvertenze
+    ---
+    1. Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino
+    2. Questo YAML è un contratto tra lo strato verde e lo strato rosso
+
+
+    # Domande
+    ---
+
+
+    # Prototipo Interfaccia
+    ---
+    http://dev-prototipi.csi.it/2019/sanita-assistenza/html
+
+    # Note versione 0.0.5 (09 Set 2021)
+         ---
+      * Nuovo endpoint 'servizio attivo'
+
+    # Note versione 0.0.4 (29 Giu 2021)
+          ---
+       * Aggiunto campo `tipologia_autore `model messaggio`
+       * Tolto il campo 'storico' dal model_richiesta_storico_tipologia
+
+    # Note versione 0.0.3 (14 Giu 2021)
+       ---
+       * Aggiunto i campi `asset_id` e `tipologia` in `payload_richiesta_nuovo`
+
+    # Note versione 0.0.2 (12 Nov 2020)
+    ---
+    * Aggiunto endpoint `Configurazione del servizio` che permette di avere una configurazione dinamica sul servizio
+    * Aggiunto il campo `id` nel model `model_documento_lettura` così da permettere al front-end di scaricare il documento con il nuovo endpoint `Download documento`
+    * Aggiunto il campo `inviato_da_cittadino` nel model `model_messaggio`
+    * Aggiunto il filtro `id` nell'endpoint `Lista richieste` che permette di filtrare l'elenco delle richieste per id
+    * Aggiunto header `Shib-Identita-CodiceFiscale` che permette di tenere traccia del cittadino chiamante e dell'eventuale delegante
+    * Rimosse `applicazione` che contiene informazioni aggiuntive sull'applicazione nella richiesta dal momento che non sono presenti sul DB gestito dalle API di assistenza
+    * Rimossi i campi `categoria` e `categoria_codice` nella richiesta
+
+
+    # Note versione 0.0.1 (08 Nov 2020)
+    ---
+    * Prima implementazione
+
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+  '/configurazione':
+    get:
+      summary: Configurazione del servizio
+      description:  |
+        Permette di ottenere la configurazione dinamica del servizio
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale_opzionale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_configurazione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/richieste':
+    post:
+      summary: Nuova richiesta
+      description:  |
+        Permette al cittadino di creare una nuova richiesta
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale_opzionale'
+        - $ref: '#/parameters/header_shib_email'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/payload_richiesta_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_richiesta_dettaglio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/richieste':
+    get:
+      summary: Lista richieste
+      description:  |
+        Elenco delle richieste effettuate dal cittadino.
+
+        L'elenco delle richieste del cittadino è filtrabile per:
+          * Archiviata o meno
+          * Parola chiave
+          * Applicazione collegata
+          * Periodo (da - a) che si basa sulla data di creazione della richiesta
+          * id
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_richiesta_archiviata'
+        - $ref: '#/parameters/query_richiesta_applicazione'
+        - $ref: '#/parameters/query_richiesta_parola_chiave'
+        - $ref: '#/parameters/query_da'
+        - $ref: '#/parameters/query_a'
+        - $ref: '#/parameters/query_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_richiesta_lista'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/richieste/{richiesta_id}':
+    get:
+      summary: dettaglio richiesta
+      description:  |
+        Permette di ottenere il dettagio di una singola richiesta
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_richiesta_dettaglio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    delete:
+      summary: Elimina richiesta
+      description:  |
+        Permette al cittadino di rimuovere una richiesta da lui creata ed archiviata
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/richieste/{richiesta_id}/messaggi':
+    post:
+      summary: Aggiunge un nuovo messaggio sulla richiesta
+      description:  |
+        Permette al cittadino di aggiungere un nuovo messaggio sulla richiesta
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'
+        - $ref: '#/parameters/payload_messaggio_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_messaggio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/richieste/{richiesta_id}/archiviata':
+    put:
+      summary: Modifica archiviazione richiesta
+      description:  |
+        Permette di archviviare una richiesta
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'
+        - $ref: '#/parameters/payload_richiesta_archiviata'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_richiesta_dettaglio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/richieste/{richiesta_id}/documenti/{documento_id}':
+    get:
+      summary: Download documento
+      description:  |
+        Permette di scaricare uno dei documenti allegati in una richiesta.
+
+        La response HTTP dovrà avere gli header:
+
+        Content-Type: CONTENT_TYPE_DEL_DOCUMENTO
+        Content-Disposition: attachment; filename="NOME_FILE.ESTENSIONE"
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_richiesta_id'
+        - $ref: '#/parameters/path_documento_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+parameters:
+  header_shib_identita_codice_fiscale_opzionale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: false
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_shib_email:
+    in: header
+    name: Shib-Email
+    description: Contiene l'indirizzo email dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: false
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+
+  path_cit_id:
+    in: path
+    name: cit_id
+    description: Il codice fiscale del cittadino su cui operare
+    type: string
+    required: true
+  path_richiesta_id:
+    in: path
+    name: richiesta_id
+    description: L'id della richiesta su cui operare
+    type: string
+    required: true
+  path_documento_id:
+    in: path
+    name: documento_id
+    description: L'id del documento su cui operare
+    type: string
+    required: true
+
+  query_richiesta_archiviata:
+    in: query
+    name: archiviata
+    type: boolean
+    required: false
+    description: Permette di filtrare le richieste in base all'archiviazione
+  query_richiesta_parola_chiave:
+    in: query
+    name: parola_chiave
+    type: string
+    required: false
+    description: Permette di filtrare le richieste in base ad una parola chiave da ricercare all'interno dei testi dei messaggi collegati alla richiesta
+  query_richiesta_applicazione:
+    in: query
+    name: applicazione
+    type: string
+    required: false
+    description: Permette di filtrare le richieste in base al codice di un'applicazione
+  query_da:
+    in: query
+    name: da
+    type: string
+    format: date
+    required: false
+    description: Permette di filtrare in base ad una data di inizio
+  query_a:
+    in: query
+    name: a
+    type: string
+    format: date
+    required: false
+    description: Permette di filtrare in base ad una data di fine
+  query_id:
+    in: query
+    name: id
+    type: string
+    required: false
+    description: Permette di filtrare in base all'id
+
+  payload_richiesta_nuovo:
+    in: body
+    name: 'Payload richiesta nuova'
+    required: true
+    description: I dati che il client deve passare alle API per creare una nuova richiesta
+    schema:
+      type: object
+      properties:
+        asset_id:
+          type: string
+          description: l'asset id dell'applicazione su cui è stato riscontrato il problema
+        email:
+          type: string
+          description: La mail su cui contattare il cittadino per questa richiesta
+        telefono:
+          type: string
+          description: Il telefono su cui contattare il cittadino per questa richiesta
+        applicazione_codice:
+          type: string
+          description: Il codice dell'applicazione su cui è stato riscontrato il problema
+        tipologia:
+          type: string
+          description: la tipologia della richiesta
+        cittadino:
+          $ref: '#/definitions/model_richiesta_cittadino'
+        messaggio:
+          type: object
+          properties:
+            testo:
+              type: string
+              description: La mail su cui contattare il cittadino per questa richiesta
+            allegato:
+              $ref: '#/definitions/model_documento_scrittura'
+      required:
+        - email
+        - telefono
+        - cittadino
+  payload_messaggio_nuovo:
+    in: body
+    name: 'Payload messaggio nuovo'
+    required: true
+    description: I dati che il client deve passare alle API per creare una nuovo messaggio in una richiesta
+    schema:
+      type: object
+      properties:
+        testo:
+          type: string
+          description: La mail su cui contattare il cittadino per questa richiesta
+        allegato:
+          $ref: '#/definitions/model_documento_scrittura'
+      required:
+        - testo
+  payload_richiesta_archiviata:
+    in: body
+    name: 'Payload richiesta archiviata'
+    required: true
+    description: I dati che il client deve passare alle API per modificare l'archiviazione di una richiesta
+    schema:
+      type: object
+      properties:
+        archiviata:
+          type: boolean
+          description: il nuovo stato di archiviazione della richiesta
+      required:
+        - archiviata
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  file_tipo:
+    type: string
+    description: |
+      Una stringa che rappresenta un formato di file.
+      Per maggiori informazioni sul formati di stringhe supportati al seguente link:
+      https://developer.mozilla.org/it/docs/Web/HTML/Element/input/file#Identificatori_univoci_del_tipo_di_file
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  model_configurazione:
+    title: 'Configurazione'
+    type: object
+    properties:
+      documento_dimensione_massima:
+        type: integer
+        description: |
+          La dimensione massima del documento da aggiungere in allegato.
+          Questa dimensione deve essere espressa in byte
+      testo_numero_massimo_caratteri:
+        type: integer
+        description: |
+          Il numero massimo di cartteri che il cittadino può inserire nel testo del mesaggio
+      documento_formati_supportati:
+        type: array
+        items:
+          $ref: '#/definitions/file_tipo'
+
+  model_documento_lettura:
+    title: '[LETTURA] Documento'
+    type: object
+    properties:
+      id:
+        type: string
+        description: identificativo univoco
+      nome_file:
+        type: string
+        description: il nome del file
+        example: 'nome-file.pdf'
+      dimensione:
+        type: integer
+        description: La dimensione del file in byte
+  model_documento_scrittura:
+    title: '[SCRITTURA] Documento'
+    type: object
+    properties:
+      nome_file:
+        type: string
+        description: il nome del file
+        example: 'nome-file.pdf'
+      base64:
+        type: string
+        description: Il file codificato in base64
+        example: 'ZGVsZmlubyBjdXJpb3NvIDop'
+  model_messaggio:
+    title: 'Messaggio'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un identificativo univoco
+      data_creazione:
+        type: string
+        format: datetime
+        description: la data di creazione del messaggio
+      testo:
+        type: string
+        description: Il testo del messaggio
+      autore:
+        type: string
+        description: |
+          Il nome dell'autore del messaggio.
+          Se il messaggio è stato inviato dal cittadino allora sarà il cognome e nome del cittadino.
+      tipologia_autore:
+        type: string
+        description: Il codice dell'autore del messaggio (se si tratta di sistema, operatore o cittadino)
+      allegato:
+        $ref: '#/definitions/model_documento_lettura'
+
+  model_richiesta_cittadino:
+    title: 'Richiesta Cittadino'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: Il nome del cittadino
+      cognome:
+        type: string
+        description: Il cognome del cittadino
+      codice_fiscale:
+        type: string
+        description: Il codice fiscale del cittadino
+  model_richiesta_stato:
+    title: 'Richiesta Stato'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Una descrizione testuale dello stato
+        example: 'Inviata'
+  model_richiesta_storico_tipologia:
+    title: 'Richiesta Storico Tipologia'
+    description: |
+      Descrive la tipologia di modifica apportata su una richiesta.
+      Per esempio può descrivere un cambio di stato piuttosto che il cambio di assegnatario
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Una descrizione testuale
+  model_richiesta_storico:
+    title: 'Richiesta Storico'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un identificativo univoco
+      data:
+        type: string
+        format: datetime
+        description: La data di cambio stato
+      assegnatario:
+        type: string
+        description: Il nuovo assegnatario
+      tipologia_codice:
+        type: string
+        description: Il codice della tipologia di modifica
+      stato:
+        $ref: '#/definitions/model_richiesta_stato'
+      tipologia:
+        $ref: '#/definitions/model_richiesta_storico_tipologia'
+  model_richiesta_lista:
+    title: 'Richiesta Lista'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un identificativo univoco
+      data_creazione:
+        type: string
+        format: datetime
+        description: La data di creazione della richiesta
+      data_aggiornamento:
+        type: string
+        format: datetime
+        description: La data dell'ultimo aggiornamento della richiesta
+      modificabile:
+        type: boolean
+        description: Indica se il cittadino può modificare la richiesta o meno
+      archiviata:
+        type: boolean
+        description: Indica se la richiesta è archiviata o meno
+      email:
+        type: string
+        description: La mail inserita dal cittadino al momento della creazione della richiesta
+      telefono:
+        type: string
+        description: Il telefono inserito dal cittadino al momento della creazione della richiesta
+      asset_id:
+        type: string
+        description: Il codice univoco dell'applicazione a cui fa riferimento la richiesta
+      assegnatario:
+        type: string
+        description: Indica a chi è stato assegnata la richiesta
+      stato:
+        $ref: '#/definitions/model_richiesta_stato'
+      cittadino:
+        $ref: '#/definitions/model_richiesta_cittadino'
+      ultimo_messaggio:
+        $ref: '#/definitions/model_messaggio'
+  model_richiesta_dettaglio:
+    title: 'Richiesta Dettaglio'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Un identificativo univoco
+      data_creazione:
+        type: string
+        format: datetime
+        description: La data di creazione della richiesta
+      data_aggiornamento:
+        type: string
+        format: datetime
+        description: La data dell'ultimo aggiornamento della richiesta
+      modificabile:
+        type: boolean
+        description: Indica se il cittadino può modificare la richiesta o meno
+      archiviata:
+        type: boolean
+        description: Indica se la richiesta è archiviata o meno
+      email:
+        type: string
+        description: La mail inserita dal cittadino al momento della creazione della richiesta
+      telefono:
+        type: string
+        description: Il telefono inserito dal cittadino al momento della creazione della richiesta
+      asset_id:
+        type: string
+        description: Il codice univoco dell'applicazione a cui fa riferimento la richiesta
+      tipologia:
+        type: string
+        description: La tipologia della richiesta
+      assegnatario:
+        type: string
+        description: Indica a chi è stato assegnata la richiesta
+      stato:
+        $ref: '#/definitions/model_richiesta_stato'
+      cittadino:
+        $ref: '#/definitions/model_richiesta_cittadino'
+      messaggi:
+        type: array
+        items:
+          $ref: '#/definitions/model_messaggio'
+
+
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+        description: Codice univoco di errore interno
+      title:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+        description: Codice univoco di errore interno
+      valore:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino

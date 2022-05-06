@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+   <context:property-placeholder location="WEB-INF/*.properties"/>
+	<context:annotation-config/>
+	
+	<context:component-scan base-package="it.csi.apisan.apisanfse" />
+	
+<!-- **************************** SERVICE SCARICO E PRENOTAZIONE IMMAGINI ************************************ -->
+	<bean id="ScaricoStudi"
+		class="it.csi.apisan.apisanfse.integration.scaricostudi.CCScaricoStudiServicePortType"
+		factory-bean="cxfScaricoStudiClientFactory"
+		factory-method="create"/>
+		
+	<!--   value="it.csi.apisan.apisanfse.integration.scaricostudi.ScaricoStudi" -->
+	<!--   CCScaricoStudiServicePortType class="it.csi.apisan.apisanfse.integration.scaricostudi.CCScaricoStudiServicePortType" -->	
+	<bean id="cxfScaricoStudiClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.scaricostudi.CCScaricoStudiServicePortType"/>
+		<property name="address" value="@endpointScaricoStudiUrl@" />
+		<!--  <property name="serviceName" value="CCArruolabileFSEServicePortType" /> -->
+		<!-- BINDING SOAP1.2 -->
+		       <property name="bindingId" value="http://www.w3.org/2003/05/soap/bindings/HTTP/"/>   
+		<!-- BINDING SOAP 1.1 -->
+		<!--  <property name="bindingId" value="http://schemas.xmlsoap.org/wsdl/soap/http" /> -->
+		<property name="outInterceptors">
+				<list>
+					<ref bean="wss4jOutSecuredScarico" />
+					<ref bean="logOut" />	
+				</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="ScaricoStudiWSBean"
+		class="it.csi.apisan.apisanfse.integration.ScaricoStudiWSBean.ScaricoStudiWSBean"
+		factory-bean="cxfScaricoStudiWSBeanClientFactory"
+		factory-method="create"/>				
+			
+	<bean id="cxfScaricoStudiWSBeanClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.ScaricoStudiWSBean.ScaricoStudiWSBean"/>
+		<property name="address" value="@endpointScaricoStudiWSBeanUrl@" />		
+		<property name="outInterceptors">
+			<list>
+				<ref bean="wss4jOutSecuredScarico"/>
+				<ref bean="logOut" />	
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+		
+	</bean>
+	
+	<!-- *************************** Servizio CCSetPreferenzeArruolabilitaServicePortType -->
+	<bean id="CCSetPreferenzeArruolabilitaServicePortType"
+			class="it.csi.apisan.apisanfse.integration.arruolamento.preferenze.CCSetPreferenzeArruolabilitaServicePortType"
+			factory-bean="cxfSetArruolabilePreferenzeClientFactory"
+			factory-method="create"/>
+			
+	<bean id="cxfSetArruolabilePreferenzeClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.arruolamento.preferenze.CCSetPreferenzeArruolabilitaServicePortType"/>
+		<property name="address" value="@endpointSetArruolamentoUrl@" />
+		<!--  <property name="serviceName" value="CCArruolabileFSEServicePortType" /> -->
+		<!-- BINDING SOAP1.2 -->
+		<!--  <property name="bindingId" value="http://www.w3.org/2003/05/soap/bindings/HTTP/"/> -->
+		<!-- BINDING SOAP 1.1 -->
+		<!--  <property name="bindingId" value="http://schemas.xmlsoap.org/wsdl/soap/http" /> -->
+		<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />			
+				</list>
+		</property>
+			<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+				
+			</list>
+	</property>	
+		
+	</bean>
+
+	<!-- *************ArruolabileFSEService************** Servizio ArruolabileFSEService -->
+	<bean id="ArruolabileFSEService"
+			class="it.csi.apisan.apisanfse.integration.arruolamento.dmacc.ArruolabileFSEService"
+			factory-bean="cxfArruolabileFSEServiceFactory"
+			factory-method="create"/>
+			
+	<bean id="cxfArruolabileFSEServiceFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.arruolamento.dmacc.ArruolabileFSEService"/>
+		<property name="address" value="@endpointArruolabileFSEServiceUrl@" />
+		<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />			
+				</list>
+		</property>
+			<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+				
+			</list>
+	</property>	
+		
+	</bean>
+	
+	<!-- **************************** SERVICE ARRUOLABILE ************************************ -->
+	<bean id="CCArruolabileExtFSEServicePortType"
+		class="it.csi.apisan.apisanfse.integration.arruolamento.dmacc.CCArruolabileExtFSEServicePortType"
+		factory-bean="cxfArruolabileClientFactory"
+		factory-method="create"/>
+		
+	<bean id="cxfArruolabileClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.arruolamento.dmacc.CCArruolabileExtFSEServicePortType"/>
+		<property name="address" value="@endpointArruolamentoUrl@" />
+		<!--  <property name="serviceName" value="CCArruolabileFSEServicePortType" /> -->
+		<!-- BINDING SOAP1.2 -->
+		<!--    <property name="bindingId" value="http://www.w3.org/2003/05/soap/bindings/HTTP/"/> --> 
+		<!-- BINDING SOAP 1.1 -->
+		<!--   <property name="bindingId" value="http://schemas.xmlsoap.org/wsdl/soap/http" /> -->
+		<property name="outInterceptors">
+				<list>
+					<ref bean="wss4jOutSecuredArruolamento" />
+					<ref bean="logOut" />			
+				</list>
+		</property>
+	  	<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+				
+			</list>
+	</property>		
+	</bean>
+
+<!-- ************************** SERVICE AURA VERIFICATEAM*************************************-->
+  	<bean id="RicercaTeamSoap"
+		  class="it.csi.apisan.apisanfse.integration.aura.auraws.services.central.ricercateam.RicercaTEAMSoap"
+		  factory-bean="cxfRicercaTeamSecuredClientFactory"
+		  factory-method="create"/>	
+	
+	<bean id="cxfRicercaTeamSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.aura.auraws.services.central.ricercateam.RicercaTEAMSoap"/>
+		<property name="address" value="@serviceRicercaTeamUrl@" />
+			<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />
+					<ref bean="wss4jOutSecuredAura" />
+					
+				</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>		
+	</bean>
+
+
+<!-- **************************** SERVICE CONSENSO ************************************ -->
+  	<bean id="ConsensoINIExtService"
+		  class="it.csi.apisan.apisanfse.integration.consensoini.dmacc.CCConsensoINIExtServicePortType"
+		  factory-bean="cxfConsensoClientFactory"
+		  factory-method="create"/>
+		  
+	<bean id="cxfConsensoClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.consensoini.dmacc.CCConsensoINIExtServicePortType"/>
+		<property name="address" value="@endpointConsensoUrl@" />
+		<!-- BINDING SOAP1.2 -->
+		<property name="bindingId" value="http://www.w3.org/2003/05/soap/bindings/HTTP/"/>
+		<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />
+					<ref bean="wss4jOutSecuredConsenso" />			
+				</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>
+		  
+<!-- **************************** SERVICE DELEGHE ************************************ -->	
+	<bean id="DelegheCittadiniService"
+		  class="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"
+		  factory-bean="cxfdelegheClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfdelegheClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"/>
+		<property name="address" value="@endpointDelegheUrl@" />
+		<property name="serviceName" value="DelegheCittadiniService" />
+		@wssDeleghebe.start@
+		<property name="username" value="@userDeleghebe@"/>
+		<property name="password" value="@passDeleghebe@"/>
+		@wssDeleghebe.end@
+      		<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />	
+				</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>
+	
+
+<!-- **************************** SERVICE SCARICO REFERTI ************************************ -->
+  	<bean id="CCScaricoRefertoServicePortType"
+		  class="it.csi.apisan.apisanfse.integration.dmacc.CCScaricoRefertoServicePortType"
+		  factory-bean="cxfapp1SecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfapp1SecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.dmacc.CCScaricoRefertoServicePortType"/>
+		<property name="address" value="@serviceUrl@" />
+		<property name="bindingId" value="http://www.w3.org/2003/05/soap/bindings/HTTP/"/>
+			<property name="outInterceptors">
+				<list>
+					<ref bean="logOut" />
+					<ref bean="wss4jOutSecured" />
+					
+				</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>
+	
+<!-- *************************************SERVICE ETICHETTE ************************************************ -->
+  	<bean id="EtichetteService"
+		  class="it.csi.apisan.apisanfse.integration.etichette.dmacc.EtichetteService"
+		  factory-bean="cxfEtichetteSecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfEtichetteSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.etichette.dmacc.EtichetteService"/>
+		<property name="address" value="@serviceEtichette@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			<!--  	<ref bean="prova" /> -->
+			</list>
+		</property>
+	</bean>
+	
+<!-- *****************************************SERVICE DOCUMENTI ***************************************** -->
+ 	<bean id="DocumentiService"
+		  class="it.csi.apisan.apisanfse.integration.documenti.dmacc.DocumentiService"
+		  factory-bean="cxfDocumentiSecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfDocumentiSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.documenti.dmacc.DocumentiService"/>
+		<property name="address" value="@serviceDocumenti@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>	
+	
+<!-- *****************************************SERVICE DOCUMENTO PERSONALE ***************************************** -->
+ 	<bean id="DocumentoPersonaleService"
+		  class="it.csi.apisan.apisanfse.integration.documentoPersonale.dmacc.DocumentoPersonaleService"
+		  factory-bean="cxfDocumentoPersonaleSecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfDocumentoPersonaleSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.documentoPersonale.dmacc.DocumentoPersonaleService"/>
+		<property name="address" value="@serviceDocumentoPersonale@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>	
+	
+	<!-- *****************************************SERVICE ESENZIONI ***************************************** -->
+ 	<bean id="EsenzioniService"
+		  class="it.csi.apisan.apisanfse.integration.esenzioni.dmacc.EsenzioniService"
+		  factory-bean="cxfEsenzioniSecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfEsenzioniSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.esenzioni.dmacc.EsenzioniService"/>
+		<property name="address" value="@serviceEsenzioni@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>	
+	
+	<!-- *****************************************SERVICE SCREENING	 ***************************************** -->
+ 	<bean id="ScreeningService"
+		  class="it.csi.apisan.apisanfse.integration.screening.dmacc.ScreeningService"
+		  factory-bean="cxfScreeningSecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfScreeningSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.screening.dmacc.ScreeningService"/>
+		<property name="address" value="@serviceScreening@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>	
+	
+	<!-- *****************************************SERVICE OSCURAMENTO	 ***************************************** -->
+ 	<bean id="OscuramentoService"
+		  class="it.csi.apisan.apisanfse.integration.oscuramento.dmacc.OscuramentoService"
+		  factory-bean="cxfOscuramentoSecuredClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfOscuramentoSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.oscuramento.dmacc.OscuramentoService"/>
+		<property name="address" value="@serviceOscuramento@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>	
+	
+	<!--  *********************************SERVICE UTILITY ******************************************** -->
+	<bean id="UtilityService"
+		  class="it.csi.apisan.apisanfse.integration.utility.dmacc.UtilityService"
+		  factory-bean="UtilityServiceSecuredClientFactory"
+		  factory-method="create"/>		
+	
+	<bean id="UtilityServiceSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.utility.dmacc.UtilityService"/>
+		<property name="address" value="@serviceUtility@" />
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOut" />
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property>
+	</bean>		
+	
+	<bean id="PazienteService"
+		  class="it.csi.apisan.apisanfse.integration.paziente.dmaccbl.PazienteService"
+		  factory-bean="UtilityPazienteSecuredClientFactory"
+		  factory-method="create"/>		
+	
+	<bean id="UtilityPazienteSecuredClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.apisan.apisanfse.integration.paziente.dmaccbl.PazienteService"/>
+		<property name="address" value="@servicePaziente@" />
+		<property name="outInterceptors">
+			<list>
+			  	<ref bean="logOut" /> 
+				<ref bean="wss4jOutSecuredDma" />
+				
+			</list>
+		</property>
+	  	<property name="inInterceptors">
+			<list>
+				<ref bean="logIn" />
+			</list>
+		</property> 
+	</bean>		
+	
+	<bean id="wss4jOutSecured" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value=" UsernameToken " />
+				<entry key="user" value="@userRol@" />
+				<entry key="passwordCallbackRef" value-ref="passwordCallbac">	
+				</entry>
+					
+				<entry key="passwordType" value="PasswordDigest"/>
+				</map>
+			</constructor-arg>
+	</bean> 
+
+	<bean id="wss4jOutSecuredConsenso" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value=" UsernameToken " />
+				<entry key="user" value="@userConsensoIni@" />
+				<entry key="passwordCallbackRef" value-ref="passwordCallbac">	
+				</entry>
+					
+				<entry key="passwordType" value="PasswordDigest"/>
+				</map>
+			</constructor-arg>
+	</bean> 
+	
+	<bean id="wss4jOutSecuredArruolamento" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value=" UsernameToken " />
+				<entry key="user" value="@userArruolamento@" />
+				<entry key="passwordCallbackRef" value-ref="passwordCallbac">	
+				</entry>
+					
+				<entry key="passwordType" value="PasswordDigest"/>
+				</map>
+			</constructor-arg>
+	</bean> 	
+
+	<bean id="wss4jOutSecuredAura" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value=" UsernameToken " />
+				<entry key="user" value="@userAura@" />
+
+				<entry key="passwordCallbackRef"  value-ref="passwordCallbac">
+				</entry>
+				<entry key="passwordType" value="PasswordText" />
+			</map>
+		</constructor-arg>
+	</bean>  	
+		
+	<bean id="wss4jOutSecuredScarico" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+			    <entry key="mustUnderstand" value="false" />
+				<entry key="action" value=" UsernameToken " />
+				<entry key="user" value="@userScaricoStudi@" />
+				<entry key="passwordCallbackRef" value-ref="passwordCallbac">	
+				</entry>
+					
+				<entry key="passwordType" value="PasswordText"/>
+				</map>
+			</constructor-arg>
+	</bean>
+	
+	<bean id="wss4jOutSecuredDma" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="mustUnderstand" value="false" />
+				<entry key="action" value=" UsernameToken " />
+				<entry key="user" value="@userDma@" />
+				<entry key="passwordCallbackRef" value-ref="passwordCallbac">	
+				</entry>
+					<entry key="passwordType" value="PasswordText"/>
+				<entry key="mustUnderstand" value="false" />
+				</map>
+			</constructor-arg>
+	</bean>	
+	 
+	  <bean id="passwordCallbac" class="it.csi.apisan.apisanfse.integration.facade.ClientPasswordCallback">
+		<property name="userRol" value="@userRol@"></property>
+		<property name="passRol" value="@passRol@"></property>
+		<property name="userScaricoStudi" value="@userScaricoStudi@"></property>
+		<property name="passScaricoStudi" value="@passScaricoStudi@"></property>
+		<property name="userConsensoIni" value="@userConsensoIni@"></property>
+		<property name="passConsensoIni" value="@passConsensoIni@"></property>	
+		<property name="userAura" value="@userAura@"></property>
+		<property name="passAura" value="@passAura@"></property>
+		<property name="userArruolamento" value="@userArruolamento@"></property>
+		<property name="passArruolamento" value="@passArruolamento@"></property>
+		<property name="userDma" value="@userDma@"></property>
+		<property name="passDma" value="@passDma@"></property>	
+		<property name="userUtility" value="@userUtility@"></property>
+		<property name="passUtility" value="@passUtility@"></property>	
+		<property name="userPaziente" value="@userPaziente@"></property>
+		<property name="passPaziente" value="@passPaziente@"></property>						
+	</bean>   
+	
+	
+	
+	<bean id="logOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor" > 
+		<constructor-arg name="lim" value="-1"/>
+	</bean>
+	<bean id="logIn" class="org.apache.cxf.interceptor.LoggingInInterceptor" >
+		<constructor-arg name="lim" value="-1"/>
+	</bean>
+<!--  	<bean id="headInt" class="it.csi.apisan.apisanfse.integration.facade.HttpHeaderInterceptor" />
+	<bean id="prova" class="it.csi.apisan.apisanfse.integration.facade.SoapActionInInterceptor" /> -->
+	
+	
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+      	<property name="jndiName" value="apisan/jdbc/apisanDS" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+	</bean>
+	
+	   
+    <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+        <constructor-arg ref="dataSource"></constructor-arg> 
+    </bean>  
+	
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>	
+	
+	<!-- Bean utilizzato per le operazioni di Tracciatura. Sostituire qui con un implmenetazione su coda JMS
+	     Per ora utilizziamo un implementazione che fa semplicemente il logging. -->
+	<bean id="apisanTraceOperation" name="apisanTraceOperation" class="it.csi.apisan.apisanfse.business.integration.util.trace.ApisanTraceOperationDB"/>
+</beans>

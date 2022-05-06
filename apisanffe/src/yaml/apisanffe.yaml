@@ -1,0 +1,1057 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanffe/api/v1
+schemes:
+  - https
+info:
+  title: 'Fascicolo Finanziario Elettronico (FFE)'
+  version: 0.1.0
+  description: |
+
+    # Avvertenze
+    ---
+    1. Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino
+    2. Questo YAML è un contratto tra lo strato verde e lo strato rosso
+    3. La tipologia del pagamento verrà calcolata nello strato rosso o verde
+    4. La separazione tra "spese effettuate", "crediti" e "rimborsi" si fa usando il codice dello stato della pratica:
+        * 801 -> rimborsati
+        * 802 -> crediti
+        * tutti gli altri -> spese effettute
+
+
+    # Domande
+    ---
+    1. La funzionalità "Esporta lista pagamenti" chi la implementa?
+    2. Sarebbe possibile avere tutti i codici possibili dei motivi di pagamento?
+
+
+    # Prototipo Interfaccia
+    ---
+    http://dev-prototipi.csi.it/2020/sanita%20-%20Estratto%20Conto%20-%20Celiachia/html/#id=nbn4p0&p=home-_estratto_conto&g=1
+    # Note versione 0.1.0
+    ---
+    * Aggiunti campi numero_rimborso e numero_pratica_rimborso
+    
+    # Note versione 0.0.9
+    ---
+    * Aggiunto model_pratica_ricevuta modello json con il quale risponde la stampa richiesta/ricevuta rimborso nel caso in cui si passasse flag stampabile a false
+
+    # Note versione 0.0.8
+    ---
+    * Modifica endpoint Stampa richiesta/ricevuta rimborso - campi liste e aggiunto campo 'stampabile'
+
+    # Note versione 0.0.7
+    ---
+    * Nuovo endpoint Stampa richiesta/ricevuta rimborso
+
+    # Note versione 0.0.6
+    ---
+    * Aggiunto query param id_asr a Ricevuta pagamento
+    * Tolta api Lista modalità erogazione in quanto si può utilizzare /modalita-erogazione-ammissibili presente su apisanpag
+
+    # Note versione 0.0.5
+    ---
+    * Tolto query param rimborso_modalita_codice da Ricevuta pagamento
+    # Note versione 0.0.4
+    ---
+    * Cancellati campi tipologia_codice e tipologia_descrizione da Elenco ticket pagati
+    * motivo_pagamento anziché motivo_pagamento_codice su Elenco ticket pagati
+
+    # Note versione 0.0.3
+    ---
+    * Api Lista pagamenti modificato query param anno_pagamento da date a Integer
+    * Api Ricevuta pagamento tolto query param rimborso_modalita_codice
+
+    # Note versione 0.0.2 (31 Gen 2021)
+    ---
+    * Prima implementazione
+
+    # Note versione 0.0.1 (13 Lug 2020)
+    ---
+    * Prima implementazione
+
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+  '/cittadini/{cit_id}/rimborsi':
+    get:
+      summary: Lista rimborsi
+      description:  |
+        Permette di leggere l'elenco dei rimborsi di un cittadino.
+
+        E' inoltre possibile filtrare l'elenco secondo diverse condizioni descritte nei query params
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_data_dal'
+        - $ref: '#/parameters/query_data_al'
+        - $ref: '#/parameters/query_stato_ticket'
+        - $ref: '#/parameters/query_in_erogazione'
+        - $ref: '#/parameters/query_modalita_rimborso'
+        - $ref: '#/parameters/query_id_asr'
+        - $ref: '#/parameters/query_motivo_pagamento'
+        - $ref: '#/parameters/query_codice_versamento'
+        - $ref: '#/parameters/query_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_lista_ticket'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/ticket-pagati':
+    get:
+      summary: Lista pagamenti
+      description:  |
+        Permette di leggere l'elenco dei pagamenti effettuati da un cittadino o da un suo delegante.
+
+        Se il cittadino o il suo delegante non ha ancora pagamenti il servizio restituisce 200 e lista vuota ([])
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_anno_pagamento_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_ticket_pagato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/ticket-pagati/{ticket_id}/ricevute-pagamento/{ricevuta_id}/pdf':
+    get:
+      summary: Ricevuta pagamento
+      description:  |
+        Permette di stampare la ricevuta di pagamento
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_ticket_id'
+        - $ref: '#/parameters/path_ricevuta_id'
+        - $ref: '#/parameters/query_id_asr'
+      responses:
+        '200':
+          description: |
+            Restituisce il binario del PDF
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/ticket-pagati/{ticket_id}/ricevute-rimborso/{ricevuta_id}/pdf':
+    get:
+      summary: Ricevuta rimborso
+      description:  |
+        Permette di stampare la ricevuta di pagamento
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_ticket_id'
+        - $ref: '#/parameters/path_ricevuta_id'
+        - $ref: '#/parameters/query_rimborso_modalita_codice'
+      responses:
+        '200':
+          description: |
+            Restituisce il binario del PDF
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/ticket-pagati/{ticket_id}/richiesta-rimborso/pdf':
+    post:
+      summary: Stampa richiesta/ricevuta rimborso
+      description:  |
+        Permette di stampare la richiesta del rimborso o voucher. Se si passa il flag stampabile a false non esegue la stampa ma ritorna un json con la struttura definita in model_pratica_ricevuta. Se viene specificata la modalita_rimborso vuole dire che si richiede la stampa voucher o attestato bonifico.
+      produces:
+        - application/pdf
+        - application/zip
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_ticket_id'
+        - $ref: '#/parameters/payload_rimborso_stampa'
+      responses:
+        '200':
+          description: |
+            Restituisce il binario del PDF se stampabile del payload in input vale true , il model model_pratica_ricevuta nel caso in cui stampabile vale false
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_pratica_ricevuta'
+              
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/ticket-pagati/{ticket_id}/rimborso':
+    post:
+      summary: Nuovo rimborso
+      description:  |
+        Permette al cittadino di richiedere il rimborso di un pagamento per se o per un suo delegante.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_ticket_id'
+        - $ref: '#/parameters/payload_rimborso_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+
+  path_cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  path_ticket_id:
+    in: path
+    name: ticket_id
+    type: string
+    required: true
+    description: Il numero pratica del ticket
+  path_ricevuta_id:
+    in: path
+    name: ricevuta_id
+    type: string
+    required: true
+    description: Id della ricevuta su cui lavorare
+
+  query_anno_pagamento_obbligatorio:
+    in: query
+    name: 'anno_pagamento'
+    type: integer
+    format: int32
+    required: true
+    description: |
+      Restituisce tutti i ticket pagati che hanno la data più recente nell'anno passato come filtro.
+
+      La data più recente è il massimo tra le date di pagamento, le date di rimborso e la data di annullamento ticket.
+  query_rimborso_modalita_codice:
+    in: query
+    name: 'rimborso_modalita_codice'
+    type: string
+    required: false
+    description: Il codice della modalità di rimborso su cui operare
+  query_data_dal:
+    in: query
+    name: 'data_dal'
+    type: string
+    required: false
+    description: Data di inizio del periodo entro cui cercare le pratiche di rimborso
+  query_data_al:
+    in: query
+    name: 'data_al'
+    type: string
+    required: false
+    description: Data di fine del periodo entro cui cercare le pratiche di rimborso
+  query_stato_ticket:
+    in: query
+    name: 'stato_ticket'
+    type: integer
+    required: false
+    description: |
+      Permette di filtrare per prendere solo i ticket in un certo stato.
+      I valori ammessi sono:
+      * 801 - Rimborsato
+      * 802 - Da rimborsare
+  query_in_erogazione:
+    in: query
+    name: 'in_erogazione'
+    type: integer
+    required: false
+    description: |
+      Permette di filtrare in base allo stato di erogazione del rimborso.
+      I valori ammessi sono:
+      * 0 - Non erogato
+      * 1 - In erogazione (credito incluso in un pagamento tramite borsellino)
+      * 2 - Erogato (il voucher o il bonifico è stato erogato)
+  query_modalita_rimborso:
+    in: query
+    name: 'modalita_rimborso'
+    type: integer
+    required: false
+    description: |
+      Permette di filtrare in base alla modalità di rimborso.
+      I valori ammessi sono:
+      * 1 - Voucher
+      * 2 - Bonifico
+      * 3 - Borsellino elettronico
+  query_id_asr:
+    in: query
+    name: 'id_asr'
+    type: string
+    required: false
+    description: Permette di filtrare per ASR.
+  query_motivo_pagamento:
+    in: query
+    name: 'motivo_pagamento'
+    type: string
+    required: false
+    description: Motivo pagamento del pagamento oggetto di rimborso.
+  query_codice_versamento:
+    in: query
+    name: 'codice_versamento'
+    type: string
+    required: false
+    description: Codice versamento del pagamento oggetto di rimborso.
+  query_codice_servizio:
+    in: query
+    name: 'codice_servizio'
+    type: string
+    required: false
+    description: |
+      Identificativo del sistema dipartimentale che ha emesso il pagamento oggetto di rimborso.
+
+  payload_rimborso_nuovo:
+    in: body
+    name: 'Payload rimborso nuovo'
+    required: true
+    description: I dati che il client deve passare alle API per avviare il rimborso del pagamento.
+    schema:
+      type: object
+      properties:
+        rimborso_modalita_codice:
+          type: integer
+          description: |
+              Il codice della modalità di rimborso impostato/usato per questo pagamento.
+              * 1 - Voucher
+              * 2 - Bonifico
+              * 3 - Borsellino
+        iban:
+          type: string
+          description: |
+            L'IBAN inserito dal cittadino.
+
+            Da valorizzare solo se `rimborso_modalita_codice` === "2" (cioè Bonifico)
+      required:
+        - rimborso_modalita_codice
+  payload_rimborso_stampa:
+    in: body
+    name: 'Payload stampa richiesta rimborso'
+    required: true
+    description: I dati che il client deve passare alle API per richiedere il pdf ocn la richiesta di rimborso.
+    schema:
+      type: object
+      properties:
+        codice_asr:
+          description: |
+              Il codice della ASl beneficiaria
+          type: string
+        id_ricevute:
+          description: |
+              lista con gli ID della ricevute di pagamento
+          type: array
+          items:
+            type: string
+        id_rimborso:
+          description: |
+              lista con gli ID della ricevute di rimborso
+          type: array
+          items:
+            type: string          
+        rt_id:
+          type: array
+          items:
+            type: string
+          description: |
+            lista con identificativi delle RicevuteTelematiche generate a seguito del pagamento contenuto nella RT
+        esiti_id:
+          type: array
+          items:
+            type: string
+          description: |
+            lista con identificativi degli esiti di pagamento generati a seguito dei pagamenti Telematici
+        modalita_rimborso:
+          type: integer
+          description: |
+              Il codice della modalità di rimborso impostato/usato per questo pagamento.
+              * 1 - Voucher
+              * 2 - Bonifico
+              * 3 - Borsellino
+        stampabile:
+          description: |
+              Indica il servizio deve scaricare i documenti (true) oppure restituire un json (false)
+          type: boolean
+      required:
+        - modalita_rimborso
+        - stampabile
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_ticket_pagato_ricevuta_pagamento:
+    title: 'Ticket pagato ricevuta pagamento'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Id univoco
+      data_pagamento:
+        type: string
+        format: date-time
+        description: La data in cui è stato effettuato il pagamento
+      rt_id:
+        type: string
+        description: |
+          identificativo della Ricevuta Telematica generata a seguito del pagamento del modello 1 e 3 (Esito di pagamento contenuto nella RT)
+      esito_id:
+        type: string
+        description: |
+          identificativo dell’esiti di pagamento generato a seguito del pagamento del modello 3 (che secondo le specifiche AgID posso essere create senza Richieste di Pagamento Telematico)
+  model_ticket_pagato_ricevuta_rimborso:
+    title: 'Ticket pagato ricevuta rimborso'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Id univoco
+      data_rimborso:
+        type: string
+        format: date-time
+        description: La data in cui è stato effettuato il rimborso
+      importo_rimborso:
+        type: number
+        description: L'importo rimborsato
+      pratica_id:
+        type: string
+        description: |
+          Identificativo della pratica il cui credito è stato pagato in toto o in parte con questo rimborso (in caso di erogazione tramite borsellino)
+      numero_rimborso:
+        type: string
+        description: | 
+         Numero del rimborso
+  model_ticket_pagato_rimborso_utilizzato:
+    title: 'Ticket pagato rimborso utilizzato'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Id univoco
+      importo:
+        type: number
+        description: L'importo del rimborso utilizzato
+      numero_pratica_rimborsata:
+        type: string
+        description: numero della pratica rimborsata
+  model_ticket_pagato:
+    title: 'Ticket pagato'
+    type: object
+    properties:
+      numero_pratica:
+        type: string
+        description: Un numero che identifica univocamente il pagamento
+      asr_id:
+        type: string
+        description: L'id dell'ASR di riferimento del pagamento
+      asr_descrizione:
+        type: string
+        description: Il nome dell'ASR di riferimento del pagamento
+      importo_pratica:
+        type: number
+        description: L'importo della pratica
+      importo_pagamento:
+        type: number
+        description: L'importo pagato dal cittadino
+      importo_da_rimborsare:
+        type: number
+        description: L'importo da rimborsare al cittadino
+      importo_rimborsato:
+        type: number
+        description: L'importo rimborsato al cittadino
+      consenso_730:
+        type: integer
+        description: |
+          codice scelta opposizione trasmissione pagamento al MEF per il calcolo automatico delle spese sanitarie sul 730 0 opposizione 1 autorizzazione, -1 scelta non ancora eseguita
+      stato_pratica_codice:
+        type: string
+        description: |
+          Il codice dello stato della pratica. Possibili valori
+                  * 001 -  Ticket pagato Totalmente
+                  * 010 -  Ticket Pagato Parzialmente
+                  * 015 -  Ticket Non Pagato
+                  * 800 -  Ticket Annullato
+                  * 801 -  Ticket Rimborsato
+                  * 802 - Ticket Da rimborsare
+
+      stato_pratica_descrizione:
+        type: string
+        description: Descrizione testuale dello stato da mostrare sulla UI
+      data_annullamento:
+        type: string
+        format: date-time
+        description: Data annullamento della pratica
+      servizio_codice:
+        type: string
+        description: Codice del servizio (dipartimentale) che ha generato il ticket
+      versamento_codice:
+        type: string
+        description: Codice stabilito dall’ASR e usato per generare lo IUV nei pagamenti pagoPA
+      motivo_pagamento:
+        type: string
+      rimborso_modalita_codice:
+        type: integer
+        description: |
+              Il codice della modalità di rimborso impostato/usato per questo pagamento.
+              * 1 - Voucher
+              * 2 - Bonifico
+              * 3 - Borsellino
+      ricevute_pagamento:
+        description: |
+          Contiene l'elenco delle ricevute create dai vari pagamenti effettuati per pagare completamente la pratica
+
+          Le nuove pratiche non possono essere pagate parzialmente e quindi non possono generare più ricevute di pagamento. Però nello storico potrebbero esserci delle casistiche in cui ci siano delle pratiche pagate in più tranche
+        type: array
+        items:
+          $ref: '#/definitions/model_ticket_pagato_ricevuta_pagamento'
+      ricevute_rimborso:
+        description: |
+          Se questa pratica è stata usata come rimborso, allora qui sono presenti tutte le ricevute relative alla generazione del rimborso
+
+          Se si tratta di un rimborso tramite IBAN o Vaucher conterrà una sola ricevuta di rimborso
+        type: array
+        items:
+          $ref: '#/definitions/model_ticket_pagato_ricevuta_rimborso'
+      rimborsi_utilizzati:
+        description: |
+          Contiene l'elenco dei rimborsi utilizzati per pagare questa pratica.
+        type: array
+        items:
+          $ref: '#/definitions/model_ticket_pagato_rimborso_utilizzato'
+
+  model_rimborso:
+    title: 'rimborso'
+    type: object
+    properties:
+      numero_sportello:
+        type: string
+      numero_rimborso:
+        type: string
+      data_rimborso:
+        type: string
+        format: datetime
+      importo_rimborsato:
+        type: number
+      codice_versamento:
+        type: string
+      avviso_pagamento:
+        $ref: '#/definitions/model_avviso_pagamento'
+      iuv_mod1:
+        type: string
+      data_emissione:
+        type: string
+        format: datetime
+      pratica_pagata_con_credito:
+        type: string
+    required:
+      - numero_sportello
+      - data_rimborso
+      - importo_rimborsato
+  model_avviso_pagamento:
+    title: 'Avviso pagamento'
+    type: object
+    properties:
+      auxdigit:
+        type: integer
+      application_code:
+        type: string
+      iuv:
+        type: string
+      data_associazione:
+        type: string
+        format: date
+    required:
+      - auxdigit
+      - iuv
+      - data_associazione
+  model_elenco_pagamenti:
+    title: 'Elenco pagamenti'
+    type: object
+    properties:
+      numero_sportello:
+        type: string
+      numero_ricevuta:
+        type: string
+      data_ricevuta:
+        type: string
+        format: date
+      importo_ricevuta:
+        type: number
+      avviso_pagamento:
+        $ref: '#/definitions/model_avviso_pagamento'
+      iuv_mod1:
+        type: string
+  model_prenotazione:
+    title: 'Prenotazione'
+    type: object
+    properties:
+      numero_pratica:
+        type: string
+        description: Il numero univoco del ticket
+      importo_da_pagare:
+        type: number
+        description: L'importo che il paziente deve pagare
+      importo_pagato:
+        type: number
+        description: L'importo che il paziente ha pagato
+      lista_fattura:
+        type: array
+        items:
+          $ref: '#/definitions/model_elenco_pagamenti'
+      numero_quietanza:
+        type: string
+        description: Il numero della quietanza
+      motivo_pagamento:
+        type: string
+        description: Il motivo del pagamento
+      asr_beneficiaria:
+        type: string
+        description: Il codice dell'asr beneficiaria del pagamento
+      codice_servizio:
+        type: string
+        description: Il codice del servizio
+      data_creazione_prenotazione:
+        type: string
+        format: datetime
+        description: La data in cui è stata effettuata la prenotazione
+      avviso_pagamento:
+        $ref: '#/definitions/model_avviso_pagamento'
+      iuv_mod1:
+        type: string
+        description: Lo IUV
+      opposizione_730:
+        type: integer
+        description: Indica se il cittadino si è opposto o meno al 730
+      lista_nre:
+        type: array
+        items:
+          type: string
+      lista_rimborsi:
+        type: array
+        description: Ne contiene sempre almeno 1
+        items:
+          $ref: '#/definitions/model_rimborso'
+      importo_da_rimborsare:
+        type: number
+        description: L'importo che deve essere rimborsato al cittadino
+      importo_rimborsato:
+        type: number
+        description: L'importo già rimborsato al cittadino
+      rimborso_in_erogazione:
+        type: string
+        description: indica se il rimborso è in erogazione
+      modalita_rimborso:
+        type: string
+        description: codice della modalità di rimborso
+      iban_rimborso:
+        type: string
+        description: L'IBAN su cui il cittadino vuole ricevere il rimborso
+  model_pratica:
+    title: 'Pratica'
+    type: object
+    properties:
+      importo_pratica:
+        type: string
+        description: L'importo della pratica
+      importo_marca_bollo:
+        type: string
+        description: L'importo della marca da bollo
+      importo_iva:
+        type: string
+        description: L'importo dell'IVA
+      percentuale_iva:
+        type: integer
+        description: La percentuale dell'IVA applicata
+      prestazione_erogata:
+        type: string
+      codice_versamento:
+        type: string
+        description: Il codice del versamento
+      prenotazione:
+        $ref: '#/definitions/model_prenotazione'
+    required:
+      - prenotazione
+  model_lista_ticket_paziente:
+    title: 'Lista ticket paziente'
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+        description: Il codice fiscale del paziente
+      cognome:
+        type: string
+        description: Il cognome del paziente
+      nome:
+        type: string
+        description: Il nome del paziente
+      data_nascita:
+        type: string
+        format: date
+        description: La data di nascita del paziente
+      provincia:
+        type: string
+        description: La provincia di residenza del paziente
+      comune:
+        type: string
+        description: Il comune di residenza del paziente
+      cap:
+        type: string
+        description: Il CAP di residenza del paziente
+      indirizzo:
+        type: string
+        description: L'indirizzo di residenza del paziente
+  model_lista_ticket:
+    title: 'Lista ticket'
+    type: object
+    properties:
+      paziente:
+        $ref: '#/definitions/model_lista_ticket_paziente'
+      lista_prenotazione:
+        type: array
+        items:
+          $ref: '#/definitions/model_pratica'
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  model_pratica_ricevuta:
+    title: 'Pratica ricevuta'
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale
+      numero_pratica:
+        type: string
+        description: numero della pratica
+      id_asr_cup:
+        type: string
+        description: id asr
+      elenco_ricevute_stampa_asr:
+        $ref: '#/definitions/model_dett_pratica_ricevuta'
+      elenco_ricevute_cortesia:
+        $ref: '#/definitions/model_dett_pratica_ricevuta'
+      elenco_ricevute_stampa_regionale:
+        $ref: '#/definitions/model_dett_pratica_ricevuta'
+      elenco_ricevute_telematiche:
+        $ref: '#/definitions/model_dett_rich_tel_pratica_ricevuta'
+      elenco_esiti_pagamento:
+        $ref: '#/definitions/model_dett_esiti_pag_pratica_ricevuta'
+      attestato_richiesta_rimborso:
+        $ref: '#/definitions/model_att_rich_rimborso_pratica_ricevuta'
+  model_att_rich_rimborso_pratica_ricevuta:
+    title: 'Attestato richiesta rimborso ricevuta pratica'
+    type: object
+    properties:
+      stampa:
+        type: string
+        description: base64 della stampa
+      modalita_rimborso:
+        type: number
+        format: int64
+      inviato_da_asr:
+        type: number
+        format: int64
+  model_dett_esiti_pag_pratica_ricevuta:
+    title: 'Dettaglio esiti pagamento ricevuta pratica'
+    type: object
+    properties:
+      esito:
+        type: array
+        items:
+          $ref: '#/definitions/model_esito_dett_pratica_ricevuta'
+  model_esito_dett_pratica_ricevuta:
+    title: 'Esito dettaglio pratica ricevuta'
+    type: object
+    properties:
+      id_esito:
+        type: string
+        description: id esito
+      data_pagamento:
+        type: string
+        description: data del pagamento
+      stampa:
+        type: string
+        description: base64 della daat di pagamento
+  model_dett_rich_tel_pratica_ricevuta:
+    title: 'Dettaglio richiesta tel pratica ricevuta'
+    type: object
+    properties:
+      ricevuta:
+        type: array
+        items:
+          $ref: '#/definitions/model_ricevuta_dett_pratica_ricevuta'
+  model_ricevuta_dett_pratica_ricevuta:
+    title: 'Ricevuta dettaglio pratica'
+    type: object
+    properties:
+      id_rt:
+        type: string
+        description: id rt
+      data_pagamento:
+        type: string
+        description: data del pagamento
+      stampa:
+        type: string
+        description: base64 della stampa
+  model_dett_pratica_ricevuta:
+    title: 'Dettaglio pratica ricevuta'
+    type: object
+    properties:
+      ricevuta:
+        type: array
+        items:
+          $ref: '#/definitions/model_ricevuta_dettaglio_pratica'
+      rimborso:
+        type: array
+        items:
+          $ref: '#/definitions/model_rimborso_dettaglio_pratica_ricevuta'
+  model_rimborso_dettaglio_pratica_ricevuta:
+    title: 'Ricevuta rimborso dettaglio pratica'
+    type: object
+    properties:
+      id_rimborso:
+        type: string
+        description: id del rimborso
+      data_rimborso:
+        type: string
+        description: data del rimborso
+      stampa:
+        type: string
+        description: base64 del file
+  model_ricevuta_dettaglio_pratica:
+    title: 'Ricevuta dettaglio pratica'
+    type: object
+    properties:
+      id_ricevuta:
+        type: string
+        description: id della ricevuta
+      data_pagamento:
+        type: string
+        description: data del pagamento
+      stampa:
+        type: string
+        description: base64 del file
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+        description: Codice univoco di errore interno
+      title:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+        description: Codice univoco di errore interno
+      valore:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino

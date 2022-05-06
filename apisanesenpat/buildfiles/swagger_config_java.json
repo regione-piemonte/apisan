@@ -1,0 +1,16 @@
+{
+"java8": true,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.apisan.apisanesenpat.api",
+"modelPackage":  "it.csi.apisan.apisanesenpat.model",
+"invokerPackage": "it.csi.apisan.apisanesenpat.invoker",
+"implFolder": "impl",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"useImplicitSnakeCaseAttributeStrategy": true,
+"accessHttpHeaders": true
+}

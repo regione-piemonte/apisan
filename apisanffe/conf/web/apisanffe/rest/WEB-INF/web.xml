@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<listener>
+	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener> 
+
+	<!-- <listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+    -->
+
+   <listener>
+		<listener-class>it.csi.apisan.apisanffe.util.AppServletContextListener</listener-class>
+   	</listener>
+
+	<context-param> 
+        <param-name>resteasy.providers</param-name> 
+        <param-value>it.csi.apisan.apisanffe.business.apisanffe.JacksonConfig, it.csi.apisan.apisanffe.util.interceptor.TraceRequestInterceptor</param-value>
+    </context-param>
+@security.securityon@
+	<security-constraint>
+	
+		<web-resource-collection>
+			<web-resource-name>Restricted to Secure role</web-resource-name>
+				<description>protezione servizi</description>
+				<url-pattern>/*</url-pattern>
+				<http-method>GET</http-method>
+				<http-method>POST</http-method>
+				<http-method>PUT</http-method>
+				<http-method>DELETE</http-method>
+			</web-resource-collection>
+	
+		<auth-constraint>
+			<role-name>writer</role-name>
+		</auth-constraint>
+	</security-constraint>	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Restricted to Secure role</web-resource-name>
+				<description>protezione servizi</description>
+				<url-pattern>/*</url-pattern>
+				<http-method>GET</http-method>
+			</web-resource-collection>
+	
+		<auth-constraint>
+			<role-name>monitoring</role-name>
+		</auth-constraint>
+	</security-constraint>	
+		
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>ApplicationRealm</realm-name>
+	</login-config>
+	<security-role>
+		<role-name>writer</role-name>
+	</security-role>
+	<security-role>
+		<role-name>monitoring</role-name>
+	</security-role>	
+@security.securityoff@
+</web-app>

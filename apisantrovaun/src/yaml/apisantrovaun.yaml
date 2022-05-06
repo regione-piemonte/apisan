@@ -1,0 +1,866 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisantrovaun/api/v1
+schemes:
+  - https
+info:
+  title: '[BOZZA] Trova un'
+  version: 0.0.3
+  description: |
+  
+    # Avvertenze
+    ---
+    1. Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino
+    2. Questo YAML è un contratto tra lo strato verde e lo strato rosso
+    3. L'endpoint "Lista tipologie assistenza" verrà implementato sullo strato verde/rosso tramite un file JSON statico
+    4. L'endpoint "Lista tipologie ospedali" verrà implementato sullo strato verde/rosso tramite un file JSON statico
+
+    
+    # Domande
+    ---
+    1.
+
+
+    # Prototipo Interfaccia
+    ---
+    http://dev-prototipi.csi.it/2020/sanita-servizi_informativi/prototipo/desktop/html/start.html#g=1&p=copertina
+    # Note versione 0.0.4 (16 Dic 2020)
+      ---
+      * Aggiunto attributo disponibili_alimenti_celiaci a model_farmacia
+      * Aggiunti query param query_dati_aggiuntivi_celiachia e query_disponibili_alimenti_celiaci a api /farmacie
+    
+    # Note versione 0.0.3 (24 Nov 2020)
+      ---
+      * Aggiunto il campo `label` nel model `ModelTipologiaAssistenza`
+
+    # Note versione 0.0.2 (24 Nov 2020)
+      ---
+      * Aggiunto endpoint /tipologie-punto-vendita (Lista tipologie punto vendita)
+      * Aggiunto endpoint /punti-vendita-celiachia  (Lista dei punti vendita celiachia)
+
+    # Note versione 0.0.1 (08 Ott 2020)
+    ---
+    * Prima implementazione
+
+paths:
+  '/servizio-attivo':
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'
+  '/tipologie-assistenza':
+    get:
+      summary: Lista tipologie assistenza
+      description:  |
+        Elenco delle tipologie di assistenza delle strutture sanitarie
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_tipologia_assistenza'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-ospedale':
+    get:
+      summary: Lista tipologie ospedali
+      description:  |
+        Elenco delle tipologie di ospedali
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_ospedale_tipologia'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/tipologie-punto-vendita':
+    get:
+      summary: Lista tipologie punto vendita
+      description:  |
+        Elenco delle tipologie dei punti vendita di prodotti per celiachia
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_punto_vendita_tipologia'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/strutture-sanitarie':
+    get:
+      summary: Lista strutture sanitarie
+      description:  |
+        Lista delle strutture sanitarie.
+        
+        La lista è paginata tramite i query params opzionali `limit` ed `offset`.
+        
+        Permette di filtrare la lista  per nome, vicinanza geografica, tipologia assistenza e tutte le combinazioni.
+        
+        In particolare:
+          * Se viene passato solo il query param `s` allora viene eseguita la ricerca solo per full-text
+          * Se vengono passati solo i query params `latitudine`, `longitudine` e `distanza`, allora viene eseguita la ricerca per vicinanza geografica
+          * Se viene passato solo il query params `tipologia_assistenza` allora viene eseguita la ricerca solo per determinate tipologie di struttura
+          
+        E' possibile poi combinare i query params per raffinare maggiormente la ricerca.
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_search'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_latitudine' 
+        - $ref: '#/parameters/query_longitudine' 
+        - $ref: '#/parameters/query_distanza' 
+        - $ref: '#/parameters/query_tipologia_assistenza' 
+        
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            X-Total-Elements:
+              description: number of elements matching the filter
+              type: integer
+            X-Page-Size:
+              description: number of the elements in a page
+              type: integer 
+            X-Page:
+              description: number of page retrived
+              type: integer
+            X-Total-Pages:
+              description: number of all pages
+              type: integer              
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_struttura_sanitaria'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/farmacie':
+    get:
+      summary: Lista farmacie
+      description:  |
+        Lista delle farmacie.
+        
+        La lista è paginata tramite i query params opzionali `limit` ed `offset`.
+        
+        Permette di filtrare la lista  per nome, vicinanza geografica e tutte le combinazioni.
+        
+        In particolare:
+          * Se viene passato solo il query param `s` allora viene eseguita la ricerca solo per full-text
+          * Se vengono passati solo i query params `latitudine`, `longitudine` e `distanza`, allora viene eseguita la ricerca per vicinanza geografica
+          
+        E' possibile poi combinare i query params per raffinare maggiormente la ricerca.
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_search'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_latitudine' 
+        - $ref: '#/parameters/query_longitudine' 
+        - $ref: '#/parameters/query_distanza' 
+        - $ref: '#/parameters/query_dati_aggiuntivi_celiachia'
+        - $ref: '#/parameters/query_disponibili_alimenti_celiaci'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            X-Total-Elements:
+              description: number of elements matching the filter
+              type: integer
+            X-Page-Size:
+              description: number of the elements in a page
+              type: integer 
+            X-Page:
+              description: number of page retrived
+              type: integer
+            X-Total-Pages:
+              description: number of all pages
+              type: integer              
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_farmacia'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/ospedali':
+    get:
+      summary: Lista ospedali
+      description:  |
+        Lista degli ospedali.
+        
+        La lista é paginata tramite i query params opzionali `limit` ed `offset`.
+        
+        Permette di filtrare la lista  per nome, vicinanza geografica, tipologia e tutte le combinazioni.
+            
+        In particolare:
+          * Se viene passato solo il query param `s` allora viene eseguita la ricerca solo per full-text
+          * Se vengono passati solo i query params `latitudine`, `longitudine` e `distanza`, allora viene eseguita la ricerca per vicinanza geografica
+          * Se viene passato solo il query params `tipologia` allora viene eseguita la ricerca solo per determinate tipologie.
+              
+        E' possibile poi combinare i query params per raffinare maggiormente la ricerca.
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_search'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_latitudine' 
+        - $ref: '#/parameters/query_longitudine' 
+        - $ref: '#/parameters/query_distanza' 
+        - $ref: '#/parameters/query_ospedale_tipologia' 
+        
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo.
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            X-Total-Elements:
+              description: number of elements matching the filter
+              type: integer
+            X-Page-Size:
+              description: number of the elements in a page
+              type: integer 
+            X-Page:
+              description: number of page retrived
+              type: integer
+            X-Total-Pages:
+              description: number of all pages
+              type: integer              
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_ospedale'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/punti-vendita-celiachia':
+    get:
+      summary: Lista dei punti vendita celiachia
+      description:  |
+        Lista dei punti vendita di prodotti per celiachi.
+
+        La lista è paginata tramite i query params opzionali `limit` ed `offset`.
+
+        Permette di filtrare la lista  per nome punto vendita, vicinanza geografica, tipologia punto vendita e tutte le combinazioni.
+
+        In particolare:
+          * Se viene passato solo il query param `s` allora viene eseguita la ricerca solo per full-text
+          * Se vengono passati solo i query params `latitudine`, `longitudine` e `distanza`, allora viene eseguita la ricerca per vicinanza geografica
+          * Se viene passato solo il query params `tipologia` allora viene eseguita la ricerca solo per determinate tipologie di punto vendita
+
+        E' possibile poi combinare i query params per raffinare maggiormente la ricerca.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_search'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+        - $ref: '#/parameters/query_latitudine'
+        - $ref: '#/parameters/query_longitudine'
+        - $ref: '#/parameters/query_distanza'
+        - $ref: '#/parameters/query_tipologia_punto_vendita'
+
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            X-Total-Elements:
+              description: number of elements matching the filter
+              type: integer
+            X-Page-Size:
+              description: number of the elements in a page
+              type: integer
+            X-Page:
+              description: number of page retrived
+              type: integer
+            X-Total-Pages:
+              description: number of all pages
+              type: integer
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_punto_vendita_celiachia'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+    
+  query_search_obbligatorio:
+    in: query
+    name: s
+    type: string
+    required: true
+    description: |
+      Permette di effettuare una ricerca full-text
+  query_search:
+    in: query
+    name: s
+    type: string
+    required: false
+    description: |
+      Permette di effettuare una ricerca full-text
+  query_limit:
+    in: query
+    name: limit
+    type: integer
+    required: false
+    description: |
+      Imposta un limite al numero di record restituiti.
+      Permette di paginare i risultati. Se non impostato si assume come default 10
+  query_offset:
+    in: query
+    name: offset
+    type: integer
+    required: false
+    description: |
+      Imposta l'indice del primo elemento della lista restituita.
+      Permette di paginare i risultati. Se non impostato si assume come default 0
+  query_longitudine:
+    in: query
+    name: longitudine
+    type: string
+    required: false
+    description: |
+      La longitudine delle coordinate che indicano il centro dell'area circolare geografica
+      su cui effettuare la ricerca. 
+      I valori passato deve essere un GeoJSON di tipo "Point"
+  query_latitudine:
+    in: query
+    name: latitudine
+    type: string
+    required: false
+    description: |
+      La latitudine delle coordinate che indicano il centro dell'area circolare geografica
+      su cui effettuare la ricerca. 
+      I valori passato deve essere un GeoJSON di tipo "Point"
+  query_distanza:
+    in: query
+    name: distanza
+    type: number
+    required: false
+    description: |
+      Indica il raggio, in km, della circonferenza geografica su cui
+      effettuare la ricerca.
+      
+      Questo parametro necessita del query params "coordinate".
+      Altrimenti verrà ignorato
+  query_tipologia_assistenza:
+    in: query
+    name: tipologia_assistenza
+    type: string
+    required: false
+    description: |
+      Il codice della tipologia assistenza per cui filtrare
+  query_ospedale_tipologia:
+    in: query
+    name: tipologia
+    type: string
+    required: false
+    description: |
+      Il codice della ripologia per cui filtrare
+  query_tipologia_punto_vendita:
+    in: query
+    name: tipologia
+    type: string
+    required: false
+    description: |
+      Il codice della tipologia del punto vendita per cui filtrare
+  query_dati_aggiuntivi_celiachia: 
+    in: query
+    name: dati_aggiuntivi_celiachia
+    type: boolean
+    required: true
+    description: |
+      Indica se richiedo anche i dati aggiuntivi sulla disponibilita di prodotti per  celiaci, nel caso venga impostato a true cerco nel servizio verificaErogazioniFarmacie che siano presenti le farmacie prima ricercate su loccsi e ritorno solo quelle che sono state trovate in questo secondo servizio
+  query_disponibili_alimenti_celiaci:
+    in: query
+    name: disponibili_alimenti_celiaci
+    type: string
+    description: |
+      Possibili valori
+        * S = Indica se voglio solo le farmacie con disponibilita di prodotti per celiaci
+        * N indica che richiedo solo le farmacie che non hanno disponibilita di alimenti per celiaci
+        Questi due attributi corrispondono al flag erogato ritornato dal servizio verificaErogazioniFarmacie
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_tipologia_assistenza:
+    title: 'Tipologia Assistenza'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome della tipologia di assistenza
+      label:
+        type: string
+        description: Una label da mostrare sulla UI
+  model_ospedale_tipologia:
+    title: 'Ospedale tipologia'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome della tipologia
+  model_punto_vendita_tipologia:
+    title: 'Punto vendita tipologia'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome della tipologia
+  model_struttura_sanitaria:
+    title: 'Struttura sanitaria'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome della struttura
+      provincia:
+        type: string
+        description: La provincia di appartenenza
+        example: Torino
+      comune:
+        type: string
+        description: Il comune di appartenenza
+      cap:
+        type: string
+        description: Il CAP di appartenenza
+      indirizzo:
+        type: string
+        description: L'indirizzo della struttura
+      telefono:
+        type: string
+        description: Il numero di telefono della struttura
+      email:
+        type: string
+        description: L'indirizzo email della struttura
+      sito_web:
+        type: string
+        description: La URL del sito web della struttura
+      tipo_assistenza_codice:
+        type: string
+        description: Il codice della tipologia di assistenza
+      tipo_assistenza_descrizione:
+        type: string
+        description: La descrizione della tipologia di assistenza
+      tipo_codice:
+        type: string
+        description: Il codice della tipoliga di struttura
+      tipo_descrizione:
+        type: string
+        description: La descrizione del tipo di struttura
+      asl_codice:
+        type: string
+        description: Il codice dell'ASL di appartenenza
+      asl_description:
+        type: string
+        description: La descrizione dell'ASL di appartenenza
+      natura:
+        type: string
+        description: La natura della struttura
+        enum:
+          - "Pubblico"
+          - "Privato"
+          - "Equiparato"
+      geo:
+        $ref: '#/definitions/geo_json_punto'
+  model_punto_vendita_celiachia:
+    title: 'Punto vendita celiachia'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome del punto vendita
+      provincia:
+        type: string
+        description: La provincia di appartenenza
+        example: Torino
+      comune:
+        type: string
+        description: Il comune di appartenenza
+      cap:
+        type: string
+        description: Il CAP di appartenenza
+      indirizzo:
+        type: string
+        description: L'indirizzo della struttura
+      telefono:
+        type: string
+        description: Il numero di telefono del punto vendita
+      email:
+        type: string
+        description: L'indirizzo email del punto vendita
+      sito_web:
+        type: string
+        description: La URL del sito web del punto vendita
+      tipo_codice:
+        type: string
+        description: Il codice della tipologia del punto vendita
+      tipo_descrizione:
+        type: string
+        description: La descrizione della tipologia del punto vendita
+      asl_codice:
+        type: string
+        description: Il codice dell'ASL di appartenenza
+      asl_descrizione:
+        type: string
+        description: La descrizione dell'ASL di appartenenza
+      geo:
+        $ref: '#/definitions/geo_json_punto'
+  model_farmacia:
+    title: 'Farmacia'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome della struttura
+      provincia:
+        type: string
+        description: La provincia di appartenenza
+        example: Torino
+      comune:
+        type: string
+        description: Il comune di appartenenza
+      cap:
+        type: string
+        description: Il CAP di appartenenza
+      indirizzo:
+        type: string
+        description: L'indirizzo della struttura
+      telefono:
+        type: string
+        description: Il numero di telefono della struttura
+      email:
+        type: string
+        description: L'indirizzo email della struttura
+      sito_web:
+        type: string
+        description: La URL del sito web della struttura
+      tipo_codice:
+        type: string
+        description: Il codice della tipologia
+      disponibili_alimenti_celiaci:
+        type: string
+        description: indica se in tale farmacia sono disponibili o meno alimenti per celiaci possibili valori S (true), N (false), U (unknown).
+      geo:
+        $ref: '#/definitions/geo_json_punto'
+  model_ospedale:
+    title: 'Ospedale'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Il nome della struttura
+      provincia:
+        type: string
+        description: La provincia di appartenenza
+        example: Torino
+      comune:
+        type: string
+        description: Il comune di appartenenza
+      cap:
+        type: string
+        description: Il CAP di appartenenza
+      indirizzo:
+        type: string
+        description: L'indirizzo della struttura
+      telefono:
+        type: string
+        description: Il numero di telefono della struttura
+      email:
+        type: string
+        description: L'indirizzo email della struttura
+      sito_web:
+        type: string
+        description: La URL del sito web della struttura
+      tipo_codice:
+        type: string
+        description: Il codice della tipoliga di struttura
+      tipo_struttura_descrizione:
+        type: string
+        description: La descrizione del tipo di struttura
+      asl_codice:
+        type: string
+        description: Il codice dell'ASL di appartenenza
+      asl_descrizione:
+        type: string
+        description: La descrizione dell'ASL di appartenenza
+      natura:
+        type: string
+        description: La natura della struttura
+        enum:
+          - "Pubblico"
+          - "Privato"
+          - "Equiparato"
+      geo:
+        $ref: '#/definitions/geo_json_punto'
+
+  geo_json_punto:
+    title: '[Geo JSON] Punto'
+    type: object
+    properties:
+      type:
+        type: string
+        description: Ha sempre valore "Point"
+        example: 'Point'
+      coordinates:
+        type: array
+        description: |
+          Contiene due coordinate, la prima è la longitudine mentre
+          la seconda è la latitudine
+        example: [10.13, 12.1]
+        items:
+          type: number
+  info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+        description: Codice univoco di errore interno
+      title:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+        description: Codice univoco di errore interno
+      valore:
+        type: string
+        description: Testo dell'errore da mostrare al cittadino

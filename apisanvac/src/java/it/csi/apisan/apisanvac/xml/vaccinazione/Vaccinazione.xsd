@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="VaccinazioneEseguita" nillable="true" type="VaccinazioneEseguita" />
+  <xs:complexType name="VaccinazioneEseguita">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Somministrazione" type="DTO" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SomministrazioneDaPagare" type="DTOPagato" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SetPagato" type="PostResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Data" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="OraEsecuzione" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CentroVaccinale" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IndirizzoCentro" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ComuneCentro" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TelefonoCentro" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Ambulatorio" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Lotto" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NomeCommerciale" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MedicoResponsabile" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vaccinatore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SitoInoculazione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ViaSomministrazione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsFittizia" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PazienteCodice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PazienteNome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PazienteCognome" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PazienteDataNascita" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Associazioni" type="ArrayOfAssociazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfAssociazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Associazione" nillable="true" type="Associazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Associazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Codice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Dose" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vaccinazioni" type="ArrayOfVaccinazione" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ReazioneAvversa" type="Reazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfVaccinazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Vaccinazione" nillable="true" type="Vaccinazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Vaccinazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Codice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Dose" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Reazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneReazione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Data" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Gravita" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneReazione1" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DescrizioneReazione2" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOPagato">
+    <xs:complexContent mixed="false">
+      <xs:extension base="DTO">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Importo" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PostResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Success" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Message" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="State" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

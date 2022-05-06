@@ -1,0 +1,374 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns2="http://dma.csi.it/" xmlns:s0="http://dmacc.csi.it/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://dmacc.csi.it/">
+   <wsdl:types>
+      <s:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/">
+         <s:import namespace="http://dma.csi.it/"></s:import>
+         <s:element name="pRequest1" type="s0:CancellaPacchettoReq"></s:element>
+         <s:complexType name="CancellaPacchettoReq">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Request">
+                  <s:sequence>
+                     <s:element minOccurs="0" name="idPacchetto" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="pin" type="s:string"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:complexType name="Ens_Request">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Messagebody"></s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:complexType name="Ens_Messagebody"></s:complexType>
+         <s:element name="cancellaPacchettoResponse" type="s0:CancellaPacchettoRes"></s:element>
+         <s:complexType name="CancellaPacchettoRes">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Response">
+                  <s:sequence>
+                     <s:element maxOccurs="unbounded" minOccurs="0" ref="ns2:errori"></s:element>
+                     <s:element minOccurs="0" ref="s0:esito"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:element name="esito" type="ns2:risultatoCodice"></s:element>
+         <s:complexType name="Ens_Response">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Messagebody"></s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:element name="pRequest2" type="s0:ScaricaStudiReq"></s:element>
+         <s:complexType name="ScaricaStudiReq">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Request">
+                  <s:sequence>
+                     <s:element minOccurs="0" name="codiceFiscale" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="email" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="fuoriRegione" type="s:boolean"></s:element>
+                     <s:element minOccurs="0" name="idReferto" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="periodoConservazione" type="s:int"></s:element>
+                     <s:element minOccurs="0" name="pin" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="strutturaSanitaria" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="sistemaOperativo" type="ns2:sistemaOperativo"></s:element>
+                     <s:element minOccurs="0" name="accessionNumbers" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="asr" type="s:string"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:element name="scaricaStudiResponse" type="s0:ScaricaStudiRes"></s:element>
+         <s:complexType name="ScaricaStudiRes">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Response">
+                  <s:sequence>
+                     <s:element maxOccurs="unbounded" minOccurs="0" ref="ns2:errori"></s:element>
+                     <s:element minOccurs="0" ref="s0:esito"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:element name="pRequest4" type="s0:VerificaStatoListaRichiesteReq"></s:element>
+         <s:complexType name="VerificaStatoListaRichiesteReq">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Request">
+                  <s:sequence>
+                     <s:element minOccurs="0" name="codiceFiscale" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="idReferti" type="s0:ArrayOfidRefertoString"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:complexType name="ArrayOfidRefertoString">
+            <s:sequence>
+               <s:element maxOccurs="unbounded" minOccurs="0" name="idReferto" nillable="true" type="s:string"></s:element>
+            </s:sequence>
+         </s:complexType>
+         <s:element name="verificaStatoListaRichiesteResponse" type="s0:VerificaStatoListaRichiesteRes"></s:element>
+         <s:complexType name="VerificaStatoListaRichiesteRes">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Response">
+                  <s:sequence>
+                     <s:element maxOccurs="unbounded" minOccurs="0" ref="ns2:errori"></s:element>
+                     <s:element minOccurs="0" ref="s0:esito"></s:element>
+                     <s:element maxOccurs="unbounded" minOccurs="0" ref="ns2:statoRichiesteScarico"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:element name="pRequest3" type="s0:VerificaStatoRichiestaReq"></s:element>
+         <s:complexType name="VerificaStatoRichiestaReq">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Request">
+                  <s:sequence>
+                     <s:element minOccurs="0" name="codiceFiscale" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="idReferto" type="s:string"></s:element>
+                     <s:element minOccurs="0" name="pin" type="s:string"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:element name="verificaStatoRichiestaResponse" type="s0:VerificaStatoRichiestaRes"></s:element>
+         <s:complexType name="VerificaStatoRichiestaRes">
+            <s:complexContent>
+               <s:extension base="s0:Ens_Response">
+                  <s:sequence>
+                     <s:element maxOccurs="unbounded" minOccurs="0" ref="ns2:errori"></s:element>
+                     <s:element minOccurs="0" ref="s0:esito"></s:element>
+                     <s:element minOccurs="0" ref="ns2:idPacchetto"></s:element>
+                     <s:element minOccurs="0" ref="ns2:statoRichiesta"></s:element>
+                     <s:element minOccurs="0" ref="ns2:dimensione"></s:element>
+                  </s:sequence>
+               </s:extension>
+            </s:complexContent>
+         </s:complexType>
+      </s:schema>
+      <s:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://dma.csi.it/">
+         <s:element name="errori" nillable="true" type="ns2:errore"></s:element>
+         <s:complexType name="ArrayOferroreerrore">
+            <s:sequence>
+               <s:element maxOccurs="unbounded" minOccurs="0" name="errore" nillable="true" type="ns2:errore"></s:element>
+            </s:sequence>
+         </s:complexType>
+         <s:complexType name="errore">
+            <s:complexContent>
+               <s:extension base="ns2:codifica"></s:extension>
+            </s:complexContent>
+         </s:complexType>
+         <s:complexType name="codifica">
+            <s:sequence>
+               <s:element minOccurs="0" name="codice" type="s:string"></s:element>
+               <s:element minOccurs="0" name="descrizione" type="s:string"></s:element>
+               <s:element minOccurs="0" name="riferimento" type="s:string"></s:element>
+            </s:sequence>
+         </s:complexType>
+         <s:simpleType name="risultatoCodice">
+            <s:restriction base="s:string">
+               <s:enumeration value="SUCCESSO"></s:enumeration>
+               <s:enumeration value="FALLIMENTO"></s:enumeration>
+            </s:restriction>
+         </s:simpleType>
+         <s:simpleType name="sistemaOperativo">
+            <s:restriction base="s:string">
+               <s:enumeration value="WINDOWS"></s:enumeration>
+               <s:enumeration value="LINUX"></s:enumeration>
+               <s:enumeration value="MAC"></s:enumeration>
+            </s:restriction>
+         </s:simpleType>
+         <s:element name="statoRichiesteScarico" nillable="true" type="ns2:statoRichiestaScarico"></s:element>
+         <s:complexType name="ArrayOfstatoRichiestaScaricostatoRichiestaScarico">
+            <s:sequence>
+               <s:element maxOccurs="unbounded" minOccurs="0" name="statoRichiestaScarico" nillable="true" type="ns2:statoRichiestaScarico"></s:element>
+            </s:sequence>
+         </s:complexType>
+         <s:complexType name="statoRichiestaScarico">
+            <s:sequence>
+               <s:element minOccurs="0" name="dimensione" type="s:long"></s:element>
+               <s:element minOccurs="0" name="idPacchetto" type="s:string"></s:element>
+               <s:element minOccurs="0" name="idReferto" type="s:string"></s:element>
+               <s:element minOccurs="0" name="statoRichiesta" type="ns2:statoRichiesta"></s:element>
+            </s:sequence>
+         </s:complexType>
+         <s:simpleType name="statoRichiesta">
+            <s:restriction base="s:string">
+               <s:enumeration value="ERRORE_WS"></s:enumeration>
+               <s:enumeration value="RICHIESTA_NON_PRESENTE"></s:enumeration>
+               <s:enumeration value="CANCELLAZIONE_PACCHETTO_SOSPESA"></s:enumeration>
+               <s:enumeration value="COMPOSIZIONE_PACCHETTO_SOSPESA"></s:enumeration>
+               <s:enumeration value="SCARICATO"></s:enumeration>
+               <s:enumeration value="DA_ELABORARE"></s:enumeration>
+               <s:enumeration value="ELAB_IN_CORSO"></s:enumeration>
+               <s:enumeration value="DISPONIBILE"></s:enumeration>
+               <s:enumeration value="INVIO_MAIL_IN_CORSO"></s:enumeration>
+               <s:enumeration value="NOTIFICATO"></s:enumeration>
+               <s:enumeration value="ERRORE_COMPONI_PACCHETTO"></s:enumeration>
+               <s:enumeration value="ERRORE_INVIO_MAIL"></s:enumeration>
+               <s:enumeration value="PACCHETTO_DA_CANCELLARE"></s:enumeration>
+               <s:enumeration value="PACCHETTO_IN_CANCELLAZIONE"></s:enumeration>
+               <s:enumeration value="PACCHETTO_CANCELLATO"></s:enumeration>
+               <s:enumeration value="ERRORE_IN_CANCELLAZIONE_PACCHETTO"></s:enumeration>
+            </s:restriction>
+         </s:simpleType>
+         <s:element name="idPacchetto" type="s:string"></s:element>
+         <s:element name="statoRichiesta" type="ns2:statoRichiesta"></s:element>
+         <s:element name="dimensione" type="s:long"></s:element>
+      </s:schema>
+   </wsdl:types>
+   <wsdl:message name="verificaStatoRichiestaSoapIn">
+      <wsdl:part name="pRequest3" element="s0:pRequest3"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="verificaStatoRichiestaSoapOut">
+      <wsdl:part name="verificaStatoRichiestaResponse" element="s0:verificaStatoRichiestaResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="scaricaStudiSoapIn">
+      <wsdl:part name="pRequest2" element="s0:pRequest2"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="scaricaStudiSoapOut">
+      <wsdl:part name="scaricaStudiResponse" element="s0:scaricaStudiResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="verificaStatoListaRichiesteSoapIn">
+      <wsdl:part name="pRequest4" element="s0:pRequest4"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="verificaStatoListaRichiesteSoapOut">
+      <wsdl:part name="verificaStatoListaRichiesteResponse" element="s0:verificaStatoListaRichiesteResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="cancellaPacchettoSoapIn">
+      <wsdl:part name="pRequest1" element="s0:pRequest1"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="cancellaPacchettoSoapOut">
+      <wsdl:part name="cancellaPacchettoResponse" element="s0:cancellaPacchettoResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:portType name="CCScaricoStudiServicePortType">
+      <wsdl:operation name="verificaStatoRichiesta">
+         <wsdl:input message="s0:verificaStatoRichiestaSoapIn" wsaw:Action="http://dmacc.csi.it/IMR.WS.ScaricoStudi.verificaStatoRichiesta"></wsdl:input>
+         <wsdl:output message="s0:verificaStatoRichiestaSoapOut" wsaw:Action="http://dmacc.csi.it/ScaricoStudiServiceSoap/verificaStatoRichiestaResponse"></wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="scaricaStudi">
+         <wsdl:input message="s0:scaricaStudiSoapIn" wsaw:Action="http://dmacc.csi.it/IMR.WS.ScaricoStudi.scaricaStudi"></wsdl:input>
+         <wsdl:output message="s0:scaricaStudiSoapOut" wsaw:Action="http://dmacc.csi.it/ScaricoStudiServiceSoap/scaricaStudiResponse"></wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="verificaStatoListaRichieste">
+         <wsdl:input message="s0:verificaStatoListaRichiesteSoapIn" wsaw:Action="http://dmacc.csi.it/IMR.WS.ScaricoStudi.verificaStatoListaRichieste"></wsdl:input>
+         <wsdl:output message="s0:verificaStatoListaRichiesteSoapOut" wsaw:Action="http://dmacc.csi.it/ScaricoStudiServiceSoap/verificaStatoListaRichiesteResponse"></wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="cancellaPacchetto">
+         <wsdl:input message="s0:cancellaPacchettoSoapIn" wsaw:Action="http://dmacc.csi.it/IMR.WS.ScaricoStudi.cancellaPacchetto"></wsdl:input>
+         <wsdl:output message="s0:cancellaPacchettoSoapOut" wsaw:Action="http://dmacc.csi.it/ScaricoStudiServiceSoap/cancellaPacchettoResponse"></wsdl:output>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="CCScaricoStudiServiceSoap11Binding" type="s0:CCScaricoStudiServicePortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+      <wsdl:operation name="verificaStatoRichiesta">
+         <soap:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.verificaStatoRichiesta" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="scaricaStudi">
+         <soap:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.scaricaStudi" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="verificaStatoListaRichieste">
+         <soap:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.verificaStatoListaRichieste" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="cancellaPacchetto">
+         <soap:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.cancellaPacchetto" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCScaricoStudiServiceSoap12Binding" type="s0:CCScaricoStudiServicePortType">
+      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
+      <wsdl:operation name="verificaStatoRichiesta">
+         <soap12:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.verificaStatoRichiesta" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="scaricaStudi">
+         <soap12:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.scaricaStudi" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="verificaStatoListaRichieste">
+         <soap12:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.verificaStatoListaRichieste" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="cancellaPacchetto">
+         <soap12:operation soapAction="http://dmacc.csi.it/IMR.WS.ScaricoStudi.cancellaPacchetto" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCScaricoStudiServiceHttpBinding" type="s0:CCScaricoStudiServicePortType">
+      <http:binding verb="POST"></http:binding>
+      <wsdl:operation name="verificaStatoRichiesta">
+         <http:operation location="verificaStatoRichiesta"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="scaricaStudi">
+         <http:operation location="scaricaStudi"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="verificaStatoListaRichieste">
+         <http:operation location="verificaStatoListaRichieste"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="cancellaPacchetto">
+         <http:operation location="cancellaPacchetto"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="CCScaricoStudiService">
+      <wsdl:port name="CCScaricoStudiServiceHttpsSoap11Endpoint" binding="s0:CCScaricoStudiServiceSoap11Binding">
+         <soap:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCScaricoStudiService.CCScaricoStudiServiceHttpsSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCScaricoStudiServiceHttpSoap11Endpoint" binding="s0:CCScaricoStudiServiceSoap11Binding">
+         <soap:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCScaricoStudiService.CCScaricoStudiServiceHttpSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCScaricoStudiServiceHttpSoap12Endpoint" binding="s0:CCScaricoStudiServiceSoap12Binding">
+         <soap12:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCScaricoStudiService.CCScaricoStudiServiceHttpSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCScaricoStudiServiceHttpsSoap12Endpoint" binding="s0:CCScaricoStudiServiceSoap12Binding">
+         <soap12:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCScaricoStudiService.CCScaricoStudiServiceHttpsSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCScaricoStudiServiceHttpEndpoint" binding="s0:CCScaricoStudiServiceHttpBinding">
+         <http:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCScaricoStudiService.CCScaricoStudiServiceHttpEndpoint"></http:address>
+      </wsdl:port>
+      <wsdl:port name="CCScaricoStudiServiceHttpsEndpoint" binding="s0:CCScaricoStudiServiceHttpBinding">
+         <http:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCScaricoStudiService.CCScaricoStudiServiceHttpsEndpoint"></http:address>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

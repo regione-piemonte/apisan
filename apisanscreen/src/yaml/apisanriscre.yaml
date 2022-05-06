@@ -1,0 +1,1710 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanscreen/api/v1
+schemes:
+  - https
+info:
+  title: 'Prevenzione serena'
+  version: 0.0.6
+  description: |
+  
+    # Avvertenze
+    ---
+    1. Questo YAML è stato pensato esclusivamente per il front-end destinato al cittadino
+    2. Questo YAML è un contratto tra lo strato verde e lo strato rosso
+    3. Questo YAML è stato progettato pensando ai servizi già preesistenti di `riscre` e all'integrazione con `LOCCSI`
+    4. Ad oggi manca la gestione delle comunicazioni
+    5. endpoint `/geocoding` verrà spostato su `apisancross`
+
+
+    # Prototipo Interfaccia
+    ---
+    https://49opxy.axshare.com/#id=2q070y&p=prevenzione_serena
+    
+    # Mapping rosso - giallo
+    
+    
+    | Rosso                                                             | Giallo                         |
+    | ------------------------------------------------------------------|--------------------------------|
+    | GET /cittadini/{cit_id}/appuntamento/{tipologia_id}/prenotabile   | Check_Eta_Screening            |
+    | GET /cittadini/{cit_id}                                           | Scr_Ana_01                     |
+    | GET /cittadini/{cit_id}/appuntamento-citologico                   | Scr_Cit_01                     |
+    | GET /cittadini/{cit_id}/appuntamento-mammografico                 | Scr_Mam_01                     |
+    | GET /cittadini/{cit_id}/appuntamento/{tipologia_id}               | Scr_App_01                     |
+    | PUT /cittadini/{cit_id}/contatti                                  | Set_Situazione_Ass_Tel_WEB     |
+    | PUT /cittadini/{cit_id}/luogo                                     | Set_Situazione_Ass_Ind_WEB     |
+    | GET /agende/{agenda_id}/date-disponibili                          | Get_Date_Disponibili_WEB       |
+    | GET /agende/{agenda_id}/date-disponibili/{data}/orari-disponibili | Get_Appuntamenti_WEB           |
+    | GET /strutture                                                    | GET_STRUTTURE_WEB2             |
+    | GET /unita-operative/{unita_operativa_id}                         | Get_Dettaglio_Strutture_WEB    |
+    | POST /cittadini/{cit_id}/appuntamento                             | Crea_Appuntamento_WEB          |
+    | PUT /cittadini/{cit_id}/appuntamento/{tipologia_id}               | Crea_Appuntamento_WEB          |
+    | GET /cittadini/{cit_id}/sesso                                     | VerificaAssistito              |
+    | GET /unita-operative                                              | LOCCSI                         |
+    | GET /cittadini/{cit_id}/documenti                                 | GetElencoDocumentiDigitali     |
+    | GET /cittadini/{cit_id}/documenti/{documento_id}                  | GetDettaglioDocumentoDigitale  |
+    
+    # Note versione 0.0.9 (27 Novembre 2020)
+      ---
+      * cambiata api da /cittadini/{cit_id}/appuntamento/{tipologia_id}/prenotabile a /cittadini/{cit_id}/appuntamento/{tipologia_id}/operazioni-consentite
+      * cancellato model_prenotabile
+      * model_operazioni_appuntamento
+
+    # Note versione 0.0.8 (18 Ott 2020)
+      ---
+      * Modifica query param di unita-operative
+      * Tolto api geocoding (spostato su apisancross)
+
+    # Note versione 0.0.7 (02 Nov 2020)
+      * Tolto campo istat_comune dall'api /unita-operative/{unita_operativa_id}
+      * Tolto codice_interno e codice_interno_prefisso a /unita-operative
+      * aggiunto model_indirizzo_geo
+      * modifica model model_appuntamento_dettaglio aggiunto model_indirizzo
+      * modifica model_unita_operativa_lista aggiunto model_indirizzo_geo
+      * modifica model_unita_operativa_dettaglio aggiunto model_indirizzo_geo
+      * aggiunto query param adesione_spontanea a api /agende/{agenda_id}/date-disponibili
+      * modificato payload appuntamento modifica su /cittadini/{cit_id}/appuntamento/{tipologia_id}
+      * cambiato codice ritorno da 200 a 204 su modifica contatti e modifica appuntamento
+
+
+    
+    # Note versione 0.0.6 (14 Ott 2020)
+        ---
+        * Aggiunto campo `livello_appuntamento` nel model `model_appuntamento_dettaglio`
+
+    # Note versione 0.0.5 (11 Giu 2020)
+    ---
+    * Aggiunto campo `stato_codice` nel model `model_orario_disponibile`
+    * Aggiunto endpoint `tipologia_screening_descrizione` nel model `model_documento_lista`
+    
+    # Note versione 0.0.4 (09 Giu 2020)
+    ---
+    * Aggiunto endpoint `GET Lista documenti` per la visualizzazione della lista di documenti di un cittadino
+    * Aggiunto endpoint `GET Dettaglio documento` per la visualizzazione del singolo documento
+
+    # Note versione 0.0.3 (25 Mag 2020)
+    ---
+    * Aggiunto campo `geo` nella response dell'endpoint `GET Dettaglio struttura`
+
+    # Note versione 0.0.2 (20 Mag 2020)
+    ---
+    * Aggiunta descrizione risorsa nell'endpoint `GET Dettaglio struttura`
+    * Aggiunto endpoint per la creazione di un nuovo appuntamento `POST Nuovo appuntamento`
+
+    # Note versione 0.0.1 (20 Mag 2020)
+    ---
+    * Prima implementazione
+
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+
+  '/cittadini/{cit_id}':
+    get:
+      summary: Dettaglio cittadino
+      description:  |
+        Permette di ottenre le info di un assistito
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_cittadino'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/sesso':
+    get:
+      summary: Sesso cittadino
+      description:  |
+        Permette di ottenere il sesso di un cittadino
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_cittadino_sesso'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/contatti':
+    put:
+      summary: Modifica contatti
+      description:  |
+        Permette di modificare i contatti di un cittadino
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+        - $ref: '#/parameters/payload_cittadino_contatti_modifica'
+      responses:
+        '204':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/luogo':
+    put:
+      summary: Modifica luogo
+      description:  |
+        Permette di modificare il luogo di un cittadino
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+        - $ref: '#/parameters/payload_cittadino_luogo_modifica'
+      responses:
+        '204':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/cittadini/{cit_id}/appuntamento-citologico':
+    get:
+      summary: Appuntamento citologica
+      description:  |
+        Permette di ottenere l'eventuale appuntamento citologico
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_appuntamento_lista'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/appuntamento-mammografico':
+    get:
+      summary: Appuntamento mammografico
+      description:  |
+        Permette di ottenere l'eventuale appuntamento mammografico
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_appuntamento_lista'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/appuntamento':
+    post:
+      summary: Nuovo appuntamento
+      description:  |
+        Permette di prenotare un nuovo appuntamento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+        - $ref: '#/parameters/payload_appuntamento_nuovo'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/appuntamento/{tipologia_id}':
+    get:
+      summary: Dettaglio appuntamento
+      description:  |
+        Permette di ottenere il dettaglio di un appuntamento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_tipologia_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_appuntamento_dettaglio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+    put:
+      summary: Modifica appuntamento
+      description:  |
+        Permette di modificare un appuntamento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_tipologia_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+        - $ref: '#/parameters/payload_appuntamento_modifica'
+      responses:
+        '204':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/appuntamento/{tipologia_id}/operazioni-consentite':
+    get:
+      summary: Prenotabilità appuntamento
+      description:  |
+        Permette di controllare se un cittadino può prenotare o meno un appuntamento.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_tipologia_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_operazioni_appuntamento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/strutture':
+    get:
+      summary: Elenco strutture
+      description:  |
+        Permette di ottenere l'elenco delle strutture  (ASL + Unità operative)
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_tipologia_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/response_struttura_lista'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/unita-operative':
+    get:
+      summary: Elenco unità operative
+      description:  |
+        Permette di cercare le unità operative per coordinate geografiche
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/query_tipologia_obbligatorio'
+        - $ref: '#/parameters/query_lat_obbligatorio'
+        - $ref: '#/parameters/query_lon_obbligatorio'
+        - $ref: '#/parameters/query_distanza_obbligatorio'
+        - $ref: '#/parameters/query_limit'
+        - $ref: '#/parameters/query_offset'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_unita_operativa_loccsi'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/unita-operative/{unita_operativa_id}':
+    get:
+      summary: Dettaglio struttura
+      description:  |
+        Permette di ottenere il dettaglio della struttura
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_unita_operativa_id'
+        - $ref: '#/parameters/query_tipologia_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+        - $ref: '#/parameters/query_asl_codice_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_unita_operativa_dettaglio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/agende/{agenda_id}/date-disponibili':
+    get:
+      summary: Date disponibili
+      description:  |
+        Permette di ottenere l'elenco delle date disponiobili per fissare l'appuntamento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_agenda_id'
+        - $ref: '#/parameters/query_tipologia_obbligatorio'
+        - $ref: '#/parameters/query_mese_obbligatorio'
+        - $ref: '#/parameters/query_anno_obbligatorio'
+        - $ref: '#/parameters/query_adesione_spontanea_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_data_disponibile'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/agende/{agenda_id}/date-disponibili/{data}/orari-disponibili':
+    get:
+      summary: Date disponibili
+      description:  |
+        Permette di ottenere l'elenco delle date disponiobili per fissare l'appuntamento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_agenda_id'
+        - $ref: '#/parameters/path_data'
+        - $ref: '#/parameters/query_tipologia_obbligatorio'
+        - $ref: '#/parameters/query_adesione_spontanea_obbligatorio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_orario_disponibile'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/documenti':
+    get:
+      summary: Lista documenti
+      description:  |
+        Permette di leggere l'elenco dei documenti di un assistito
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/query_codice_interno_obbligatorio'
+        - $ref: '#/parameters/query_codice_interno_prefisso_obbligatorio'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_documento_lista'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/documenti/{documento_id}':
+    get:
+      summary: Dettaglio documento
+      description:  |
+        Permette di leggere un singolo documento
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_documento_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_documento_dettaglio'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '404':
+          $ref: '#/responses/NotFound'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  path_cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  path_tipologia_id:
+    in: path
+    name: tipologia_id
+    type: string
+    required: true
+    description: Il codice della tipologia di screening
+  path_agenda_id:
+    in: path
+    name: agenda_id
+    type: string
+    required: true
+    description: Il codice dell'agenda
+  path_data:
+    in: path
+    name: data
+    type: string
+    required: true
+    description: La data su cui operare
+  path_unita_operativa_id:
+    in: path
+    name: unita_operativa_id
+    type: string
+    required: true
+    description: Il codice dell'unità operativa su cui operare
+  path_documento_id:
+    in: path
+    name: documento_id
+    type: integer
+    required: true
+    description: L'id del documento
+  query_cittadino_obbligatorio:
+    in: query
+    name: 'cittadino'
+    type: string
+    required: true
+    description: |
+      Il codice fiscale del cittadino
+  query_tipologia_obbligatorio:
+    in: query
+    name: 'tipologia'
+    type: string
+    required: true
+    description: |
+      Il codice della tipologia di screen
+  query_mese_obbligatorio:
+    in: query
+    name: 'mese'
+    type: string
+    required: true
+    description: |
+      Il mese per cui filtrare nel formato MM
+  query_anno_obbligatorio:
+    in: query
+    name: 'anno'
+    type: string
+    required: true
+    description: |
+      L'anno per cui filtrare nel formato YYYY
+  query_adesione_spontanea_obbligatorio:
+    in: query
+    name: 'adesione_spontanea'
+    type: integer
+    required: true
+    description: |
+      1 se si vogliono cercare le date per adesione spontanea, 0 altrimenti
+  query_codice_interno_obbligatorio:
+    in: query
+    name: 'codice_interno'
+    type: string
+    required: true
+    description: |
+      Il codice interno univoco dell'assistito
+  query_codice_interno_prefisso_obbligatorio:
+    in: query
+    name: 'codice_interno_prefisso'
+    type: string
+    required: true
+    description: |
+      Il prefisso del codice interno univoco dell'assistito
+  query_asl_codice_obbligatorio:
+    in: query
+    name: 'asl'
+    type: string
+    required: true
+    description: |
+      Il codice dell'ASL
+  query_istat_comune_obbligatorio:
+    in: query
+    name: 'istat_comune'
+    type: string
+    required: true
+    description: |
+      Il codice dell'ASL  
+  query_lat_obbligatorio:
+    in: query
+    name: 'lat'
+    type: string
+    required: true
+    description: |
+      La latitudine del centro geografico su cui cercare
+  query_lon_obbligatorio:
+    in: query
+    name: 'lon'
+    type: string
+    required: true
+    description: |
+      La longitudine del centro geografico su cui cercare
+  query_distanza_obbligatorio:
+    in: query
+    name: 'distanza'
+    type: number
+    required: true
+    description: |
+      La distanza in Km su cui cercare
+  query_limit:
+    in: query
+    name: 'limit'
+    type: integer
+    required: false
+    description: |
+      Il numero di elementi da restiutire
+  query_offset:
+    in: query
+    name: 'offset'
+    type: integer
+    required: false
+    description: |
+      L'elemento di partenza della paginazione
+  query_ricerca_obbligatorio:
+    in: query
+    name: 'q'
+    type: string
+    required: true
+    description: |
+      Indirizzo/comune completo o parziale da geocodificare
+  payload_cittadino_contatti_modifica:
+    in: body
+    name: payload contatti modifica
+    required: true
+    description: |
+      I dati da passare per modificare i contatti
+    schema:
+      type: object
+      properties:
+        telefono_1:
+          type: string
+        telefono_2:
+          type: string
+        email:
+          type: string
+  payload_cittadino_luogo_modifica:
+    in: body
+    name: payload luogo modifica
+    required: true
+    description: |
+      I dati da passare per modificare il luogo del paziente
+    schema:
+      type: object
+      properties:
+        cod_comune:
+          type: string
+        cap:
+          type: string
+        indirizzo:
+          type: string
+        civico:
+          type: string
+  payload_appuntamento_nuovo:
+    in: body
+    name: payload appuntamento niovo
+    required: true
+    description: |
+      I dati da passare per prenotare un nuovo appuntamento
+    schema:
+      type: object
+      properties:
+        tipologia_codice:
+          type: string
+        agenda_codice:
+          type: integer
+        unita_operativa_codice:
+          type: string
+        asl_codice:
+          type: integer
+        dipartimento_codice:
+          type: integer
+        data:
+          type: string
+          format: date
+        ora:
+          type: string
+          format: time
+          example: '12:08'
+        ora_inizio:
+          type: string
+          format: time
+          example: '12:08'
+        ora_fine:
+          type: string
+          format: time
+          example: '12:08'
+        ora_slot:
+          type: string
+          format: time
+          example: '12:08'
+  payload_appuntamento_modifica:
+    in: body
+    name: payload appuntamento modifica
+    required: true
+    description: |
+      I dati da passare per modificare un appuntamento
+    schema:
+      type: object
+      properties:
+        agenda_codice:
+          type: integer
+        unita_operativa_codice:
+          type: string
+        asl_codice:
+          type: integer
+        dipartimento_codice:
+          type: integer
+        data:
+          type: string
+          format: date
+        ora:
+          type: string
+          format: time
+          example: '12:08'
+        ora_inizio:
+          type: string
+          format: time
+          example: '12:08'
+        ora_fine:
+          type: string
+          format: time
+          example: '12:08'
+        ora_slot:
+          type: string
+          format: time
+          example: '12:08'
+        progressivo:
+          type: string
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  model_cittadino:
+    title: 'Cittadino'
+    type: object
+    properties:
+      codice_interno:
+        type: integer
+        description: |
+          Un codice che identifica univocamente l'assistita all'interno del sistema regionale di screening
+      codice_interno_prefisso:
+        type: string
+        description: |
+          Un prefisso che si abbina al codice interno.
+          * S = 'screening'
+          * E = 'extra screening'
+          * V = 'Valle d'Aosta'
+        enum:
+          - S
+          - E
+          - V
+      nome:
+        type: string
+      cognome:
+        type: string
+      data_nascita:
+        type: string
+        format: date
+      tessera_sanitaria:
+        type: string
+      provincia:
+        type: string
+      comune:
+        type: string
+      cap:
+        type: string
+      indirizzo:
+        type: string
+      civico:
+        type: string
+      provincia_alternativo:
+        type: string
+      comune_alternativo:
+        type: string
+      cap_alternativo:
+        type: string
+      indirizzo_alternativo:
+        type: string
+      civico_alternativo:
+        type: string
+      telefono_1:
+        type: string
+      telefono_2:
+        type: string
+      telefono_1_locale:
+        type: string
+      telefono_2_locale:
+        type: string
+      email:
+        type: string
+      stato_codice:
+        type: string
+        description: |
+          E' il codice dello stato dell'assistito (recuperato dalla tabella MAMMOGRAFICO o CITOLOGCIO).
+          Ritorna 0 se lo stato non è valido per operare sui SOL.
+          E' il valore che viene restituito dalla chiamata alla procedura PLSQL "STATO_VAL".
+  model_cittadino_sesso:
+    title: 'Cittadino sesso'
+    type: object
+    properties:
+      codice_interno:
+        type: integer
+        description: |
+          Un codice che identifica univocamente l’assistita all’interno del sistema regionale di screening
+      codice_interno_prefisso:
+        type: string
+        description: |
+          Un prefisso che si abbina al codice interno.
+          * S = 'screening'
+          * E = 'extra screening'
+          * V = 'Valle d'Aosta'
+        enum:
+          - S
+          - E
+          - V
+      sesso:
+        type: string
+        description: |
+          Un codice che descrive il sesso del cittadino.
+          * M
+          * F
+        enum:
+          - M
+          - F
+  model_appuntamento_lista:
+    title: 'Appuntamento Lista'
+    type: object
+    properties:
+      data:
+        type: string
+        format: date
+        description: Il giorno dell'appuntamento
+      ora:
+        type: string
+        format: time
+        description: L'orario dell'appuntamento
+        example: '12:05'
+      luogo:
+        type: string
+        description: La descrizione dell'unità operativa presso cui si svolgerà l'appuntamento
+      data_esito_ultimo:
+        type: string
+        format: datetime
+        description: Data ultimo invio esito
+      data_sollecito_ultimo:
+        type: string
+        format: datetime
+        description: Data ultimo invio sollecito
+      data_convocazione_ultimo:
+        type: string
+        format: datetime
+        description: Data ultimo invio invito GOI
+      stato_codice:
+        type: string
+        description: Il codice dello stato attuale citologico del cittadino
+      agenda_codice:
+        type: integer
+        description: Il codice dell'agenda citologica
+      app_visibile:
+        type: string
+        description: indica se l'appuntamento sia visibile o meno può valere SI, NO o UO
+  model_operazioni_appuntamento:
+    title: model delle possibili operazioni su appuntamento
+    type: object
+    properties:
+      prenotabile:
+        type: boolean
+        description: indica se l'appuntamento è prenotabile o meno
+      modificabile:
+        type: boolean
+        description: indica se l'appuntamento è modificabile o meno
+      visualizzabile:
+        type: boolean
+        description: indica se l'appuntamento è visualizzabile o meno
+      messaggio:
+        type: string
+        description: messaggio da dare all'utente
+  model_appuntamento_dettaglio:
+    title: 'Appuntamento dettaglio'
+    type: object
+    properties:
+      stato_codice:
+        type: string
+        description: Il codice dello stato del cittadino
+      agenda_codice:
+        type: integer
+        description: Il codice dell'agenda
+      dipartimento_codice:
+        type: integer
+        description: Il codice del dipartimento
+      dipartimento_descrizione:
+        type: string
+        description: La descrizione del dipartimento
+      asl_codice:
+        type: integer
+        description: Codice dell'ASL
+      asl_descrizione:
+        type: string
+        description: La descrizione dell'ASL
+      unita_operativa_codice:
+        type: string
+        description: Il codice dell'unità operativa
+      unita_operativa_descrizione:
+        type: string
+        description: Il codice dell'agenda citologica
+      unita_operativa_comune:
+        type: string
+        description: Il comune dell'unità operativa
+      unita_operativa_indirizzo:
+        type: string
+        description: L'indirizzo dell'unità operativa
+      unita_operativa_civico:
+        type: string
+        description: Il numero civico dell'unità operativa
+      data_invitabile:
+        type: string
+        format: date
+        description: Data a partire dalla quale l’assistita è invitabile
+      livello_appuntamento:
+        type: string
+        description:  |
+          Il livello dell'appuntamento.
+             * 1 - se I livello
+             * 2 - se II livello
+      cod_unpr:
+        type: string
+        description: codice dell'unpr
+      indirizzo_geo:
+        $ref: '#/definitions/model_indirizzo_geo'
+  model_indirizzo_geo:
+    title: 'campi dell indirizzo e coordinate'
+    type: object
+    properties:
+      coordinate:
+        $ref: '#/definitions/geo_json_point'
+      tipo_via_stradario:
+        type: string
+        description: tipo via
+      prep_stradario:
+        type: string 
+        description: preposizione stradario
+      via:
+        type: string
+        description: descrizione della via
+      civico:
+        type: string
+        description: numero civico
+      comune:
+        type: string
+        description: descrizione  comune                
+  model_data_disponibile:
+    title: 'Data disponibile'
+    type: object
+    properties:
+      data:
+        type: string
+        format: date
+        description: La data disponibile
+  model_orario_disponibile:
+    title: 'Orario disponibile'
+    type: object
+    properties:
+      ora:
+        type: string
+        format: time
+        description: L'orario da mostrare a schermo
+        example: '14:08'
+      ora_inizio:
+        type: string
+        format: time
+        description: L'orario di inizio dell'intervallo
+        example: '14:08'
+      ora_fine:
+        type: string
+        format: time
+        description: L'orario di fine dell'intervallo
+        example: '14:08'
+      ora_slot:
+        type: string
+        format: time
+        description: L'orario che rappresenta lo slot
+        example: '14:08'
+      progressivo:
+        type: string
+        description: |
+          Un codice progressivo che indica il numero del posto disponibile in quello slot temporale.
+          Ad esempio sulla fascia oraria delle 08 possono esserci 3 progressivi in modo che si possano
+          prenotare 3 pazienti. Questo per gestire l'overbooking della prenotazione
+      stato_codice:
+        type: string
+        enum:
+          - B
+          - L
+        description: |
+          Un codice che identifica lo stato dell'orario.
+          Può valere "B" che indica che l'orario è attualmente bloccato
+          o "L" che indica che l'orario è attualmente libero
+  model_asl:
+    title: 'ASL'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice della ASL
+      descrizione:
+        type: string
+        description: La descrizione della ASL
+  model_unita_operativa_lista:
+    title: 'Unità operativa lista'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice della UO
+      descrizione:
+        type: string
+        description: La descrizione della UO
+      indirizzo:
+        type: string
+        description: L'indirizzo della UO
+      asl_codice:
+        type: string
+        description: Il codice dell'ASL di riferimento della UO
+      comune_istat:
+        type: string
+        description: Il codice istat del comune di riferimento della UO
+      comune_descrizione:
+        type: string
+        description: La descrizione del comune di riferimento della UO
+      provincia_codice:
+        type: string
+        description: Il codice della provincia di riferimento della UO
+      indirizzo_geo:
+        $ref: '#/definitions/model_indirizzo_geo'
+  response_struttura_lista: 
+    title: 'Response struttura lista'
+    type: object
+    properties:
+      asl:
+        type: array
+        items:
+          $ref: '#/definitions/model_asl'
+      unita_operative:
+        type: array
+        items:
+          $ref: '#/definitions/model_unita_operativa_lista'
+  model_unita_operativa_dettaglio:
+    title: 'Unità operativa dettaglio'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice della UO
+      descrizione:
+        type: string
+        description: La descrizione della UO
+      indirizzo:
+        type: string
+        description: L'indirizzo della UO
+      civico:
+        type: string
+        description: Il civico della UO
+      cap:
+        type: string
+        description: il CAP della UO
+      comune_descrizione:
+        type: string
+        description: Il comune della UO
+      asl_codice:
+        type: string
+        description: Il codice dell'ASL di riferimento della UO
+      dipartimento_codice:
+        type: string
+        description: Il codice del dipartimento di riferimento della UO
+      agenda_codice:
+        type: string
+        description: Il codice dell'agenda di riferimento della UO
+      data_primo_appuntamento_disponibile:
+        type: string
+        format: date
+        description: La data del primo appuntamento disponibie
+      indirizzo_geo:
+        $ref: '#/definitions/model_indirizzo_geo'
+  model_documento_lista:
+    title: 'Documento Lista'
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Identificativo univoco del documento
+      codice:
+        type: string
+        description: Il codice del documento
+      file_nome:
+        type: string
+        description: Il nome del file
+      modello_codice:
+        type: string
+        description: Il codice del modello di documento
+      modello_descrizione:
+        type: string
+        description: La descrizione del modello di documento
+      categoria_codice:
+        type: integer
+        description: Il codice della categoria del documento
+      tipologia_screening_codice:
+        type: string
+        description: Il codice della tipologia di screening
+      tipologia_screening_descrizione:
+        type: string
+        description: La descrizione della tipologia di screening
+      data_generazione:
+        type: string
+        format: date-time
+        description: La data in cui è stato generato il file
+      letto:
+        type: boolean
+        description: Indica se il documento è stato aperto o meno
+  model_documento_dettaglio:
+    title: 'Documento Dettaglio'
+    type: object
+    properties:
+      base_64:
+        type: string
+        description: Il contenuto del file in base64
+      letto:
+        type: boolean
+        description: Indica se il documento è stato aperto o meno
+      nome_file:
+        type: string
+        description: nome del file
+  
+  model_unita_operativa_loccsi:
+    title: 'Unità operativa LOCCSI'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice della UO
+      descrizione:
+        type: string
+        description: La descrizione della UO
+      indirizzo:
+        type: string
+        description: L'indirizzo della UO
+      civico:
+        type: string
+        description: Il civico della UO
+      cap:
+        type: string
+        description: il CAP della UO
+      asl_codice:
+        type: string
+        description: Il codice dell'ASL di riferimento della UO
+      asl_descrizione:
+        type: string
+        description: Il codice dell'ASL di riferimento della UO
+      comune_istat:
+        type: string
+        description: Il codice istat del comune di riferimento della UO
+      comune_descrizione:
+        type: string
+        description: La descrizione del comune di riferimento della UO
+      provincia_codice:
+        type: string
+        description: Il codice della provincia di riferimento della UO
+      dipartimento_codice:
+        type: string
+        description: Il codice del dipartimento di riferimento della UO
+      agenda_codice:
+        type: string
+        description: Il codice dell'agenda di riferimento della UO
+      geo:
+        $ref: '#/definitions/geo_json_point'
+  model_indice_loccsi:
+    title: 'Indice LOCCSI'
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Id dell'indice LOCCSI
+      name:
+        type: string
+        description: Il nome dell'indice LOCCSI
+      description:
+        type: string
+        description: Descrizione dell'indice LOCCSI
+      catalogs:
+        type: array
+        description: Elenco di nomi di cataloghi coinvolti nell'indice
+        items:
+          type: string
+      featureCollection:
+        $ref: '#/definitions/geo_json_feature_collection'
+  
+  geo_json_geometry:
+    title: '[Geo JSON] Geometry'
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+        - Point
+        - LineString
+        - Polygon
+        - MultiPoint
+        - MultiLineString
+        - MultiPolygon
+        description: the geometry type
+    required:
+      - type
+  geo_json_point_3D:
+    title: '[Geo JSON] Point 3D'
+    type: array
+    minItems: 2
+    maxItems: 3
+    items:
+      type: number
+  geo_json_point:
+    title: '[Geo JSON] Point'
+    type: object
+    allOf:
+      - $ref: "#/definitions/geo_json_geometry"
+      - properties:
+          coordinates:
+            $ref: '#/definitions/geo_json_point_3D'
+  geo_json_feature:
+    title: '[Geo JSON] Feature'
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - Feature
+      id:
+        type: integer
+      geometry:
+        $ref: '#/definitions/geo_json_geometry'
+      properties:
+        type: object
+        description: |
+          contiene una serie di proprietà non strutturabili. Potrebbero cambiare da record a record
+    required:
+     - type
+     - id
+     - geometry
+  geo_json_feature_collection:
+    title: '[Geo JSON] Feature Collection'
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+        - FeatureCollection
+      features:
+        type: array
+        items:
+          $ref: '#/definitions/geo_json_feature'
+    required:
+     - type
+     - features
+  
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+  filtri_stringhe:
+    title: '[FILTRI][CRITERI] Stringhe'
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  filtri_numeri:
+    title: '[FILTRI][CRITERI] Numeri'
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  filtri_date:
+    title: '[FILTRI][CRITERI] Date'
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  filtri_booleani:
+    title: '[FILTRI][CRITERI] Booleani'
+    type: object
+    properties:
+      eq:
+        type: boolean
+      ne:
+        type: boolean

@@ -1,0 +1,88 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://dmacc.csi.it/SetPreferenzeArruolabilita/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://dmacc.csi.it/SetPreferenzeArruolabilita/">
+   <wsdl:types>
+      <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/SetPreferenzeArruolabilita/">
+         <xsd:element name="Set">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="codiceFiscale" type="xsd:string"></xsd:element>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="SetResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="inserimentoAvvenuto" type="xsd:string"></xsd:element>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="SetRequest">
+      <wsdl:part name="inputParams" element="tns:Set"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="SetResponse">
+      <wsdl:part name="outputParams" element="tns:SetResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:portType name="CCSetPreferenzeArruolabilitaServicePortType">
+      <wsdl:operation name="Set">
+         <wsdl:input message="tns:SetRequest" wsaw:Action="http://dmacc.csi.it/SetPreferenzeArruolabilita/Set"></wsdl:input>
+         <wsdl:output message="tns:SetResponse" wsaw:Action="http://dmacc.csi.it/SetPreferenzeArruolabilita/SetPreferenzeArruolabilita/SetResponse"></wsdl:output>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="CCSetPreferenzeArruolabilitaServiceSoap11Binding" type="tns:CCSetPreferenzeArruolabilitaServicePortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+      <wsdl:operation name="Set">
+         <soap:operation soapAction="http://dmacc.csi.it/SetPreferenzeArruolabilita/Set" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCSetPreferenzeArruolabilitaServiceSoap12Binding" type="tns:CCSetPreferenzeArruolabilitaServicePortType">
+      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
+      <wsdl:operation name="Set">
+         <soap12:operation soapAction="http://dmacc.csi.it/SetPreferenzeArruolabilita/Set" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCSetPreferenzeArruolabilitaServiceHttpBinding" type="tns:CCSetPreferenzeArruolabilitaServicePortType">
+      <http:binding verb="POST"></http:binding>
+      <wsdl:operation name="Set">
+         <http:operation location="Set"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="CCSetPreferenzeArruolabilitaService">
+      <wsdl:port name="CCSetPreferenzeArruolabilitaServiceHttpsSoap11Endpoint" binding="tns:CCSetPreferenzeArruolabilitaServiceSoap11Binding">
+         <soap:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCSetPreferenzeArruolabilitaService.CCSetPreferenzeArruolabilitaServiceHttpsSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCSetPreferenzeArruolabilitaServiceHttpSoap11Endpoint" binding="tns:CCSetPreferenzeArruolabilitaServiceSoap11Binding">
+         <soap:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCSetPreferenzeArruolabilitaService.CCSetPreferenzeArruolabilitaServiceHttpSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCSetPreferenzeArruolabilitaServiceHttpsSoap12Endpoint" binding="tns:CCSetPreferenzeArruolabilitaServiceSoap12Binding">
+         <soap12:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCSetPreferenzeArruolabilitaService.CCSetPreferenzeArruolabilitaServiceHttpsSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCSetPreferenzeArruolabilitaServiceHttpSoap12Endpoint" binding="tns:CCSetPreferenzeArruolabilitaServiceSoap12Binding">
+         <soap12:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCSetPreferenzeArruolabilitaService.CCSetPreferenzeArruolabilitaServiceHttpSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCSetPreferenzeArruolabilitaServiceHttpEndpoint" binding="tns:CCSetPreferenzeArruolabilitaServiceHttpBinding">
+         <http:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCSetPreferenzeArruolabilitaService.CCSetPreferenzeArruolabilitaServiceHttpEndpoint"></http:address>
+      </wsdl:port>
+      <wsdl:port name="CCSetPreferenzeArruolabilitaServiceHttpsEndpoint" binding="tns:CCSetPreferenzeArruolabilitaServiceHttpBinding">
+         <http:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCSetPreferenzeArruolabilitaService.CCSetPreferenzeArruolabilitaServiceHttpsEndpoint"></http:address>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

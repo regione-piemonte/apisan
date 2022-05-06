@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<!--PROTECTED REGION ID(R-1054124068) ENABLED START-->
+	<!-- Insert here your custom Spring Beans -->
+	<context:property-placeholder location="WEB-INF/*.properties" />
+	<context:annotation-config />
+	
+	<context:component-scan base-package="it.csi.apisan.apisanscreen" />
+
+	<bean id="DelegheCittadiniService"
+	  class="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"
+	  factory-bean="cxfdelegheCittadiniSecuredClientFactory"
+	  factory-method="create"/>	
+	
+	<bean id="cxfdelegheCittadiniSecuredClientFactory" parent="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"/>
+		<property name="address" value="@endpointdeleghe@" />	
+		@wssDeleghebe.start@
+		<property name="username" value="@userDeleghebe@"/>
+		<property name="password" value="@passDeleghebe@"/>
+		@wssDeleghebe.end@
+	</bean>
+	
+	<bean id="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="loggingIn" />
+			</list>
+		</property>
+	  	<property name="outInterceptors">
+			<list>
+				<ref bean="loggingOut" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="loggingIn" class="org.apache.cxf.interceptor.LoggingInInterceptor" />  
+  	<bean id="loggingOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />  
+	
+	<!-- NUOVI PER APISANSCREEN -->
+	
+	<bean id="ScreenServiziWebSOL"
+	  class="it.csi.screenserviziwebsol.ScreenServiziWebSOL"
+	  factory-bean="screenServiziWebSOLClientFactory"
+	  factory-method="create"/>	
+	
+	<bean id="screenServiziWebSOLClientFactory" parent="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.screenserviziwebsol.ScreenServiziWebSOL"/>
+		<property name="address" value="@endpointurlscreening@" />
+	<!--  	
+	<property name="properties">
+        <map>
+            <entry key="org.apache.cxf.stax.maxAttributeSize" value="99999999" />
+        </map>
+    </property> -->	
+	
+	</bean>
+
+
+</beans>

@@ -1,0 +1,111 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://dmacc.csi.it/" xmlns:ns0="http://dma.csi.it/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://dmacc.csi.it/">
+   <wsdl:types>
+      <xsd:schema xmlns:ns1="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" version="1.0">
+         <xsd:import namespace="http://dma.csi.it/"></xsd:import>
+         <xsd:element name="fascicoloArruolabile" type="ns1:fascicoloArruolabile"></xsd:element>
+         <xsd:element name="isArruolabile" type="ns1:isArruolabile"></xsd:element>
+         <xsd:element name="isArruolabileResponse" type="ns1:isArruolabileResponse"></xsd:element>
+         <xsd:element name="richiedenteArruolamento" type="ns1:richiedenteArruolamento"></xsd:element>
+      </xsd:schema>
+      <xsd:schema xmlns:ns1="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dma.csi.it/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dma.csi.it/" version="1.0">
+         <xsd:import namespace="http://dmacc.csi.it/"></xsd:import>
+         <xsd:complexType name="isArruolabile">
+            <xsd:sequence>
+               <xsd:element name="codiceFiscale" type="xsd:string"></xsd:element>
+               <xsd:element name="richiedente" type="tns:richiedenteArruolamento"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="richiedenteArruolamento">
+            <xsd:sequence>
+               <xsd:element name="codiceFiscale" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="ruolo" type="xsd:string"></xsd:element>
+               <xsd:element name="tipoDelega" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="gradoDelega" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="requestID" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="codiceServizio" type="xsd:string"></xsd:element>
+               <xsd:element minOccurs="0" name="ipRichiedente" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="isArruolabileResponse">
+            <xsd:sequence>
+               <xsd:element name="fascicoloArruolabile" type="tns:fascicoloArruolabile"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="fascicoloArruolabile">
+            <xsd:sequence>
+               <xsd:element name="codiceRisposta" type="xsd:string"></xsd:element>
+               <xsd:element name="risposta" type="xsd:string"></xsd:element>
+               <xsd:element name="dettaglioRisposta" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="isArruolabile">
+      <wsdl:part name="isArruolabile" element="tns:isArruolabile"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="isArruolabileResponse">
+      <wsdl:part name="isArruolabileResponse" element="tns:isArruolabileResponse"></wsdl:part>
+   </wsdl:message>
+   <wsdl:portType name="CCArruolabileExtFSEServicePortType">
+      <wsdl:operation name="isArruolabile">
+         <wsdl:input message="tns:isArruolabile" wsaw:Action="http://dmacc.csi.it/isArruolabileExt"></wsdl:input>
+         <wsdl:output message="tns:isArruolabileResponse" wsaw:Action="http://dmacc.csi.it/ArruolabileFSEService/isArruolabileResponse"></wsdl:output>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="CCArruolabileExtFSEServiceSoap11Binding" type="tns:CCArruolabileExtFSEServicePortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+      <wsdl:operation name="isArruolabile">
+         <soap:operation soapAction="http://dmacc.csi.it/isArruolabileExt" style="document"></soap:operation>
+         <wsdl:input>
+            <soap:body use="literal"></soap:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"></soap:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCArruolabileExtFSEServiceSoap12Binding" type="tns:CCArruolabileExtFSEServicePortType">
+      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
+      <wsdl:operation name="isArruolabile">
+         <soap12:operation soapAction="http://dmacc.csi.it/isArruolabileExt" style="document"></soap12:operation>
+         <wsdl:input>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"></soap12:body>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="CCArruolabileExtFSEServiceHttpBinding" type="tns:CCArruolabileExtFSEServicePortType">
+      <http:binding verb="POST"></http:binding>
+      <wsdl:operation name="isArruolabile">
+         <http:operation location="isArruolabile"></http:operation>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"></mime:content>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="CCArruolabileExtFSEService">
+      <wsdl:port name="CCArruolabileExtFSEServiceHttpsSoap11Endpoint" binding="tns:CCArruolabileExtFSEServiceSoap11Binding">
+         <soap:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCArruolabileExtFSEService.CCArruolabileExtFSEServiceHttpsSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCArruolabileExtFSEServiceHttpSoap11Endpoint" binding="tns:CCArruolabileExtFSEServiceSoap11Binding">
+         <soap:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCArruolabileExtFSEService.CCArruolabileExtFSEServiceHttpSoap11Endpoint"></soap:address>
+      </wsdl:port>
+      <wsdl:port name="CCArruolabileExtFSEServiceHttpSoap12Endpoint" binding="tns:CCArruolabileExtFSEServiceSoap12Binding">
+         <soap12:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCArruolabileExtFSEService.CCArruolabileExtFSEServiceHttpSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCArruolabileExtFSEServiceHttpsSoap12Endpoint" binding="tns:CCArruolabileExtFSEServiceSoap12Binding">
+         <soap12:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCArruolabileExtFSEService.CCArruolabileExtFSEServiceHttpsSoap12Endpoint"></soap12:address>
+      </wsdl:port>
+      <wsdl:port name="CCArruolabileExtFSEServiceHttpEndpoint" binding="tns:CCArruolabileExtFSEServiceHttpBinding">
+         <http:address location="http://xxx-dma.xxx.csi.it:80/dmaccmed/services/CCArruolabileExtFSEService.CCArruolabileExtFSEServiceHttpEndpoint"></http:address>
+      </wsdl:port>
+      <wsdl:port name="CCArruolabileExtFSEServiceHttpsEndpoint" binding="tns:CCArruolabileExtFSEServiceHttpBinding">
+         <http:address location="https://xxx-dma.xxx.csi.it:443/dmaccmed/services/CCArruolabileExtFSEService.CCArruolabileExtFSEServiceHttpsEndpoint"></http:address>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

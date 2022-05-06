@@ -1,0 +1,17 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.apisan.apisanceliachia.business.apisanceliachia",
+"modelPackage":  "it.csi.apisan.apisanceliachia.dto.apisanceliachia",
+"invokerPackage": "it.csi.apisan.apisanceliachia.business.apisanceliachia",
+"implFolder": "implfolder",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"useImplicitSnakeCaseAttributeStrategy": true,
+"accessHttpHeaders": true,
+"accessHttpRequest": true
+}

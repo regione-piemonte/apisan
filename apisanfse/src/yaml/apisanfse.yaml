@@ -1,0 +1,4115 @@
+swagger: '2.0'
+host: tst-srv-xxx.xxx.csi.it
+schemes:
+  - https
+basePath: /apisanfse/api/v1
+produces:
+  - application/json
+info:
+  title: FSE_API
+  version: 2.0.0
+  description:  |
+   # Prototipo Interfaccia
+    ---
+    http://dev-prototipi.csi.it/2019/sanita-fse/desktop
+    
+    # Note dubbi Egidio
+    ---
+     Dubbi etichette 
+      * Nella versione v2 avevamo scritto nella description della post delle etichette che si sarebbe passato come tipologia etichetta solo il default etichetta_personale e che si propone, al fine di raggruppare le etichette 'tag_fissi' di valorizzare il campo id (o codice??) anteponendovi la parte anatomica di riferimento nella quale verrà raggruppata seguita dal _ e il nome dell'etichetta fissa` (esempio Testa_occhi). 
+        Risposta negativa pare che da back end gli id etichette sono dei long e non avremo quindi possibilità di inserire la parte anatomica di riferimento
+    # Note versione 2.33
+    * Aggiunta api Verifica Stato Richiesta 2
+    # Note versione 2.32
+    * Aggiunto documento area rossa nella reponse di Get dettaglio documento
+    # Note versione 2.31
+    * Aggiunto query param a setAudit
+    # Note versione 2.30
+    * Aggiunto endpoint di stampa tabella
+    # Note versione 2.29
+    * Aggiunto query param flag rol a Get dettaglio documento 
+    # Note versione 2.28
+    * Aggiunta proprietà applicazione verticale alla response del servizio get accessi
+    # Note verisone 2.27
+    * Aggiunto servizio put preferenza consultazione
+    # Note versione 2.26
+    * Aggiunto query param codice_app_verticale a get documento
+    # Note versione 2.25
+    * aggiunto query param codice_ruolo al servizio get documento
+    # Note versione 2.24
+    * aggiunto query param codice_ruolo al servizio verifica documento scaricabile per applicazione medico
+    # Note versione 2.23
+    * aggiunto servizio get documentoScaricabileExt
+    # Note versione 2.22
+    * aggiunto parametro_audit a payload_set_audit
+    # Note versione 2.21
+    * aggiunto campo codice_documento_dipartimentalea model_documento_area_rossa
+    # Nore versione 2.20
+    * Aggiunta api set audit
+    # Note versione 2.19
+    * Aggiunta api stato richiesta immagini
+    # Note versione 2.18
+    * Aggiunta api Prenota immagine documento
+    # Note versione 2.17
+    * Aggiunto id_episodio a model_documento_area_rossa
+    # Note versione 2.16
+    * Aggiunta api get accessi
+    # Note versione 2.15
+    * Modificata return e summary di get documento personale  ora ritorna model_documento_personale
+    * Modifica return di get conteggi ora ritorna un solo elemento
+    # Note versione 2.14
+    * Aggiunta api get documento
+    # Note versione 2.13
+    * Aggiunta api tipi-episodio
+    # Note versione 2.12
+    * Aggiuta api get messaggi servizio
+    * modifica model_documento aggiunto numero_passaggio
+    # Note versione 2.11
+    * Aggiunta api get documenti episodio
+    * Aggiunta api get episodio
+    * Corretto Inserimento documento personale, ritorna una string che rappresenta l'id del documento
+    * Modificata getTuttiDocs aggiunti i campi       
+      * accession_number come array
+      * id_pacchetto
+      * stato_richiesta
+        
+    # Note versione 2.10
+    * Aggiunta api get Conteggi
+    * Modificato model_filtro_episodi tipo episodio diventato una string
+    * Modificato model_episodio id_episodio diventato number
+    * Modificata get lista episodi aggiunti offset e limit
+    # Note versione 2.0.9 (16 Feb 2021)        
+    * Modificato payload di get episodi 
+    # Note versione 2.0.8 (12 Feb 2021)
+    * Modificato model_documento cambiato etichetta_personale in etichette_personali
+    * Modificato payload di get episodi
+    * Modificato il tipo pagato_ticket di model_metadati_documento
+    # Note versione 2.0.7 (10 feb 2021)
+    * Aggiunta api get episodi
+    * Modifica model_documento inserito etichetta_personale come array
+    # Note versione 2.0.6
+    * Modifica payload di associa etichette aggiunti id_tag_fisso e categoria
+    * Modifica api lista esenzioni aggiunto query param query_servizio  
+    * Modifica Api lista esami screening aggiunto query parm query_servizio
+    * Modifica api modifica oscuramento aggiunto query parm query_servizio
+    * Modifica api get singola etichetta aggiunto query param tipologia etichetta
+    # Note versione 2.0.5
+    * Aggiunta api Get tutti i docs
+    * Aggiunta api get categorie
+    # Note versione 2.0.4 (15 Gen 2021)    
+    * Aggiunta api Modifica Oscuramento documento, esenzione, esame screening
+        N.B. DA VALUTARE ANCORA SE INSERIRE PIU' API DI MODIFICA OSCURAMENTO (UNA PER TIPO) SAREBBE CORETTO SECONDO UNA LOGICA REST MA MENO FLESSIBILE.
+    # Note versione 2.0.3 (14 Gen 2021)    
+    * Aggiunta api Get documento personale    
+    * Aggiunta Api Cancellazione documento personale
+    * Aggiunta Api Inserimento documento personale
+    # Note versione 2.0.2 (14 Gen 2021)
+    * Aggiunta api Lista documenti oscurati
+    * Aggiunta Lista esenzioni
+    * Aggiunta Lista esami screening
+    # Note versione 2.0.1 (07 Gen 2021)
+    ---
+    * Aggiunto endpoint Registra ritiro documento permette la regitrazione di un ritiro di documento
+    * Aggiunto endpoint  Lista documenti correlati
+    * Aggiunta api Associa Etichette  
+      
+    # Note versione 2.0.0 (11 Dic 2020)
+    ---
+    * Aggiunto endpoint `etichetta` permette di selezionare, cancellare inserire e modificare una singola etichetta (completo quindi di get delete, put e post)
+  
+paths:
+  '/servizio-attivo':
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true 
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true                
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'  
+  '/cittadini/{citId}/referti/{idReferto}':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: header
+        name: X-Forwarded-For
+        type: string
+        required: true              
+      - name: citId
+        in: path
+        description: Codice fiscale dell'utente
+        required: true
+        type: string
+        format: string
+      - name: idReferto
+        in: path
+        description: identificativo del referto
+        required: true
+        type: string
+        format: string
+    get:
+      summary: Referto Types
+      description: >
+        Restituisce una solo referto. Se refertoId vale last restituisce
+        l'ultimo referto ovvero il referto con  dataRefertazione massima,
+        indipendentem se l'ho già visualizzato oppure no o se è pagato o no
+        (condizione vincolante solo per la visualizzazione del referto).
+      tags:
+        - Referti
+      responses:
+        '200':
+          description: Array di referti
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/referto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{citId}/referti/{idReferto}/annullamento':
+    put:
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true             
+        - name: citId
+          in: path
+          description: Codice fiscale dell'utente
+          required: true
+          type: string
+          format: string
+        - name: idReferto
+          in: path
+          description: identificativo del referto
+          required: true
+          type: string
+          format: string
+        - name: pin
+          in: header
+          type: string
+          required: true
+      summary: Referto Types
+      tags:
+        - Referti
+      description: >
+        Cambia lo stato del Referto eliminandolo logicamente( Inserisce data di
+        cancellazione).
+      responses:
+        '200':
+          description: Referto cancellato
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{citId}/referti':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: header
+        name: X-Forwarded-For
+        type: string
+        required: true           
+    get:
+      summary: Lista referti
+      description: >-
+        Restituisce un elenco (lista) di metadati (quadro sinottico di tutti i
+        referti disponibili)
+      parameters:
+        - name: citId
+          in: path
+          description: Codice fiscale dell'utente.
+          required: true
+          type: string
+          format: string
+      tags:
+        - Referti
+      responses:
+        '200':
+          description: An array of Referto.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/referto'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{citId}/referti/{idReferto}/pdf':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: header
+        name: X-Forwarded-For
+        type: string
+        required: true                   
+    get:
+      summary: Referto in formato pdf
+      description: Restituisce uno stream di tipo pdf .
+      produces:
+        - application/pdf
+        - application/pkcs7-mime
+      parameters:
+        - name: citId
+          in: path
+          description: Codice fiscale dell'utente.
+          required: true
+          type: string
+          format: string
+        - name: idReferto
+          in: path
+          description: Identificativo del referto.
+          required: true
+          type: string
+          format: string
+        - name: pin
+          in: query
+          description: Pin da utilizzare per lo scarico
+          type: string
+          format: string
+        - name: firmato
+          in: query
+          description: >-
+            Indica se si vuole il pdf firmato digitalmente (S) se non si indica
+            nulla il default e' (N)
+          required: false
+          type: string
+          format: string
+      tags:
+        - Referti
+      responses:
+        '200':
+          description: Return PDF
+          schema:
+            type: file
+            description: Empty queue
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{citId}/referti/pdf':
+    parameters:
+      - $ref: '#/parameters/header_x_request_id'
+      - $ref: '#/parameters/header_x_forwarded_for'
+      - $ref: '#/parameters/header_x_codice_servizio'
+      - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+      - $ref: '#/parameters/path_cit_id'
+      - $ref: '#/parameters/query_componente_locale'
+      - $ref: '#/parameters/query_id_documento_cl'
+      - $ref: '#/parameters/query_pin'
+      - $ref: '#/parameters/query_firmato'
+    get:
+      summary: Referto in formato pdf
+      description: Restituisce uno stream di tipo pdf .
+      produces:
+        - application/pdf
+        - application/pkcs7-mime
+      tags:
+        - Referti
+      responses:
+        '200':
+          description: Return PDF
+          schema:
+            type: file
+            description: Empty queue
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error          
+  '/cittadini/{citId}/referti/{idReferto}/zip/{idpacchetto}':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: header
+        name: X-Forwarded-For
+        type: string
+        required: true           
+    get:
+      summary: Restituisce ZIP con allegati
+      description: Restituisce il path nell'header
+      produces:
+        - application/zip
+      parameters:
+        - name: citId
+          in: path
+          description: Codice fiscale dell'utente
+          required: true
+          type: string
+          format: string
+        - name: idReferto
+          in: path
+          description: identificativo del referto
+          required: true
+          type: string
+          format: string
+        - name: idpacchetto
+          in: path
+          description: identificativo del referto
+          required: true
+          type: string
+          format: string
+        - name: pin
+          in: query
+          description: Pin da utilizzare per lo scarico
+          required: false
+          type: string
+          format: string
+      tags:
+        - Immagini
+      responses:
+        '200':
+          description: Return ZIP da implementare
+          schema:
+            type: file
+        '303':
+          description: Redirect a scarico imr
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{citId}/documenti/{id_documento}/zip':
+    get:
+      summary: Restituisce ZIP con allegati
+      description: Restituisce il path nell'header
+      produces:
+        - application/zip  
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/path_id_documento'
+        - $ref: '#/parameters/query_codice_cl'
+        - $ref: '#/parameters/query_archivio_documento_Ilec'
+      tags:
+        - Immagini
+      responses:
+        '303':
+          description: Redirect a scarico imr
+          schema:
+            type: file
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+          
+  '/cittadini/{citId}/documenti/{codice_documento_dipartimentale}/stato-immagine':
+    get:
+      summary: Stato richiesta immagine 
+      description: Ritorna i dati riguardanti la richiesta dell'immagine
+      tags:
+        - Immagini     
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_codice_documento_dipartimentale'
+      responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/model_verifica_stato_richiesta'
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.          
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError' 
+  '/cittadini/{citId}/documenti/{codice_documento_dipartimentale}/verifica-stato-richiesta-2':
+    get:
+      summary: Verifica Stato Richiesta 2 
+      description: Ritorna lo stato della richiesta, se presente torna il nome e la directory del file zip contenente le immagini da scaricare, e l'idDocumentoIlec del referto 
+      tags:
+        - Immagini     
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'          
+          - $ref: '#/parameters/path_codice_documento_dipartimentale'
+          - $ref: '#/parameters/query_codice_cl'
+      responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/model_verifica_stato_richiesta_2'
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.          
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'                              
+  '/cittadini/{citId}/referti/{idReferto}/prenotazione':
+    post:
+      summary: Prenota immagine
+      description: |
+       Prenota il pacchetto immagini per renderlo poi disponibile allo scarico. In questo caso viene effettuata dapprima una chiamata a newGetListaRefertiSR per recuperare, partendo dall'IdReferto ricevuto in input il Codice Documento Dipartimentale necessario per effettuare la chiamata al servizio di prenotazione dell'immagine.
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true             
+        - name: citId
+          in: path
+          description: Codice fiscale dell'utente
+          required: true
+          type: string
+          format: string
+        - name: idReferto
+          in: path
+          description: identificativo del referto
+          required: true
+          type: string
+          format: string
+        - in: body
+          description: sono da valorizzare e_mail e sistema_operatino non il pin in quanto ne viene usato uno di default
+          name: prenotazione_immagine
+          required: true
+          schema:
+            $ref: '#/definitions/immagine_rete'
+      tags:
+        - Immagini
+      responses:
+        '201':
+          description: Prenotazione effettuata
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{citId}/documenti/{codice_documento_dipartimentale}/prenotazione':
+    post:
+      summary: |
+       Prenota il pacchetto immagini per renderlo poi disponibile allo scarico. La prenotazione viene effettuata usando il Codice Documento Dipartimentale ricevuto in input.
+      tags: 
+        - Immagini
+      description: |
+        Permette all'utente di registrare un avvenimento di ritiro di documento. I dati del payload obbligatori sono codice componente locale e accession numbers
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_codice_documento_dipartimentale'
+          - $ref: '#/parameters/payload_prenota_immagine'
+      responses:
+          201:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.          
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'  
+  '/cittadini/{cf}/arruolamento':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: header
+        name: X-Forwarded-For
+        type: string
+        required: true           
+    get:
+      parameters:
+        - name: cf
+          in: path
+          type: string
+          required: true
+        - name: servizio
+          in: query
+          description: codice del servizio da utilizzare per verificare se una persona delegata per quel servizio possa o meno accedere alla uri
+          required: false
+          type: string
+          format: string           
+      description: |
+        Il servizio restituisce l’informazione (risposta+codice) relativa all’arruolabilità dell’utente. Se la risposta del servizio è ‘SI’ allora all’utente può essere proposta l’apertura del FSE. I codici di ritorno possibili sono 
+              * 000 Assistito NON è piemontese 
+              * 003 -Assistito piemontese con consenso all'alimentazione a SI;
+              * 000-Assistito piemontese con consenso all'alimentazione a NO che non ha optato per "non chiedermelo più";
+              * 005-Assistito piemontese con consenso all'alimentazione a NO e ha optato per "non chiedermelo più"
+
+
+      produces:
+        - application/json
+      tags:
+        - Arruolamento
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/cittadino_arruolabile'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+    put:
+      parameters:
+        - name: cf
+          in: path
+          type: string
+          required: true
+      description: >-
+           Il servizio permette di registrare la preferenza dell’utente in merito alla scelta di ‘non essere più disturbato’ con la proposta di apertura del FSE. Dopo aver richiamato questo servizio non sarà più possibile aprire il fascicolo tramite l’accesso ai verticali poiché il servizio GetArruolamento non restituirà più la risposta ‘SI’.
+      tags:
+        - Arruolamento
+      responses:
+        '204':
+          description: Preferenza arruolabilita registrata
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/consultazione-preferenze':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: header
+        name: X-Forwarded-For
+        type: string
+        required: true           
+    put:
+      parameters:
+        - name: cf
+          in: path
+          type: string
+          required: true
+      description: >-
+           Il servizio permetta di registrare la scelta dell'assistito di 'non essere più disturbato' con la richiesta di proposta di modifica del consenso alla consultazione.
+      tags:
+        - Arruolamento
+      responses:
+        '204':
+          description: Preferenza consultazione registrata
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/informativa-ultima':
+    get:
+      description: >
+        Serve per ricercare l'id dell'ultima informativa valida
+      produces:
+        - application/json
+      tags:
+        - Arruolamento        
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true      
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true 
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true 
+        - in: path
+          name: cf
+          description: Codice fiscale dell'utente
+          required: true
+          type: string
+          format: string               
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/informativa'  
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/cittadini/{cf}/informativa/{id_informativa}/pdf':
+    get:
+      description: >
+        Serve per ricercare l'id dell'ultima informativa valida. Al momento non ancora implementato ritorna quindi codice 421
+      produces:
+        - application/pdf
+      tags:
+        - Arruolamento        
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true      
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true 
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true 
+        - in: path
+          name: cf
+          description: Codice fiscale dell'utente
+          required: true
+          type: string
+          format: string 
+        - in: path
+          name: id_informativa
+          description: Codice fiscale dell'utente
+          required: true
+          type: string
+          format: string           
+      responses:
+        '200':
+          description: Restituisce uno stream di tipo pdf .
+          schema:
+            type: file
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'            
+  '/cittadini/{cf}/informativa-ultima/pdf':
+    get:
+      description: >
+        Restituisce il pdf dell'ultima informativa
+      produces:
+        - application/pdf
+      tags:
+        - Arruolamento        
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true      
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true 
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true 
+        - in: path
+          name: cf
+          description: Codice fiscale dell'utente
+          required: true
+          type: string
+          format: string 
+      responses:
+        '200':
+          description: Restituisce uno stream di tipo pdf .
+          schema:
+            type: file
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'                        
+  '/cittadini/{cf}/consenso':
+    parameters:
+      - in: header
+        name: Shib-Identita-CodiceFiscale
+        type: string
+        required: true
+      - in: header
+        name: X-Request-ID
+        type: string
+        required: true
+      - in: header
+        name: X-Codice-Servizio
+        type: string
+        required: true
+      - in: header
+        name: X-Forwarded-For
+        type: string
+        required: true           
+    post:
+      parameters:
+        - name: cf
+          in: path
+          type: string
+          required: true
+        - name: servizio
+          in: query
+          description: codice del servizio da utilizzare per verificare se una persona delegata per quel servizio possa o meno accedere alla uri
+          required: false
+          type: string
+          format: string  
+        - in: body
+          name: consenso_fse
+          required: true
+          schema:
+            $ref: '#/definitions/consenso_fse'
+      description: >-
+        Registra i valori dei consensi generali del FSE (alimentazione, consultazione e recupero del pregresso).
+      produces:
+        - application/json
+      tags:
+        - Consenso
+      responses:
+        '201':
+          description: Preferenze FSE registrate
+          schema:
+            $ref: '#/definitions/consenso_fse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+    get:
+      parameters:
+        - name: cf
+          in: path
+          type: string
+          required: true
+        - name: servizio
+          in: query
+          description: codice del servizio da utilizzare per verificare se una persona delegata per quel servizio possa o meno accedere alla uri
+          required: false
+          type: string
+          format: string          
+      description: >-
+        Restituisce i valori dei consensi generali (alimentazione, consultazione e recupero del pregresso) impostati dal cittadino
+      produces:
+        - application/json
+      tags:
+        - Consenso
+      responses:
+        '200':
+          description: Preferenze FSE registrate
+          schema:
+            $ref: '#/definitions/consenso_fse'
+        '400':
+          description: bad request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '404':
+          description: Risorsa non trovata
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        default:
+          description: Unexpected error
+  '/cittadini/{citId}/etichette':
+    get:
+      summary: Lista etichette
+      tags:
+        - Etichette
+      description: |
+        Restituisce l'elenco delle etichette che appartengono al cittadino
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/path_cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_etichetta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError' 
+    post:
+      summary: Insserisci etichetta personale
+      tags:
+        - Etichette
+      description: |
+        Permette all'utente di inserire un'etichetta di tipo etichetta_personale,  (` chiave unica su cit_id e descrizione e data_fine_validita a null`), la descrizione è in minuscolo (lower case). Nel payload passato è presente solo la descrizione in quanto la tipologia è di default etichetta_personale e l'id  viene calcolato dalla sequence presente sul database. Per raggruppare le etichette 'tag_fissi' si `propone di valorizzare il campo codice anteponendovi la parte anatomica di riferimento nella quale verrà raggruppata seguita dal _ e il nome dell'etichetta fissa` (esempio Testa_occhi)
+      produces:
+        - application/json        
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/path_cit_id'
+        - $ref: '#/parameters/payload_etichetta'
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.  
+          schema:
+            $ref: '#/definitions/model_etichetta'          
+  '/cittadini/{citId}/etichette/{id_etichetta}':
+    get:
+      summary: Ritorna una singola etichetta
+      tags:
+        - Etichette
+      description: |
+        Get singola etichetta
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/path_cit_id' 
+        - $ref: '#/parameters/path_id_etichetta'
+        - $ref: '#/parameters/query_tipologia_etichetta'
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:        
+            $ref: '#/definitions/model_etichetta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'            
+    delete:
+      summary: Cancella etichetta
+      tags:
+        - Etichette
+      description: |
+        Permette all'utente di cancellare un'etichetta di tipo personale
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/path_cit_id' 
+        - $ref: '#/parameters/path_id_etichetta'        
+      responses:
+        200:
+          description: OK
+          headers: 
+           X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+    put:
+      summary: Modifica etichetta
+      tags:
+        - Etichette
+      description: |
+        Permette all'utente di modificare la descrizione di un\'etichetta di tipo etichetta_personale 
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/path_cit_id' 
+        - $ref: '#/parameters/path_id_etichetta'    
+        - $ref: '#/parameters/payload_etichetta'        
+      responses:
+        204:
+          description: OK
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/documento/{id_documento}/associa-etichette':
+    post:
+      summary: Associa Etichette
+      tags:
+        - Etichette
+      description: |
+        Permette all'utente di registrare una o più etichette al documento. In generale il servizio consente di associare al documento 
+          * una etichetta fissa
+          * una o più etichette personali
+          * una etichetta fissa e più etichette personali
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento'
+          - $ref: '#/parameters/payload_associa_etichette'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.          
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'   
+  '/decodifiche/documenti/categorie':
+    get:
+      summary: Get categorie
+      tags:
+        - Documenti
+      description:
+        Ritorna le categorie presenti con i tipi di documento associate
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/query_codice_app_verticale'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_categoria'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '500':
+            $ref: '#/responses/InternalServerError' 
+  '/decodifiche/documenti/tipi-episodio':
+      get:
+        summary: get tipi episodio
+        tags:
+          - Documenti
+        description: |
+          Restituisce i tipi di episodio
+        produces:
+          - application/json            
+        parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        responses:
+          '200':
+            description: |
+              Operazione eseguita con successo
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.
+            schema:
+              type: array
+              items: 
+                $ref: '#/definitions/model_tipo_episodio'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'             
+  '/cittadini/{citId}/documenti/{id_documento}/registra-ritiro':
+    post:
+      summary: Registra ritiro documento
+      tags: 
+        - Documenti
+      description: |
+        Permette all'utente di registrare un avvenimento di ritiro di documento
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento'
+          - $ref: '#/parameters/payload_registra_documento'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.          
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/documenti/{id_documento}/documenti-correlati':
+    get:
+      summary: Lista documenti correlati
+      tags:
+        - Documenti
+      description: 
+        Ritorna l'elenco dei documenti correlati al documento passato nalla uri
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento'
+          - $ref: '#/parameters/query_codice_cl'
+          - $ref: '#/parameters/query_tipo_correlazione_documento'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_documento'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/documenti/{id_documento}/documenti-oscurati':
+    get:
+      summary: Lista documenti oscurati
+      tags:
+        - Documenti
+      description: 
+        Il servizio restituisce l'elenco dei documenti correlati al documento passato in input cui verrà esteso il cambio di visibilità (perché aventi lo stesso NRE o appartenenti alla tipologia PSS, PCP, BDS)
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento'
+          - $ref: '#/parameters/query_codice_cl'
+          - $ref: '#/parameters/query_azione'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_documento'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/documenti/_search':
+    post:
+      summary: Get tutti i docs
+      tags:
+        - Documenti
+      description:
+        Ritorna tutti i docs a seconda dei parametri impostati nel payload
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/query_limit'
+          - $ref: '#/parameters/query_offset'
+          - $ref: '#/parameters/payload_search_documenti'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              $ref: '#/definitions/model_risposta_tutti_docs'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/documenti/{id_documento}/dettaglio-documento':
+    get:
+      summary: Get dettaglio documento
+      tags:
+        - Documenti
+      description: 
+        Ritorna il documento personale passato nella uri
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento' 
+          - $ref: '#/parameters/query_categoria'
+          - $ref: '#/parameters/query_componente_locale'
+          - $ref: '#/parameters/query_flag_rol'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              $ref: '#/definitions/model_risposta_dettaglio_documento'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'                
+  '/cittadini/{citId}/documenti/{id_documento}/documento':
+    get:
+      summary: Get documento
+      tags:
+        - Documenti
+      description: 
+        Ritorna il documento 
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento' 
+          - $ref: '#/parameters/query_id_episodio'
+          - $ref: '#/parameters/query_componente_locale'
+          - $ref: '#/parameters/query_firmato_digitalmente'
+          - $ref: '#/parameters/query_criptato'
+          - $ref: '#/parameters/query_id_repository'
+          - $ref: '#/parameters/query_documento_dipartimentale'
+          - $ref: '#/parameters/query_tipo_documento'
+          - $ref: '#/parameters/query_codice_ruolo'
+          - $ref: '#/parameters/query_codice_app_verticale'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              $ref: '#/definitions/model_documento_response'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError' 
+  '/cittadini/{citId}/documenti/{codice_documento_dipartimentale}/verifica-documento-scaricabile':
+    get:
+      summary: Verifica-documento-scaricabile
+      tags:
+        - Documenti
+      description: |
+        Il servizio restituisce l’informazione al verticale Covid-19 se il documento per cui è stato invocato può essere restituito o meno al richiedente e su quale tabella (ROL o FSE) può essere recuperato.
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_codice_documento_dipartimentale' 
+          - $ref: '#/parameters/query_codice_app_verticale'
+          - $ref: '#/parameters/query_componente_locale'
+          - $ref: '#/parameters/query_codice_ruolo'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              $ref: '#/definitions/model_verifica_documento'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'             
+  '/cittadini/{tax_code}/documenti/{codice_azione}/documento-scaricabile-ext':
+    get:
+      summary: documento-scaricabile-ext
+      tags:
+        - Documenti
+      description: |
+        Il servizio restituisce l’informazione al verticale Covid-19 sul servizio da invocare per il recuperato del documento da scaricare.
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_tax_code'
+          - $ref: '#/parameters/path_codice_azione' 
+          - $ref: '#/parameters/query_codice_app_verticale'
+          - $ref: '#/parameters/query_documento_id'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              $ref: '#/definitions/model_documento_scaricabile_ext'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError' 
+  '/cittadini/{citId}/documenti/episodi/{id_episodio}/documenti-episodio':
+    get:
+      summary: Get documenti episodio
+      tags:
+        - Documenti
+      description: |
+        Il servizio restituisce i documenti associati ad un episodio passato in input
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_episodio' 
+          - $ref: '#/parameters/query_componente_locale'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_documento'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'                            
+  '/cittadini/{citId}/documenti/{id_documento}/documento-personale':
+    get:
+      summary: Get Documento personale
+      tags:
+        - Documenti
+      description: 
+        Ritorna il documento personale passato nella uri
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento' 
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_documento_personale'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'          
+    delete:
+      summary: Cancellazione documento personale
+      tags:
+        - Documenti
+      description: 
+        Ritorna il documento personale passato nella uri
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/path_id_documento' 
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'  
+  '/cittadini/{citId}/documenti/documento-personale':
+    post:
+      summary: Inserimento documento personale
+      tags:
+        - Documenti
+      description: 
+        Inserice il documento personale per il cittadino passato nel payload, ritorna l'id del documento
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/payload_documento_personale'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.
+            schema:
+              type: string
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError' 
+               
+  '/cittadini/{citId}/documenti/episodi/_search':
+    post:
+      summary: get episodi
+      tags:
+        - Documenti
+      description: 
+        Restituisce l'elenco degli episodi
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id' 
+          - $ref: '#/parameters/query_limit'
+          - $ref: '#/parameters/query_offset'          
+          - $ref: '#/parameters/payload_search_episodi'          
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_episodio'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'          
+  '/cittadini/{citId}/documenti/conteggi/_search':
+    post:
+      summary: get conteggi
+      tags:
+        - Documenti
+      description: 
+        Restituisce il conteggio dei documenti per episodio, per documenti area blu per etichette fisse
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id' 
+          - $ref: '#/parameters/payload_search_conteggi'          
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+               $ref: '#/definitions/model_conteggio'
+
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'              
+  '/cittadini/{citId}/esenzioni':
+    get:
+      summary: Lista esenzioni
+      tags:
+        - Esenzioni
+      description: 
+        Se il servizio e' chiamato dall'applicazione Sansol e con il ruolo CIT allora restituisce solamente il valore dell'oscuramento delle esenzioni
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/query_servizio'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_esenzione'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/screening':
+    get:
+      summary: Lista esami screening
+      tags:
+        - Screening
+      description: |
+        Restituisce l'elenco degli esami citologico , mammagrafico e colon con le informazioni di dettaglio visualizzate nel portale, incluso l'oscuramento
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/query_servizio'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_informazioni_sistemi_screening'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/oscuramento':
+    put:
+      summary: Modifica Oscuramento documento, esenzione, esame screening
+      tags:
+        - Oscuramento
+      description: |
+        Oscura uno o più documenti, esenzioni o esami screening. A seconda del valore del tipo di dato il cui codice può essere 
+          * DOCPER (in caso di documenti personali)
+          * DOC (in caso di valorizzazione dell'oscuramento su singolo documento)
+          * ESE (in caso di valorizzazione dell'oscuramento sulle esenzioni)
+          * SCR (screening)
+        saranno obbligatori alcuni campi o meno del payload. Esempio nel caso di oscuramento screening dovranno essere valorizzati i campi del payload tipo screening, data esame e tipo esame, 
+        N.B. DA VALUTARE ANCORA SE INSERIRE PIU' API DI OSCURAMENTO (UNA PER TIPO) SAREBBE CORETTO SECONDO UNA LOGICA REST.
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/payload_oscuramento'
+          - $ref: '#/parameters/query_servizio'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/accessi':
+    get:
+      summary: get accessi
+      tags:
+        - Paziente
+      description: 
+        Ritorna l'elenco degli accessi effettuati dal cittadino
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/query_data_inizio_ricerca'
+          - $ref: '#/parameters/query_data_fine_ricerca'
+      responses:
+          200:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.      
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/model_response_accessi'
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/audit':
+    post:
+      summary: setaudit
+      tags:
+        - Paziente
+      description: 
+        Scrive nella tabella di audit ogni volta che l'utente esegue l'accesso a un verticale 
+      parameters:
+          - $ref: '#/parameters/header_x_request_id'
+          - $ref: '#/parameters/header_x_forwarded_for'
+          - $ref: '#/parameters/header_x_codice_servizio'
+          - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+          - $ref: '#/parameters/path_cit_id'
+          - $ref: '#/parameters/payload_set_audit'
+          - $ref: '#/parameters/query_ruolo'
+      responses:
+          201:
+            description: OK
+            headers:
+              X-Request-ID:
+                type: string
+                description: Ritorno del parametro ricevuto nella request.
+          '400':
+            $ref: '#/responses/BadRequest'
+          '403':
+            $ref: '#/responses/Forbidden'
+          '500':
+            $ref: '#/responses/InternalServerError'    
+    
+  '/decodifiche-accessi':
+    get:
+      summary: get decodifiche accessi  servizio
+      tags:
+        - Utility
+      description: |
+        Restituisce l'elenco delle denominazioni parlanti e comprensibili associate a livello di DB ai singoli codici servizio (applicativi verticali chiamanti)
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items: 
+               $ref: '#/definitions/model_decodifica_accesso'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'                         
+  '/decodifiche-accessi/{codice_servizio_accesso}':
+    get:
+      summary: get decodifica accesso servizio
+      tags:
+        - Utility
+      description: |
+        Restituisce la denominazione parlante e comprensibile associata a livello di DB ad uno specifico codice servizio (applicativi verticali chiamanti)
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+        - $ref: '#/parameters/path_codice_servizio_accesso'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_decodifica_accesso'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'    
+  '/messaggi-servizio':
+    get:
+      summary: get messaggi di servizio
+      tags:
+        - Utility
+      description: |
+        Restituisce i mesaggi di servizio
+      produces:
+        - application/json            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/header_shib_identita_codice_fiscale'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items: 
+              type: string
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'             
+          
+  '/stampe/accessi':
+    post:
+      summary: Stampa tabella accessi
+      tags:
+        - Utility
+      description: |
+        Restituisce il PDF di stampa di una tabella degli accessi generata in base ai dati passati nel payload
+      produces:
+        - application/pdf            
+      parameters:
+        - $ref: '#/parameters/header_x_request_id'
+        - $ref: '#/parameters/header_x_forwarded_for'
+        - $ref: '#/parameters/header_x_codice_servizio'
+        - $ref: '#/parameters/payload_stampa_accessi'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'             
+  
+parameters:
+  header_shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  header_x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  header_x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end>, <ip-primo-server>, ..., <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10, 10.38.45.68, 10.128.69.244`
+    type: string
+    required: true
+  header_x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  path_cit_id:
+    in: path
+    name: citId
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  path_id_etichetta:
+    in: path
+    name: id_etichetta    
+    type: integer
+    format: int64
+    required: true
+    description: id univoco dell'etichetta  
+  path_id_documento:
+    in: path
+    name: id_documento    
+    type: string
+    required: true
+    description: Id documento Ilec, Identificativo del documento nella componente locale
+  path_id_episodio:
+    in: path
+    name: id_episodio
+    type: number
+    required: true
+    description: id episodio
+  path_codice_documento_dipartimentale:
+    in: path
+    name: codice_documento_dipartimentale
+    type: string
+    required: true
+    description: codice documento dipartimentale
+  path_codice_azione:
+    in: path
+    name: codice_azione
+    type: string
+    required: true
+    description: codice azione
+  path_tax_code:
+    in: path
+    name: tax_code
+    type: string
+    required: true
+    description: tax code 
+  path_codice_servizio_accesso:
+    in: path
+    name: codice_servizio_accesso
+    type: string
+    required: true
+    description: codice servizio
+  query_documento_id:
+    in: query
+    name: documento_id
+    type: string
+    required: true
+    description: documento id
+  query_codice_cl:
+    in: query
+    name: codice_cl
+    type: string
+    required: true
+    description: codice della componente locale
+  query_tipo_correlazione_documento:
+    in: query
+    name: tipo_correlazione_documento
+    required: true
+    type: string
+    enum:
+      - NUMERO_PASSAGGIO_PS
+      - NUMERO_SDO
+      - NRE
+      - PADRE_FIGLIO
+    description: indica quale tipo di correlazione usare nella ricerca dei documenti correlati 
+  query_azione:
+    in: query
+    name: azione
+    required: true
+    type: string
+    enum:
+      - OSCURAMENTO
+      - DEOSCURAMENTO
+  query_codice_asl:
+    in: query
+    name: codice_asl
+    type: string
+    required: true
+    description: codice azienda sanitaria
+  query_tipologia_etichetta:
+    in: query
+    name: tipologia_etichetta
+    type: string
+    required: true
+    description: tipologia dell'etichetta (tag fisso, personale) su cui si fa la ricerca
+  query_codice_app_verticale:
+    in: query
+    name: codice_app_verticale
+    type: string
+    required: true
+    description: codice dell'applicativo verticale per il quale si esegue 
+  query_categoria:
+    in: query
+    name: categoria
+    type: string
+    required: true
+    description: categoria del documento da api categorie
+  query_componente_locale:
+    in: query
+    name: componente_locale
+    type: string
+    required: true
+    description: codice componente locale
+  query_codice_ruolo:
+    in: query
+    name: codice_ruolo
+    type: string
+    required: true
+    description: codice ruolo
+  query_id_episodio:
+    in: query
+    name: id_episodio
+    type: string
+    required: true
+    description: id dell'episodio 
+  query_firmato_digitalmente:
+    in: query
+    name: firmato_digitalmente
+    type: boolean
+    required: true
+    description: | 
+     * S -> restiuisce il documento firmato (per scarico documento)
+     * N-> restituisce il documento non firmato (per visualizzazione del documento)
+     Nel caso di necessità di visualizzazione del documento CADES, passare N.
+     In tutti gli altri casi (visualizzazione e download di CDA/PADES/CADES) passare sempre il valore S
+  query_criptato:
+    in: query
+    name: criptato
+    type: boolean
+    required: true
+    description: |
+      N -> decifra il documento
+      S -> restituisce il documento criptato
+      Passare sempre N
+  query_id_repository:
+    in: query
+    name: id_repository
+    type: string
+  query_documento_dipartimentale:
+    in: query
+    name: documento_dipartimentale
+    type: string
+    description: codice documento dipartimetale
+  query_id_documento_cl:
+    in: query
+    name: id_documento_cl
+    type: string
+    required: true
+    description: id documento della componente locale
+  query_pin:
+    in: query
+    name: pin
+    type: string
+    required: true
+    description: pin per lo scarico del referto
+  query_firmato:
+    in: query
+    name: firmato
+    type: string
+    required: true
+    description: Indica se si vuole il pdf firmato digitalmente (S) se non si indica nulla il default e' (N)
+  query_tipo_documento:
+    in: query
+    name: tipo_documento
+    type: string
+    required: true
+    description: tipo del documento
+  query_flag_rol:
+    in: query
+    name: flag_rol
+    type: string
+    description: valori possibili 'S' o 'N' 
+  query_archivio_documento_Ilec:
+    in: query
+    name: archivio_documento_Ilec
+    type: string
+    description: valore possibile 'FSE'   
+  payload_registra_documento:
+    in: body
+    name: payload_registra_documento
+    required: true
+    description: |
+      Dati da inserite per a registrazione del documento
+    schema:
+      type: object
+      properties:
+        codice_cl:
+          type: string
+          description: |
+           codice della componente locale in cui si è ritirato il documento
+  query_limit:
+    in: query
+    name: limit
+    type: integer
+    required: false
+    description: |
+      Imposta un limite al numero di record restituiti.
+      Permette di paginare i risultati. Se non impostato si assume come default 10
+  query_offset:
+    in: query
+    name: offset
+    type: integer
+    required: false
+    description: |
+      Imposta l'indice del primo elemento della lista restituita.
+      Permette di paginare i risultati. Se non impostato si assume come default 0     
+  query_servizio:
+    in: query
+    name: servizio
+    type: string
+    required: true
+    description: |
+      Rappresenta il codice del servizio per il quale si deve eseguire il controllo sulle deleghe
+  query_ruolo:
+    in: query
+    name: ruolo
+    type: string
+    description: |
+      Rappresenta il ruolo dell'utente loggato
+  query_data_inizio_ricerca:
+    in: query
+    name: data_inizio_ricerca
+    type: string
+    required: true
+    description: |
+      Permette di filtrare per un range di date. Formato che deve essere passsato
+       * yyyy-MM-dd
+       * yyyy-MM-ddTHH:mm:ssZ     
+  query_data_fine_ricerca:
+    in: query
+    name: data_fine_ricerca
+    type: string
+    required: true
+    description: |
+      Permette di filtrare per un range di date. Formato che deve essere passsato
+       * yyyy-MM-dd
+       * yyyy-MM-ddTHH:mm:ssZ           
+  payload_associa_etichette:
+    in: body
+    name: payload_associa_etichette
+    required: true
+    description: |
+      Dati da inserire per associare le etichette a un documento
+    schema:
+      type: object
+      properties:
+        codice_cl:
+          type: string
+          description: |
+           codice della componente locale in cui si è ritirato il documento
+        id_tag_fisso:
+          type: integer
+          description: id tag fisso dell'etichetta da associare
+        categoria:
+          type: string
+          description: codice della categoria del documento
+        lista_id_etichette:
+          type: array
+          items:
+            type: integer
+            format: int64
+        tipo_operazione:
+          type: string
+          enum:
+            - ASSOCIAZIONE
+            - DISASSOCIAZIONE
+  payload_etichetta:
+    in: body
+    name: payload_etichetta
+    required: true
+    description: |
+     I dati che il cittadino deve inserire quano inserisce un'etichetta necessario solo la descrizione dell'etichetta in quanto la tipologia è personale per default e il codice lo ricava da una sequence del database
+    schema:
+      type: object
+      properties:
+        testo_etichetta:
+          type: string
+          description: testo dell'etichetta da modificare
+  payload_documento_personale:
+    in: body
+    name: payload_documento_personale
+    required: true
+    description: |
+     Tutti i dati che servono per inserire un documento personale di un cittadino
+    schema:
+      type: object
+      properties:
+        documento:
+          $ref: '#/definitions/model_documento_personale'
+        metadati_documento:
+          $ref: '#/definitions/model_metadati_documento_personale'
+  payload_oscuramento:
+    in: body
+    name: payload_oscuramento
+    description: |
+      Payload per oscurare un dosumento o uno screening
+    schema:
+      type: object
+      properties:
+        oscuramento:
+          type: array
+          items:
+            $ref: '#/definitions/model_oscuramento'
+  payload_search_documenti:
+    in: body
+    name: payload_search_documenti
+    description: |
+      Payload per la ricerca dei documenti
+    schema:
+      type: object
+      properties:
+        area: 
+          type: string
+          enum:
+            - ROSSA
+        applicazione_verticale:
+          type: string
+        filtro_docs:
+          $ref: '#/definitions/model_filtro_docs'
+  payload_search_episodi:
+    in: body
+    name: payload_search_episodi
+    description: |
+      payload per la ricerca degli episodi
+    schema:
+      type: object
+      properties:
+        applicazione_verticale:
+          type: string
+        filtro_episodi:
+          $ref: '#/definitions/model_filtro_episodi'
+  payload_search_conteggi:
+    in: body
+    name: payload_search_conteggi
+    description: |
+      Payload per la ricerca dei conteggi
+    schema:
+      type: object
+      properties:
+        categoria_tipologia:
+         type: array
+         items:
+            $ref: '#/definitions/model_categoria_tipologia'
+        tipo_conteggio:
+          type: array
+          items:
+            type: string
+            example: EPISODIO, AREA_BLU, ETICHETTA
+            description: | 
+              Possibili valori che può assumere
+              * AREA_BLU
+              * ETICHETTA
+              * EPISODIO
+  payload_prenota_immagine:
+    in: body
+    name: payload_prenota_immagine
+    description: |
+      Payload per la prenotazione delle immagini. Obbligatorio solo il codice della componente locale e gli accession numbers .
+    schema:
+      type: object
+      properties:
+        codice_componente_locale:
+          type: string
+          description: codice della componente locale
+        accession_numbers:
+          type: array
+          items:
+            type: string
+        e_mail:
+          type: string
+          description: email della persona che richiede l'immagine
+        sistema_operativo:
+          type: string
+          description: >-
+            nome del sistema operativo dove si desidera visualizzare l'immagine
+            possibili valori - WINDOWS, - LINUX, - MAC;
+        pin:
+          type: string
+  payload_set_audit:
+    in: body
+    name: payload_set_audit
+    description: |
+       Payload per eseguire una set audit
+    schema:
+      type: object
+      properties:
+        codice_verticale:
+          type: string
+          description: codice dell'app verticale sul quale è stato eseguito l'accesso
+        codice_audit:
+          type: string
+          description: codice del parametro di audit per audit diversi da accesso
+        parametri:
+          type: array
+          items:
+            $ref: '#/definitions/model_parametro_audit'
+  payload_stampa_accessi:
+    in: body
+    name: payload_stampa_accessi
+    description: |
+       Payload per eseguire la stampa della tabella degli accessi
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          utente:
+            type: string
+            description: Il nome e cognome dell'utente che ha eseguito l'accesso
+          data:
+            type: string
+            description: La data e l'orario di accesso
+          descrizione:
+            type: string
+            description: La descrizione del tipo di accesso effettuato
+          servizio:
+            type: string
+            description: Il nome del servizio su cui l'utente ha fatto accesso
+          operazione:
+            type: string
+            description: Il nome dell'operazione effettuata dall'utente
+              
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test        
+  informativa:
+    type: object
+    properties:
+      identificativo_informativa:
+        type: string
+  referto:
+    type: object
+    properties:
+      id_referto:
+        type: string
+        description: Identificativo del referto all'interno dei sistema.
+      id_documento_cl:
+        type: string
+        description: Identificativo del referto sulla componente centrale
+      accession_number:
+        type: string
+      accession_numbers:
+        type: array
+        items:
+          type: string
+      codice_documento_dipartimentale:
+        type: string
+        description: Codice che identifica il documento all'interno dell'ASR.
+      codice_documento_scaricabile:
+        type: string
+      data_episodio:
+        type: string
+        format: date-time
+        description: Data in cui il paziente ha effettuato l'esame.
+      data_validazione:
+        type: string
+        format: date-time
+        description: Data in cui il medico refertante ha validato ed emesso il referto.
+      data_inserimento:
+        type: string
+        format: date-time
+        description: Data in cui il referto e' acquisito dal sistema.
+      data_aggiornamento:
+        type: string
+        format: date-time
+      data_annullamento:
+        type: string
+        format: date-time
+      data_cancellazione:
+        type: string
+        format: date-time
+      luogo_produzione_documento:
+        $ref: '#/definitions/luogo_asu'
+      data_scaricabile_fino_al:
+        type: string
+        format: date-time
+        description: >-
+          Data in cui il referto per legge non viene più reso disponibile
+          all'utente (calcolato con dati presenti in ILEC).
+      tipo_documento:
+        $ref: '#/definitions/tipo_documento'
+        description: Identificativo numerico del tipo del referto da decodificare.
+      tipo_file_documento:
+        $ref: '#/definitions/tipo_file_documento'
+      medico_validante:
+        type: string
+        x-nullable: true
+        description: Nominativo del medico che ha firmato il referto.
+      numero_di_download:
+        type: integer
+      numero_giorni_download:
+        type: integer
+      pagato_ticket_stato:
+        type: string
+        enum:
+          - P
+          - S
+          - 'N'
+          - E
+          - U
+          - R
+        description: >
+          Codice che identifica se il tiket e' stato pagato (S), non pagato
+           pagato (N), parzialmente pagato (P) indefinito (U) esente (E), rimborso (R).
+          * P --> pagato parzialmente * S --> si * N --> no * E --> esente  * U
+          --> unknown
+      oscura_scarico_cittadino:
+        type: string
+        description: >-
+          Flag che indica se il referto è oscurato al cittadino valori ammessi S, M, N.
+      firmato_digitalmente:
+        type: boolean
+        x-nullable: true
+        description: >-
+          Flag che discrimina se esiste un referto firmato con certificato
+          (validità legale) restituisce (true) se esiste altrmienti (false).
+      componente_locale:
+        $ref: '#/definitions/componente_locale'
+      paziente:
+        $ref: '#/definitions/paziente'
+      pin_bruciato:
+        type: boolean
+      richiesto_pin_code:
+        type: boolean
+      scaricabile_se_ticket_non_pagato:
+        type: boolean
+      soggetto_a_leggi_speciali:
+        type: boolean
+      id_pacchetto:
+        type: string
+        description: id dell'immagine da scaricare
+      stato_richiesta:
+        type: string
+        enum:
+          - ERRORE_WS
+          - RICHIESTA_NON_PRESENTE
+          - CANCELLAZIONE_PACCHETTO_SOSPESA
+          - COMPOSIZIONE_PACCHETTO_SOSPESA
+          - SCARICATO
+          - DA_ELABORARE
+          - ELAB_IN_CORSO
+          - DISPONIBILE
+          - INVIO_MAIL_IN_CORSO
+          - NOTIFICATO
+          - ERRORE_COMPONI_PACCHETTO
+          - ERRORE_INVIO_MAIL
+          - PACCHETTO_DA_CANCELLARE
+          - PACCHETTO_IN_CANCELLAZIONE
+          - PACCHETTO_CANCELLATO
+          - ERRORE_IN_CANCELLAZIONE_PACCHETTO
+      data_disponibilita_referto:
+        type: string
+        format: date-time
+        description: data di disponibilita del referto
+      medico_refertante:
+        type: string
+      ticket_da_pagare:
+        $ref: '#/definitions/importo'
+      ticket_pagato:
+        $ref: '#/definitions/importo'
+      tipo_referto:
+        $ref: '#/definitions/tipo_referto'
+      elenco_prestazioni:
+        type: array
+        items:
+          $ref: '#/definitions/prestazione'
+      elenco_nre:
+        type: array
+        items:
+          type: string
+  prestazione:
+    type: object
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      riferimento:
+        type: string    
+      branca:
+        $ref: '#/definitions/branca'
+      data_ora:
+        type: string
+        format: date
+      id_prestazione:
+        type: integer
+        format: int64
+      valori_prestazione:
+        $ref: '#/definitions/valori_prestazione'
+  valori_prestazione:
+    type: object
+    properties:
+      quantita:
+        type: string
+  importo:
+    type: object
+    properties:
+      valore:
+        type: number
+        description: importo
+      valuta:
+        type: string
+        description: tipo di moneta es EUR        
+  paziente:
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+      cognome:
+        type: string
+      nome:
+        type: string
+      id_aura:
+        type: integer
+      id_irec:
+        type: integer
+      data_di_nascita:
+        type: string
+        format: date-time
+      sesso:
+        type: string
+      comune_di_nascita:
+        $ref: '#/definitions/comune_di_nascita'
+      mail_per_accesso_dma:
+        type: boolean
+      stato_di_nascita:
+        $ref: '#/definitions/stato_di_nascita'
+  stato_di_nascita:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  comune_di_nascita:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  componente_locale:
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      riferimento:
+        type: string
+      azienda_sanitaria:
+        $ref: '#/definitions/azienda_sanitaria'
+      componente_locale_tipo:
+        $ref: '#/definitions/componente_locale_tipo'
+  componente_locale_tipo:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  componente_locale_servizio:
+    allOf:
+      - $ref: '#/definitions/codifica'
+    properties:
+      url_servizio:
+        type: string
+      operazioni:
+        type: array
+        items:
+          $ref: '#/definitions/componente_locale_operazione'
+  componente_locale_operazione:
+    allOf:
+      - $ref: '#/definitions/codifica'
+    properties:
+      timeout_max_operazione:
+        type: integer
+  luogo_asu:
+    type: object
+    description: 'luogo, azienda-struttura-unità operativa'
+    properties:
+      azienda:
+        $ref: '#/definitions/azienda_sanitaria'
+      struttura:
+        $ref: '#/definitions/struttura_sanitaria'
+      unita_operativa:
+        $ref: '#/definitions/unita_operativa_sanitaria'
+  azienda_sanitaria:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  struttura_sanitaria:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  unita_operativa_sanitaria:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  tipo_documento:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  tipo_file_documento:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  branca:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  tipo_referto:
+    allOf:
+      - $ref: '#/definitions/codifica'  
+  codifica:
+    type: object
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      riferimento:
+        type: string
+  cittadino:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: First name.
+      cognome:
+        type: string
+        description: Last name.
+      email:
+        type: string
+        description: Email address.
+      data_nascita:
+        type: string
+        format: date-time
+        description: nel formato date-time.
+      codice_fiscale:
+        type: string
+        pattern: >-
+          /^(?:[B-DF-HJ-NP-TV-Z](?:[AEIOU]{2}|[AEIOU]X)|[AEIOU]{2}X|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[1256LMRS][\dLMNP-V])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[\dLMNP-V][1-9MNP-V]|[1-9MNP-V][0L]))[A-Z]$/i
+        description: Codice fiscale.
+  info:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  immagine_rete:
+    type: object
+    properties:
+      e_mail:
+        type: string
+        description: email della persona che richiede l'immagine
+      sistema_operativo:
+        type: string
+        description: >-
+          nome del sistema operativo dove si desidera visualizzare l'immagine
+          possibili valori - WINDOWS, - LINUX, - MAC;
+      pin:
+        type: string
+  cittadino_arruolabile:
+    type: object
+    properties:
+      codice_risposta:
+        type: string
+        description: >-
+          possibili codici di ritorno 
+          -001 se l'assistito NON è piemontese 
+          -003 e l'assistito è piemontese e ha un consenso all'alimentazione a SI,
+          - 000 se l'assistito è piemontese e ha un consenso all'alimentazione a NO e nella tabella "non chidermelo più" c'è il record,
+          - 005 e l'assistito è piemontese e ha un consenso all'alimentazione a NO e nella tabella non chiedermelo più" NON c'è il record, 
+          - 004 il cittadino è piemontese e  ha un fse
+      risposta:
+        type: boolean
+        description: boolean che dice se il cittadino è arruolabile o meno
+      dettaglio_risposta:
+        type: string
+        description: descrizione del codice
+      delega:
+        $ref: '#/definitions/delega'
+  delega:
+    type: object
+    properties:
+      tipo_delega: 
+        type: string
+        description: grado della delega
+      grado_delega:
+        type: string
+        description: stato della delega
+  consenso_fse:
+    type: object
+    properties:
+      identificativo_informativa:
+        type: string
+        description: id dell'informativa corrente
+      consenso_alimentazione:
+        type: boolean
+        description: Acconsento ad alimentare il fascicolo con i miei dati clinici
+      consenso_consultazione:
+        type: boolean
+        description: >-
+          Acconsento alla consultazione del fascicolo da parte degli operatori
+          sanitari e socio-sanitari 
+      consenso_pregresso:
+        type: boolean
+        description: Acconsento alla consultazione del pregresso
+      codice_tessera_team:
+        type: string
+        description: numero della tessera team
+  string_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  integer_crit:
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  date_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  errore:
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  dettaglio:
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+  model_etichetta:
+    title: 'Etichetta'
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      testo:
+        type: string
+        description: descrizione da mostrare sulla UI
+        example: occhi
+      tipologia_etichetta:
+        type: string
+        enum:
+          - ANATOMICA
+          - PERSONALE
+        description: Codice della tipologia di etichetta
+  model_documento:
+    title: 'Documento Correlato'
+    type: object
+    properties:
+      id_documento_ilec:
+        type: string
+        description: id del documento
+      codice_cl:
+        type: string
+        description: codice della componente locale
+      categoria:
+        type: string
+        description: categoria del documento
+      metadati:
+        $ref: '#/definitions/model_metadati_documento'
+      medici:
+        type: array
+        items:
+          $ref: '#/definitions/model_medico'  
+      episodio:
+        $ref: '#/definitions/model_episodio'
+      oscurato:
+        type: string
+      accession_numbers:
+        type: array
+        items:
+          $ref: '#/definitions/model_accession_number'
+      id_pacchetto:
+        type: string
+      stato_richiesta:
+         $ref: '#/definitions/model_stato_richiesta'
+      etichetta_anatomica:
+        $ref: '#/definitions/model_etichetta'
+      etichette_personali:
+        type: array
+        items:
+          $ref: '#/definitions/model_etichetta'
+      nre:
+        type: array
+        items:
+          type: string 
+      stato_generazione_pacchetto:
+        type: string
+  model_metadati_documento:
+    title: 'Metadati documento'
+    type: object
+    properties:
+      codice_documento_dipartimentale:
+        type: string
+        description: Codice che identifica il documento all'interno dell'ASR.
+      azienda:
+        $ref: '#/definitions/model_codifica'
+      descrizione_struttura:
+        type: string
+        description: descrizione della struttura
+      descrizione_unita_operativa:
+        type: string
+        description: descrizione dell'unita operativa
+      matricola_up_dipartimentale:
+        type: string
+      data_validazione:
+        type: string
+        format: date
+      tipo_documento:
+        $ref: '#/definitions/model_codifica'
+      tipo_file:
+        type: string
+      codice_dipartimentale:
+        type: string
+      codice_tipo_documento_alto:
+        type: string
+      assetto_organizzativo:
+        $ref: '#/definitions/model_codifica'
+      id_repository_cl:
+        type: string
+      tipo_firma:
+        $ref: '#/definitions/model_codifica'
+      ticket_pagato:
+        $ref: '#/definitions/importo'
+        description: da verificare il tipo
+      ticket_da_pagare:
+        $ref: '#/definitions/importo'
+        description: da verificare il tipo
+      pagato_ticket:
+        type: string
+        description: |
+          Possibili valori
+          * S->pagato
+          * N->non pagato
+          * R->rimborso
+          * P-> pagato parziale
+          * E->esente
+          * U->non noto
+          * F->non è previsto ticket
+      coccarda:
+        type: string
+      flag_episodi_collegati      :
+        type: boolean
+        description: verificare il tipo
+      flag_associazioni_nre:
+        type: boolean
+        description: verificare il tipo
+      flag_associazioni_append:
+        type: boolean
+        description: verificare il tipo      
+      data_primo_scarico:
+        type: string
+        format: date
+      data_ritiro_de_visu:
+        type: string
+        format: date
+      recupero_pregresso:
+        type: string
+      descrizione_tipo_file:
+        type: string
+      prestazioni:
+        type: array
+        items:
+          $ref: '#/definitions/prestazione'
+      tipo_contributo:
+        type: string
+        description: può valere string o allegato nel primo caso bisogna far vedere il testo nel secodo trattasi di un pdf
+  model_episodio:
+    type: object
+    properties: 
+      id_episodio:
+        type: number
+      data_inizio:
+        type: string
+        format: date
+      data_fine:
+        type: string
+        format: date
+      azienda_accettazione:
+        $ref: '#/definitions/model_codifica'
+      azienda_dimissione:
+        $ref: '#/definitions/model_codifica'
+      descrizione_struttura_accettazione:
+        type: string
+      descrizione_struttura_dimissione:
+        type: string
+      descrizione_unita_operativa_accettazione:
+        type: string
+      descrizione_unita_operativa_dimissione:
+        type: string
+      matricola_accettazione:
+        type: string
+      matricola_dimissione:
+        type: string
+      numero_passaggio:
+        type: string
+      numero_nosologico:
+        type: string
+      tipo_episodio:
+        $ref: '#/definitions/model_codifica'
+      codice_cl: 
+        type: string
+  model_medico:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del medico
+      cognome:
+        type: string
+        description: cognome del medico
+      codice_fiscale:
+        type: string
+        description: codice fiscale del medico
+      tipo_medico:
+        type: string
+        description: tipo del medico
+  model_accession_number:
+    title: 'AccessionNumber'
+    type: object
+    properties:
+      accession_number:
+        type: string
+      data_notifica_pacs:
+        type: string
+        format: date
+  model_codifica:
+    title: 'Codifica'
+    type: object
+    properties:
+      codice:
+        type: string
+        description: codice della codifica
+      descrizione:
+        type: string
+        description: descrizion della codifica
+  diagnosi:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  ente_emittente:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  model_esenzione:
+    title: 'Risposta esenzione'
+    properties:
+      oscuramento_esenzioni: 
+        type: string
+      esenzioni:
+        type: array
+        items:
+          type: object
+          properties:
+            codice:
+              type: string
+            descrizione:
+              type: string
+            riferimento:
+              type: string
+            diagnosi:
+              $ref: '#/definitions/diagnosi'
+            ente_emittente:
+              $ref: '#/definitions/ente_emittente'
+            data_emissione:
+              type: string
+              format: date
+            data_scadenza:
+              type: string
+              format: date
+            codice_attestato:
+              type: string
+            oscurato:
+              type: string            
+  model_informazioni_sistemi_screening:
+    type: object
+    properties:
+      tipo:
+        $ref: '#/definitions/codifica'
+      paziente:
+        $ref: '#/definitions/model_paziente'
+      esami:
+        type: array
+        items:
+            $ref: '#/definitions/model_esame_screening'
+  model_delega:
+    title: 'Delega'
+    properties:
+      codice_servizio:
+        type: string
+        description: codice del servizio della delega
+      data_fine_delega:
+        type: string
+        format: date
+        description: data fine delega
+      data_inizio_delega:
+        type: string
+        format: date
+        description: data fine della delega
+      grado_delega:
+        type: string
+        description: grado della delega
+      stato_delega:
+        type: string
+        description: stato della delega
+      tipo_delega:
+        type: string
+        description: tipo della delega
+  model_paziente:
+    title: 'Paziente screening'
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale del paziente
+      codice_fiscale_MMG:
+        type: string
+        description: codice fiscale del medico mmg
+      cognome:
+        type: string
+        description: cognome del paziente 
+      comune_di_nascita:
+        $ref: '#/definitions/comune_di_nascita'
+      consenso:
+        $ref: '#/definitions/model_consenso_screening'
+      data_decesso:
+        type: string
+        format: date
+      data_nascita:
+        type: string
+        format: date
+      data_riconduzione:
+        type: string
+        format: date
+      deleghe:
+        type: array
+        items:
+          $ref: '#/definitions/model_delega'
+      flag_registry_incarico:
+        type: string
+      id_asr:
+        type: number
+        format: int64
+      id_aura:
+        type: number
+        format: int64
+        description: id aura del paziente
+      id_ilec:
+        type: number
+        format: int64
+      id_irec:
+        type: number
+        format: int64
+      id_paziente_ricondotto:
+        type: number
+        format: int64
+      mail_per_accesso_DMA         :
+        type: boolean
+      nome: 
+        type: string
+        description: nome del paziente
+      sesso:
+        type: string
+        enum:
+          - M
+          - F
+        description: sesso del paziente
+      stato_di_nascita:
+        $ref: '#/definitions/stato_di_nascita'
+        description: stato di nascita del paziente
+      id_screening:
+        type: string
+        description: id screening del paziente
+  model_consenso_matrice_ruoli:
+    title: 'Matrice ruoli'
+    properties:
+       consultazione:
+        type: boolean
+        description: consenso a si o no
+       data_di_aggiornamento:
+        type: string
+        format: date-time
+       ruolo_dma:
+          $ref: '#/definitions/model_ruolo_dma'
+  profilo:  
+    allOf:
+      - $ref: '#/definitions/codifica'
+  model_ruolo_dma:
+    title: 'Ruolo DMA'
+    properties:
+      codice:
+        type: string  
+      descrizione:
+        type: string
+      riferimento:
+        type: string
+      azienda_sanitaria:
+        $ref: '#/definitions/azienda_sanitaria'       
+      profilo:  
+        $ref: '#/definitions/profilo'  
+      flag_visibile_per_consenso:
+        type: string
+  modalita_alimentazione:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  model_consenso_screening:
+    title: 'Consenso screening'
+    properties:
+      abl_cons_ope_amm:
+        type: boolean
+      alimenta_fse:
+        type: boolean
+        description: consenso all'alimentazione dell'fse
+      consenso_alla_costituzione_dma:
+        type: boolean
+        description: consenso a DMA
+      consenso_matrice_ruoli:
+        type: array
+        items:
+          $ref: '#/definitions/model_consenso_matrice_ruoli'
+      data_aggiornamento:
+        type: string
+        format: date-time
+        description: data di aggiornamento
+      data_validazione:
+        type: string
+        format: date-time
+        description: data di validazione
+      deroga_emergenza:
+        type: boolean
+      modalita_alimentazione:
+        $ref: '#/definitions/modalita_alimentazione'
+      pregresso:
+        type: boolean
+  tipo_esame:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  model_esame_screening:
+    type: object
+    properties:
+      data:
+        type: string
+        format: date
+      tipo_esame:
+        $ref: '#/definitions/tipo_esame'
+      esito:
+        type: string
+        description: esito dell'esame
+      azienda_sanitaria:
+        $ref: '#/definitions/azienda_sanitaria'
+      unita_operativa:
+       $ref: '#/definitions/unita_operativa_sanitaria'
+      oscurato:
+        type: string
+      dettaglio:
+        $ref: '#/definitions/model_dettaglio_esame'
+  model_dettaglio_esame:
+    type: object
+    properties:
+      prestazioni:
+        type: array
+        items:
+          $ref: '#/definitions/codifica'
+      giudizi_diagnostici:
+        type: array
+        items:
+          $ref: '#/definitions/model_giudizio_diagnostico'
+      indicazione_finale:
+        $ref: '#/definitions/model_indicazione_finale'
+      intervento_erogato:
+        $ref: '#/definitions/model_intervento_erogato'
+      referto_colonscopia:
+        $ref: '#/definitions/model_referto_colonscopia'
+      referto_clisma_opaco:
+        $ref: '#/definitions/model_referto_clisma_opaco'
+  giudizio:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  model_giudizio_diagnostico:
+    type: object
+    properties:
+      prestazioni:
+        type: array
+        items:
+          $ref: '#/definitions/codifica'
+      giudizio:
+        $ref: '#/definitions/giudizio'
+      medici:
+        type: array
+        items:
+          $ref: '#/definitions/model_medico_screening'
+  model_medico_screening:
+    type: object
+    properties:
+      nome: 
+        type: string
+      cognome:
+        type: string
+      figura_professionale:
+        type: string
+  model_indicazione_finale:
+    type: object
+    properties:
+      giudizio:
+        $ref: '#/definitions/giudizio'
+      medici:
+        type: array
+        items:
+          $ref: '#/definitions/model_medico_screening'
+  model_intervento_erogato:
+    type: object
+    properties:
+      data:
+        type: string
+        format: date
+      trattamenti:
+        type: array
+        items:
+          $ref: '#/definitions/codifica'
+      struttura_sanitaria:
+        $ref: '#/definitions/struttura_sanitaria'
+      esito:
+        type: string
+  model_referto_colonscopia:
+    type: object
+    properties:
+      colonscopia_in_DH:
+        type: string
+      visione_pulizia:
+        type: string
+      sede_raggiunta:
+        type: string
+      colonscopia_non_completa:
+        type: string
+      motivo:
+        type: string
+      presenza_polipi:
+        type: string
+      presenzaLesione_sospetta_per_CA:
+        type: string
+      necessita_supporto_farmacologico:
+        type: string
+      altre_anomalie_rilevate:
+        type: string
+      complicanze_immediate:
+        type: string
+      necessita_Assistenza_Ospedaliera:
+        type: string
+      polipi:
+        type: array
+        items:
+          $ref: '#/definitions/model_screening_polipo'
+  model_screening_polipo:
+    type: object
+    properties:
+      polipo:
+        type: string
+      tipo:
+        type: string
+      sede:
+        type: string
+      dimensione:
+        type: string
+      polipectomia_biopsia:
+        type: string
+      recupero:
+        type: string
+      dim_isto:
+        type: string
+      tipo_isto:
+        type: string
+      displasia:
+        type: string
+  model_referto_clisma_opaco:
+    type: object
+    properties:
+      polipi:
+        type: array
+        items:
+          $ref: '#/definitions/model_screening_polipo'
+  model_documento_personale:
+    type: object
+    properties:
+      allegato:
+        type: string
+        format: binary
+        description: file in formato binary base64
+      tipo_allegato:
+        type: string
+      trascrizione:
+        type: string
+      data_ora_aggiornamento:
+        type: string
+        format: date-time
+  model_metadati_documento_personale:
+    type: object
+    properties:
+      tipo_documento:
+        $ref: '#/definitions/model_codifica'
+      data_emissione:
+        type: string
+        format: date
+      struttura:
+        type: string
+      unita:
+        type: string
+      medico:
+        type: string
+      tipo_contributo:
+        $ref: '#/definitions/model_codifica'
+      data_ora_aggiornamento:
+        type: string
+        format: date-time
+  model_tipo_dato:
+    allOf:
+      - $ref: '#/definitions/codifica'
+  model_documento_area_rossa:
+    type: object
+    properties:
+      id_documento_ilec:
+        type: string
+      codice_cl: 
+        type: string
+      data_inserimento:
+        type: string
+        format: date
+      data_emisione:
+        type: string
+        format: date
+      data_scadenza:
+        type: string
+        format: date
+      tipo_documento:
+        $ref: '#/definitions/model_codifica'
+      descrizione_struttura:
+        type: string
+      azienda:
+        $ref: '#/definitions/azienda_sanitaria'
+      importo_pagato:
+        $ref: '#/definitions/importo'
+      importo_da_pagare:
+        $ref: '#/definitions/importo'
+      pagato_ticket:
+        type: string
+      gg_download:
+        type: string
+      rol:
+        type: string
+      accession_numbers:
+        type: array
+        items:
+          $ref: '#/definitions/model_accession_number'
+      id_pacchetto:
+        type: string
+      stato_richiesta:
+         $ref: '#/definitions/model_stato_richiesta'
+      id_episodio:
+        type: integer
+        format: int64
+      stato_generazione_pacchetto:
+        type: string
+      codice_documento_dipartimentale:
+        type: string
+  model_risposta_tutti_docs:
+    type: object
+    properties:
+      documenti:
+        type: array
+        items:
+          $ref: '#/definitions/model_documento'
+      numero_documenti:
+          type: integer
+      documento_area_rossa:
+        type: array
+        items:
+          $ref: '#/definitions/model_documento_area_rossa'
+  model_risposta_dettaglio_documento:
+    type: object
+    properties:
+      documento:
+        $ref: '#/definitions/model_documento'
+      documento_area_rossa:
+        $ref: '#/definitions/model_documento_area_rossa'
+  model_oscuramento:
+    type: object
+    properties:
+      fonte_oscuramento:
+        type: string
+      id_documento:
+        type: string
+        description: id del documento da oscurare, da valorizzare nel caso in cui il tipo di dato codice valga DOC o DOCPER
+      codice_cl:
+        type: string
+        description: codice componente locale deve essere valorizzato nel caso in cui si stia oscurando un documento proveniente da un'asr 
+      tipo_screening:
+        type: string
+        description: da valorizzare nel caso in cui il tipo di dato codice valga SCR
+      data_esame:
+        type: string
+        format: date
+        description: data dell'esame da valorizzare nel caso in cui il tipo di dato codice valga SCR
+      tipo_esame:
+        type: string
+        description: da valorizzare nel caso in cui il tipo di dato codice valga SCR
+      tipo_di_dato:
+          $ref: '#/definitions/model_tipo_dato'
+          description: codice del tipo di dato può valere DOCPER (per documenti personali), DOC (per docuemnti), ESE (per esenzioni), SCR (per screening)
+      oscurato:
+        type: boolean
+        description: indica se si oscura o meno il dato passato nel payload
+  model_filtro_docs:
+    type: object
+    properties:
+     categoria_tipologia:
+       type: array
+       items:
+          $ref: '#/definitions/model_categoria_tipologia'
+     tipo_episodio:
+        type: string
+     data_inizio: 
+        type: string
+        format: date
+     data_fine:
+        type: string
+        format: date
+     etichetta_anatomica:
+        type: array
+        items:
+          $ref: '#/definitions/model_etichetta'
+     etichette_personali:
+        type: array
+        items:
+          $ref: '#/definitions/model_etichetta'
+  model_filtro_episodi:
+    type: object
+    properties:
+     categoria_tipologia:
+       type: array
+       items:
+          $ref: '#/definitions/model_categoria_tipologia'
+     tipo_episodio:
+          type: string
+     data_inizio: 
+        type: string
+        format: date
+     data_fine:
+        type: string
+        format: date
+     etichetta_anatomica:
+        type: array
+        items:
+          $ref: '#/definitions/model_etichetta'
+     etichette_personali:
+        type: array
+        items:
+          $ref: '#/definitions/model_etichetta'
+  model_categoria_tipologia:
+    type: object
+    properties:
+      categoria:
+        type: string
+        description: possibili valori 
+          * FSE
+          * PERSONALE
+      tipologia:
+        type: string
+  model_categoria:
+    type: object
+    properties:
+      codice: 
+        type: string
+        description: codice della categoria
+      descrizione:  
+        type: string
+        description: descrizione della categoria
+      tipi_documento:
+        type: array
+        items:
+          $ref: '#/definitions/tipo_documento'
+  model_conteggio:
+    type: object
+    properties:
+     numero_documenti_totali:
+        type: integer  
+     etichette_numero_documenti:
+       type: array
+       items:
+        $ref: '#/definitions/model_etichetta_numero_documenti'
+     numero_documenti_senza_etichette:
+       type: integer
+     numero_episodi:
+       type: integer
+  model_etichetta_numero_documenti:
+    type: object
+    properties:
+      etichetta:
+        $ref: '#/definitions/model_etichetta'
+      numero_documenti:
+        type: integer
+  model_stato_richiesta:
+    type: string
+    enum:
+    - ERRORE_WS
+    - RICHIESTA_NON_PRESENTE
+    - CANCELLAZIONE_PACCHETTO_SOSPESA
+    - COMPOSIZIONE_PACCHETTO_SOSPESA
+    - SCARICATO
+    - DA_ELABORARE
+    - ELAB_IN_CORSO
+    - DISPONIBILE
+    - INVIO_MAIL_IN_CORSO
+    - NOTIFICATO
+    - ERRORE_COMPONI_PACCHETTO
+    - ERRORE_INVIO_MAIL
+    - PACCHETTO_DA_CANCELLARE
+    - PACCHETTO_IN_CANCELLAZIONE
+    - PACCHETTO_CANCELLATO
+    - ERRORE_IN_CANCELLAZIONE_PACCHETTO
+  model_tipo_episodio:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: codice del tipo episodio
+        example: I
+      descrizione:
+        type: string
+        description: descrizione del tipo di episodio
+        example: RICOVERO
+  model_componente_locale:   
+    type: object
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      riferimento:
+        type: string    
+      azienda_sanitaria:
+        $ref: '#/definitions/azienda_sanitaria'       
+      componente_locale_tipo:
+        $ref: '#/definitions/componente_locale_tipo'
+      servizi:
+        type: array
+        items:
+          $ref: '#/definitions/model_servizio'
+      errore_registrazione_consenso:
+        type: boolean
+      errori:
+        type: array
+        items:
+          $ref: '#/definitions/codifica'
+      stato:
+        $ref: '#/definitions/codifica'
+      tempo_max_attesa_cl_in_sec:
+        type: integer
+        format: int64
+      tempo_max_restituzione_dati_in_sec:
+        type: integer
+        format: int64
+  model_servizio:
+    type: object
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      riferimento:
+        type: string
+      url_servizio:
+        type: string
+      operazioni:
+        type: array
+        items:
+          $ref: '#/definitions/model_operazione'
+  model_operazione:
+    type: object
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      riferimento:
+        type: string    
+      timeout_max_operazione:
+        type: integer
+        format: int64
+  model_documento_response:
+    type: object
+    properties:
+      documento:
+        $ref: '#/definitions/model_documento_dma'
+      componente_locale_risposta:
+        $ref: '#/definitions/model_componente_locale'
+      url_documento_dipartimentale:
+        type: string
+      auth_documento_dipaertimentale:
+        type: string
+      documento_su_dipartimentale:
+        type: string
+  model_documento_dma:
+    type: object
+    properties:
+      accession_number:
+        type: string
+      codice_episodio_dipartimentale:
+        type: string
+      codice_paziente_dipartimentale:
+        type: string
+      documento:
+        type: string
+        format: binary
+      firmato_digitalmente:
+        type: boolean
+      id_dipartimentale:
+        type: string
+      id_documento:
+        type: string
+      id_episodio:
+        type: string
+      link_immagini:
+        type: array
+        items:
+          $ref: '#/definitions/model_link_immagine'
+      link_immagini_stazioni_refertanti:
+        type: array
+        items:
+          $ref: '#/definitions/model_link_immagine_refertante'
+      lista_nre:
+        type: array
+        items:
+          type: string
+      oscurato:
+        type: string
+  model_link_immagine_refertante:
+    type: object
+    properties:
+      link:
+        type: string
+  model_link_immagine:
+    type: object
+    properties:
+      accession_number:
+        type: string
+      object_number:
+        type: string
+      series:
+        type: string
+      study:
+        type: string
+  model_response_accessi:
+    type: object
+    properties:
+      consultazioni:
+        type: array
+        items: 
+          $ref: '#/definitions/model_accesso'
+      operazioni:
+        type: array
+        items: 
+          $ref: '#/definitions/model_accesso'        
+  model_accesso:
+    type: object
+    properties:
+      applicazione_verticale:
+        type: string
+      codice_fiscale_operatore:
+        type: string
+      cognome_operatore:
+        type: string
+      collocazione:
+        type: string
+      data_accesso:
+        type: string
+        format: date
+      descrizione:
+        type: string
+      id_accesso:
+        type: string
+      nome_operatore:
+        type: string
+      regime:
+        $ref: '#/definitions/model_codifica'
+      ruolo:
+        $ref: '#/definitions/model_codifica'
+      azienda_sanitaria:
+        $ref: '#/definitions/model_codifica'
+      tipo_accesso:
+        $ref: '#/definitions/model_codifica'
+  model_decodifica_accesso:
+    type: object
+    properties:
+      codice_verticale:
+        type: string
+        description: codice dell'applicativo verticale a cui fa riferimento
+      codice_servizio:
+        type: string
+        description: codice del servizio di accessi servizio
+      descrizione_servizio:
+        type: string
+        description: descrizione del servizio di accessi servizio
+  model_verifica_stato_richiesta:
+    type: object
+    properties:
+      id_pacchetto:
+        type: string
+        description: id del pacchetto dell'imagine da scaricare
+      stato_richiesta:
+        type: string
+        description: stato della richiesta
+      dimensione:
+        type: integer
+        format: int64
+  model_verifica_stato_richiesta_2:
+    type: object
+    properties:
+      stato_richiesta:
+        type: string
+        description: stato della richiesta
+      zip_name:
+        type: string
+        description: nome del file zip
+      directory:
+        type: string
+        description: directory del file zip
+      checksum:
+        type: string
+        description: checksum del file zip
+      id_documento_ilec:
+        type: string
+        description: id_documento_ilec
+  model_parametro_audit:
+    type: object
+    properties:
+      indice:
+        type: string
+      valore:
+        type: string
+  model_verifica_documento:
+    type: object
+    properties:
+      codice_azione:
+        type: string
+      codice_cl:
+        type: string
+        description: codice componente lovale
+      codice_episodio:
+        type: string
+      id_documento_ilec:
+        type: string
+  model_documento_scaricabile_ext:
+    type: object
+    properties:
+      servizio_azione:
+        type: string
+  

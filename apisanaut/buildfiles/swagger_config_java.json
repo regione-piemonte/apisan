@@ -1,0 +1,16 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.apisan.apisanaut.business.apisanaut",
+"modelPackage":  "it.csi.apisan.apisanaut.dto.apisanaut",
+"invokerPackage": "it.csi.apisan.apisanaut.business.apisanaut",
+"implFolder": "implfolder",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"attributeSerializationStrategy": "explicit-as-modeled", 
+"accessHttpHeaders": true
+}

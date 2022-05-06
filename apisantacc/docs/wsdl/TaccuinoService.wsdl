@@ -1,0 +1,1736 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="TaccuinoServiceImplService" targetNamespace="http://dmaclbluc.dma.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://dmaclbluc.dma.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmaclbluc.dma.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmaclbluc.dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://dma.csi.it/"/>
+<xs:element name="richiedente" type="tns:richiedente"/>
+<xs:complexType name="setDoloreRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element minOccurs="0" name="dolore" type="tns:dolore"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="requestCommon">
+<xs:sequence>
+<xs:element ref="tns:richiedente"/>
+<xs:element form="qualified" name="taccuino" type="xs:long"/>
+<xs:element form="qualified" name="paziente" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dolore">
+<xs:sequence>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+<xs:element minOccurs="0" name="areaInteressata" type="xs:string"/>
+<xs:element minOccurs="0" name="intensitaValore" type="xs:int"/>
+<xs:element minOccurs="0" name="intensitaDescrizione" type="xs:string"/>
+<xs:element minOccurs="0" name="dataInizio" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="dataFine" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="richiedente">
+<xs:sequence>
+<xs:element minOccurs="0" name="applicativoVerticale" type="xs:string"/>
+<xs:element minOccurs="0" name="applicazione" type="xs:string"/>
+<xs:element minOccurs="0" name="codiceFiscale" type="xs:string"/>
+<xs:element minOccurs="0" name="identificativoIp" type="xs:string"/>
+<xs:element minOccurs="0" name="numeroTransazione" type="xs:string"/>
+<xs:element minOccurs="0" name="regime" type="xs:string"/>
+<xs:element minOccurs="0" name="ruolo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setDoloreResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="dolore" type="tns:doloreResponse"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="errori" type="ns1:errore"/>
+<xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="doloreResponse">
+<xs:complexContent>
+<xs:extension base="tns:commonInfo">
+<xs:sequence>
+<xs:element minOccurs="0" name="dolore" type="tns:dolore"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="commonInfo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="id" type="xs:long"/>
+<xs:element form="qualified" minOccurs="0" name="dataCreazione" type="xs:dateTime"/>
+<xs:element form="qualified" minOccurs="0" name="dataAggiornamento" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setNotaGeneraleRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="notaGenerale" type="tns:notaGeneraleRequest"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="notaGeneraleRequest">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="statoSalute" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="stileVita" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setNotaGeneraleResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="notaGenerale" type="tns:notaGenerale"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="notaGenerale">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="statoSalute" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="stileVita" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="dataCreazione" type="xs:dateTime"/>
+<xs:element form="qualified" minOccurs="0" name="dataAggiornamento" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getRilevazioniRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="listaCodiceGruppo" type="xs:string"/>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="listaCodiceDescrittore" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="requestCommonGet">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="limit" type="xs:int"/>
+<xs:element form="qualified" minOccurs="0" name="offset" type="xs:int"/>
+<xs:element form="qualified" minOccurs="0" name="ordinamento" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="dataDa" type="xs:dateTime"/>
+<xs:element form="qualified" minOccurs="0" name="dataA" type="xs:dateTime"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getRilevazioniResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaRilevazioni" type="tns:listaRilevazioni"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaRilevazioni">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="rilevazione" type="tns:rilevazioneResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rilevazioneResponse">
+<xs:complexContent>
+<xs:extension base="tns:commonInfo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="rilevazione" type="tns:rilevazione"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="rilevazione">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="valoreNumerico" type="xs:float"/>
+<xs:element form="qualified" minOccurs="0" name="valoreTestuale" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="data" type="xs:dateTime"/>
+<xs:element form="qualified" minOccurs="0" name="unitaMisura" type="tns:unitaMisura"/>
+<xs:element form="qualified" minOccurs="0" name="gruppo" type="tns:gruppo"/>
+<xs:element form="qualified" minOccurs="0" name="descrittore" type="tns:descrittore"/>
+<xs:element form="qualified" minOccurs="0" name="modalitaRilevazione" type="tns:modalitaRilevazione"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="unitaMisura">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="gruppo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizioneEstesa" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="descrittore">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizioneEstesa" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="modalitaRilevazione">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizioneRegionale" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizioneNazionale" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setDietaRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="dieta" type="tns:dieta"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="dieta">
+<xs:sequence>
+<xs:element minOccurs="0" name="data" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="colazioneDescrizione" type="xs:string"/>
+<xs:element minOccurs="0" name="colazioneCalorie" type="xs:int"/>
+<xs:element minOccurs="0" name="pranzoDescrizione" type="xs:string"/>
+<xs:element minOccurs="0" name="pranzoCalorie" type="xs:int"/>
+<xs:element minOccurs="0" name="cenaDescrizione" type="xs:string"/>
+<xs:element minOccurs="0" name="cenaCalorie" type="xs:int"/>
+<xs:element minOccurs="0" name="spuntiniDescrizione" type="xs:string"/>
+<xs:element minOccurs="0" name="spuntiniCalorie" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setDietaResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="dieta" type="tns:dietaResponse"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="dietaResponse">
+<xs:complexContent>
+<xs:extension base="tns:commonInfo">
+<xs:sequence>
+<xs:element minOccurs="0" name="dieta" type="tns:dieta"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDoloriRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDoloriResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaDolori" type="tns:listaDolori"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaDolori">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="dolore" type="tns:doloreResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setImpostazioniTaccuinoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaPreferenze" type="tns:listaPreferenzeRequest"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaPreferenzeRequest">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="preferenza" type="tns:preferenzaRequest"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="preferenzaRequest">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="id" type="xs:long"/>
+<xs:element form="qualified" minOccurs="0" name="visibile" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="codiceEntita" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="codiceGruppo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setImpostazioniTaccuinoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaPreferenze" type="tns:listaPreferenze"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaPreferenze">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="preferenza" type="tns:preferenza"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="preferenza">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="id" type="xs:long"/>
+<xs:element form="qualified" minOccurs="0" name="visibile" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="entita" type="tns:entita"/>
+<xs:element form="qualified" minOccurs="0" name="gruppo" type="tns:gruppo"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="entita">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setFarmacoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="assunzioneFarmaco" type="tns:assunzioneFarmaco"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="assunzioneFarmaco">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="farmaco" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="quantita" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="dataAssunzione" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setFarmacoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="assunzioneFarmaco" type="tns:assunzioneFarmacoResponse"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="assunzioneFarmacoResponse">
+<xs:complexContent>
+<xs:extension base="tns:commonInfo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="assunzioneFarmaco" type="tns:assunzioneFarmaco"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="setSintomoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="sintomo" type="tns:sintomo"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="sintomo">
+<xs:sequence>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+<xs:element minOccurs="0" name="areaInteressata" type="xs:string"/>
+<xs:element minOccurs="0" name="dataInizio" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="dataFine" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setSintomoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="sintomo" type="tns:sintomoResponse"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="sintomoResponse">
+<xs:complexContent>
+<xs:extension base="tns:commonInfo">
+<xs:sequence>
+<xs:element minOccurs="0" name="sintomo" type="tns:sintomo"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaContattiStruttureRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="idContatto" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaContattiStruttureResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="setRilevazioniRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaRilevazioni" type="tns:listaRilevazioniRequest"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaRilevazioniRequest">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="rilevazione" type="tns:rilevazioneRequest"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rilevazioneRequest">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="valoreNumerico" type="xs:float"/>
+<xs:element form="qualified" minOccurs="0" name="valoreTestuale" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="data" type="xs:dateTime"/>
+<xs:element form="qualified" minOccurs="0" name="codiceUnitaMisura" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="codiceGruppo" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="codiceDescrittore" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="codiceModalita" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setRilevazioniResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaRilevazioni" type="tns:listaRilevazioni"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDieteRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDieteResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaDiete" type="tns:listaDiete"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaDiete">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="dieta" type="tns:dietaResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setOscuramentoTaccuinoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="oscurato" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="setOscuramentoTaccuinoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="oscurato" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDecodificaStrutturaTipoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDecodificaStrutturaTipoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaStrutturaTipo" type="tns:listaStrutturaTipo"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaStrutturaTipo">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="strutturaTipo" type="tns:strutturaTipo"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="strutturaTipo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cancellaSintomiRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="idSintomo" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaSintomiResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getTaccuinoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getTaccuinoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="taccuino" type="tns:taccuino"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="taccuino">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="id" type="xs:long"/>
+<xs:element form="qualified" minOccurs="0" name="oscurato" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="notaGenerale" type="tns:notaGenerale"/>
+<xs:element form="qualified" minOccurs="0" name="listaPreferenze" type="tns:listaPreferenze"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setContattoStrutturaRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="contattoStruttura" type="tns:contattoStruttura"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="contattoStruttura">
+<xs:sequence>
+<xs:element minOccurs="0" name="tipologiaStruttura" type="tns:tipologiaStruttura"/>
+<xs:element minOccurs="0" name="denominazioneStruttura" type="xs:string"/>
+<xs:element minOccurs="0" name="dataInizioContatto" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="dataFineContatto" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="motivazioneContatto" type="xs:string"/>
+<xs:element minOccurs="0" name="tipologiaContatto" type="tns:tipologiaContatto"/>
+<xs:element minOccurs="0" name="tipoContattoMedNonConvenz" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="tipologiaStruttura">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="tns:strutturaTipoCodice"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="tipologiaContatto">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="tns:contattoTipoCodice"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setContattoStrutturaResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="contattoStruttura" type="tns:contattoStrutturaResponse"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="contattoStrutturaResponse">
+<xs:complexContent>
+<xs:extension base="tns:commonInfo">
+<xs:sequence>
+<xs:element minOccurs="0" name="contattoStruttura" type="tns:contattoStruttura"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDecodificaModalitaRilevazioneRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDecodificheModalitaRilevazioneResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaModalitaRilevazione" type="tns:listaModalitaRilevazione"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaModalitaRilevazione">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="modalitaRilevazione" type="tns:modalitaRilevazione"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cancellaRilevazioniRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="idRilevazione" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaRilevazioniResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getContattiStruttureRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getContattiStruttureResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaContattiStrutture" type="tns:listaContattiStrutture"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaContattiStrutture">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="contattoStruttura" type="tns:contattoStrutturaResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getEventiRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getEventiResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaEventi" type="tns:listaEventi"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaEventi">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="evento" type="tns:eventoResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="eventoResponse">
+<xs:complexContent>
+<xs:extension base="tns:commonInfo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="evento" type="tns:evento"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="evento">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="data" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cancellaEventoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" name="idEvento" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaEventoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaFarmacoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" name="identificativoFarmaco" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaFarmacoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getFarmaciRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getFarmaciResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaAssunzioneFarmaci" type="tns:listaAssunzioneFarmaci"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaAssunzioneFarmaci">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="assunzioneFarmaco" type="tns:assunzioneFarmacoResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getSintomiRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommonGet">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getSintomiResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaSintomi" type="tns:listaSintomi"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaSintomi">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="sintomo" type="tns:sintomoResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getDecodificaIntensitaDoloreRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDecodificaIntensitaDoloreResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaIntensitaDolore" type="tns:listaIntensitaDolore"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaIntensitaDolore">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="intensitaDolore" type="tns:intensitaDolore"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="intensitaDolore">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="valore" type="xs:int"/>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cancellaDoloriRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="idDolore" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaDoloriResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDescrittoriMisurazioneRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDescrittoriMisurazioneResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaDescrittoreMisurazione" type="tns:listaDescrittoreMisurazione"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaDescrittoreMisurazione">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="descrittoreMisurazione" type="tns:descrittoreMisurazione"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="descrittoreMisurazione">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="entitaCodice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="gruppoCodice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrittoreCodice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrittoreDescrizione" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrittoreDescrizioneEstesa" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="unitaMisuraCodice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="unitaMisuraDescrizione" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizioneGruppo" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizioneGruppoEstesa" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="icona" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="colore" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="idGruppo" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dmaclLXmlMessaggiDto">
+<xs:sequence>
+<xs:element minOccurs="0" name="dataInserimento" type="tns:timestamp"/>
+<xs:element minOccurs="0" name="id" type="xs:long"/>
+<xs:element minOccurs="0" name="wso2Id" type="xs:string"/>
+<xs:element minOccurs="0" name="xmlIn" type="xs:string"/>
+<xs:element minOccurs="0" name="xmlInServizio" type="xs:string"/>
+<xs:element minOccurs="0" name="xmlOut" type="xs:string"/>
+<xs:element minOccurs="0" name="xmlOutServizio" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="timestamp">
+<xs:sequence>
+<xs:element name="nanos" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getDecodificaContattoTipoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="getDecodificaContattoTipoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="listaContattoTipo" type="tns:listaContattoTipo"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="listaContattoTipo">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="contattoTipo" type="tns:contattoTipo"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="contattoTipo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codice" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setEventoRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="evento" type="tns:evento"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="setEventoResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="evento" type="tns:eventoResponse"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaDietaRequest">
+<xs:complexContent>
+<xs:extension base="tns:requestCommon">
+<xs:sequence>
+<xs:element form="qualified" name="identificativoDieta" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cancellaDietaResponse">
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="strutturaTipoCodice">
+<xs:restriction base="xs:string">
+<xs:enumeration value="STRUT_SAN"/>
+<xs:enumeration value="MNC"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="contattoTipoCodice">
+<xs:restriction base="xs:string">
+<xs:enumeration value="VIS"/>
+<xs:enumeration value="RIC"/>
+<xs:enumeration value="DIA"/>
+<xs:enumeration value="TRATMED"/>
+<xs:enumeration value="PS"/>
+<xs:enumeration value="ALTRO"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType final="#all" name="dmaclLXmlMessaggiDtoArray">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:dmaclLXmlMessaggiDto"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="DmaclLXmlMessaggiDaoException" type="tns:DmaclLXmlMessaggiDaoException"/>
+<xs:complexType name="DmaclLXmlMessaggiDaoException">
+<xs:sequence/>
+</xs:complexType>
+<xs:element name="setDolore" nillable="true" type="tns:setDoloreRequest"/>
+<xs:element name="setDoloreResponse" nillable="true" type="tns:setDoloreResponse"/>
+<xs:element name="setNotaGenerale" nillable="true" type="tns:setNotaGeneraleRequest"/>
+<xs:element name="setNotaGeneraleResponse" nillable="true" type="tns:setNotaGeneraleResponse"/>
+<xs:element name="getRilevazioni" nillable="true" type="tns:getRilevazioniRequest"/>
+<xs:element name="getRilevazioniResponse" nillable="true" type="tns:getRilevazioniResponse"/>
+<xs:element name="setDieta" nillable="true" type="tns:setDietaRequest"/>
+<xs:element name="setDietaResponse" nillable="true" type="tns:setDietaResponse"/>
+<xs:element name="getDolori" nillable="true" type="tns:getDoloriRequest"/>
+<xs:element name="getDoloriResponse" nillable="true" type="tns:getDoloriResponse"/>
+<xs:element name="setImpostazioniTaccuino" nillable="true" type="tns:setImpostazioniTaccuinoRequest"/>
+<xs:element name="setImpostazioniTaccuinoResponse" nillable="true" type="tns:setImpostazioniTaccuinoResponse"/>
+<xs:element name="setFarmaco" nillable="true" type="tns:setFarmacoRequest"/>
+<xs:element name="setFarmacoResponse" nillable="true" type="tns:setFarmacoResponse"/>
+<xs:element name="setSintomo" nillable="true" type="tns:setSintomoRequest"/>
+<xs:element name="setSintomoResponse" nillable="true" type="tns:setSintomoResponse"/>
+<xs:element name="cancellaContattiStrutture" nillable="true" type="tns:cancellaContattiStruttureRequest"/>
+<xs:element name="cancellaContattiStruttureResponse" nillable="true" type="tns:cancellaContattiStruttureResponse"/>
+<xs:element name="setRilevazioni" nillable="true" type="tns:setRilevazioniRequest"/>
+<xs:element name="setRilevazioniResponse" nillable="true" type="tns:setRilevazioniResponse"/>
+<xs:element name="getDiete" nillable="true" type="tns:getDieteRequest"/>
+<xs:element name="getDieteResponse" nillable="true" type="tns:getDieteResponse"/>
+<xs:element name="setOscuramentoTaccuino" nillable="true" type="tns:setOscuramentoTaccuinoRequest"/>
+<xs:element name="setOscuramentoTaccuinoResponse" nillable="true" type="tns:setOscuramentoTaccuinoResponse"/>
+<xs:element name="getDecodificaStrutturaTipo" nillable="true" type="tns:getDecodificaStrutturaTipoRequest"/>
+<xs:element name="getDecodificaStrutturaTipoResponse" nillable="true" type="tns:getDecodificaStrutturaTipoResponse"/>
+<xs:element name="cancellaSintomi" nillable="true" type="tns:cancellaSintomiRequest"/>
+<xs:element name="cancellaSintomiResponse" nillable="true" type="tns:cancellaSintomiResponse"/>
+<xs:element name="getTaccuino" nillable="true" type="tns:getTaccuinoRequest"/>
+<xs:element name="getTaccuinoResponse" nillable="true" type="tns:getTaccuinoResponse"/>
+<xs:element name="setContattoStruttura" nillable="true" type="tns:setContattoStrutturaRequest"/>
+<xs:element name="setContattoStrutturaResponse" nillable="true" type="tns:setContattoStrutturaResponse"/>
+<xs:element name="getDecodificaModalitaRilevazione" nillable="true" type="tns:getDecodificaModalitaRilevazioneRequest"/>
+<xs:element name="getDecodificaModalitaRilevazioneResponse" nillable="true" type="tns:getDecodificheModalitaRilevazioneResponse"/>
+<xs:element name="cancellaRilevazioni" nillable="true" type="tns:cancellaRilevazioniRequest"/>
+<xs:element name="cancellaRilevazioniResponse" nillable="true" type="tns:cancellaRilevazioniResponse"/>
+<xs:element name="getContattiStrutture" nillable="true" type="tns:getContattiStruttureRequest"/>
+<xs:element name="getContattiStruttureResponse" nillable="true" type="tns:getContattiStruttureResponse"/>
+<xs:element name="getEventi" nillable="true" type="tns:getEventiRequest"/>
+<xs:element name="getEventiResponse" nillable="true" type="tns:getEventiResponse"/>
+<xs:element name="cancellaEvento" nillable="true" type="tns:cancellaEventoRequest"/>
+<xs:element name="cancellaEventoResponse" nillable="true" type="tns:cancellaEventoResponse"/>
+<xs:element name="cancellaFarmaco" nillable="true" type="tns:cancellaFarmacoRequest"/>
+<xs:element name="cancellaFarmacoResponse" nillable="true" type="tns:cancellaFarmacoResponse"/>
+<xs:element name="getFarmaci" nillable="true" type="tns:getFarmaciRequest"/>
+<xs:element name="getFarmaciResponse" nillable="true" type="tns:getFarmaciResponse"/>
+<xs:element name="getSintomi" nillable="true" type="tns:getSintomiRequest"/>
+<xs:element name="getSintomiResponse" nillable="true" type="tns:getSintomiResponse"/>
+<xs:element name="getDecodificaIntensitaDolore" nillable="true" type="tns:getDecodificaIntensitaDoloreRequest"/>
+<xs:element name="getDecodificaIntensitaDoloreResponse" nillable="true" type="tns:getDecodificaIntensitaDoloreResponse"/>
+<xs:element name="cancellaDolori" nillable="true" type="tns:cancellaDoloriRequest"/>
+<xs:element name="cancellaDoloriResponse" nillable="true" type="tns:cancellaDoloriResponse"/>
+<xs:element name="getDescrittoriMisurazione" nillable="true" type="tns:getDescrittoriMisurazioneRequest"/>
+<xs:element name="getDescrittoriMisurazioneResponse" nillable="true" type="tns:getDescrittoriMisurazioneResponse"/>
+<xs:element name="getLog" nillable="true" type="tns:dmaclLXmlMessaggiDto"/>
+<xs:element name="getLogResponse" nillable="true" type="tns:dmaclLXmlMessaggiDtoArray"/>
+<xs:element name="getDecodificaContattoTipo" nillable="true" type="tns:getDecodificaContattoTipoRequest"/>
+<xs:element name="getDecodificaContattoTipoResponse" nillable="true" type="tns:getDecodificaContattoTipoResponse"/>
+<xs:element name="setEvento" nillable="true" type="tns:setEventoRequest"/>
+<xs:element name="setEventoResponse" nillable="true" type="tns:setEventoResponse"/>
+<xs:element name="cancellaDieta" nillable="true" type="tns:cancellaDietaRequest"/>
+<xs:element name="cancellaDietaResponse" nillable="true" type="tns:cancellaDietaResponse"/>
+</xs:schema>
+<xs:schema targetNamespace="http://dma.csi.it/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="errore">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="risultatoCodice">
+<xs:restriction base="xs:string">
+<xs:enumeration value="SUCCESSO"/>
+<xs:enumeration value="FALLIMENTO"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getRilevazioni">
+    <wsdl:part element="tns:getRilevazioni" name="getRilevazioni">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaModalitaRilevazioneResponse">
+    <wsdl:part element="tns:getDecodificaModalitaRilevazioneResponse" name="getDecodificaModalitaRilevazioneResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDieta">
+    <wsdl:part element="tns:setDieta" name="setDieta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaSintomiResponse">
+    <wsdl:part element="tns:cancellaSintomiResponse" name="cancellaSintomiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setContattoStrutturaResponse">
+    <wsdl:part element="tns:setContattoStrutturaResponse" name="setContattoStrutturaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDescrittoriMisurazioneResponse">
+    <wsdl:part element="tns:getDescrittoriMisurazioneResponse" name="getDescrittoriMisurazioneResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaccuinoResponse">
+    <wsdl:part element="tns:getTaccuinoResponse" name="getTaccuinoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDolori">
+    <wsdl:part element="tns:getDolori" name="getDolori">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaDietaResponse">
+    <wsdl:part element="tns:cancellaDietaResponse" name="cancellaDietaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setSintomoResponse">
+    <wsdl:part element="tns:setSintomoResponse" name="setSintomoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setSintomo">
+    <wsdl:part element="tns:setSintomo" name="setSintomo">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaIntensitaDoloreResponse">
+    <wsdl:part element="tns:getDecodificaIntensitaDoloreResponse" name="getDecodificaIntensitaDoloreResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDiete">
+    <wsdl:part element="tns:getDiete" name="getDiete">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setOscuramentoTaccuino">
+    <wsdl:part element="tns:setOscuramentoTaccuino" name="setOscuramentoTaccuino">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaStrutturaTipo">
+    <wsdl:part element="tns:getDecodificaStrutturaTipo" name="getDecodificaStrutturaTipo">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaccuino">
+    <wsdl:part element="tns:getTaccuino" name="getTaccuino">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setContattoStruttura">
+    <wsdl:part element="tns:setContattoStruttura" name="setContattoStruttura">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDieteResponse">
+    <wsdl:part element="tns:getDieteResponse" name="getDieteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setImpostazioniTaccuinoResponse">
+    <wsdl:part element="tns:setImpostazioniTaccuinoResponse" name="setImpostazioniTaccuinoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaModalitaRilevazione">
+    <wsdl:part element="tns:getDecodificaModalitaRilevazione" name="getDecodificaModalitaRilevazione">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaRilevazioni">
+    <wsdl:part element="tns:cancellaRilevazioni" name="cancellaRilevazioni">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaContattoTipoResponse">
+    <wsdl:part element="tns:getDecodificaContattoTipoResponse" name="getDecodificaContattoTipoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaEvento">
+    <wsdl:part element="tns:cancellaEvento" name="cancellaEvento">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getFarmaci">
+    <wsdl:part element="tns:getFarmaci" name="getFarmaci">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSintomi">
+    <wsdl:part element="tns:getSintomi" name="getSintomi">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaIntensitaDolore">
+    <wsdl:part element="tns:getDecodificaIntensitaDolore" name="getDecodificaIntensitaDolore">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDietaResponse">
+    <wsdl:part element="tns:setDietaResponse" name="setDietaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaEventoResponse">
+    <wsdl:part element="tns:cancellaEventoResponse" name="cancellaEventoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setOscuramentoTaccuinoResponse">
+    <wsdl:part element="tns:setOscuramentoTaccuinoResponse" name="setOscuramentoTaccuinoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaDolori">
+    <wsdl:part element="tns:cancellaDolori" name="cancellaDolori">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaRilevazioniResponse">
+    <wsdl:part element="tns:cancellaRilevazioniResponse" name="cancellaRilevazioniResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setFarmacoResponse">
+    <wsdl:part element="tns:setFarmacoResponse" name="setFarmacoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaContattoTipo">
+    <wsdl:part element="tns:getDecodificaContattoTipo" name="getDecodificaContattoTipo">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setEvento">
+    <wsdl:part element="tns:setEvento" name="setEvento">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDolore">
+    <wsdl:part element="tns:setDolore" name="setDolore">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setNotaGenerale">
+    <wsdl:part element="tns:setNotaGenerale" name="setNotaGenerale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getFarmaciResponse">
+    <wsdl:part element="tns:getFarmaciResponse" name="getFarmaciResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setNotaGeneraleResponse">
+    <wsdl:part element="tns:setNotaGeneraleResponse" name="setNotaGeneraleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRilevazioniResponse">
+    <wsdl:part element="tns:getRilevazioniResponse" name="getRilevazioniResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContattiStruttureResponse">
+    <wsdl:part element="tns:getContattiStruttureResponse" name="getContattiStruttureResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setImpostazioniTaccuino">
+    <wsdl:part element="tns:setImpostazioniTaccuino" name="setImpostazioniTaccuino">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setFarmaco">
+    <wsdl:part element="tns:setFarmaco" name="setFarmaco">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLogResponse">
+    <wsdl:part element="tns:getLogResponse" name="getLogResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaContattiStrutture">
+    <wsdl:part element="tns:cancellaContattiStrutture" name="cancellaContattiStrutture">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setRilevazioni">
+    <wsdl:part element="tns:setRilevazioni" name="setRilevazioni">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setEventoResponse">
+    <wsdl:part element="tns:setEventoResponse" name="setEventoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaFarmacoResponse">
+    <wsdl:part element="tns:cancellaFarmacoResponse" name="cancellaFarmacoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEventiResponse">
+    <wsdl:part element="tns:getEventiResponse" name="getEventiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDoloriResponse">
+    <wsdl:part element="tns:getDoloriResponse" name="getDoloriResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaSintomi">
+    <wsdl:part element="tns:cancellaSintomi" name="cancellaSintomi">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSintomiResponse">
+    <wsdl:part element="tns:getSintomiResponse" name="getSintomiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaDoloriResponse">
+    <wsdl:part element="tns:cancellaDoloriResponse" name="cancellaDoloriResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContattiStrutture">
+    <wsdl:part element="tns:getContattiStrutture" name="getContattiStrutture">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEventi">
+    <wsdl:part element="tns:getEventi" name="getEventi">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDecodificaStrutturaTipoResponse">
+    <wsdl:part element="tns:getDecodificaStrutturaTipoResponse" name="getDecodificaStrutturaTipoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaFarmaco">
+    <wsdl:part element="tns:cancellaFarmaco" name="cancellaFarmaco">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaContattiStruttureResponse">
+    <wsdl:part element="tns:cancellaContattiStruttureResponse" name="cancellaContattiStruttureResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setRilevazioniResponse">
+    <wsdl:part element="tns:setRilevazioniResponse" name="setRilevazioniResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDescrittoriMisurazione">
+    <wsdl:part element="tns:getDescrittoriMisurazione" name="getDescrittoriMisurazione">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setDoloreResponse">
+    <wsdl:part element="tns:setDoloreResponse" name="setDoloreResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DmaclLXmlMessaggiDaoException">
+    <wsdl:part element="tns:DmaclLXmlMessaggiDaoException" name="DmaclLXmlMessaggiDaoException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLog">
+    <wsdl:part element="tns:getLog" name="getLog">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancellaDieta">
+    <wsdl:part element="tns:cancellaDieta" name="cancellaDieta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TaccuinoService">
+    <wsdl:operation name="setDolore">
+      <wsdl:input message="tns:setDolore" name="setDolore">
+    </wsdl:input>
+      <wsdl:output message="tns:setDoloreResponse" name="setDoloreResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setNotaGenerale">
+      <wsdl:input message="tns:setNotaGenerale" name="setNotaGenerale">
+    </wsdl:input>
+      <wsdl:output message="tns:setNotaGeneraleResponse" name="setNotaGeneraleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRilevazioni">
+      <wsdl:input message="tns:getRilevazioni" name="getRilevazioni">
+    </wsdl:input>
+      <wsdl:output message="tns:getRilevazioniResponse" name="getRilevazioniResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDieta">
+      <wsdl:input message="tns:setDieta" name="setDieta">
+    </wsdl:input>
+      <wsdl:output message="tns:setDietaResponse" name="setDietaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDolori">
+      <wsdl:input message="tns:getDolori" name="getDolori">
+    </wsdl:input>
+      <wsdl:output message="tns:getDoloriResponse" name="getDoloriResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setImpostazioniTaccuino">
+      <wsdl:input message="tns:setImpostazioniTaccuino" name="setImpostazioniTaccuino">
+    </wsdl:input>
+      <wsdl:output message="tns:setImpostazioniTaccuinoResponse" name="setImpostazioniTaccuinoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setFarmaco">
+      <wsdl:input message="tns:setFarmaco" name="setFarmaco">
+    </wsdl:input>
+      <wsdl:output message="tns:setFarmacoResponse" name="setFarmacoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setSintomo">
+      <wsdl:input message="tns:setSintomo" name="setSintomo">
+    </wsdl:input>
+      <wsdl:output message="tns:setSintomoResponse" name="setSintomoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaContattiStrutture">
+      <wsdl:input message="tns:cancellaContattiStrutture" name="cancellaContattiStrutture">
+    </wsdl:input>
+      <wsdl:output message="tns:cancellaContattiStruttureResponse" name="cancellaContattiStruttureResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setRilevazioni">
+      <wsdl:input message="tns:setRilevazioni" name="setRilevazioni">
+    </wsdl:input>
+      <wsdl:output message="tns:setRilevazioniResponse" name="setRilevazioniResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDiete">
+      <wsdl:input message="tns:getDiete" name="getDiete">
+    </wsdl:input>
+      <wsdl:output message="tns:getDieteResponse" name="getDieteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setOscuramentoTaccuino">
+      <wsdl:input message="tns:setOscuramentoTaccuino" name="setOscuramentoTaccuino">
+    </wsdl:input>
+      <wsdl:output message="tns:setOscuramentoTaccuinoResponse" name="setOscuramentoTaccuinoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaStrutturaTipo">
+      <wsdl:input message="tns:getDecodificaStrutturaTipo" name="getDecodificaStrutturaTipo">
+    </wsdl:input>
+      <wsdl:output message="tns:getDecodificaStrutturaTipoResponse" name="getDecodificaStrutturaTipoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaSintomi">
+      <wsdl:input message="tns:cancellaSintomi" name="cancellaSintomi">
+    </wsdl:input>
+      <wsdl:output message="tns:cancellaSintomiResponse" name="cancellaSintomiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTaccuino">
+      <wsdl:input message="tns:getTaccuino" name="getTaccuino">
+    </wsdl:input>
+      <wsdl:output message="tns:getTaccuinoResponse" name="getTaccuinoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setContattoStruttura">
+      <wsdl:input message="tns:setContattoStruttura" name="setContattoStruttura">
+    </wsdl:input>
+      <wsdl:output message="tns:setContattoStrutturaResponse" name="setContattoStrutturaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaModalitaRilevazione">
+      <wsdl:input message="tns:getDecodificaModalitaRilevazione" name="getDecodificaModalitaRilevazione">
+    </wsdl:input>
+      <wsdl:output message="tns:getDecodificaModalitaRilevazioneResponse" name="getDecodificaModalitaRilevazioneResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaRilevazioni">
+      <wsdl:input message="tns:cancellaRilevazioni" name="cancellaRilevazioni">
+    </wsdl:input>
+      <wsdl:output message="tns:cancellaRilevazioniResponse" name="cancellaRilevazioniResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getContattiStrutture">
+      <wsdl:input message="tns:getContattiStrutture" name="getContattiStrutture">
+    </wsdl:input>
+      <wsdl:output message="tns:getContattiStruttureResponse" name="getContattiStruttureResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEventi">
+      <wsdl:input message="tns:getEventi" name="getEventi">
+    </wsdl:input>
+      <wsdl:output message="tns:getEventiResponse" name="getEventiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaEvento">
+      <wsdl:input message="tns:cancellaEvento" name="cancellaEvento">
+    </wsdl:input>
+      <wsdl:output message="tns:cancellaEventoResponse" name="cancellaEventoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaFarmaco">
+      <wsdl:input message="tns:cancellaFarmaco" name="cancellaFarmaco">
+    </wsdl:input>
+      <wsdl:output message="tns:cancellaFarmacoResponse" name="cancellaFarmacoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFarmaci">
+      <wsdl:input message="tns:getFarmaci" name="getFarmaci">
+    </wsdl:input>
+      <wsdl:output message="tns:getFarmaciResponse" name="getFarmaciResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSintomi">
+      <wsdl:input message="tns:getSintomi" name="getSintomi">
+    </wsdl:input>
+      <wsdl:output message="tns:getSintomiResponse" name="getSintomiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaIntensitaDolore">
+      <wsdl:input message="tns:getDecodificaIntensitaDolore" name="getDecodificaIntensitaDolore">
+    </wsdl:input>
+      <wsdl:output message="tns:getDecodificaIntensitaDoloreResponse" name="getDecodificaIntensitaDoloreResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaDolori">
+      <wsdl:input message="tns:cancellaDolori" name="cancellaDolori">
+    </wsdl:input>
+      <wsdl:output message="tns:cancellaDoloriResponse" name="cancellaDoloriResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDescrittoriMisurazione">
+      <wsdl:input message="tns:getDescrittoriMisurazione" name="getDescrittoriMisurazione">
+    </wsdl:input>
+      <wsdl:output message="tns:getDescrittoriMisurazioneResponse" name="getDescrittoriMisurazioneResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <wsdl:input message="tns:getLog" name="getLog">
+    </wsdl:input>
+      <wsdl:output message="tns:getLogResponse" name="getLogResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:DmaclLXmlMessaggiDaoException" name="DmaclLXmlMessaggiDaoException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaContattoTipo">
+      <wsdl:input message="tns:getDecodificaContattoTipo" name="getDecodificaContattoTipo">
+    </wsdl:input>
+      <wsdl:output message="tns:getDecodificaContattoTipoResponse" name="getDecodificaContattoTipoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setEvento">
+      <wsdl:input message="tns:setEvento" name="setEvento">
+    </wsdl:input>
+      <wsdl:output message="tns:setEventoResponse" name="setEventoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaDieta">
+      <wsdl:input message="tns:cancellaDieta" name="cancellaDieta">
+    </wsdl:input>
+      <wsdl:output message="tns:cancellaDietaResponse" name="cancellaDietaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TaccuinoServiceImplServiceSoapBinding" type="tns:TaccuinoService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="setDolore">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setDolore">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setDoloreResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setNotaGenerale">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setNotaGenerale">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setNotaGeneraleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRilevazioni">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getRilevazioni">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRilevazioniResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDieta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setDieta">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setDietaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDolori">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDolori">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDoloriResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setImpostazioniTaccuino">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setImpostazioniTaccuino">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setImpostazioniTaccuinoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setFarmaco">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setFarmaco">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setFarmacoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setSintomo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setSintomo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setSintomoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaContattiStrutture">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancellaContattiStrutture">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancellaContattiStruttureResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setRilevazioni">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setRilevazioni">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setRilevazioniResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDiete">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDiete">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDieteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setOscuramentoTaccuino">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setOscuramentoTaccuino">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setOscuramentoTaccuinoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaStrutturaTipo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDecodificaStrutturaTipo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDecodificaStrutturaTipoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaSintomi">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancellaSintomi">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancellaSintomiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTaccuino">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTaccuino">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTaccuinoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setContattoStruttura">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setContattoStruttura">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setContattoStrutturaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaModalitaRilevazione">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDecodificaModalitaRilevazione">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDecodificaModalitaRilevazioneResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaRilevazioni">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancellaRilevazioni">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancellaRilevazioniResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getContattiStrutture">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getContattiStrutture">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getContattiStruttureResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEventi">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getEventi">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getEventiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaEvento">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancellaEvento">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancellaEventoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaFarmaco">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancellaFarmaco">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancellaFarmacoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFarmaci">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getFarmaci">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getFarmaciResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSintomi">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getSintomi">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getSintomiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaIntensitaDolore">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDecodificaIntensitaDolore">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDecodificaIntensitaDoloreResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaDolori">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancellaDolori">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancellaDoloriResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDescrittoriMisurazione">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDescrittoriMisurazione">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDescrittoriMisurazioneResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getLog">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getLogResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DmaclLXmlMessaggiDaoException">
+        <soap:fault name="DmaclLXmlMessaggiDaoException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getDecodificaContattoTipo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getDecodificaContattoTipo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDecodificaContattoTipoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setEvento">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setEvento">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setEventoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancellaDieta">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancellaDieta">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancellaDietaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TaccuinoServiceImplService">
+    <wsdl:port binding="tns:TaccuinoServiceImplServiceSoapBinding" name="TaccuinoServicePort">
+      <soap:address location="https://xxx-dma.xxx.csi.it/dmaclbluc/TaccuinoService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

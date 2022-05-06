@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<!--PROTECTED REGION ID(R-1054124068) ENABLED START-->
+	<context:property-placeholder location="WEB-INF/*.properties"/>
+	<context:annotation-config />
+	<!-- Insert here your custom Spring Beans -->
+	<context:component-scan base-package="it.csi.apisan.apisanpag" />
+	
+	<!-- ****************************** SERVICE PTWSRV ************************** -->
+	<bean id="IPtwsrvServiceAvvisoPagamentoWS"
+		  class="it.csi.ptwsrv.business.webservice.ptwsrvavvisopagamento.IPtwsrvServiceAvvisoPagamentoWS"
+		  factory-bean="cxfptwsrvClientFactory"
+		  factory-method="create"/>
+	
+	
+	<bean id="cxfptwsrvClientFactory" parent="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.ptwsrv.business.webservice.ptwsrvavvisopagamento.IPtwsrvServiceAvvisoPagamentoWS"/>
+		<property name="address" value="@endpointIPtwUrl@" />
+		<property name="serviceName" value="IPtwsrvServiceAvvisoPagamentoWS" />
+	</bean>
+	
+	<!-- **************************** SERVICE DELEGHE ************************************ -->	
+	<bean id="DelegheCittadiniService"
+		  class="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"
+		  factory-bean="cxfdelegheClientFactory"
+		  factory-method="create"/>
+
+	
+	<bean id="cxfdelegheClientFactory" parent="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.deleghe.deleghebe.ws.DelegheCittadiniService"/>
+		<property name="address" value="@endpointDelegheUrl@" />
+		<property name="serviceName" value="DelegheCittadiniService" />
+		<property name="username" value="@userDeleghebe@"/>
+      	<property name="password" value="@passDeleghebe@"/>
+	</bean>
+
+	<!-- **************************** -->
+	
+	<!-- **************** SERVICE GPR ******************* -->
+	<bean id="ProxyGPRPortType"
+		  class="it.csi.gpr.ProxyGPRPortType"
+		  factory-bean="cxfgprClientFactory"
+		  factory-method="create"/>
+	
+	
+	<bean id="cxfgprClientFactory" parent="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="it.csi.gpr.ProxyGPRPortType"/>
+		<property name="address" value="@endpointGprUrl@" />
+		<property name="serviceName" value="proxyGPRPortType" />
+	</bean>
+	
+	<!-- ************************************ -->
+	
+	<!-- ***************************     SERVICE DATASERVICE **************************-->
+  	<bean id="GPRDATASERVICEPortType"
+		  class="org.wso2.ws.dataservice.GPRDATASERVICEPortType"
+		  factory-bean="cxfDataServiceClientFactory"
+		  factory-method="create"/>
+	
+	
+	<bean id="cxfDataServiceClientFactory" parent="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="serviceClass" value="org.wso2.ws.dataservice.GPRDATASERVICEPortType"/>
+		<property name="address" value="@endpointDataServiceUrl@" />
+		<property name="serviceName" value="GPRDATASERVICEPortType" />
+	</bean>
+	
+	
+	<bean id="cxfBaseClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="loggingIn" />
+				<ref bean="stopWatchIn" />
+				<ref bean="traceIn" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="loggingOut" />
+				<ref bean="stopWatchOut" />
+				<ref bean="traceOut" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="loggingIn" class="org.apache.cxf.interceptor.LoggingInInterceptor" />  
+  	<bean id="loggingOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />  
+	<bean id="stopWatchIn" class="it.csi.apisan.apisanpag.util.cxf.StopWatchInInterceptor" />
+  	<bean id="stopWatchOut" class="it.csi.apisan.apisanpag.util.cxf.StopWatchOutInterceptor" />
+	<bean id="traceIn" class="it.csi.apisan.apisanpag.util.cxf.TraceInInterceptor" />
+  	<bean id="traceOut" class="it.csi.apisan.apisanpag.util.cxf.TraceOutInterceptor" />
+	
+	
+	<!-- Bean utilizzato per le operazioni di Tracciatura. Sostituire qui con un implmenetazione su coda JMS
+	     Per ora utilizziamo un implementazione che fa semplicemente il logging. -->
+	<bean id="apisanTraceOperation" name="apisanTraceOperation" class="it.csi.apisan.apisanpag.util.trace.ApisanTraceOperationLog"/>
+	
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="apisan/jdbc/apisanDS" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+	</bean>
+
+
+	<bean id="namedJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- Bean utilizzato per le operazioni di Tracciatura su database.  -->
+	<bean id="apisanTraceOperationDataBase" name="apisanTraceOperationDataBase"
+		class="it.csi.apisan.apisanpag.business.integration.util.trace.ApisanTraceOperationDB" />
+	
+	
+</beans>
+
+

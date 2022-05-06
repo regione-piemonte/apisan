@@ -1,0 +1,62 @@
+name@version *,license *,copyrights *,end-of-support,dependencies,language,repository,email,URL
+aopalliance-1.0.0.jar,"Public Domain",-,-,-,Java,-,-,-
+antlr-2.7.5.jar,"BSD",Copyright (c) 2012 Terence Parr and Sam Harwell,-,-,Java,-,-,-
+barbecue-1.5-beta1.jar,"BSD-3-clause",Copyright (c) 2003, International Barcode Consortium,-,-,Java,-,-,-
+barcode4j-2.1.0.jar,"Apache-2.0",-,-,-,Java,-,-,-
+batik-css-1.7.jar,"Apache-2.0",-,-,-,Java,-,-,-
+bcprov-jdk15on-151.jar,"BouncyCastle License",-,-,-,Java,-,-,-
+bsh-2.0b4.jar,"Apache-2.0",-,-,-,Java,-,-,-
+castor-core-1.3.3.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-beanutils-1.9.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-collections-3.2.2.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-digester-2.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-io-2.5.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-javaflow-20060411.jar,"Apache-2.0",jasperberry,-,-,Java,-,-,-
+commons-lang-2.6.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-lang3-3.2.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-logging-1.1.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+cxf-utils.js,"Apache-2.0",-,-,-,Javascript,-,-,-
+cxf-2.7.14.jar,"Apache-2.0",-,-,-,Java,-,-,-
+groovy-all-2.4.5.jar,"Apache-2.0",-,-,-,Java,-,-,-
+httpclient-4.3.4.jar,"Apache-2.0",-,-,-,Java,-,-,-
+openpdf-1.3.20.jar,"LGPL-3.0; MPL-2.0",-,-,-,Java,-,-,-
+openpdf-1.3.20.jar,"LGPL-3.0; MPL-2.0",-,-,-,Java,-,-,-
+jackson-core-2.1.5.jar,"Apache-2.0",-,-,-,Java,-,-,-
+jackson-core-asl-1.9.9.redhat-4.jar,"Apache-2.0",Redhat,-,-,Java,-,-,-
+jackson-databind-2.1.5.jar,"Apache-2.0",-,-,-,Java,-,-,-
+jackson-mapper-asl-1.9.9.redhat-4.jar,"Apache-2.0",Redhat,-,-,Java,-,-,-
+jasperreports-6.2.1.jar,"LGPL-3.0",-,-,-,Java,-,-,-
+jasperreports-fonts-6.2.1.jar,"LGPL-3.0",-,-,-,Java,-,-,-
+jasperreports-functions-6.2.1.jar,"LGPL-3.0",-,-,-,Java,-,-,-
+jaxen-1.1.1.jar,"Apache-2.0",-,-,-,Java,-,-,The MIT License: https://github.com/mockito/mockito/blob/master/LICENSE
+jcommon-1.0.23.jar,"LGPL-2.1",-,-,-,Java,-,-,-
+jettison-1.3.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+jfreechart-1.0.19.jar,"LGPL-3.0",-,-,-,Java,-,-,-
+joda-time-1.6.jar,"Apache-2.0",-,-,-,Java,-,-,-
+jxl-2.6.10.jar,"LGPL-3.0",-,-,-,Java,-,-,-
+lucene-analyzers-common-4.5.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+lucene-core-4.5.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+lucene-queryparser-4.5.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+neethi-3.0.2.jar,"Apache-2.0",-,-,-,Java,-,-,-
+persistence-api-1.0.jar,"CDDL-1.0",-,-,-,Java,-,-,-
+poi-3.10.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+rhino-1.7.6.jar,"MPL-2.0",-,-,-,Java,-,-,-
+swagger-annotations-1.5.18.jar,"Apache-2.0",-,-,-,Java,-,-,-
+swagger-jaxrs-1.5.18.jar,"Apache-2.0",-,-,-,Java,-,-,-
+validation-api-1.0.0.GA-redhat-3.jar,"Apache-2.0",Redhat,-,-,Java,-,-,-
+velocity-1.7-dep.jar,"Apache-2.0",-,-,-,Java,-,-,-
+velocity-1.7.jar,"Apache-2.0",-,-,-,Java,-,-,-
+wsdl4j-1.6.3.redhat-1.jar,"CPL ",Redhat,-,-,Java,-,-,-
+wss4j-1.6.17.jar,"Apache-2.0",-,-,-,Java,-,-,-
+xmlschema-core-2.0.2.jar,"Apache-2.0",-,-,-,Java,-,-,-
+xmlsec-1.5.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+xmpcore-5.1.1.jar,"BSD",-,-,-,Java,-,-,-
+zxing-core-2.3.0.jar,"Apache-2.0",-,-,-,Java,-,-,-
+zxing-javase-2.3.0.jar,"Apache-2.0",-,-,-,Java,-,-,-
+cglib-2.2.2.jar,"Apache-2.0",-,-,-,Java,-,-,-
+commons-logging-1.1.1.jar,"Apache-2.0",-,-,-,Java,-,-,-
+openpdf-1.3.20.jar,"LGPL-3.0; MPL-2.0",-,-,-,Java,-,-,-
+spring-beans-4.1.2.RELEASE.jar,"Apache-2.0",-,-,-,Java,-,-,-
+spring-core-4.1.2.RELEASE.jar,"Apache-2.0",-,-,-,Java,-,-,-
+spring-tx-4.1.2.RELEASE.jar,"Apache-2.0",-,-,-,Java,-,-,-
+util-perf-1.0.0.jar,"Apache-2.0; MIT (Rilasciata da CSI Piemonte su richiesta)",CSI-Piemonte,-,-,Java,-,-,-

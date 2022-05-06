@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+
+
+	<listener>
+	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener> 
+
+  <!--   <listener>
+		<listener-class>it.csi.apisan.apisanpag.util.AppServletContextListener</listener-class>
+   	</listener> -->
+ 
+
+   <!-- filtro di protezione ad attacchi XSRF -->
+ <!--    <filter>
+		<filter-name>XSRFProtectionFilter</filter-name>
+		<filter-class>it.csi.apisan.apisanpag.filter.XSRFProtectionFilter</filter-class>
+		<init-param>
+    		<param-name>disabled</param-name>
+    		<param-value>@@@XSRFFILTER.DISABLED@@@</param-value>
+  		</init-param>
+   </filter>
+   <filter-mapping>
+		<filter-name>XSRFProtectionFilter</filter-name>
+		<url-pattern>*</url-pattern>
+   </filter-mapping>
+-->
+	<context-param> 
+        <param-name>resteasy.providers</param-name> 
+        <param-value>it.csi.apisan.apisanesen.business.apisanesen.JacksonConfig</param-value>
+    </context-param>
+@security.securityon@
+	<security-constraint>
+	
+		<web-resource-collection>
+			<web-resource-name>Restricted to Secure role</web-resource-name>
+				<description>protezione servizi</description>
+				<url-pattern>/*</url-pattern>
+				<http-method>GET</http-method>
+				<http-method>POST</http-method>
+				<http-method>PUT</http-method>
+				<http-method>DELETE</http-method>
+			</web-resource-collection>
+	
+		<auth-constraint>
+			<role-name>writer</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Restricted to Secure role</web-resource-name>
+			<description>protezione servizi</description>
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+
+		<auth-constraint>
+			<role-name>monitoring</role-name>
+		</auth-constraint>
+	</security-constraint>	
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>ApplicationRealm</realm-name>
+	</login-config>
+	<security-role>
+		<role-name>writer</role-name>
+	</security-role>
+@security.securityoff@		
+</web-app>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="DatiDocumentiModel" nillable="true" type="DatiDocumentiModel" />
+  <xs:complexType name="DatiDocumentiModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Documento" type="DocumentoModel" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Result" type="ResultSetPost" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DocumentoModel">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataArchiviazione" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Tipologia" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NomeDocumento" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="StatoDocumentoDescrizione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="StatoDocumentoId" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodicePaziente" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Documento64" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SoggettoEmittente" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ResultSetPost">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Success" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Message" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

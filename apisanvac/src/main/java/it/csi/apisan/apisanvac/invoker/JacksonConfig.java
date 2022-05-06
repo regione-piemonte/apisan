@@ -1,0 +1,41 @@
+/*******************************************************************************
+
+* Copyright Regione Piemonte - 2022
+
+* SPDX-License-Identifier: EUPL-1.2
+
+******************************************************************************/
+package it.csi.apisan.apisanvac.invoker;
+
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Provider;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+
+@Provider
+@Produces(MediaType.APPLICATION_JSON)
+public class JacksonConfig implements ContextResolver<ObjectMapper> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JacksonConfig.class);
+
+    private ObjectMapper objectMapper;
+
+    public JacksonConfig() throws Exception {
+        this.objectMapper = new ObjectMapper();
+        
+        this.objectMapper.registerModule(new JodaModule());
+
+        // sample to convert any DateTime to readable timestamps
+        //this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
+    }
+    
+    public ObjectMapper getContext(Class<?> objectType) {
+        return objectMapper;
+    }
+}

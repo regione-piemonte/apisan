@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ax23="http://output.celiachiabesrv.celiachia.csi.it/xsd" xmlns:ns="http://business.celiachiabesrv.celiachia.csi.it" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ax21="http://input.celiachiabesrv.celiachia.csi.it/xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://business.celiachiabesrv.celiachia.csi.it">
+    <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://input.celiachiabesrv.celiachia.csi.it/xsd">
+            <xs:complexType name="BasicInfoInput">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="shibIdentitaCodiceFiscale" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="xCodiceServizio" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="xForwardedFor" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="xRequestId" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="BoRigeneraPin">
+                <xs:complexContent>
+                    <xs:extension base="ax21:BasicInfoInput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="citId" nillable="true" type="xs:string"/>
+                            <xs:element minOccurs="0" name="email" nillable="true" type="xs:string"/>
+                            <xs:element minOccurs="0" name="telefono" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="RigeneraPinRequest">
+                <xs:complexContent>
+                    <xs:extension base="ax21:BasicInfoInput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="citId" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="UsaPinDaQRCode">
+                <xs:complexContent>
+                    <xs:extension base="ax21:BasicInfoInput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="citId" nillable="true" type="xs:string"/>
+                            <xs:element minOccurs="0" name="qrCode" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="GetPinAssistito">
+                <xs:complexContent>
+                    <xs:extension base="ax21:BasicInfoInput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="citId" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="VerificaErogazioniFarmacie">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="elencoCnu" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="richiedente" nillable="true" type="ax21:Richiedente"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Richiedente">
+                <xs:complexContent>
+                    <xs:extension base="ax21:BasicInfoInput">
+                        <xs:sequence/>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="RicercaErogazioniAssistito">
+                <xs:complexContent>
+                    <xs:extension base="ax21:BasicInfoInput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="citId" nillable="true" type="xs:string"/>
+                            <xs:element minOccurs="0" name="dataFine" nillable="true" type="xs:date"/>
+                            <xs:element minOccurs="0" name="dataInizio" nillable="true" type="xs:date"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="VerificaSaldoAssistito">
+                <xs:complexContent>
+                    <xs:extension base="ax21:BasicInfoInput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="citId" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://output.celiachiabesrv.celiachia.csi.it/xsd">
+            <xs:complexType name="BasicEsitoOutput">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="esito" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="BoRigeneraPinResponse">
+                <xs:complexContent>
+                    <xs:extension base="ax23:BasicEsitoOutput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="errore" nillable="true" type="ax23:Errore"/>
+                            <xs:element minOccurs="0" name="pin" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="Errore">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="codice" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="descrizione" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RigeneraPinResponse">
+                <xs:complexContent>
+                    <xs:extension base="ax23:BasicEsitoOutput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="errore" nillable="true" type="ax23:Errore"/>
+                            <xs:element minOccurs="0" name="pin" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="UsaPinDaQRCodeResponse">
+                <xs:complexContent>
+                    <xs:extension base="ax23:BasicEsitoOutput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="codiceAutorizzazione" nillable="true" type="xs:string"/>
+                            <xs:element minOccurs="0" name="errore" nillable="true" type="ax23:Errore"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="GetPinAssistitoResponse">
+                <xs:complexContent>
+                    <xs:extension base="ax23:BasicEsitoOutput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="errore" nillable="true" type="ax23:Errore"/>
+                            <xs:element minOccurs="0" name="pin" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="VerificaErogazioniFarmacieResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="elencoErogazioniFarmacia" nillable="true" type="ax23:ErogazioneFarmacia"/>
+                    <xs:element minOccurs="0" name="esito" nillable="true" type="ax23:Esito"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="listaErrori" nillable="true" type="ax23:Errore"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ErogazioneFarmacia">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="cnu" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="erogato" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Esito">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="codice" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RicercaErogazioniAssistitoResponse">
+                <xs:complexContent>
+                    <xs:extension base="ax23:BasicEsitoOutput">
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="elencoErogazioni" nillable="true" type="ax23:ElencoErogazioni"/>
+                            <xs:element minOccurs="0" name="errore" nillable="true" type="ax23:Errore"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="ElencoErogazioni">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="data" nillable="true" type="xs:date"/>
+                    <xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="importo" nillable="true" type="xs:double"/>
+                    <xs:element minOccurs="0" name="struttura" nillable="true" type="ax23:Struttura"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Struttura">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="cap" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="comune" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="indirizzo" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="nome" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="provincia" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="VerificaSaldoAssistitoResponse">
+                <xs:complexContent>
+                    <xs:extension base="ax23:BasicEsitoOutput">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="autorizzazione" nillable="true" type="ax23:Autorizzazione"/>
+                            <xs:element minOccurs="0" name="dataFine" nillable="true" type="xs:date"/>
+                            <xs:element minOccurs="0" name="dataInizio" nillable="true" type="xs:date"/>
+                            <xs:element minOccurs="0" name="errore" nillable="true" type="ax23:Errore"/>
+                            <xs:element minOccurs="0" name="importoDisponibile" nillable="true" type="xs:string"/>
+                            <xs:element minOccurs="0" name="importoTotale" nillable="true" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="Autorizzazione">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="codice" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="dataValiditaFine" nillable="true" type="xs:date"/>
+                    <xs:element minOccurs="0" name="dataValiditaInizio" nillable="true" type="xs:date"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax24="http://output.celiachiabesrv.celiachia.csi.it/xsd" xmlns:ax22="http://input.celiachiabesrv.celiachia.csi.it/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://business.celiachiabesrv.celiachia.csi.it">
+            <xs:import namespace="http://input.celiachiabesrv.celiachia.csi.it/xsd"/>
+            <xs:import namespace="http://output.celiachiabesrv.celiachia.csi.it/xsd"/>
+            <xs:element name="boRigeneraPin">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="input" nillable="true" type="ax22:BoRigeneraPin"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="boRigeneraPinResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:BoRigeneraPinResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="rigeneraPinAssistito">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="input" nillable="true" type="ax22:RigeneraPinRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="rigeneraPinAssistitoResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:RigeneraPinResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="usaPinDaQRCode">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="input" nillable="true" type="ax22:UsaPinDaQRCode"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="usaPinDaQRCodeResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:UsaPinDaQRCodeResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getPinAssistito">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="input" nillable="true" type="ax22:GetPinAssistito"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getPinAssistitoResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:GetPinAssistitoResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="verificaErogazioniFarmacie">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="input" nillable="true" type="ax22:VerificaErogazioniFarmacie"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="verificaErogazioniFarmacieResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:VerificaErogazioniFarmacieResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ricercaErogazioniAssistito">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="input" nillable="true" type="ax22:RicercaErogazioniAssistito"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ricercaErogazioniAssistitoResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:RicercaErogazioniAssistitoResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="verificaSaldoAssistito">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="input" nillable="true" type="ax22:VerificaSaldoAssistito"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="verificaSaldoAssistitoResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:VerificaSaldoAssistitoResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="boRigeneraPinRequest">
+        <wsdl:part name="parameters" element="ns:boRigeneraPin"/>
+    </wsdl:message>
+    <wsdl:message name="boRigeneraPinResponse">
+        <wsdl:part name="parameters" element="ns:boRigeneraPinResponse"/>
+    </wsdl:message>
+    <wsdl:message name="verificaSaldoAssistitoRequest">
+        <wsdl:part name="parameters" element="ns:verificaSaldoAssistito"/>
+    </wsdl:message>
+    <wsdl:message name="verificaSaldoAssistitoResponse">
+        <wsdl:part name="parameters" element="ns:verificaSaldoAssistitoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ricercaErogazioniAssistitoRequest">
+        <wsdl:part name="parameters" element="ns:ricercaErogazioniAssistito"/>
+    </wsdl:message>
+    <wsdl:message name="ricercaErogazioniAssistitoResponse">
+        <wsdl:part name="parameters" element="ns:ricercaErogazioniAssistitoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="verificaErogazioniFarmacieRequest">
+        <wsdl:part name="parameters" element="ns:verificaErogazioniFarmacie"/>
+    </wsdl:message>
+    <wsdl:message name="verificaErogazioniFarmacieResponse">
+        <wsdl:part name="parameters" element="ns:verificaErogazioniFarmacieResponse"/>
+    </wsdl:message>
+    <wsdl:message name="rigeneraPinAssistitoRequest">
+        <wsdl:part name="parameters" element="ns:rigeneraPinAssistito"/>
+    </wsdl:message>
+    <wsdl:message name="rigeneraPinAssistitoResponse">
+        <wsdl:part name="parameters" element="ns:rigeneraPinAssistitoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="usaPinDaQRCodeRequest">
+        <wsdl:part name="parameters" element="ns:usaPinDaQRCode"/>
+    </wsdl:message>
+    <wsdl:message name="usaPinDaQRCodeResponse">
+        <wsdl:part name="parameters" element="ns:usaPinDaQRCodeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getPinAssistitoRequest">
+        <wsdl:part name="parameters" element="ns:getPinAssistito"/>
+    </wsdl:message>
+    <wsdl:message name="getPinAssistitoResponse">
+        <wsdl:part name="parameters" element="ns:getPinAssistitoResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="InterfacciaCeliachiaBeSrvPortType">
+        <wsdl:operation name="boRigeneraPin">
+            <wsdl:input message="ns:boRigeneraPinRequest" wsaw:Action="urn:boRigeneraPin"/>
+            <wsdl:output message="ns:boRigeneraPinResponse" wsaw:Action="urn:boRigeneraPinResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="verificaSaldoAssistito">
+            <wsdl:input message="ns:verificaSaldoAssistitoRequest" wsaw:Action="urn:verificaSaldoAssistito"/>
+            <wsdl:output message="ns:verificaSaldoAssistitoResponse" wsaw:Action="urn:verificaSaldoAssistitoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="ricercaErogazioniAssistito">
+            <wsdl:input message="ns:ricercaErogazioniAssistitoRequest" wsaw:Action="urn:ricercaErogazioniAssistito"/>
+            <wsdl:output message="ns:ricercaErogazioniAssistitoResponse" wsaw:Action="urn:ricercaErogazioniAssistitoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="verificaErogazioniFarmacie">
+            <wsdl:input message="ns:verificaErogazioniFarmacieRequest" wsaw:Action="urn:verificaErogazioniFarmacie"/>
+            <wsdl:output message="ns:verificaErogazioniFarmacieResponse" wsaw:Action="urn:verificaErogazioniFarmacieResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="rigeneraPinAssistito">
+            <wsdl:input message="ns:rigeneraPinAssistitoRequest" wsaw:Action="urn:rigeneraPinAssistito"/>
+            <wsdl:output message="ns:rigeneraPinAssistitoResponse" wsaw:Action="urn:rigeneraPinAssistitoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="usaPinDaQRCode">
+            <wsdl:input message="ns:usaPinDaQRCodeRequest" wsaw:Action="urn:usaPinDaQRCode"/>
+            <wsdl:output message="ns:usaPinDaQRCodeResponse" wsaw:Action="urn:usaPinDaQRCodeResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPinAssistito">
+            <wsdl:input message="ns:getPinAssistitoRequest" wsaw:Action="urn:getPinAssistito"/>
+            <wsdl:output message="ns:getPinAssistitoResponse" wsaw:Action="urn:getPinAssistitoResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="InterfacciaCeliachiaBeSrvSoap11Binding" type="ns:InterfacciaCeliachiaBeSrvPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="boRigeneraPin">
+            <soap:operation soapAction="urn:boRigeneraPin" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaSaldoAssistito">
+            <soap:operation soapAction="urn:verificaSaldoAssistito" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ricercaErogazioniAssistito">
+            <soap:operation soapAction="urn:ricercaErogazioniAssistito" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaErogazioniFarmacie">
+            <soap:operation soapAction="urn:verificaErogazioniFarmacie" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="rigeneraPinAssistito">
+            <soap:operation soapAction="urn:rigeneraPinAssistito" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="usaPinDaQRCode">
+            <soap:operation soapAction="urn:usaPinDaQRCode" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPinAssistito">
+            <soap:operation soapAction="urn:getPinAssistito" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="InterfacciaCeliachiaBeSrvSoap12Binding" type="ns:InterfacciaCeliachiaBeSrvPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="boRigeneraPin">
+            <soap12:operation soapAction="urn:boRigeneraPin" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaSaldoAssistito">
+            <soap12:operation soapAction="urn:verificaSaldoAssistito" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ricercaErogazioniAssistito">
+            <soap12:operation soapAction="urn:ricercaErogazioniAssistito" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaErogazioniFarmacie">
+            <soap12:operation soapAction="urn:verificaErogazioniFarmacie" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="rigeneraPinAssistito">
+            <soap12:operation soapAction="urn:rigeneraPinAssistito" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="usaPinDaQRCode">
+            <soap12:operation soapAction="urn:usaPinDaQRCode" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPinAssistito">
+            <soap12:operation soapAction="urn:getPinAssistito" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="InterfacciaCeliachiaBeSrvHttpBinding" type="ns:InterfacciaCeliachiaBeSrvPortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="boRigeneraPin">
+            <http:operation location="boRigeneraPin"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaSaldoAssistito">
+            <http:operation location="verificaSaldoAssistito"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ricercaErogazioniAssistito">
+            <http:operation location="ricercaErogazioniAssistito"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaErogazioniFarmacie">
+            <http:operation location="verificaErogazioniFarmacie"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="rigeneraPinAssistito">
+            <http:operation location="rigeneraPinAssistito"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="usaPinDaQRCode">
+            <http:operation location="usaPinDaQRCode"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPinAssistito">
+            <http:operation location="getPinAssistito"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="InterfacciaCeliachiaBeSrv">
+        <wsdl:port name="InterfacciaCeliachiaBeSrvHttpsSoap11Endpoint" binding="ns:InterfacciaCeliachiaBeSrvSoap11Binding">
+            <soap:address location="https://xxx-celiachia.xxx.csi.it/celiachiabesrv/services/InterfacciaCeliachiaBeSrv.InterfacciaCeliachiaBeSrvHttpsSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="InterfacciaCeliachiaBeSrvHttpsSoap12Endpoint" binding="ns:InterfacciaCeliachiaBeSrvSoap12Binding">
+            <soap12:address location="https://xxx-celiachia.xxx.csi.it/celiachiabesrv/services/InterfacciaCeliachiaBeSrv.InterfacciaCeliachiaBeSrvHttpsSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="InterfacciaCeliachiaBeSrvHttpsEndpoint" binding="ns:InterfacciaCeliachiaBeSrvHttpBinding">
+            <http:address location="https://xxx-celiachia.xxx.csi.it/celiachiabesrv/services/InterfacciaCeliachiaBeSrv.InterfacciaCeliachiaBeSrvHttpsEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

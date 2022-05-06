@@ -1,0 +1,3053 @@
+swagger: '2.0'
+info:
+  title: Vaccinazioni
+  version: 0.1.4
+  description: |
+
+    # Note (22 Dic 2021)
+    ---
+    1. Modificato query param filter Lista centri vaccinali aggiunto campo tipoCentro al json 
+
+    # Note (25 Ott 2021)
+    ---
+    1. Modificato il model 'Somministrazione' con l'aggiunta dei campi condizione_sanitaria_codice, condizione_sanitaria_descrizione, condizione_rischio_codice, condizione_rischio_descrizione
+    2. Modificato il model 'Cittadino' con l'aggiunta dei campi condizione_rischio_codice, condizione_rischio_descrizione
+    3 Modificato il payload 'payload_vaccinazione_appuntamento_annullamento' con l'aggiunta del campo mantieni_convocazioni
+      
+    # Note (13 Ott 2021)
+    ---
+    1. Modificato il model `Somministrazione` con l'aggiunta dei campi `ambulatorio`, `comune_centro`, `telefono_centro`, `lotto`, `nome_commerciale`, `vaccinatore`, `sito_inoculazione`, `via_somministrazione`, `is_fittizia`, `paziente_codice`, `paziente_nome`, `paziente_cognome`, `paziente_data_nascita`
+  
+    # Note (28 Giu 2021)
+    ---
+    1. L'endpoint `Lista appuntamenti` accetta anche il filtro con parametro opzionale parametro opzionale `soloCovid`
+    2. L'endpoint `Sposta appuntamento` aggiunge nel payload anche il campo `codice_ambulatorio`, facoltativo
+    3. L'endpoint `Revoca appuntamento` aggiunge nel payload anche il campo `motivazione`, obbligatorio
+    4. Nuovo endpoint 'Range date per seconda somministrazione covid'
+  
+    # Note (16 Nov 2020)
+    ---
+    1. L'endpoint `Lista centri vaccinali` nel filtro accetta anche il parametro opzionale `associazione`
+    2. L'endpoint `Lista centri vaccinali` restituisce anche il campo `ambulatori.associazioni`
+    3. L'endpoint `Lista appuntamenti` non risponde più con il campo `vaccini` ma al suo posto c'è un nuovo campo `associazioni`
+    4. L'endpoint `Lista istanze attive di prenotazione, revoca o spostamento` risponde con i nuovi campi
+        * `centro_vaccinale_codice`
+        * `centro_vaccinale_descrizione`
+        * `centro_vaccinale_istanza_codice`
+        * `centro_vaccinale_istanza_descrizione`
+        * `data_presentazione_istanza`
+  
+    # Note (07 Set 2020)
+    ---
+    1. Modificata la struttura della response di Post /cittadini/{cit_id}/vaccinazioni/appuntamenti, ora in caso di successo restituisce solo l'id della convocazione ( modifica fatta per allinearsi a struttura dati Onit)
+    
+    # Note (29 Lug 2020)
+    ---
+    1. Aggiunta il campo "comune" per la chiamata GET /cittadini/{cit_id}/contatti-temporanei 
+  
+    # Note (27 Lug 2020)
+    ---
+    1. Aggiunta la chiamata GET /cittadini/{cit_id}/contatti-temporanei per i contatti temporanei del cittadino
+    # Note (22 Lug 2020)
+    ---
+    1. Aggiunto campo "mail" per la GET /centri-vaccinali/{centro_vaccinale_id}
+    2. Per model_ambulatorio il campo "orari" non è più obbligatorio
+    ---
+    1. Per la POST "Richiesta spostamento appuntamento" aggiunti i campi "vaccini" e "centro_vaccinale" in payload
+    2. Per la POST "Nuova reazione avversa" il campo "data_reazione" non ha più il "format date"
+  
+    # Note (2 Lug 2020)
+    ---
+    1. Per la Lista Centri Vaccinali /centri-vaccinali il campo 'asl' conterrà solo il codice dell'asl e non l'oggetto {codice, descrizione}
+    2. Il filtro usato per la GET /centri-vaccinali/{centro_vaccinale_id}/periodi-liberi era errato formalmente, ora è corretto
+    3. Corretto refuso per payload_autocontribuzione di chiamata /cittadini/{cit_id}/vaccinazioni/autocontribuzioni
+  
+    # Note (1 Lug 2020)
+    ---
+    1. Aggiornate le chiamate per le liste istanze. Sono 3 diverse chiamate, /cittadini/{cit_id}/reazioni-avverse , /cittadini/{cit_id}/vaccinazioni/istanze-autocontribuzione/{tipologia_istanza} , /cittadini/{cit_id}/vaccinazioni/istanze-modifica-prenotazione/{tipologia_istanza}
+    2. Rimossa la chiamata per singola istanza
+    3. RImossa la chiamata per istanze di Revoca, ora comprese in /cittadini/{cit_id}/vaccinazioni/istanze-modifica-prenotazione/{tipologia_istanza}
+  
+    # Note (30 Giu 2020)
+    ---
+    1. Aggiornata la chiamata /cittadini/{cit_id}/vaccinazioni/istanze/{tipologia_id}/stati per la lista stati dell'istanza
+    2. Aggiunta la chiamata /cittadini/{cit_id}/vaccinazioni/istanze-revoca ancora da rivedere lato Giallo
+    3. Aggiornata la chiamata /cittadini/{cit_id}/vaccinazioni/appuntamenti/{appuntamento_id}/revoca/richiesta
+    3. Aggiunta "dose" nell output della post /cittadini/{cit_id}/vaccinazioni/appuntamenti
+    4. Aggiunta "reazione_avversa" per la lista di somministrazioni
+    
+    # Note (22 Giu 2020)
+    ---
+    1. Parametri payload con nomi distinti (crea altrimenti problemi alla generazione del codice Java)
+    
+    # Note (18 Giu 2020)
+    ---
+    1. Aggiunto campo Vaccinazioni in post Autocontribuzione per step 5
+  
+    # Note (12 Giu 2020)
+    ---
+    1. Aggiunte get per motivazioni di omissione e differimento in stage 5
+  
+  
+    # Note (1 Giu 2020)
+    ---
+    1. Aggiunta bozza chiamata 'Richiesta revoca appuntamento' in Stage 2
+    2. Aggiunti i campi note per le istanze
+    3. Aggiunta bozza chiamata 'Lista stati dell istanza' in stage 2
+    4. Aggiunti i campi 'codice_paziente' e 'codice_ambulatorio' nel payload per la creazione di appuntamento con agenda
+    5. Aggiunti i campi 'codice_paziente', 'data_convocazione' per il payload allo spostamento appuntamento con agenda
+    6. Rimosso il campo 'data_fine_appuntamento' dal model di 'slot_temporale_libero'
+    7. Aggiunto il controllo sul codice_paziente al filtro per la ricerca di slot temporali liberi alla chiamata 'Lista slot temporali liberi'
+    8. Aggiunti i campi 'annullabilita', 'agenda' e 'data_convocazione' alla 'Lista appuntamenti' in Step 0
+    9. Aggiunto il campo 'codice_paziente' alla chiamata 'Dettaglio cittadino' allo Step 0
+    10. Aggiunto il campo 'data_appuntamento' alla chiamata 'Lista convocazioni in base al piano vaccinale' allo step 0
+    
+    # Note (26 Mag 2020)
+    ---
+    1. Aggiunti i campi indirizzo_temporaneo, mail, telefono, data_inizio e data_fine per il payload di 'Modifica domicilio vaccinazione cittadino'
+  
+    # Note (25 Mag 2020)
+    ---
+    1. Aggiunto flag 'Annullabile' pr la lista degli appuntamenti (stage 0)
+    2. Modificata la post della Revoca secondo le direttive di onit
+  
+    # Note (17 Apr 2020)
+    ---
+    1. Rimossi mail e orario_apertura per centri vaccinali in quanto non più richiesti
+    2. Aggiunti descrizione e data_fine_appuntamento per gli Slot Temporali
+    3. Per la lista di vaccini futuri i campi eta e dose sono ora dei numeri, la dose è ora interna al model di vaccino
+  
+    # Note (08 Apr 2020)
+    ---
+    1. Aggiunta creazione nuovo evento avverso per step 5
+  
+    # Note (25 Mar 2020)
+    ---
+    1. Aggiunta lista reazioni avverse per step 5
+    
+    # Note (11 Feb 2020)
+    ---
+    1. Aggiunta data emissione documento in /autocontribuzione
+    2. Aggiunto oggetto stato in formato codice e descrizione. è un campo di appuntamento e convocazione
+    3. Aggiunti Asl e num pratica regionale alle Somministrazioni
+    4. Aggiunto campo centro vaccinale nel payload per richiesta di vaccinazione spontanea ( obbligatorio)
+    5. Aggiunto endpoint motivazioniRevoca e relativo model
+    6. Aggiunto endpoint motivazioniSpostamento e relativo model
+
+
+    # Note (08 Nov 2019)
+    ---
+    1. Ad oggi lo spostamento dell'appuntamento può essere fatto solo sullo stesso centro vaccinale
+    2. Ad oggi la "sospensione" deve essere ancora implementata dal giallo
+    3. Ad oggi l'"esclusione" deve essere ancora implementata dal giallo
+    4. Il costo del vaccino è a livello regionale, pertanto verrà inserito nel model del vaccino
+    5. Ad oggi non è possibile ottenere la lista dei centri vaccinali
+    6. Ad oggi il cittadino non deve sapere la "priorità" della vaccinazione proposta (cioè se obbligatoria o raccomandata)
+    7. Ad oggi non è presente il centro vaccinale di riferimento del cittadino
+    8. Ad oggi il centro vaccinale non ha un contatto mail
+    9. Ad oggi il centro vaccinale non ha gli orari di apertura e chiusura
+    10. Ad oggi non è possibile richiedere la singola vaccinazione o il singolo appuntamento. Vanno sempre filtrati dalla lista dove possibile
+    11. Ad oggi non è possibile sapere se una vaccinazione a pagamento è stata già pagata o meno
+    12. Ad oggi i model "Somministrazione" e "Vaccinazione esclusa" sono un po' vaghi. Servirebbe un piccolo approfondimento sul significato dei campi documentati dallo strato giallo
+    
+    # Note (03 Gen 2020)
+    ---
+    1. Aggiunto l'importo indicativo nel vaccino volontario (precedente punto 3.)
+    2. La lista dei centri vaccinali si può ottenre solo filtrando per asl (precedente punto 5.)
+
+    # Mapping Rosso - Giallo
+    ---
+    https://docs.google.com/document/d/1zxyFXXg9DkiiQlrqXd-oS-XSev6IFwK7NKPekLttKbs/edit?usp=sharing
+
+    # Prototipo Interfaccia
+    ---
+    http://dev-prototipi.csi.it/2019/sanita-vaccinazione/page%20flow/
+
+
+    # Breve descrizione del servizio
+    ---
+    Api risorse per gestire le vaccinazioni online **per il cittadino**
+
+    Permette al cittadino di
+
+    * Visualizzare le vaccinazioni prenotate (Appuntamenti)
+    * Visualizzare le vaccinazioni proposte dal piano vaccinale (Convocazioni)
+    * Visualizzare le vaccinazioni già effettuate (Somministrazioni + Escluse)
+    * Richiedere un appuntamento per una vaccinazione volontaria (Vaccini volontari + Prenotazione + Richiesta prenotazione)
+    * Spostare un appuntamento (Spostamento + Richiesta spostamento)
+    * Annullare un appuntamento (Richiesta revoca)
+    * Sospendere o escludere una vaccinazione
+    * Stampare il certificato vaccinale e l'attestato della singola vaccinazione
+    * Visualizzare la lista dei centri vaccinali
+    * Segnalare una reazione avversa in seguito ad una vaccinazione
+    * Modificare i proprio contatti (Modifica contatti + Modifica domicilio)
+
+
+    <br>
+    <sub>
+    Note: Questo YAML è stato pensato esclusivamente per il front-end
+    destinato al cittadino.
+    </sub>
+host: tst-srv-xxx.xxx.csi.it
+basePath: /apisanvac/api/v1
+schemes:
+  - https
+paths:
+  '/servizio-attivo':
+    get:
+      summary: Raggiungibilità
+      description: |
+        Serve per verificare se il servizio risponde o meno
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            La richiesta è andata a buon fine quindi il servizio è online
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_info_servizio'
+
+  # CENTRI VACCINALI
+  # -------------------------------------------
+  '/centri-vaccinali':
+    get:
+      tags:
+        - Stage 4
+      summary: Lista centri vaccinali
+      description:  |
+        Restituisce la lista dei centri vaccinali
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/filter_centri_vaccinali'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_centro_vaccinale_list_element'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/centri-vaccinali/{centro_vaccinale_id}/periodi-liberi':
+    get:
+      tags:
+        - Stage 4
+      summary: Lista slot temporali liberi
+      description:  |
+        Restituisce la lista degli slot temporali liberi per prenotare un appuntamento
+        <span style="text-decoration: underline;">
+        </span>
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/centro_vaccinale_id'
+        - $ref: '#/parameters/filter_slot_temporali'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_slot_temporale'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/centri-vaccinali/{centro_vaccinale_id}':
+    get:
+      summary: Dettaglio centro vaccinale
+      tags:
+        - Stage 0
+      description: |
+        Restituisce il singolo centro vaccinale
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/centro_vaccinale_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_centro_vaccinale'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  # CITTADINO
+  # -------------------------------------------
+  '/cittadini/{cit_id}':
+    get:
+      tags:
+        - Stage 0
+      summary: Dettaglio cittadino
+      description: |
+        Permette di ottenere dati del cittadino
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_cittadino'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/contatti-vaccinazioni':
+    put:
+      tags:
+        - Stage 1
+      summary: Modifica contatti cittadino
+      description: |
+        Permette di modificare i contatti di un cittadino
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/payload_modifica_contatti'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/domicilio-vaccinazioni':
+    put:
+      tags:
+        - Stage 1
+      summary: Modifica domicilio vaccinazione cittadino
+      description: |
+        Permette di modificare il domicilio di vaccinazione di un cittadino
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/payload_modifica_indirizzo'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+       
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/contatti-temporanei':
+    get:
+      tags:
+        - Stage 1
+      summary: Restituisce i contatti temporanei del cittadino
+      description: |
+        Permette di ottenere i contatti temporanei del cittadino
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_contatti_temporanei'
+       
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  # VACCINAZIONI
+  # -------------------------------------------
+  '/cittadini/{cit_id}/vaccinazioni/convocazioni':
+    get:
+      tags:
+        - Stage 0
+      summary: Lista convocazioni in base al piano vaccinale
+      description: |
+        Restituisce la lista delle vaccinazioni proposte al cittadino in base al piano vaccinale
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_convocazione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/vaccinazioni/vaccini-futuri':
+    get:
+      tags:
+        - Stage 4
+      summary: Lista vaccini futuri in base al piano vaccinale
+      description: |
+        Restituisce la lista delle vaccinazioni future al cittadino in base al piano vaccinale
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_vaccino_futuro'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti':
+    get:
+      tags:
+        - Stage 0
+      summary: Lista appuntamenti
+      description: |
+        Restituisce la lista delle vaccinazioni prenotate
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/filter_appuntamenti'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_appuntamento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  
+    post:
+      tags:
+        - Stage 4
+      summary: Crea un nuovo appuntamento
+      description: |
+        Permette al cittadino di prenotare una vaccinazione su un centro vaccinale
+        con agenda elettronica
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/payload_vaccinazione_appuntamento_prenotazione'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_appuntamento_creato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti/richiesta':
+    post:
+      tags:
+        - Stage 3
+      summary: Richiesta di appuntamento
+      description: |
+        Permette al cittadino di richiedere un appuntamento per una vaccinazione su quei
+        centri vaccinali che non supportano l'agenda elettronica
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/payload_vaccinazione_appuntamento_prenotazione_richiesta'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti/{appuntamento_id}/promemoria':
+    get:
+      tags:
+        - Stage 0
+      summary: Promemoria appuntamento
+      description: |
+        Stampa il promemoria per l'appuntamento di vaccinazione
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/appuntamento_id'
+        - $ref: '#/parameters/query_content_disposition'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti/{appuntamento_id}/spostamento':
+    put:
+      tags:
+        - Stage 4
+      summary: Sposta appuntamento
+      description: |
+        Permette di spostare l'appuntamento su quei centri vaccinali che hanno un'agenda elettronica
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/appuntamento_id'
+        - $ref: '#/parameters/payload_vaccinazione_appuntamento_spostamento'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+        
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti/{appuntamento_id}/spostamento/richiesta':
+    post:
+      tags:
+        - Stage 2
+      summary: Richiesta spostamento appuntamento
+      description: |
+        Permette di richiedere lo spostamento di un appuntamento su quei centri vaccinali che non hanno l'agenda elettronica
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/appuntamento_id'
+        - $ref: '#/parameters/payload_vaccinazione_appuntamento_spostamento_richiesta'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+            
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti/{appuntamento_id}/revoca':
+    post:
+      tags:
+        - Stage 2
+      summary: Revoca appuntamento
+      description: |
+        Permette di revocare un apuntamento
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/appuntamento_id'
+        - $ref: '#/parameters/payload_vaccinazione_appuntamento_annullamento'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti/{appuntamento_id}/revoca/richiesta':
+    post:
+      tags:
+        - Stage 2
+      summary: Richiesta revoca appuntamento 
+      description: |
+        Permette di richiedere la revoca di un apuntamento (in sviluppo)
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/appuntamento_id'
+        - $ref: '#/parameters/payload_vaccinazione_appuntamento_annullamento_richiesta_istanza'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/cittadini/{cit_id}/vaccinazioni/somministrazioni':
+    get:
+      tags:
+        - Stage 0
+      summary: Lista somministrazioni
+      description: |
+        Restituisce la lista delle vaccinazioni eseguite
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_somministrazione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/vaccinazioni/immunizzate':
+    get:
+      tags:
+        - Stage 0
+      summary: Lista vaccinazioni per cui il cittadino è immune
+      description: |
+        Restituisce la lista delle vaccinazioni immunizzate.
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_vaccinazione_immunizzata'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+
+  '/cittadini/{cit_id}/vaccinazioni/volontarie':
+    get:
+      tags:
+        - Stage 3
+      summary: Lista vaccinazioni volontarie
+      description: |
+        Restituisce l'elenco delle vaccinazioni volontarie prenotabili dall'utente
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_vaccino_volontario'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/motivazioni/revoca-spostamento':
+    get:
+      tags:
+        - Stage 2
+      summary: Lista motivazioni revoca e spostamento
+      description: |
+        Restituisce l'elenco delle motivazioni valide per annullare o revocare un appuntamento ad un vaccino facoltativo
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_motivazione_revoca_spostamento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/motivazioni/omissione':
+    get:
+      tags:
+        - Stage 5
+      summary: Lista motivazioni omissione
+      description: |
+        Restituisce l'elenco delle motivazioni per l'omissione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_motivazione_omissione_differimento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/motivazioni/differimento':
+    get:
+      tags:
+        - Stage 5
+      summary: Lista motivazioni differimento
+      description: |
+        Restituisce l'elenco delle motivazioni per il differimento
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_motivazione_omissione_differimento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/vaccinazioni/istanze-modifica-prenotazione/{tipologia_istanza}':
+    get:
+      tags:
+        - Stage 2
+      summary: Lista istanze attive di prenotazione, revoca o spostamento
+      description: |
+        Restituisce l'elenco delle istanze di tipologia desiderata(PRENOTAZIONE SPOSTAMENTO REVOCA)
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/tipologia_istanza'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_istanza_modifica_prenotazione'
+          
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/vaccinazioni/istanze-autocontribuzione/{tipologia_istanza}':
+    get:
+      tags:
+        - Stage 2
+      summary: Lista istanze attive di differimento, omissione e comunicazione
+      description: |
+        Restituisce l'elenco delle istanze di tipologia desiderata( DIFFERIMENTO OMISSIONE o COMUNICAZIONE)
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/tipologia_istanza'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_istanza_autocontribuzione'
+          
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+          
+  '/cittadini/{cit_id}/vaccinazioni/istanze/{tipologia_id}/stati':
+    get:
+      tags:
+        - Stage 2
+      summary: Lista stati dell'istanza di prenotazione
+      description: |
+        Restituisce la lista degli stati possibili per le istanze (in sviluppo)
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/tipologia_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_stato_istanza'
+          
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/vaccinazioni/autocontribuzioni/tipologie':
+    get:
+      tags:
+        - Stage 5
+      summary: Lista tipologie per reazione avversa
+      description: |
+        Permette di ottenere la lista di tipologie per reazione avversa
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_tipologie_reazione'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      
+  '/cittadini/{cit_id}/vaccinazioni/autocontribuzioni':
+    post:
+      tags:
+        - Stage 5
+      summary: Autocontribuzione
+      description: |
+        Permette di creare una richiesta di autcontribuzione
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/payload_autocontribuzione'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/reazione-avversa':
+    post:
+      tags:
+        - Stage 5
+      summary: Nuova reazione avversa
+      description: |
+        Permette di creare una segnalazione di rezione avversa
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/payload_reazione_avversa'
+      responses:
+        '201':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+          
+  '/cittadini/{cit_id}/reazioni-avverse':
+    get:
+      tags:
+        - Stage 5
+      summary: Isyanze reazioni avverse
+      description: |
+        Permette di ottenere la lista di istanze per reazioni avverse
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_istanza_reazione_avversa'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/vaccinazioni/appuntamenti/{appuntamento_id}/range-date':
+    get:
+      tags:
+        - Stage 5
+      summary: Range date per seconda somministrazione covid
+      description: |
+        Permette di ottenere il range di date per seconda somministrazione covid
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/appuntamento_id'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+           $ref: '#/definitions/model_range_date'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/documenti':
+    get:
+      tags:
+        - Stage 0
+      summary: Lista documenti
+      description: |
+        Restituisce la lista dei documenti di un cittadino
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/filter_documenti'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_documento'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/documenti/{data_documento}/pdf':
+    get:
+      tags:
+        - Stage 0
+      summary: Stampa documento
+      description: |
+        Permette di stampare il documento
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/data_documento'
+        - $ref: '#/parameters/query_content_disposition'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{cit_id}/documenti/certificato/pdf':
+    get:
+      tags:
+        - Stage 0
+      summary: Stampa certificato
+      description: |
+        Permette di stampare il certificato
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shib_identita_codice_fiscale'
+        - $ref: '#/parameters/x_request_id'
+        - $ref: '#/parameters/x_forwarded_for'
+        - $ref: '#/parameters/x_codice_servizio'
+        - $ref: '#/parameters/cit_id'
+        - $ref: '#/parameters/query_content_disposition'
+      responses:
+        '200':
+          description: |
+            Operazione eseguita con successo
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+parameters:
+  shib_identita_codice_fiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  x_request_id:
+    in: header
+    name: X-Request-Id
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  x_forwarded_for:
+    in: header
+    name: X-Forwarded-For
+    description: |
+      Contiene l'elenco degli ip che hanno gestito la richiesta.
+      Utile per i log e l'audit.
+      Il formato della stringa è
+      ```
+      <ip-front-end> | <ip-primo-server> | ... | <ip-ultimo-server>
+      ```
+      Es. `10.10.10.10 | 10.38.45.68 | 10.128.69.244`
+    type: string
+    required: true
+  x_codice_servizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  cit_id:
+    in: path
+    name: cit_id
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  tipologia_id:
+    in: path
+    name: tipologia_id
+    type: string
+    required: true
+    description: Il codice della tipologia di istanza su cui operare
+  id_istanza:
+    in: path
+    name: id_istanza
+    type: string
+    required: true
+    description: L id dell istanza su cui operare
+  appuntamento_id:
+    in: path
+    name: appuntamento_id
+    type: string
+    required: true
+    description: l id dell appuntamento su cui operare
+  centro_vaccinale_id:
+    in: path
+    name: centro_vaccinale_id
+    type: string
+    required: true
+    description: l'id del centro vaccinale su cui operare
+  documento_id:
+    in: path
+    name: documento_id
+    type: string
+    required: true
+    description: l'id del documento su cui operare
+  tipologia_istanza:
+    in: path
+    name: tipologia_istanza
+    type: string
+    required: true
+    description: tipologia delle istanze su cui operare
+  data_documento:
+    in: path
+    name: data_documento
+    type: string
+    format: datetime
+    required: true
+    description: la data del documento su cui operare
+  filter_vaccinazioni:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un filtro di tipo [FILTRI] Vaccinazione disponibile in fondo
+  filter_documenti:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un filtro di tipo [FILTRI] Documento disponibile in fondo
+  filter_slot_temporali:
+    in: query
+    name: filter
+    type: string
+    required: true
+    description: |
+      Un filtro con la seguente struttura:
+      
+      ```js
+      {data_appuntmento: {lte: 'DATA_FINE', gte: 'DATA_INIZIO'}, codice_paziente: {eq: 'CODICE_PAZIENTE'}}
+      ```
+  filter_centri_vaccinali:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un filtro con la seguente struttura:
+      
+      ```js
+      {asl: {eq: 'CODICE_ASL'}, associazione: {eq: 'CODICE_ASSOCIAZIONE'}, tipoCentro: {eq: 'string'}}
+      ```
+      
+      il campo 'asl' al momento è obbligatorio mentre il campo 'associazione' è opzionale
+      
+  filter_appuntamenti:
+    in: query
+    name: filter
+    type: string
+    required: false
+    description: |
+      Un filtro con la seguente struttura:
+      
+      ```js
+      {soloCovid: {eq: true}}
+      ```
+      
+      il filtro è opzionale
+      
+  query_format:
+    in: query
+    name: format
+    type: string
+    required: false
+    description: |
+      Permette di definire il formato di ritorno. Di default è json, ma può essere impostato a pdf
+  query_content_disposition:
+    in: query
+    name: content_disposition
+    type: string
+    required: false
+    description: |
+      Permette di definire l'header Content-Disposition che il servizio deve restituire. Di default è 'inline', ma può essere impostato ad 'attachment' per far scatenare il download
+  payload_modifica_contatti:
+    in: body
+    name: payload_modifica_contatti
+    required: true
+    description: |
+      Il payload da inviare per modifcare i contatti dell'assistito
+    schema:
+      $ref: '#/definitions/model_cittadino_contatti'
+  payload_modifica_indirizzo:
+    in: body
+    name: payload_modifica_indirizzo
+    required: true
+    description: |
+      Il payload da inviare per modifcare l'indirizzo dell'assistito
+    schema:
+      type: object
+      properties:
+        indirizzo_temporaneo:
+          type: string
+          description: L'indirizzo e num civico
+          example: Via Roma 12
+        comune:
+          type: string
+          description: Codice istat del comune
+        cap:
+          type: string
+          description: il cap inserito da utente
+        mail:
+          type: string
+          description: L'indirizzo email
+        telefono:
+           type: string
+           description: Num di telefono
+        data_inizio:
+           type: string
+           format: datetime
+           description: La data di inizio validità dell indirizzo temporaneo
+           example: "2019-11-08T09:21:38.739Z"
+        data_fine:
+           type: string
+           format: datetime
+           description: La data di fine validità dell indirizzo temporaneo
+           example: "2020-11-08T09:21:38.739Z"
+        
+      required:
+        - indirizzoTemporaneo
+        - cap
+        - comune
+        - data_inizio
+        - data_fine
+  payload_vaccinazione_appuntamento_prenotazione:
+    in: body
+    name: payload_vaccinazione_appuntamento_prenotazione
+    required: true
+    description: Il payload da inviare per prenotare un appuntamento
+    schema:
+      type: object
+      properties:
+        codice_paziente:
+          type: string
+          description: codice univoco del paziente
+        codice_ambulatorio:
+          type: string
+          description: codice univoco dell ambulatorio
+        centro_vaccinale:
+          type: string
+          description: id del centro vaccinale
+        data_appuntamento:
+          type: string
+          format: datetime
+          description: La data dell'appuntamento da prenotare
+          example: "2019-11-08T09:21:38.739Z"
+        data_convocazione:
+          type: string
+          format: datetime
+          description: data di convocazione dell'appuntamento
+        vaccini:
+          type: array
+          items:
+            $ref: '#/definitions/model_vaccino_no_dose'
+      required:
+        - centro_vaccinale
+        - consultorio
+        - data_appuntamento
+        - vaccini
+  payload_vaccinazione_appuntamento_prenotazione_richiesta:
+    in: body
+    name: payload_vaccinazione_appuntamento_prenotazione_richiesta
+    required: true
+    description: Il payload da inviare per richiedere un appuntamento
+    schema:
+      type: object
+      properties:
+        telefono:
+          type: string
+          description: Il telefono su cui l'assistito vuole essere contattato
+        mail:
+          type: string
+          description: "L'indirizzo email su cui l'assisito vuole essere contattato"
+        nome:
+          type: string
+          description: "Il nome dell'utente che sta richiedendo l'appuntamento"
+        cognome:
+          type: string
+          description: "Il cognome dell'utente che sta richiedendo l'appuntamento"
+        note:
+          type: string
+          description: Eventuali note inserite dall'assistito
+        centro_vaccinale:
+          type: string
+          description: L'ID del centro vaccinale verso cui far richiesta
+        vaccini:
+          type: array
+          items:
+            $ref: '#/definitions/model_vaccino_no_dose'
+      required:
+        - vaccini
+        - centro_vaccinale
+  payload_vaccinazione_appuntamento_spostamento:
+    in: body
+    name: payload_vaccinazione_appuntamento_spostamento
+    required: true
+    description: Il payload da inviare per spostare un appuntamento
+    schema:
+      type: object
+      properties:
+        data_appuntamento:
+          type: string
+          format: datetime
+          description: La nuova data di appuntamento
+          example: "2019-11-08T09:21:38.739Z"
+        data_convocazione:
+          type: string
+          format: datetime
+          description: La data della convocazione
+          example: "2019-10-08T09:21:38.739Z"
+        codice_paziente:
+          type: string
+          description: Codice del paziente
+        note:
+          type: string
+          description: Eventuali note
+        codice_ambulatorio:
+          type: string
+          description: Codice dell ambulatorio su cui spostare l appuntamento
+        codice_consultorio:
+          type: string
+          description: Codice consultorio
+      required:
+        - data_appuntamento
+        - data_convocazione
+        - codice_paziente
+  payload_vaccinazione_appuntamento_spostamento_richiesta:
+    in: body
+    name: payload_vaccinazione_appuntamento_spostamento_richiesta
+    required: true
+    description: Il payload da inviare per richiedere lo spostamento di un appuntamento
+    schema:
+      type: object
+      properties:
+        telefono:
+          type: string
+          description: Il telefono su cui l'assistito vuole essere contattato
+        mail:
+          type: string
+          description: "L'indirizzo email su cui l'assisito vuole essere contattato"
+        nome:
+          type: string
+          description: "Il nome dell'utente che sta richiedendo l'appuntamento"
+        cognome:
+          type: string
+          description: "Il cognome dell'utente che sta richiedendo l'appuntamento"
+        note:
+          type: string
+          description: "Eventuali note inserite dall'assistito"
+        motivazione:
+          type: string
+          description: "Il motivo per cui si richiede lo spostamento"
+        centro_vaccinale:
+          type: string
+          description: "L id del centro vaccinale"
+        vaccini:
+          type: array
+          items:
+            $ref: '#/definitions/model_vaccino_no_dose'
+      required:
+        - telefono
+        - motivazione
+  payload_vaccinazione_appuntamento_annullamento_richiesta:
+    in: body
+    name: payload_vaccinazione_appuntamento_annullamento_richiesta
+    required: true
+    description: Il payload da inviare per richiedere la revoca di un appuntamento
+    schema:
+      type: object
+      properties:
+        note:
+          type: string
+          description: Eventuali note inserite dall'assistito
+  payload_vaccinazione_appuntamento_annullamento:
+    in: body
+    name: payload_vaccinazione_appuntamento_annullamento
+    required: true
+    description: Il payload da inviare per la revoca di un appuntamento
+    schema:
+      type: object
+      properties:
+        note:
+          type: string
+          description: Eventuali note inserite dall'assistito
+        motivazione:
+          type: string
+          description: L'id della motivazione
+        mantieni_convocazioni:
+          type: boolean
+  payload_vaccinazione_appuntamento_annullamento_richiesta_istanza:
+    in: body
+    name: payload_vaccinazione_appuntamento_annullamento_richiesta_istanza
+    required: true
+    description: Il payload da inviare per richiedere la revoca di un appuntamento con istanza
+    schema:
+      type: object
+      properties:
+        note:
+          type: string
+          description: Eventuali note inserite dall'assistito
+        telefono:
+          type: string
+          description: telefono dell'assistito
+        mail:
+          type: string
+          description: Mail dell'assistito
+        id_appuntamento:
+          type: string
+          description: Id dell'appuntamento da revocare
+        motivazione:
+          type: string
+          description: Codice della motivazione per l'annullamento
+        centro_vaccinale:
+          type: string
+          description: Id del centro vaccinale
+        cf_richiedente:
+          type: string
+          description: Cf del richiedente
+  payload_autocontribuzione:
+    in: body
+    name: payload_autocontribuzione
+    required: true
+    description: |
+      Il payload da inviare per una richiesta di autocontribuzione
+    schema:
+      type: object
+      properties:
+        descrizione:
+          type: string
+          description: Note
+        tipologia:
+          type: string
+          description: La tipologia di autocontribuzone ( DIFFERIMENTO, OMISSIONE, COMUNICAZIONE)
+          example: 'DIFFERIMENTO'
+        soggetto_emittente:
+          type: string
+          description: Il soggetto che ha emesso il documento
+          example: "Comune di Torino"
+        data_emissione_documento:
+          type: string
+          format: datetime
+          description: La data di emissione del documento
+          example: "2019-11-08T09:21:38.739Z"
+        documento_64:
+          type: string
+          description: Il documento codificato in base64
+        nome_documento:
+          type: string
+          description: il nome del documento
+          example: "cartificato.crt"
+        id_convocazione:
+          type: string
+          description: eventuale id della convocazione
+        id_appuntamento:
+          type: string
+          description: eventuale id dell appuntamento
+        telefono:
+          type: string
+          description: contatto telefonico
+        mail:
+          type: string
+          description: contatto email
+        motivazione:
+          type: string
+          description: codice motivazione
+        vaccinazioni:
+          type: array
+          items:
+            $ref: '#/definitions/model_vaccino_dose'
+      required:
+        - tipologia
+        - documento_64
+        - nome_documento
+        - soggetto_emittente
+        
+  payload_reazione_avversa:
+    in: body
+    name: payload_reazione_avversa
+    required: true
+    description: |
+      Il payload da inviare per una nuova reazione avversa
+    schema:
+      type: object
+      properties:
+        telefono:
+          type: string
+          description: "Contatto telefonico"
+        mail:
+          type: string
+          description: "Contatto mail"
+        farmaco:
+          type: string
+          description: "Farmaco assunto ha causato la reazione avversa"
+        note:
+          type: string
+          description: "note utente"
+        data_reazione:
+          type: string
+          description: "data in cui è avvenuta"
+        tipologia:
+          type: string
+          description: "tipologia"
+        id_vaccinazione:
+          type: string
+          description: "id della vaccinazione relativa"
+      required:
+        - data_reazione
+        - tipologia
+        - id_vaccinazione
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_associazione:
+    title: 'Vaccino'
+    description: |
+      Rappresenta il vaccino
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice dell'associazione
+      descrizione:
+        type: string
+        description: Descrizione estesa dell'associazione
+      importo_indicativo:
+        type: number
+        description: Un importo indicativo dell'associazione
+      vaccinazioni:
+        type: array
+        items:
+          $ref: '#/definitions/model_vaccino'
+    required:
+      - codice
+      - descrizione
+      - importo_indicativo
+  model_stato_istanza:
+    title: 'Stato istanza'
+    description: |
+      Rappresenta lo stato dell'istanza
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Una descrizione testuale
+    required:
+      - codice
+      - descrizione
+  model_range_date:
+    title: 'Range date'
+    description: |
+      Rappresenta il range di date per lo spostamento
+    type: object
+    properties:
+      data_inizio:
+        type: string
+        format: datetime
+        description: data inizio range
+      data_fine:
+        type: string
+        format: datetime
+        description: data fine range
+    required:
+      - data_inizio
+      - data_fine
+  model_codifica:
+    title: 'Codifica'
+    description: |
+      Rappresenta la classica coppia (codice, descrizione)
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Una descrizione testuale
+    required:
+      - codice
+  model_info_servizio:
+    title: 'Info servizio'
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  model_cittadino:
+    title: 'Cittadino'
+    type: object
+    description: |
+      Rappresenta il cittadino
+      <span style="text-decoration: underline;">
+        Per popolare tutti i campi é necessario effettuare 2 chiamate allo strato giallo
+      </span>
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale
+      codice_paziente:
+        type: string
+        description: codice paziente
+      nome:
+        type: string
+        description: nome
+      cognome:
+        type: string
+        description: cognome
+      data_nascita:
+        type: string
+        format: date
+        description: data di nascita
+      comune_nascita:
+        type: string
+        description: comune di nascita
+      sesso:
+        type: string
+        description: sesso
+      centro_vaccinale:
+        type: string
+        description: |
+          L'id del centro vaccinale di riferimento del cittadino.
+          <span style="text-decoration: underline;">
+          Non è fornito dallo strato giallo
+          </span>
+      asl:
+        description: |
+          L'ASL di riferimento del cittadino
+        $ref: '#/definitions/model_asl'
+      domicilio_vaccinazioni:
+        description: |
+          Il domicilio presso cui ricevere le lettere di vaccinazione
+        $ref: '#/definitions/model_cittadino_indirizzo'
+      contatti_vaccinazioni:
+        description: |
+          I contatti di riferimento del cittadino.
+          <span style="text-decoration: underline;">
+          Sulle API gialle corrisponde ad un altro endpoint
+          </span>
+        $ref: '#/definitions/model_cittadino_contatti'
+      categoria_rischio_codice:
+        type: string
+        description: codice categoria di rischio
+      categoria_rischio_descrizione:
+        type: string
+        description: descrizione categoria di rischio
+    required:
+      - codice_fiscale
+      - nome
+      - cognome
+      - data_nascita
+      - asl
+      - centro_vaccinale
+      - contatti_vaccinazioni
+      - domicilio_vaccinazioni
+  model_contatti_temporanei:
+    title: 'Cittadino Contatti Temporanei'
+    description: |
+      Rappresenta i contatti temporanei del cittadino per questo servizio
+    type: object
+    properties:
+      telefono:
+        type: string
+        description: Il numero di telefono temporaneo
+      email:
+        type: string
+        description: L'indirizzo email temporaneo
+      indirizzo_temporaneo: 
+        type: string
+        description: L'indirizzo temporaneo
+      comune:
+        type: string
+        description: Il comune relativo all'indirizzo
+      data_inizio_validita:
+        type: string
+        format: datetime
+      data_fine_validita:
+        type: string
+        format: datetime
+    required:
+      - indirizzo_temporaneo
+      - data_inizio_validita
+      - data_fine_validita
+  model_cittadino_contatti:
+    title: 'Cittadino Contatti'
+    description: |
+      Rappresenta i contatti del cittadino per questo servizio
+    type: object
+    properties:
+      telefono:
+        type: string
+        description: Il numero di telefono
+      telefono_2:
+        type: string
+        description: Un altro numero di telefono
+      telefono_3:
+        type: string
+        description: Un altro numero di telefono
+      email:
+        type: string
+        description: L'indirizzo email
+    required:
+      - telefono
+      - email
+  model_cittadino_indirizzo:
+    title: 'Cittadino Indirizzo'
+    description: |
+      Rappresenta un indirizzo del cittadino
+    type: object
+    properties:
+      indirizzo:
+        type: string
+        description: L'indirizzo
+        example: Via Roma, 12
+      cap:
+        type: string
+        description: Il CAP di appartenenza dell'indirizzo
+        example: 12100
+      comune:
+        type: string
+        description: Il comune di appartenenza dell'indirizzo
+        example: Cuneo
+      data_inizio:
+        type: string
+        format: datetime
+        example: '2019-11-08T09:21:38.739Z'
+      data_fine:
+        type: string
+        format: datetime
+        example: '2021-11-08T09:21:38.739Z'
+    required:
+      - indirizzo
+      - cap
+      - comune
+      - data_inizio
+      - data_fine
+  model_stato:
+    title: 'Stato'
+    description: |
+      Rappresenta lo stato della richiesta
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice dello stato
+      descrizione:
+        type: string
+        description: Descrizione estesa dello stato
+    required:
+      - codice
+      - descrizione
+  model_vaccino_dose:
+    title: 'Vaccino'
+    description: |
+      Rappresenta il vaccino
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice del vaccino
+      dose:
+        type: integer
+        description: dose
+    required:
+      - codice
+      - dose
+  model_vaccino:
+    title: 'Vaccino'
+    description: |
+      Rappresenta il vaccino
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice del vaccino
+      descrizione:
+        type: string
+        description: Descrizione estesa del vaccino
+      dose:
+        type: integer
+        description: dose
+    required:
+      - codice
+      - descrizione
+  model_vaccino_no_dose:
+    title: 'Vaccino'
+    description: |
+      Rappresenta il vaccino senza dose
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice del vaccino
+      descrizione:
+        type: string
+        description: Descrizione estesa del vaccino
+    required:
+      - codice
+      - descrizione
+  model_vaccino_volontario:
+    title: 'Vaccino volontario'
+    description: |
+      Rappresenta il vaccino colontario
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice del vaccino
+      descrizione:
+        type: string
+        description: Descrizione estesa del vaccino
+      importo_indicativo:
+        type: number
+        description: l'importo della vaccinazione
+    required:
+      - id_istanza
+      - id_appuntamento
+      - id_stato
+      - codice
+      - descrizione
+  model_istanza_revoca:
+    title: 'Istanza revoca'
+    description: |
+      Rappresenta l istanza di revoca appuntamento attiva
+    type: object
+    properties:
+      id_istanza:
+        type: string
+        description: L id dell istanza
+      motivazione:
+        type: string
+        description: Descrizione estesa della motivazione
+      id_appuntamento:
+        type: string
+        description: L id dell appuntamento relativo all istanza
+      id_stato:
+        type: string
+        description: L id dello stato dell istanza
+      descrizione_stato:
+        type: string
+        description: Descrizione dello stato
+      note_richiesta:
+        type: string
+        description: Note inserite da utente alla richiesta
+      note_risposta:
+        type: string
+        description: Note inserite da operatore alla risposta
+    required:
+      - id_istanza
+      - id_appuntamento
+      - id_stato
+  model_istanza_modifica_prenotazione:
+    title: 'Istanza di modifica prenotazione'
+    description: |
+      Rappresenta l istanza di modifica appuntamento attiva
+    type: object
+    properties:
+      id_istanza:
+        type: string
+        description: L id dell istanza
+      motivazione:
+        type: string
+        description: Descrizione estesa della motivazione
+      id_appuntamento:
+        type: string
+        description: L id dell appuntamento relativo all istanza ( NON fornito dal giallo)
+      id_stato:
+        type: string
+        description: L id dello stato dell istanza
+      descrizione_stato:
+        type: string
+        description: Descrizione dello stato
+      note_richiesta:
+        type: string
+        description: Note inserite da utente alla richiesta
+      tipologia_istanza:
+        type: string
+        description: Tipologia dell'istanza
+      centro_vaccinale_codice:
+        type: string
+        description: Il codice del centro vaccinale
+      centro_vaccinale_descrizione:
+        type: string
+        description: La descrizione del centro vaccinale
+      centro_vaccinale_istanza_codice:
+        type: string
+        description: Il codice del centro vaccinale selezionato per l'istanza
+      centro_vaccinale_istanza_descrizione:
+        type: string
+        description: La descrizione del centro vaccinale selezionato per l'istanza
+      data_presentazione_istanza:
+        type: string
+        format: datetime
+        description: La descrizione del centro vaccinale selezionato per l'istanza
+      vaccini:
+        type: array
+        description: vaccini relativi
+        items:
+          $ref: '#/definitions/model_vaccino_no_dose'
+    required:
+      - id_istanza
+      - id_appuntamento
+      - id_stato
+      - descrizione_stato
+  model_istanza_autocontribuzione:
+    title: 'Istanza di autocontribuzione'
+    description: |
+      Rappresenta l istanza di autocontribuzione attiva
+    type: object
+    properties:
+      id_istanza:
+        type: string
+        description: L id dell istanza
+      id_appuntamento:
+        type: string
+        description: L id dell appuntamento relativo all istanza
+      id_convocazione:
+        type: string
+        description: L id della convocazione relativa all istanza (non fornito dal giallo)
+      id_stato:
+        type: string
+        description: L id dello stato dell istanza (non fornito da giallo)
+      descrizione_stato:
+        type: string
+        description: Descrizione dello stato (non fornito da giallo)
+      note_richiesta:
+        type: string
+        description: Note inserite da utente alla richiesta
+      note_risposta:
+        type: string
+        description: Eventuali note in risposta
+      tipologia_istanza:
+        type: string
+        description: Tipologia dell'istanza
+      data_richiesta:
+        type: string
+        format: datetime
+        description: Data inserimento richiesta
+    required:
+      - id_istanza
+      - id_stato
+      - descrizione_stato
+  model_istanza_reazione_avversa:
+    title: 'Reazione Avversa'
+    description: |
+      Rappresenta l'istanza di reazione avversa
+    type: object
+    properties:
+      id_istanza:
+        type: string
+        description: L id dell istanza
+      farmaco:
+        type: string
+        description: Nome del farmaco
+      note:
+        type: string
+        description: Note dell'utente
+      data_reazione:
+        type: string
+        format: datetime
+        example: '2021-11-08T09:21:38.739Z'
+      tipologia:
+        type: string
+        description: Tipologia
+      id_stato:
+        type: string
+        description: id dello stato
+      descrizione_stato:
+        type: string
+        description: descrizione dello stato
+      note_risposta:
+        type: string
+        description: note in risposta
+      id_vaccinazione:
+        type: string
+        description: id della vaccinazione
+      vaccini:
+        type: array
+        description: vaccini relativi
+        items:
+          $ref: '#/definitions/model_vaccino'
+    required:
+      - id_istanza
+      - data_reazione
+      - id_stato
+      - descrizione_stato
+      - id_vaccinazione
+  model_motivazione_revoca_spostamento:
+    title: 'Motivazione revoca-spostamento'
+    description: |
+      Rappresenta la motivazione per la richiesta di revoca o spostamento
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice della motivazione
+      descrizione:
+        type: string
+        description: Descrizione estesa della motivazione
+    required:
+      - codice
+      - descrizione
+  model_motivazione_omissione_differimento:
+    title: 'Motivazione omissione'
+    description: |
+      Rappresenta la motivazione per la richiesta di omissione o differimento
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice della motivazione
+      descrizione:
+        type: string
+        description: Descrizione estesa della motivazione
+    required:
+      - codice
+      - descrizione
+  model_tipologie_reazione:
+    title: 'Tipologia per reazione avversa'
+    description: |
+      Rappresenta la tipologia di reazione avversa
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice della tipologia
+      descrizione:
+        type: string
+        description: Descrizione estesa della tipologia
+    required:
+      - codice
+      - descrizione
+  model_vaccino_somministrato:
+    title: 'Vaccino'
+    description: |
+      Rappresenta il vaccino
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice del vaccino
+      descrizione:
+        type: string
+        description: Descrizione estesa del vaccino
+      dose:
+        type: number
+        description: Dose del vaccino
+    required:
+      - codice
+      - descrizione
+      - dose
+  model_centro_vaccinale:
+    title: 'Centro vaccinale'
+    description: |
+      Rappresenta il centro vaccinale
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice associato al centro vaccinale
+      descrizione:
+        type: string
+        description: Il nome del centro
+      comune:
+        type: string
+        description: Il nome del comune di appartenenza del centro vaccinale
+      indirizzo:
+        type: string
+        description: L'indirizzo del centro vaccinale
+      note:
+        type: string
+        description: Eventuali note associate al centro vaccinale
+      telefono:
+        type: string
+        description: Il numero di telefono del centro vaccinale
+      mail:
+        type: string
+        description: Mail del centro vaccinale
+      ambulatori:
+        type: array
+        description: |
+          Contiene l'elenco degli ambulatori del centro vaccinale. Se la lista è vuota vuol dire che il centro vaccinale non supporta l'agenda elettronica
+        items:
+          $ref: '#/definitions/model_ambulatorio'
+      asl:
+        description: |
+          L'ASL di appartenenza del centro vaccinale
+          <span style="text-decoration: underline;">
+          Non è fornito dallo strato giallo
+          </span>
+        $ref: '#/definitions/model_asl'
+    required:
+      - id
+      - codice
+      - descrizione
+      - comune
+      - indirizzo
+      - mail
+      - telefono
+      - asl
+  model_centro_vaccinale_list_element:
+    title: 'Centro vaccinale'
+    description: |
+      Rappresenta il centro vaccinale ritornato dalla lista
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice associato al centro vaccinale
+      descrizione:
+        type: string
+        description: Il nome del centro
+      comune:
+        type: string
+        description: Il nome del comune di appartenenza del centro vaccinale
+      indirizzo:
+        type: string
+        description: L'indirizzo del centro vaccinale
+      note:
+        type: string
+        description: Eventuali note associate al centro vaccinale
+      telefono:
+        type: string
+        description: Il numero di telefono del centro vaccinale
+      mail:
+        type: string
+        description: mail del centro vaccinale
+      ambulatori:
+        type: array
+        description: |
+          Contiene l'elenco degli ambulatori del centro vaccinale. Se la lista è vuota vuol dire che il centro vaccinale non supporta l'agenda elettronica
+        items:
+          $ref: '#/definitions/model_ambulatorio'
+      asl:
+        type: string
+        description: |
+          Codice dell'ASL di appartenenza del centro vaccinale
+    required:
+      - id
+      - codice
+      - descrizione
+      - comune
+      - indirizzo
+      - mail
+      - telefono
+      - orario_apertura
+      - asl
+  model_centro_vaccinale_orario:
+    title: 'Centro Vaccinale Orario'
+    description: |
+      Rappresenta gli orari di apertura di un centro vaccinale
+    type: object
+    properties:
+      giorno:
+        type: string
+        description: Il giorno della settimana
+        example: Lunedì
+      intervallo:
+        type: array
+        items:
+          type: object
+          properties:
+            apertura:
+              type: string
+              description: L'orario di apertura in formato "full-time" delle specifiche ISO 8601
+              format: time
+            chiusura:
+              type: string
+              description: L'orario di chiusura in formato "full-time" delle specifiche ISO 8601
+              format: time
+          required:
+            - apertura
+            - chiusura
+    required:
+      - giorno
+      - intervallo
+  model_reazione_avversa:
+    title: 'Reazione avversa'
+    description: |
+      rappresenta la reazione segnalata
+    type: object
+    properties:
+      descrizione_reazione1:
+        type: string
+        description: Descrizione prima reazione
+      descrizione_reazione2:
+        type: string
+        description: Descrizione seconda reazione
+      descrizione_reazione3:
+        type: string
+        description: Descrizione terza reazione
+      data:
+        type: string
+        format: datetime
+        description: data della reazione
+      gravita:
+        type: string
+        description: Gravita della reazione
+    required:
+      - descrizione_reazione1
+      - data
+  model_asl:
+    title: 'Asl'
+    description: |
+      rappresenta l'azienda sanitaria locale
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Un codice univoco
+      descrizione:
+        type: string
+        description: Una descrizione testuale
+    required:
+      - codice
+      - descrizione
+  model_ambulatorio:
+    title: 'Ambulatorio'
+    description: |
+      Rappresenta l'ambulatorio che definisce anche la presenza dell'agenda elettronica
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Codice univoco dell'ambulatorio
+      descrizione:
+        type: string
+        description: descrizione dell'ambulatorio
+      orari:
+        type: array
+        items:
+          $ref: '#/definitions/model_ambulatorio_orario'
+      associazioni:
+        type: array
+        items:
+          $ref: '#/definitions/model_vaccino_no_dose'
+    required:
+      - codice
+      - descrizione
+  model_ambulatorio_orario:
+    title: 'Agenda orario'
+    description: |
+      Rappresenta l'orario nell'agenda elettronica
+      <span style="text-decoration: underline;">
+        Il formato e' stato realizzato sulla base dello strato giallo
+      </span>
+    type: object
+    properties:
+      giorno:
+        type: string
+        description: Giorno della settimana
+      ora_inizio_am:
+        type: string
+        description: L'orario di inizio apertura AM in formato "full-time" delle specifiche ISO 8601
+        format: datetime
+      ora_fine_am:
+        type: string
+        description: L'orario di chiusura AM in formato "full-time" delle specifiche ISO 8601
+        format: datetime
+      ora_inizio_pm:
+        type: string
+        description: L'orario di inizio apertura PM in formato "full-time" delle specifiche ISO 8601
+        format: datetime
+      ora_fine_pm:
+        type: string
+        description: L'orario di chiusura PM in formato "full-time" delle specifiche ISO 8601
+        format: datetime
+    required:
+      - giorno
+      - ora_inizio_am
+      - ora_fine_am
+      - ora_inizio_pm
+      - ora_fine_pm
+  model_documento:
+    title: 'Documento'
+    description: Rappresenta un documento
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+      descrizione:
+        type: string
+        description: Descrizione del documento
+      nome_documento:
+        type: string
+        description: Il nome del file
+        example: "certificato.crt"
+      tipologia:
+        type: string
+        description: La tipologia del documento
+        example: "CERTIFICATO"
+      soggetto_emittente:
+        type: string
+        description: Il soggetto che ha emesso il documento
+        example: "Comune di torino"
+      stato_documento_id:
+        type: string
+        description: Identificativo dello stato del documento
+      stato_documento_descrizione:
+        type: string
+        description: Descrizione dello stato attuale
+      data_archiviazione:
+        type: string
+        format: datetime
+        description: La data in cui viene caricato il documento
+        example: '2019-11-08T09:21:38.739Z'
+  model_vaccino_futuro:
+    title: Vaccino futuro
+    description: Rappresenta il vaccino futuro per il cittadino
+    type: object
+    properties:
+      eta:
+        type: integer
+        description: "età in giorni prevista per il vaccino"
+      vaccini:
+        type: array
+        description: L'elenco dei vaccini presenti nella vaccinazione futura
+        items:
+          $ref: '#/definitions/model_vaccino'
+    required:
+      - vaccini
+      - eta
+      - data_convocazione
+  model_convocazione:
+    title: Convocazione
+    description: Rappresenta la proposta di vaccinazione
+    type: object
+    properties:
+      id_convocazione:
+        type: string
+        description: "l'id dela convocazione"
+      centro_vaccinale:
+        type: string
+        description: "l'id del centro vaccinale"
+      consultorio:
+        type: string
+        description: Il codice del consultorio
+      paziente:
+        type: string
+        description: Il codice fiscale del paziente
+      data_convocazione:
+        type: string
+        format: datetime
+        description: la data a partire dalla quale il soggetto è vaccinabile
+        example: "2019-11-08T09:21:38.739Z"
+      data_appuntamento:
+        type: string
+        format: datetime
+        description: la data dell'eventuale appuntamento fissato
+        example: "2019-11-08T09:21:38.739Z"
+      vaccini:
+        type: array
+        description: L'elenco dei vaccini presenti nella vaccinazione proposta
+        items:
+          $ref: '#/definitions/model_vaccino_no_dose'
+    required:
+      - vaccini
+      - paziente
+      - data_convocazione
+  model_slot_temporale:
+    title: Slot temporale libero
+    description: Rappresenta uno slot temporale
+    type: object
+    properties:
+      data_appuntamento:
+        type: string
+        format: datetime
+        description: Data dell'appuntamento
+        example: "2019-09-23T09:00:00"
+      codice_ambulatorio:
+        type: string
+        description: "il codice dell'ambulatorio"
+      descrizione:
+        type: string
+        description: "descrizione"
+    required:
+      - codice_ambulatorio
+      - data_appuntamento
+  model_appuntamento_creato:
+    title: Appuntamento creato
+    description: Rappresenta una vaccinazione prenotata appena creata
+    type: object
+    properties:
+      id_convocazione:
+        type: string
+        description: Identificativo univoco della convocazione relativa
+    required:
+      - id_convocazione
+  model_appuntamento:
+    title: Appuntamento
+    description: Rappresenta una vaccinazione prenotata
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+      centro_vaccinale:
+        type: string
+        description: "l'id del centro vaccinale"
+      data_appuntamento:
+        type: string
+        format: datetime
+        description: la data dell'apputamento
+        example: "2019-11-08T09:21:38.739Z"
+      data_convocazione:
+        type: string
+        format: datetime
+        description: la data della convocazione relativa
+        example: "2019-11-08T09:21:38.739Z"
+      agenda:
+        type: boolean
+        description: "indica se l'appuntamento è stato creato tramite agenda"
+      annullabilita:
+        type: string
+        description: "possibilità di annullare l appuntamento: N oppure S"
+      associazioni:
+        type: array
+        description: L'elenco delle associazioni presenti nella vaccinazione proposta
+        items:
+          $ref: '#/definitions/model_associazione'
+    required:
+      - id
+      - associazioni
+      - centro_vaccinale
+      - data_appuntamento
+  model_somministrazione:
+    title: Somministrazione
+    description: Rappresenta una vaccinazione già eseguita
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+      centro_vaccinale:
+        type: string
+        description: "l'id del centro vaccinale"
+      ambulatorio:
+        type: string
+        description: "Il nome dell'ambulatorio (centro vaccinale)"
+      comune_centro:
+        type: string
+        description: "Il nome del comune a cui appartiene il centro vaccinale"
+      telefono_centro:
+        type: string
+        description: "Il telefono del centro vaccinale"
+      lotto:
+        type: string
+        description: "Il lotto di appartenenza del vaccino"
+      nome_commerciale: 
+        type: string
+        description: "Il nome commerciale del vaccino"
+      vaccinatore:
+        type: string
+        description: "Il nome del medico vaccinatore"
+      sito_inoculazione:
+        type: string
+        description: "Descrive dove è stato iniettato il vaccino"
+      via_somministrazione:
+        type: string
+        description: ""
+      is_fittizia:
+        type: boolean
+        description: ""
+      paziente_codice:
+        type: string
+        description: "Il codice SIRVA del paziente"
+      paziente_nome:
+        type: string
+        description: "Il nome del paziente"
+      paziente_cognome:
+        type: string
+        description: "Il cognome del paziente"
+      paziente_data_nascita:
+        type: string
+        format: datetime
+        description: "La data di nascita del paziente"
+        example: "2019-11-08T09:21:38.739Z"
+      data_appuntamento:
+        type: string
+        format: datetime
+        description: "la data dell'apputamento"
+        example: "2019-11-08T09:21:38.739Z"
+      ora_appuntamento:
+        type: string
+        format: datetime
+        description: "data + ora appuntamento"
+        example: "2019-11-08T09:21:38.739Z"
+      reazione_avversa:
+        type: object
+        $ref: '#/definitions/model_reazione_avversa'
+      medico_responsabile:
+        type: string
+        description: "Il medico responsabile"
+      numero_pratica_regionale:
+        type: string
+        description: "Il numero pratica regionale"
+      asl:
+        type: object
+        $ref: '#/definitions/model_asl'
+      associazioni:
+        type: array
+        description: TODO - Spiegare cos'è
+        items:
+          type: object
+          properties:
+            codice:
+              type: string
+              description: Un codice univoco
+            descrizione:
+              type: string
+              description: Una descrizione testuale
+            dose:
+              type: number
+              description: Il numero della dose
+              example: 1
+            vaccinazioni:
+              type: array
+              description: La lista dei vaccini eseguiti e la dose relativa
+              items:
+                type: object
+                $ref: '#/definitions/model_vaccino_somministrato'
+          required:
+            - codice
+            - descrizione
+            - dose
+            - vaccinazioni
+      condizione_sanitaria_codice:
+        type: string
+        description: codice della condizione sanitaria
+      condizione_sanitaria_descrizione:
+        type: string
+        description: descrizione della condizione sanitaria
+      condizione_rischio_codice:
+        type: string
+        description: codice condizione di rischio
+      condizione_rischio_descrizione:
+        type: string
+        description: descrizione condizione di rischio
+    required:
+      - id
+      - vaccini
+      - centro_vaccinale
+      - data_appuntamento
+      - associazioni
+  model_vaccinazione_immunizzata:
+    title: Vaccinazione immunizzata
+    description: Rappresenta una vaccinazione immunizzata
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco
+      data_esclusione:
+        type: string
+        format: datetime
+        description: la data in cui la vaccinazione è stata esclusa
+        example: "2019-11-08T09:21:38.739Z"
+      data_appuntamento:
+        type: string
+        format: datetime
+        description: la data dell'apputamento
+        example: "2019-11-08T09:21:38.739Z"
+      data_registrazione:
+        type: string
+        format: datetime
+        description: TODO - descrivere cos'è
+        example: "2019-11-08T09:21:38.739Z"
+      data_scadenza:
+        type: string
+        format: datetime
+        description: TODO - descrivere cos'è
+        example: "2019-11-08T09:21:38.739Z"
+      motivazione_codice:
+        type: string
+        description: Il codice della motivazione dell'esclusione
+      motivazione_descrizione:
+        type: string
+        description: La descrizione della motivazione dell'esclusione
+      vaccinazione:
+        type: string
+        description: TODO - Descrivere cos'è
+      visibile:
+        type: boolean
+        description: true se deve essere visibile al cittadino, false altrimenti
+        example: true
+      note:
+        type: string
+        description: TODO - Descrivere cos'è
+      dose:
+        type: number
+        description: Il numero della dose
+        example: 2
+    required:
+      - id
+      - data_esclusione
+      - data_appuntamento
+      - motivazione_codice
+      - motivazione_descrizione
+      - vaccinazione
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+  filtro_vaccinazione:
+    title: '[FILTRI] Vaccinazione'
+    type: object
+    properties:
+      priorita:
+        $ref: '#/definitions/filtri_stringhe'
+      stato:
+        $ref: '#/definitions/filtri_stringhe'
+  filtro_documento:
+    title: '[FILTRI] Documento'
+    type: object
+    description: |
+      **TODO:  
+      Attualmente non sappiamo su quali campi poter filtrare per richiedere puntualmente la scheda della singola vaccinazione o l'attestato con lo storico delle vaccinazioni**
+  filtri_stringhe:
+    title: '[FILTRI][CRITERI] Stringhe'
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  filtri_numeri:
+    title: '[FILTRI][CRITERI] Numeri'
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  filtri_date:
+    title: '[FILTRI][CRITERI] Date'
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  filtri_booleani:
+    title: '[FILTRI][CRITERI] Booleani'
+    type: object
+    properties:
+      eq:
+        type: boolean
+      ne:
+        type: boolean
+tags:
+  - name: Stage 0
+    description: Visualizzazione
+  - name: Stage 1
+    description: Modifica contatti
+  - name: Stage 2
+    description: Richiesta spostamento/revoca appuntamento
+  - name: Stage 3
+    description: Richiesta appuntamento vaccinazioni volontarie
+  - name: Stage 4
+    description: Gestione agenda elettronica
+  - name: Stage 5
+    description: Sospensione, esclusione, autocontribuzione, reazione avversa
+

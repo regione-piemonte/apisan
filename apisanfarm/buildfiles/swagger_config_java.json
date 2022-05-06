@@ -1,0 +1,17 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.apisan.apisanfarm.business.apisanfarm",
+"modelPackage":  "it.csi.apisan.apisanfarm.dto.apisanfarm",
+"invokerPackage": "it.csi.apisan.apisanfarm.business.apisanfarm",
+"implFolder": "implfolder",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"useImplicitSnakeCaseAttributeStrategy": true,
+"accessHttpHeaders": true,
+"accessHttpRequest": true
+}

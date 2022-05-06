@@ -1,0 +1,871 @@
+swagger: '2.0'
+info:
+  description: Api Rest per la fruizione in cooperazione applicativa dei dati della toponomastica del Comune di Torino
+  version: v1
+  title: toponomastica-comune-torino
+schemes:
+  - http
+basePath: /territorio/toponomastica/ctsapicoto/v1
+produces:
+  - application/json
+paths:
+  /vie/{idvia}:
+    get:
+      operationId: cercaViaPerId
+      summary: servizio di ricerca della via per id via
+      description: Restituisce un oggetto via
+      produces:
+        - application/json
+      tags:
+        - cercaViaPerId
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idvia
+          type: integer
+          required: true
+          description: id della via
+      responses:
+        '200':
+          description: Oggetto via
+          schema:
+            $ref: '#/definitions/via'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /vie:
+    get:
+      operationId: cercaViePerDescrizione
+      summary: servizio di ricerca delle vie per descrizione
+      description: Restituisce un elenco di oggetti via. La ricerca si basa sulla selezione di record che contengono la stringa in input {nome}. La ricerca è eseguita sull'attributo denominazioneParte1. Esempio ../vie/?nome=FRANCIA
+      produces:
+        - application/json
+      tags:
+        - cercaViePerDescrizione
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: query
+          name: nome
+          type: string
+          required: false
+          description: nome della via
+      responses:
+        '200':
+          description: Oggetto via
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/via'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /vielight:
+    get:
+      operationId: cercaViePerDescrizioneLight
+      summary: servizio di ricerca delle vie per descrizione
+      description: Restituisce un elenco di oggetti viaLight. La ricerca si basa sulla selezione di record che contengono la stringa in input {nome}. La ricerca è eseguita sull'attributo denominazioneParte1. Esempio .../vielight/?nome=FRANCIA
+      produces:
+        - application/json
+      tags:
+        - cercaViePerDescrizioneLight
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo ella transazione per il tracciamento
+        - in: query
+          name: nome
+          type: string
+          required: false
+          description: nome della via
+      responses:
+        '200':
+          description: Oggetto via light
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/viaLight'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /civici/{idcivico}:
+    get:
+      operationId: cercaCivico
+      summary: servizio di ricerca dei numeri civici  per id civico
+      description: Restituisce un oggetto civico
+      produces:
+        - application/json
+      tags:
+        - cercaCivicoPerId
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idcivico
+          type: integer
+          required: true
+          description: id del civico
+      responses:
+        '200':
+          description: Oggetto civico
+          schema:
+            $ref: '#/definitions/civico'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /vie/{idvia}/civici:
+    get:
+      operationId: cercaCiviciDiUnaVia
+      summary: servizio di ricerca dei civici di una via
+      description: Restituisce un elenco di oggetti civico
+      produces:
+        - application/json
+      tags:
+        - cercaCiviciDiUnaVia
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idvia
+          type: integer
+          required: true
+          description: id della via
+      responses:
+        '200':
+          description: Oggetto civico
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/civico'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /vie/{idvia}/civicilight:
+    get:
+      operationId: cercaCiviciDiUnaViaLight
+      summary: servizio di ricerca dei civici light di una via
+      description: Restituisce un elenco di oggetti civicoLight
+      produces:
+        - application/json
+      tags:
+        - cercaCiviciDiUnaViaLight
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idvia
+          type: integer
+          required: true
+          description: id della via
+      responses:
+        '200':
+          description: Oggetto civico light
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/civicoLight'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /vie/{idvia}/civicilight/numeriRadice:
+    get:
+      operationId: elencoNumeriRadiceAttiviByIdvia
+      summary: servizio di ricerca dei numeri radice attivi di una via
+      description: Restituisce un elenco di oggetti numeri radice
+      produces:
+        - application/json
+      tags:
+        - elencoNumeriRadiceAttiviByIdvia
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idvia
+          type: integer
+          required: true
+          description: id della via
+      responses:
+        '200':
+          description: numero radice
+          schema:
+            type: array
+            items:
+              type: integer
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /vie/{idvia}/civicilight/numero/{numero}:
+    get:
+      operationId: cercaCiviciDiUnaViaLightNumero
+      summary: servizio di ricerca dei civici di una via per codice via e numero radice
+      description: Restituisce un elenco di oggetti civico light
+      produces:
+        - application/json
+      tags:
+        - cercaCiviciDiUnaViaLightNumero
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idvia
+          type: integer
+          required: true
+          description: id della via
+        - in: path
+          name: numero
+          type: integer
+          required: true
+          description: numero radice
+      responses:
+        '200':
+          description: Oggetto civico light
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/civicoLight'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /civici/{idcivico}/uiu:
+    get:
+      operationId: cercaUiuPerCivico
+      summary: servizio di ricerca delle uiu id civico
+      description: Restituisce un elenco di oggetti uiu
+      produces:
+        - application/json
+      tags:
+        - cercaUiuPerCivico
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idcivico
+          type: integer
+          required: true
+          description: id del civico
+      responses:
+        '200':
+          description: Oggetto uiu
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/uiu'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /civici/{idcivico}/uiulight:
+    get:
+      operationId: cercaUiuLightPerCivico
+      summary: servizio di ricerca delle unità immobiliari per id civico
+      description: Restituisce un elenco di oggetti uiu light
+      produces:
+        - application/json
+      tags:
+        - cercaUiuLightPerCivico
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+        - in: path
+          name: idcivico
+          type: integer
+          required: true
+          description: id del civico
+      responses:
+        '200':
+          description: Oggetto uiu light
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/uiuLight'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /uiu/piani:
+    get:
+      operationId: cercaPiani
+      summary: servizio di restituzione dell'elenco dei "piani"
+      description: Restituisce un elenco di oggetti piano
+      produces:
+        - application/json
+      tags:
+        - cercaPiani
+      parameters:
+        - in: header
+          name: app_id
+          type: string
+          required: true
+          description: Identificativo della configurazione per il chiamante
+        - in: header
+          name: X-Request-Id
+          type: string
+          required: true
+          description: Identificativo della transazione per il tracciamento
+      responses:
+        '200':
+          description: Oggetto piano
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/piano'
+        '204':
+          description: Nessun oggetto reperito per i parametri di ricerca impostati
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/UnauthorizedError'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+      security:
+        - toponomasticaSecurity: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+securityDefinitions:
+  toponomasticaSecurity:
+    type: apiKey
+    in: header
+    name: Authorization
+    description: Bearer access token. Schema di autenticazione http  utilizzato per l'authorizzazione alla risorsa richiesta
+  default:
+    type: oauth2
+    authorizationUrl: /authorize
+    flow: implicit
+    scopes: {}
+responses:
+  BadRequest:
+    description: La richiesta fatta dal client è errata
+  UnauthorizedError:
+    description: Access Token mancante o non valido
+  NotFound:
+    description: La risorsa specificata non è stata trovata
+  InternalServerError:
+    description: Si è verificato un'errore interno del server.
+definitions:
+  via:
+    type: object
+    properties:
+      idVia:
+        type: integer
+        description: Codice numerico ufficiale della via
+      stato:
+        type: integer
+        description: codice stato della via
+      descStato:
+        type: string
+        description: descrizione dello stato
+      convenzionale:
+        type: integer
+        description: 0 = via non convenzionale; 1 = indica che la via è convenzionale (la via convenzionale è utilizza per particolari esigenge di alcuni Sistemi Informativi della Città di Torino alcuni  esempi  (SENZA FISSA DIMORA,INDIRIZZO IMPRECISATO, VIA DELLA CASA COMUNALE, ecc..)
+      sedime:
+        $ref: '#/definitions/sedime'
+      denominazionePrincipale:
+        type: string
+        description: è composta dalla denominazioneParte2+denominazioneParte1
+      denominazioneSecondaria:
+        type: string
+        description: è composta dalla denominazioneParte1+denominazioneParte2
+      denominazioneParte1:
+        type: string
+        description: parte significativa (ad esempio il cognome) del nome della via
+      denominazioneParte2:
+        type: string
+        description: parte secondaria facoltativa (ad esempio il nome)  del nome della via
+      denominazioneBreve:
+        type: string
+        description: denominazione breve
+      denominazioneCorrente:
+        type: string
+        description: denominazione corrente
+      denominazioneAlfabetica1:
+        type: string
+        description: è la denominazione più completa composta per le vie ufficiali da denominazioneParte1/denominazioneParte2 (sedime) ad esempio "GARIBALDI/GIUSEPPE (VIA)"
+      denominazioneAlfabetica2:
+        type: string
+        description: ulteriore chiave di ricerca della denominazione alfabetica
+      denominazioneCompatta:
+        type: string
+        description: denominazione compatta e chiave di ricerca alfabetica della via.
+      descrizioneTipoVia:
+        type: string
+        description: descrizione tipo via
+      idTipoVia:
+        type: integer
+        description: codice tipologia della via
+      dataDelibera:
+        type: string
+        description: data delibera
+    example:
+      idVia: 24288
+      stato: 1
+      descStato: Attiva
+      convenzionale: false
+      sedime:
+        idSedime: 361
+        descrizione: VIA
+        descrizioneBreve: V.
+      denominazionePrincipale: GIUSEPPE GARIBALDI
+      denominazioneSecondaria: GARIBALDI GIUSEPPE
+      denominazioneParte1: GARIBALDI
+      denominazioneParte2: GIUSEPPE
+      denominazioneBreve: GARIBALDI
+      denominazioneCorrente: GIUSEPPE GARIBALDI
+      denominazioneAlfabetica1: GARIBALDI/GIUSEPPE (VIA)
+      denominazioneAlfabetica2: ''
+      denominazioneCompatta: GARIBALDI
+      descrizioneTipoVia: Abitativo
+      idTipoVia: 1
+      dataDelibera: ''
+  sedime:
+    type: object
+    properties:
+      idSedime:
+        type: integer
+        description: id del sedime
+      descrizione:
+        type: string
+        description: descrizione del sedime
+      descrizioneBreve:
+        type: string
+        description: descrizione breve del sedime
+      preposizione:
+        type: string
+        description: preposizione del sedime
+  viaLight:
+    type: object
+    properties:
+      idVia:
+        type: integer
+        description: id della via
+      stato:
+        type: integer
+        description: stato della via
+      descStato:
+        type: string
+        description: descrizione dello stato
+      convenzionale:
+        type: integer
+        description: convenzionale via
+      sedime:
+        $ref: '#/definitions/sedime'
+      denominazionePrincipale:
+        type: string
+        description: denominazione principale
+      denominazioneSecondaria:
+        type: string
+        description: denominazione secondaria
+      denominazioneBreve:
+        type: string
+        description: denominazione breve
+    example:
+      idVia: 24288
+      stato: 1
+      descStato: Attiva
+      convenzionale: false
+      sedime:
+        idSedime: 361
+        descrizione: VIA
+        descrizioneBreve: V.
+        preposizione: ''
+      denominazionePrincipale: GIUSEPPE GARIBALDI
+      denominazioneSecondaria: GARIBALDI GIUSEPPE
+      denominazioneBreve: GARIBALDI
+  civico:
+    type: object
+    properties:
+      idCivico:
+        type: integer
+        description: id del civico
+      idVia:
+        type: integer
+        description: id della via
+      numeroRadice:
+        type: integer
+        description: numero radice
+      iBisTer:
+        type: integer
+        description: iBisTer
+      interno1:
+        type: string
+        description: interno1
+      iBisTer1:
+        type: integer
+        description: iBisTer1
+      interno2:
+        type: string
+        description: interno2
+      iBisTer2:
+        type: integer
+        description: iBisTer2
+      scala:
+        type: string
+        description: scala
+      numerazioneSecondaria:
+        type: string
+        description: numerazione secondaria
+      fronteVia:
+        type: integer
+        description: fronte via
+      codiceAbitativo:
+        type: integer
+        description: codice abitativo
+      abitativo:
+        type: string
+        description: abitativo
+      cap:
+        type: integer
+        description: cap
+      stato:
+        type: integer
+        description: stato del civico
+      descrizioneStato:
+        type: string
+        description: descrizione dello stato
+      carraio:
+        type: boolean
+        description: carraio
+      uiuCompletate:
+        type: boolean
+        description: uiu completate (il civico risulta con uiu propagate- indica la presenza di almeno una uiu attiva)
+      tipologia:
+        type: string
+        description: codice tipologia
+      descrizioneTipologia:
+        type: string
+        description: descrizione tipologia
+  civicoLight:
+    type: object
+    properties:
+      idCivico:
+        type: integer
+        description: id del civico
+      idVia:
+        type: integer
+        description: id della via
+      numeroRadice:
+        type: integer
+        description: numero radice
+      indirizzo:
+        type: string
+        description: indirizzo
+      cap:
+        type: integer
+        description: cap
+      stato:
+        type: integer
+        description: stato del civico
+      descrizioneStato:
+        type: string
+        description: descrizione dello stato
+      carraio:
+        type: boolean
+        description: carraio
+      tipologia:
+        type: string
+        description: codice tipologia civico
+      descrizioneTipologia:
+        type: string
+        description: descrizione tipologia civico
+      uiuCompletate:
+        type: boolean
+        description: uiu completate (il civico risulta con uiu propagate- indica la presenza di almeno una uiu attiva)
+      esponente:
+        type: string
+        description: esponente (composto dalla decodifica degli attributi riferiti a bister, interni, scale e secondari)
+  tipoUiu:
+    type: object
+    properties:
+      codiceTipoUiu:
+        type: string
+        description: codice tipo uiu
+      descrizione:
+        type: string
+        description: descrizione
+      dataDecorrenzaTipoUiu:
+        type: string
+        description: data decorrenza tipo uiu
+  uiu:
+    type: object
+    properties:
+      idUiu:
+        type: integer
+        description: id della uiu
+      nui:
+        type: integer
+        description: nui
+      piano:
+        type: string
+        description: piano
+      descrizionePiano:
+        type: string
+        description: descrizione del piano
+      tipiUiu:
+        type: array
+        items:
+          $ref: '#/definitions/tipoUiu'
+      codCausaNascita:
+        type: string
+        description: codice causa nascita
+      descrizioneCausaNascita:
+        type: string
+        description: descrizione causa nascita
+      codCessazioneValidita:
+        type: string
+        description: cod cessazione validita
+      motivoCessazioneValidita:
+        type: string
+        description: motivo cessazione validita
+      codiceCessazioneProvenienzaInfo:
+        type: string
+        description: codice cessazione provenienza info
+      descrizioneCessazioneProvenienzaInfo:
+        type: string
+        description: descrizione cessazione provenienza info
+      codiceNascitaProvenienzaInfo:
+        type: string
+        description: codice nascita provenienza info
+      descrizioneNascitaProvenienzaInfo:
+        type: string
+        description: descrizione nascita provenienza info
+      dataDecorrenza:
+        type: string
+        description: data decorrenza
+      dataCessazione:
+        type: string
+        description: data cessazione
+      stato:
+        type: integer
+        description: stato
+      descrizioneStato:
+        type: string
+        description: descrizione stato
+      codiceProvenienzaInfo:
+        type: string
+        description: codice provenienza info
+      descrizioneProvenienzaInfo:
+        type: string
+        description: descrizione provenienza info
+      atc:
+        type: integer
+        description: atc
+  uiuLight:
+    type: object
+    properties:
+      idUiu:
+        type: integer
+        description: id della uiu
+      nui:
+        type: integer
+        description: nui
+      piano:
+        type: string
+        description: piano
+      descrizionePiano:
+        type: string
+        description: descrizione del piano
+      stato:
+        type: integer
+        description: stato
+      descrizioneStato:
+        type: string
+        description: descrizione stato
+  piano:
+    type: object
+    properties:
+      codicePiano:
+        type: string
+        description: codice piano
+      descrizione:
+        type: string
+        description: descrizione
+host: ''

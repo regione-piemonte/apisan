@@ -1,0 +1,1481 @@
+swagger: '2.0'
+info:
+  description: >-
+    Api risorse per cercare le pratiche sanitarie al fine di poterle pagare o
+    stampae la ricevuta di pagamento. A corredo vi sono Api per l'elenco delle
+    Asr e i canali di pagamento disponibili
+  version: 1.0.0
+  title: Pagamento ticket
+host: tst-srv-xxx.xxx.csi.it
+basePath: /ptwsrvrest/services/
+schemes:
+  - https
+paths:
+  '/servizio-attivo':
+    get:
+      description: >
+        Serve per verificare se il servizio risponde o meno
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true  
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true          
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/info_servizio'
+  '/utenti/{cf}/pagamenti-sanitari':
+    get:
+      description: >
+        Ritorna un elenco di pagamenti sanitari per il codice
+        fiscale passato come path param.
+         il filtro consentito è di tipo pagamento_filter (la cui definizione è in fondo) i criteri supportati per i singoli campi del filtro sono impostati nella description di ogni singolo campo del filtro. Obbligatorio visualizzare solo le pratiche che sono interamente da pagare  pratiche interamente da pagare ovvero con la regola 'stato ci (000) pagato eq 0 e da_pagare gt 0'.
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string
+          required: true
+        - name: cf
+          in: path
+          type: string
+          required: true
+        - name: filter
+          in: query
+          type: string
+          description: filtro di tipo pagamento_filter
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/pagamento_sanitario'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '421':
+          description: codice fiscale non valido
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/utenti/{cf}/pagamenti-sanitari/{numero_pratica_regionale}':
+    get:
+      description: >-
+        specializzazione dell'api di ricerca dei pagamenti-sanitari da definire
+        i codici di errore possibili
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string  
+          required: true
+        - name: cf
+          in: path
+          type: string
+          required: true
+        - name: numero_pratica_regionale
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/pagamento_sanitario'
+  '/utenti/{cf}/avviso-pagamento/{numero_pratica_regionale}':
+    get:
+      description: >-
+        Metodo che richiede il pdf della stampa dell'avviso di pagamento Quanto
+        il paziente  richiederà la stampa dell'avviso di pagamento passerà
+        all'Api i dati dell'avviso di pagamento e otterrà come risposta il pdf. 
+        Possibili code dell'errore http 500
+         * 999 errore generico
+         * 888 campo che serve alla stampa manca su db
+         * 777  campo che serve alla stama non corretto su db
+      produces:
+        - application/pdf
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string  
+          required: true
+        - name: cf
+          in: path
+          type: string
+          required: true
+          description: codice fiscale
+        - in: path
+          name: numero_pratica_regionale
+          type: string
+          required: true
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: file
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '421':
+          description: codice fiscale non valido
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  '/utenti/{cf}/rimborsi':
+    get:
+      description: >-
+       Recuperare l'elenco dei ticket da rimborsare per il cittadino, il filtro consentito e obbligatorio e' di tipo rimborso_filter (la cui definizione è in fondo) i criteri supportati per i singoli campi del filtro sono impostati nella description di ogni singolo campo del filtro. Obbligatorio visualizzare solo i rimborsi che sono non erogati (in_erogazione = 0) da rimborsare (stato_ticket = 802) e modalita borsellino (modalita_rimborso = 3).
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Shib-Identita-CodiceFiscale
+          type: string
+          required: true      
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string  
+          required: true      
+        - name: cf
+          in: path
+          type: string
+          required: true
+          description: codice fiscale 
+        - name: filter
+          in: query
+          type: string
+          description: filtro di tipo rimborso_filter          
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ticket'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '502':
+          description: endpoint gpr non trovatp
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/errore'
+  /asr:
+    get:
+      description: restituisce l'elenco delle ASR
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string   
+          required: true
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/asr'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '421':
+          description: codice fiscale non valido
+          schema:
+            $ref: '#/definitions/errore'
+  /modalita-erogazione-ammissibili:
+    get:
+      description: >-
+        servizio per recuperare tutte modalita' di erogazione ammissibili per ciascuna ASR, dipartimentale, codice versamento e motivo pagamento serve per poter successivamente individuare agevolmente quali rimborsi siano effettivamente fruibili tramite borsellino
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string   
+          required: true
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/modalita_erogazione'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'            
+  '/pagamento/{id_transazione}/ricevuta':
+    post:
+      description: >-
+        Una volta che il paziente viene rediretto da MDP sulla landing page
+        ...pagamentoOK.xml?tranId=TST000000000043015 la web app invoca quest'api
+        per creare il pdf della ricevuta di pagamento e nel caso di pagamento
+        POS registra il pagamento sul S.I. dell'Asr L'Api richiede nel path
+        param {id_transazione} l'identificativo della transazione I possibili
+        risultati sono il dettaglio del pagamento per consentire alla web app di
+        produrre la pagina di pagamento terminato con successo, con l'elenco
+        delle pratica presenti nel carrello. Se la pratica è stata pagata con
+        POS verrà data evidenza. Da vedere il tipo di ritorno
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string   
+          required: true
+        - name: id_transazione
+          in: path
+          type: string
+          required: true
+      responses:
+        '201':
+          description: operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/ricevuta_pagamento'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'
+        '421':
+          description: codice fiscale non valido (controllo su lunghezza)
+          schema:
+            $ref: '#/definitions/errore'
+        '424':
+          description: codice servizio non valido
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+  /pagamento:
+    post:
+      description: >-
+        informazioni necessarie ad effettuare il pagamento del carrello con l'aggiunta delle pratiche da rimborsare si sono aggiunti i seguenti possibili codici di errore.
+         Possibili codici di errore
+         * '245'  Ticket da rimborsare con modalita' erogazione diversa da 'borsellino'
+       
+         * '246' Ticket da rimborsare con stato erogazione diverso da 'da rimborsare'
+       
+         * '251' Ticket da rimborsare differenti tra loro
+       
+         * '252' Ticket da pagare e ticket da rimborsare incompatibili
+       
+         * '255' L'invocazione di SetStatoErogazioneRimborso per uno o più rimborsi e' fallita
+       
+         * '256' L'invocazione di GetListaRimborsi e' fallita
+       
+         * '257' Il salvataggio dei rimborsi su DB e' fallito
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string 
+          required: true
+        - in: body
+          name: elenco-pratiche-e-versante
+          required: true
+          description: elenco delle pratiche da pagare con i dati del versante
+          schema:
+            $ref: '#/definitions/pagamento_sanitario_body'
+      responses:
+        '201':
+          description: >-
+            operazione eseguita con successo restituisce la URL del Wisp2 di
+            AgID sul Wisp2 il paziente esegue il pagamento PagoPA
+          schema:
+            type: string
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/errore'          
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'
+        '503':
+          description: salvataggio non riuscito
+          schema:
+            $ref: '#/definitions/errore'
+        '512':
+          description: errore transazione già processata
+          schema:
+            $ref: '#/definitions/errore'
+        '513':
+          description: errore transazione rifiutata
+          schema:
+            $ref: '#/definitions/errore'
+  /pagamento-spontaneo:
+    post:
+      description: informazioni necessarie ad effettuare il pagamento spontaneo
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string 
+          required: true
+        - in: body
+          name: pagamento-spontaneo
+          required: true
+          description: elenco delle pratiche da pagare con i dati del versante
+          schema:
+            $ref: '#/definitions/pagamento_spontaneo_body'
+      responses:
+        '201':
+          description: >-
+            operazione eseguita con successo restituisce la URL del Wisp2 di
+            AgID sul Wisp2 il paziente esegue il pagamento PagoPA
+          schema:
+            type: string
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'          
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'          
+        '421':
+          description: codice fiscale non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '424':
+          description: codice servizio non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'          
+  '/mandato-pagamento/{id_ricevuta}':
+    get:
+      description: >-
+        L'Api è funzionale alla gestione della finalizzazione del pagamento.
+        Quando il paziente, ritornato sulla landing page scatena la generazione
+        della ricevuta con l'Api /pagamento/{id_transazione}/ricevuta, viene
+        inserito nella tabella la ricevuta del mandato di pagamento del
+        carrello, e l'Api ritorna l'id_ricevuta, per consentire la stampa del
+        mandato
+      produces:
+        - application/pdf
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string  
+          required: true
+        - in: path
+          name: id_ricevuta
+          type: string
+          required: true
+          description: >-
+            identificativo della ricevuta di cui si desidera la copia della
+            ricevuta di mandato di pagamento
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: file
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'          
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'          
+        '421':
+          description: codice fiscale non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '424':
+          description: codice servizio non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore' 
+  '/rimborsi/{id_transazione}/stato-erogazione':
+    put:
+      description: >-
+        L'Api consente di modificare lo stato in erogazione dei rimborsi a 0 nel caso in cui un precedente pagamento sia stato annullato dall'utente o non sia andato a buon fine. Possibili valori di ritorno 
+        
+        * codice 000  messaggio Lo stato di erogazione di tutti i rimborsi è stato aggiornato correttamente.
+        
+        * codice 001 messaggio  Lo stato di erogazione di alcuni rimborsi non è stato aggiornato correttamente.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string 
+          required: true
+        - in: path
+          name: id_transazione
+          type: string
+          required: true
+          description: codice fiscale di cui si vogliono ricercare le ricevute 
+        - in: body
+          name: stato_transazione
+          required: true
+          description: stato con il quale si vuole settare la transazione
+          schema:
+            $ref: '#/definitions/stato_transazione'
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            $ref: '#/definitions/risposta_servizio'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'          
+          
+  '/utenti/{cf}/ricevute-pagamenti-sanitari/':
+    get:
+      description: >-
+        L'Api consentirà di ricercare dentro la base dati del PTW le ricevute di
+        pagamento corrispondenti al codice fiscale presente nel path param e
+        al        numero pratica regionale o nre presente nel filter dell'Api
+        stesso. Verrà  inserito nel filter anche l'id_ricevuta per consentire
+        alla web app di  stampare la ricevuta per id. Il filtro che può essere
+        utilizzato è di tipo ricevuta_filter definito in fondo; il criterio
+        supportato per i filtri è eq
+      produces:
+        - application/pdf
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string 
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+          description: codice fiscale di cui si vogliono ricercare le ricevute
+        - in: query
+          name: filter
+          type: string
+          description: >-
+            query filter di tipo ricevuta_filter criterio supportato per i campi
+            eq
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: file
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'          
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'          
+        '421':
+          description: codice fiscale non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '424':
+          description: codice servizio non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'          
+  '/utenti/{cf}/ricevute-pagamenti-sanitari/{id_ricevuta}':
+    get:
+      description: >-
+        L'api resituirà il pdf relativo al cf e id_ricevuta in input. Attenzione
+        la ricevuta sarà valida ai fini fiscali
+      produces:
+        - application/pdf
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+          required: true
+        - in: header
+          name: X-Codice-Servizio
+          type: string
+          required: true
+        - in: header
+          name: X-Forwarded-For
+          type: string  
+          required: true
+        - in: path
+          name: cf
+          type: string
+          required: true
+          description: codice fiscale di cui si vogliono ricercare le ricevute
+        - in: path
+          name: id_ricevuta
+          type: string
+          required: true
+      responses:
+        '200':
+          description: operazione eseguita con successo
+          schema:
+            type: file
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errore'          
+        '401':
+          description: Utente non autorizzato a compiere l'operazione
+          schema:
+            $ref: '#/definitions/errore'          
+        '421':
+          description: codice fiscale non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '424':
+          description: codice servizio non valido
+          schema:
+            $ref: '#/definitions/errore'          
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errore'          
+definitions:
+  info_servizio:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del servizio
+      descrizione:
+        type: string
+        description: descrizione del servizio
+      data:
+        type: string
+        format: date
+      servizio_attivo:
+        type: boolean
+        description: boolean di utilita per eventuali test
+  modalita_erogazione:
+    type: object
+    properties:
+      id_asr:
+        type: integer
+      codice_servizio:
+        type: string
+      codice_versamento:
+        type: string
+      motivo_pagamento:
+        type: string
+      modalita_erogazione:
+        type: integer
+        format: int64
+      importo_bin_bonifico:
+        $ref: '#/definitions/importo'
+  canale_pagamento:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: idnetificativo unico del canale di pagamento
+        example: 1
+      descrizione:
+        type: string
+        description: descrizione del canale di pagamento
+        example: >-
+          PAGAMENTO CON CARTA DI CREDITO PREDISPOSTO DAL TESORIERE DELL'AZIENDA
+          SANITARIA
+      tesoriere:
+        $ref: '#/definitions/tesoriere'
+      tipologia:
+        type: string
+        description: POS
+      carte_commissioni:
+        type: array
+        items:
+          $ref: '#/definitions/carta_commissione'
+  carta_commissione:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: di della carta
+        example: 1
+      descrizione:
+        type: string
+        description: nome della carta di credito
+        example: VISA COMMISSIONE 1%
+      path_logo:
+        type: string
+        description: url del logo della carta
+        example: 'http://www.sistemapiemonte.it/ris/css/pagamentoTicket/im/visa.jpg'
+  tesoriere:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: id della tesoreria di pagamento
+        example: 1
+      descrizione:
+        type: string
+        description: descrizione del tesoriere di pagamento
+        example: UniCredit S.p.A.
+      url_logo:
+        type: string
+        description: link all'url del logo del tesoriere di pagamento
+        example: >-
+          http://www.sistemapiemonte.it/ris/css/pagamentoTicket/im/unicreditgroup.jpg
+  asr:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: identificativo della Azienda sanitaria regionale
+        example: 909
+      descrizione:
+        type: string
+        description: Descrizione della Azienda sanitaria regionale
+        example: CITTA DELLA SALUTE E DELLA SCIENZA DI TORINO
+      canale_psp:
+        type: boolean
+        description: indica se è previsto o meno di pagare tramite psp
+        example: true
+      canale_pos:
+        $ref: '#/definitions/canale_pagamento'
+      causali_versamento:
+        type: array
+        items:
+          $ref: '#/definitions/causale_pagamento'
+      presidi_sanitari:
+        type: array
+        items:
+          $ref: '#/definitions/presidio_sanitario'
+  pratica_in_carrello:
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale del pagante
+        example: FLCMHL69E03H926Y
+      numero_pratica_regionale:
+        type: string
+        description: indentificativo regionale della pratica da pagare
+        example: S90901123456789012345605035
+      opposizione730:
+        type: integer
+        example: 1
+  pratica_da_rimborsare:
+    type: object
+    properties:
+      codice_fiscale:
+        type: string
+        description: codice fiscale del pagante
+        example: FLCMHL69E03H926Y
+      numero_pratica_regionale:
+        type: string
+        description: indentificativo regionale della pratica da pagare
+        example: S90901123456789012345605035      
+  pagamento_sanitario_body:
+    type: object
+    properties:
+      pratiche_da_pagare:
+        type: array
+        items:
+          $ref: '#/definitions/pratica_in_carrello'
+      pratiche_da_rimborsare:
+        type: array
+        items:
+          $ref: '#/definitions/pratica_da_rimborsare'
+      mail:
+        type: string
+        description: mail dove ricevere la ricevuta parametro opzionale
+        example: mail@csi.it
+      versante:
+        $ref: '#/definitions/cittadino'
+      psp:
+        type: boolean
+        description: >-
+          valorizzato a true se il cittadino ha deciso di pagare con pagoPA se
+          valorizzato a true il tag "pos" non sara preso in considerazione se
+          valorizzato a false o non specificato si intende che il cittadino ha
+          scelto di pagare con il POS
+        example: true
+      pos:
+        description: >-
+          questo tag viene preso in cosiderazione se il tag "psp" non è
+          valorizzato oppure vale false se valorizzato vuol dire che il
+          cittadino ha deciso di pagare con POS viene valorizzato
+          l'identificativo della carta di credito scelta dal cittadino
+        $ref: '#/definitions/carta_commissione'
+  pagamento_spontaneo_body:
+    type: object
+    properties:
+      id_asr:
+        type: integer
+        description: id dell'asr
+        example: 909
+      pagato:
+        $ref: '#/definitions/importo'
+        description: importo pagato
+        example: 30
+      causale_versamento:
+        type: number
+        description: id della causale di pagamento
+        example: 72
+      mail:
+        type: string
+        description: mail dove ricevere la ricevuta parametro opzionale
+        example: mail@csi.it
+      pagatore:
+        $ref: '#/definitions/cittadino'
+        description: chi paga
+      versante:
+        $ref: '#/definitions/cittadino'
+        description: chi effettua il pagamento
+      note:
+        type: string
+  causale_pagamento:
+    type: object
+    properties:
+      id:
+        type: number
+        description: id della causale di pagamento
+        example: 1
+      descrizione:
+        type: string
+        description: >-
+          descrizione della causale di versamento definita dalla Azienda
+          sanitaria regionale
+        example: DIRITTI DI SEGRETERIA
+      codice_versamento:
+        type: string
+        description: >-
+          codice versamento definito a livello ministeriale associato alla
+          causale di versamento
+        example: 72
+  presidio_sanitario:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: >-
+          identificativo del presidio sanitario regionale afferente ad una
+          Azienda sanitaria regionale
+        example: 301001
+      descrizione:
+        type: string
+        description: >-
+          nome del presidio sanitario regionale afferente ad una Azienda
+          sanitaria regionale
+        example: OSPEDALE SANT'ANNA
+  cittadino:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome del versante
+      cognome:
+        type: string
+        description: cognome del versante
+      data_nascita:
+        type: string
+        format: date
+        description: data di nascita del versante
+      codice_fiscale:
+        type: string
+        description: codice fiscale del versante
+      indirizzo:
+        type: string
+        description: indirizzo di residenza o di domicilio del versante
+      comune:
+        type: string
+        description: comune di residenza o domicilio del versante
+      provincia:
+        type: string
+        description: sigla della provincia di residenza o domicilio del versante
+      cap:
+        type: string
+        description: cap residenza o domicilio del versante
+    example:
+      nome: DYLAN
+      cognome: DOG
+      data_nascita: 26/09/1986
+      codice_fiscale: DYLDGO86P26F205F
+      indirizzo: VIA BUONARROTI 38
+      comune: MILANO
+      provincia: MI
+      cap: 20019
+  ricevuta_pagamento:
+    type: object
+    properties:
+      id_mandato_pagamento:
+        type: integer
+        description: >-
+          ricevuta del mandato di pagamento valorizzato solo nel caso di
+          pagamento psp
+      pagamenti:
+        type: array
+        items:
+          $ref: '#/definitions/pagamento_sanitario'
+  importo:
+    type: object
+    properties:
+      valore:
+        type: number
+        description: importo
+      valuta:
+        type: string
+        description: tipo di moneta es EUR
+  pagamento_sanitario:
+    type: object
+    properties:
+      paziente:
+        $ref: '#/definitions/cittadino'
+        description: >-
+          anagrafica restituita dal S.I. dell'Asr che ha emesso la pratica da
+          pagare    
+      asr:
+        $ref: '#/definitions/asr'
+        description: asr che ha generato la pratica di pagamento
+      motivo:
+        type: string
+        description: codice regionale del motivo pagamento
+        example: S
+      da_pagare:
+        $ref: '#/definitions/importo'
+        description: importo da pagare
+        example: 26.7
+      pagato:
+        $ref: '#/definitions/importo'
+        description: importo pagato
+        example: 0
+      marca_da_bollo:
+        $ref: '#/definitions/importo'
+        description: importo marca da bollo
+        example: 2
+      iva:
+        $ref: '#/definitions/importo'
+        description: importo dell'iva
+        example: 1.11
+      iva_per_stampa_video:
+        type: string
+        description: percentuale iva applicata
+        example: 4%
+      opposizione730:
+        type: integer
+        description: >-
+          codice scelta opposizione trasmissione pagamento al MEF per il calcolo
+          automatico delle spese sanitarie sul 730 0 opposizione 1
+          autorizzazione,  -1 scelta non ancora eseguita
+        example: 0
+      descrizione_opposizione730:
+        type: string
+        description: >-
+          descrizione scelta opposizione trasmissione pagamento al MEF per il
+          calcolo automatico delle spese sanitarie sul 730 0 opposizione 1
+          autorizzazione,  -1 scelta non ancora eseguita
+        example: >-
+          OPPOSIZIONE ALLA TRASMISSIONE DEL PAGAMENTO ALL'AGENZIA DELLE ENTRATE
+          PER IL CALCOLO DEL 730 PRECOMPILATO
+      stato:
+        type: string
+        description: >-
+          stato del pagamento sanitario richiesto dalla Azienda sanitaria
+          regionale (in questo caso il valore consentito è da pagare)
+        example: DA PAGARE
+      numero_pratica_regionale:
+        type: string
+        description: identficativo della richiesta di pagamento
+        example: S30101123456789012345602670
+      numero_pratica_asr:
+        type: string
+        description: numero pratica asr aggiunto in quanto serve per i filter da non usare
+        example: 123456723456
+      id_ricevuta:
+        type: integer
+        description: >-
+          id della ricevuta di pagamento verrà ritornato unicamente nella
+          response a pagamento/{id_transazione}/ricevuta
+        example: 2019132
+      assegnazione_iuv:
+        $ref: '#/definitions/assegnazione_iuv'
+      nre:
+        type: array
+        items:
+          $ref: '#/definitions/nre'
+      data_creazione:
+        type: string
+        format: date
+        description: data creazione della richiesta di pagamento
+        example: 01/05/2018
+      uuid:
+        type: string
+        description: Universally unique identifier
+        example: 550e8400-e29b-41d4-a716-446655440000
+      codice_servizio:
+        type: string
+        description: Codice del servizio (dipartimentale) che ha generato il ticket
+        example: 1100
+      codice_versamento:
+        type: string
+        description: Codice stabilito dall’ASR e usato per generare lo IUV nei pagamenti pagoPA.
+        example: 01
+  nre:
+    type: object
+    properties:
+      id:
+        type: string
+        description: identificativi emesso dal sistema ricetta elettronica
+      desc_struttura:
+        type: string
+        description: descrizione della struttura
+      indirizzo:
+        type: string
+        description: indirizzo della struttura
+  iuvmod3:
+    type: object
+    properties:
+      data_assegnazione:
+        type: string
+        format: date
+        example: 01/05/2018
+      aux_digit:
+        type: string
+        description: 'aux_digit dello iuv modello3  Attenzione: puo essere non valorizzato'
+        example: 0
+      application_code:
+        type: string
+        description: >-
+          application code dello iuv modello3  Attenzione: puo essere non
+          valorizzato
+        example: 1
+      iuv:
+        type: string
+        description: >-
+          stringa composta di 13 cifre numeriche da inserire in un codice a
+          barre 
+        example: 16359884544
+  iuvmod1:
+    type: object
+    properties:
+      data_assegnazione:
+        type: string
+        format: date
+        example: 01/05/2018
+      iuv:
+        type: string
+        description: >-
+          stringa composta di 13 cifre numeriche da inserire in un codice a
+          barre 
+        example: RF90171710003S00000005
+  assegnazione_iuv:
+    type: object
+    properties:
+      iuvmod3:
+        $ref: '#/definitions/iuvmod3'
+        description: >-
+          valorizzato con iuv mod.3 assegnato alla pratica  Attenzione: puo
+          essere non valorizzato       
+      iuvmod1:
+        $ref: '#/definitions/iuvmod1'
+        description: >-
+          valorizzato con iuv mod.1 assegnato alla pratica  Attenzione: puo
+          essere non valorizzato
+  prestazione:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: codice regionale della prestazione sanitaria
+      descrizione:
+        type: string
+        description: descrizione regionale della prestazione sanitaria
+      data_appuntamento:
+        type: string
+        format: date-time
+      luogo_apputamento:
+        type: string
+        description: 'comune, indirizzo dove sara erogata la prestazione sanitaria'
+    example:
+      - codice: 89.7
+        descrizione: VISITA CHIRURGICA PRIMA
+        data_appuntamento: 09/05/2018
+        luogo_appuntamento: >-
+          Ospedale Mauriziano Umberto I di Torino Largo Turati 62 10128 Torino
+          To
+      - codice: 89.01.00
+        descrizione: Accesso di Pronto Soccorso
+        data_appuntamento: 02/05/2018
+        luogo_appuntamento: >-
+          Ospedale Mauriziano Umberto I di Torino Largo Turati 62 10128 Torino
+          To
+      - codice: 89.01.00
+        descrizione: VISITA ENDOCRINOLOGICA DI CONTROLLO
+        data_appuntamento: 02/05/2018
+        luogo_appuntamento: >-
+          Ospedale Mauriziano Umberto I di Torino Largo Turati 62 10128 Torino
+          To
+  rimborso_filter:
+    type: object
+    properties:
+      id_asr:
+        $ref: '#/definitions/integer_crit'
+        description: >-
+         Identificativo dell’ASR che ha emesso il pagamento oggetto di rimborso.
+      stato_ticket:
+        $ref: '#/definitions/integer_crit'
+        description: >-
+          Valori possibili 801 (Rimborsato) o 802 (da rimborsare)
+      in_erogazione:
+        $ref: '#/definitions/integer_crit'
+        description: >-
+          Stato di erogazione del credito di un rimborso.Valori possibili 0 (non erogato), 1 (in erogazione) o 2 (erogato)
+      motivo_pagamento:
+        $ref: '#/definitions/string_crit'
+        description: >-
+         Se presente deve essere un alfanumerico lungo 1 carattere
+      codice_versamento:
+        $ref: '#/definitions/string_crit'
+        description: >-
+          Codice versamento del pagamento oggetto di rimborso.
+      codice_servizio:
+        $ref: '#/definitions/string_crit'
+        description: >-
+          Identificativo del sistema dipartimentale che ha emesso il pagamento oggetto di rimborso.
+      modalita_rimborso:
+        $ref: '#/definitions/string_crit'
+        description: >-
+         modalita di  erogazione del rimborso scelta dall’utente. Valori possibili 1(Voucher), 2 (Bonifico), 3 (Borsellino elettronico)
+      data_dal:
+        $ref: '#/definitions/date_crit'
+        description: >-
+          Data di inizio del periodo entro cui cercare le pratiche di rimborso
+      data_al:
+        $ref: '#/definitions/date_crit'
+        description: >-
+          Data di fine del periodo entro cui cercare le pratiche di rimborso.
+  ticket:
+    type: object
+    properties:
+      paziente:
+        $ref: '#/definitions/cittadino'
+      lista_prenotazione:
+        type: array
+        items:
+          $ref: '#/definitions/pratica'
+      errore:
+        $ref: '#/definitions/errore_prenotazione' 
+  pratica:
+    type: object
+    properties:
+      importo_pratica:
+        $ref: '#/definitions/importo'
+      prestazione_erogata:
+        type: string
+      codice_versamento:
+        type: string
+      prenotazione:
+        $ref: '#/definitions/prenotazione'
+  prenotazione:
+    type: object
+    properties:
+      numero_pratica:
+        type: string
+      importo_da_pagare:
+        $ref: '#/definitions/importo'
+      importo_pagato:
+        $ref: '#/definitions/importo'
+      numero_quietanza:
+        type: string
+      asr_beneficiaria:
+        type: string
+      codice_servizio:
+        type: string
+      data_creazione_prenotazione:
+        type: string
+        format: date
+      opposizione_730:
+        type: number
+        format: int32
+      importo_da_rimborsare:
+        $ref: '#/definitions/importo'
+      importo_rimborsato:
+        $ref: '#/definitions/importo'
+      rimborso_in_erogazione:
+        $ref: '#/definitions/importo'
+      modalita_rimborso:
+        type: string
+      motivo_pagamento:
+        type: string
+      iban:
+        type: string
+      lista_nre:
+        type: array
+        items:
+          type: string
+          description: elenco di identificativi emesso dal sistema ricetta elettronica
+  errore_prenotazione:
+    type: object
+    properties:
+      codice: 
+        type: string
+      messaggio:
+        type: string
+  risposta_servizio:
+    type: object
+    properties:
+      codice:
+        type: string
+      messaggio:
+        type: string
+  stato_transazione:
+    type: object
+    properties:
+      stato_erogazione:
+        type: integer
+        format: int32
+  string_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+      ne:
+        type: string
+      lt:
+        type: string
+      lte:
+        type: string
+      gt:
+        type: string
+      gte:
+        type: string
+      in:
+        type: array
+        items:
+          type: string
+      nin:
+        type: array
+        items:
+          type: string
+      c:
+        type: string
+      ci:
+        type: string
+        description: (contains, ignore case)
+      s:
+        type: string
+      si:
+        type: string
+      e:
+        type: string
+      ei:
+        type: string
+  integer_crit:
+    type: object
+    properties:
+      eq:
+        type: integer
+      ne:
+        type: integer
+      lt:
+        type: integer
+      lte:
+        type: integer
+      gt:
+        type: integer
+      gte:
+        type: integer
+      in:
+        type: array
+        items:
+          type: integer
+      nin:
+        type: array
+        items:
+          type: integer
+  number_crit:
+    type: object
+    properties:
+      eq:
+        type: number
+      ne:
+        type: number
+      lt:
+        type: number
+      lte:
+        type: number
+      gt:
+        type: number
+      gte:
+        type: number
+      in:
+        type: array
+        items:
+          type: number
+      nin:
+        type: array
+        items:
+          type: number
+  date_crit:
+    type: object
+    properties:
+      eq:
+        type: string
+        format: date
+      ne:
+        type: string
+        format: date
+      lt:
+        type: string
+        format: date
+      lte:
+        type: string
+        format: date
+      gt:
+        type: string
+        format: date
+      gte:
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          type: string
+          format: date
+  pagamento_filter:
+    type: object
+    description: >- 
+        definizione del filtro sul pagamento. Al momento è bbligatorio ricercare solo le pratiche da pagare per fare questo è necessario impostare il filtro  con la regola 'stato ci (000) pagato eq 0 e da_pagare gt 0'.
+    properties:
+      id_asr:
+        $ref: '#/definitions/integer_crit'
+      nre:
+        $ref: '#/definitions/string_crit'
+      numero_pratica_asr:
+        $ref: '#/definitions/string_crit'
+        description: >-
+          numero pratica asr 
+      pagato:
+        $ref: '#/definitions/number_crit'
+        description: >-
+          filtri supportati eq e gt esempio voglio cercare le pratiche che sono completamente da pagare passo 0 nel filter pagato con la clausola eq es 'pagato eq 0' se voglio cercare quelle parzialmente pagate metto es 'pagato gt 0' devo metterlo in and con il filtro 'da_pagare eq 0'
+      da_pagare:
+        $ref: '#/definitions/number_crit'
+        description: >-
+          filtri supportati eq e gt voglio cercare le pratiche che sono da pagare imposto 'da_pagare gt 0'. Se voglio cercare le pratiche che non sono da pagare imposto il filter con 'da_pagare eq 0'.
+      stato:
+        $ref: '#/definitions/string_crit'
+        description: >-
+          filtro supportato 'ci' e 'c' ovvero  (contains, ignore case); attenzione lo stato viene composto da descrizione + codice, e essendo le descrizioni variabili a seconda dell'asr di provenienza possiamo filtrare unicamente per contenuto della stringa i possibili valori contenuti sono sotto riportati
+          - (000) description: pratica interamente da pagare
+          - (003) description: pratica esente
+          - (012) description: pratica parzialmente pagata
+          - (032) description: pratica già pagata o da non pagare
+          - (033) description: tipologia di pratica nonda_pagare  pagabile
+  ricevuta_filter:
+    type: object
+    properties:
+      numero_pratica_regionale:
+        $ref: '#/definitions/string_crit'
+      id_ricevuta:
+        $ref: '#/definitions/integer_crit'
+  errore:
+    type: object
+    properties:
+      status:
+        type: integer
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: array
+        items:
+          $ref: '#/definitions/dettaglio'
+      links:
+        type: array
+        items:
+          type: string
+    example:
+      - status: 401
+        code: Utente non Autorizzato
+        title: Utente non autorizzato a compiere l'operazione
+        detail: []
+        links: []
+      - status: 502
+        code: 'Errore invocazione servizio '
+        title: Problema nella chiamata al servizio Aura
+        detail:
+          - chiave: E0010
+            valore: >-
+              Non esistono profili anagrafici che rispondono ai parametri
+              indicati
+        links: []
+  dettaglio:
+    type: object
+    properties:
+      chiave:
+        type: string
+      valore:
+        type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'

@@ -1,0 +1,28 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
+<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0">
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="it.csi.smartdata.odata.Stati_esteri_ministero_5190">
+<EntityType Name="DataEntity">
+<Key>
+<PropertyRef Name="internalId"/>
+</Key>
+<Property Name="internalId" Type="Edm.String" Nullable="false"/>
+<Property Name="datasetVersion" Type="Edm.Int32" Nullable="true"/>
+<Property Name="idDataset" Type="Edm.Int64" Nullable="true"/>
+<Property Name="id_stato_ministero" Type="Edm.Int32" Nullable="true"/>
+<Property Name="continente" Type="Edm.String" Nullable="true"/>
+<Property Name="stato" Type="Edm.String" Nullable="true"/>
+<Property Name="territorio" Type="Edm.String" Nullable="true"/>
+<Property Name="codice" Type="Edm.String" Nullable="true"/>
+<Property Name="d_start" Type="Edm.DateTimeOffset" Nullable="true"/>
+<Property Name="d_stop" Type="Edm.DateTimeOffset" Nullable="true"/>
+<Property Name="codrif" Type="Edm.String" Nullable="true"/>
+<Property Name="codice_prev" Type="Edm.String" Nullable="true"/>
+<Property Name="codice_next" Type="Edm.String" Nullable="true"/>
+<Property Name="r_status" Type="Edm.String" Nullable="true"/>
+</EntityType>
+<EntityContainer Name="SmartDataEntityContainer_it_csi_smartdata_odata_Stati_esteri_ministero_5190" m:IsDefaultEntityContainer="true">
+<EntitySet Name="DataEntities" EntityType="it.csi.smartdata.odata.Stati_esteri_ministero_5190.DataEntity"/>
+</EntityContainer>
+</Schema>
+</edmx:DataServices>
+</edmx:Edmx>

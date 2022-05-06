@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="EtichetteService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:element name="EtichetteResponse" type="tns:EtichetteResponse" />
+   <xs:element name="GetListaEtichetteResponse" type="tns:GetListaEtichetteResponse" />
+   <xs:element name="associaDisassociaEtichette" type="tns:associaDisassociaEtichetteRequest" />
+   <xs:element name="documento" type="ns1:documento" />
+   <xs:element name="etichetta" type="ns1:etichetta" />
+   <xs:element name="getListaEtichette" type="tns:getListaEtichetteRequest" />
+   <xs:element name="listaEtichette" type="ns1:listaEtichette" />
+   <xs:element name="listaIdEtichette" type="ns1:listaIdEtichette" />
+   <xs:element name="richiedenteInfo" type="ns1:richiedenteInfo" />
+   <xs:element name="setEtichetta" type="tns:setEtichettaRequest" />
+   <xs:element name="updateEtichetta" type="tns:updateEtichettaRequest" />
+   <xs:complexType name="associaDisassociaEtichetteRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="documento" type="ns1:documento" />
+         <xs:element minOccurs="0" name="idTagFisso" type="xs:long" />
+         <xs:element minOccurs="0" name="listaIdEtichette" type="ns1:listaIdEtichette" />
+         <xs:element minOccurs="0" name="tipoOperazione" type="ns1:tipoOperazione" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicativoVerticale">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="codifica">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codice" type="xs:string" />
+         <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="applicazioneRichiedente">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="EtichetteResponse">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="errore">
+      <xs:complexContent>
+         <xs:extension base="tns:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="getListaEtichetteRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoEtichetta" type="ns1:tipoEtichetta" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="GetListaEtichetteResponse">
+      <xs:complexContent>
+         <xs:extension base="ns1:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="listaEtichette" type="ns1:listaEtichette" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="updateEtichettaRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="idEtichetta" type="xs:long" />
+         <xs:element minOccurs="0" name="testoEtichetta" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoOperazione" type="ns1:tipoOperazione" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="setEtichettaRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="richiedente" type="ns1:richiedenteInfo" />
+         <xs:element minOccurs="0" name="cfPaziente" type="xs:string" />
+         <xs:element minOccurs="0" name="testoEtichetta" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name="categoria">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="FSE" />
+         <xs:enumeration value="PERSONALE" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="risultatoCodice">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="SUCCESSO" />
+         <xs:enumeration value="FALLIMENTO" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:element name="associaDisassociaEtichetteResponse" nillable="true" type="tns:EtichetteResponse" />
+   <xs:element name="updateEtichettaPersonale" nillable="true" type="tns:updateEtichettaRequest" />
+   <xs:element name="updateEtichettaPersonaleResponse" nillable="true" type="tns:EtichetteResponse" />
+   <xs:element name="setEtichettaPersonale" nillable="true" type="tns:setEtichettaRequest" />
+   <xs:element name="setEtichettaPersonaleResponse" nillable="true" type="tns:EtichetteResponse" />
+</xs:schema><xs:schema targetNamespace="http://dma.csi.it/" version="1.0" xmlns:ns1="http://dmacc.csi.it/" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dmacc.csi.it/" />
+   <xs:complexType name="richiedenteInfo">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="applicativoVerticale" type="ns1:applicativoVerticale" />
+         <xs:element minOccurs="0" name="applicazione" type="ns1:applicazioneRichiedente" />
+         <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" />
+         <xs:element minOccurs="0" name="ip" type="xs:string" />
+         <xs:element minOccurs="0" name="numeroTransazione" type="xs:string" />
+         <xs:element minOccurs="0" name="ruolo" type="tns:ruolo" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ruolo">
+      <xs:complexContent>
+         <xs:extension base="ns1:codifica">
+            <xs:sequence />
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="documento">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="categoria" type="ns1:categoria" />
+         <xs:element minOccurs="0" name="codiceComponenteLocale" type="xs:string" />
+         <xs:element minOccurs="0" name="id" type="xs:decimal" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="listaIdEtichette">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="idEtichetta" nillable="true" type="xs:long" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:sequence>
+         <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="errori" type="ns1:errore" />
+         <xs:element minOccurs="0" name="esito" type="ns1:risultatoCodice" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="listaEtichette">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="etichetta" nillable="true" type="tns:etichetta" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="etichetta">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="idEtichetta" type="xs:long" />
+         <xs:element minOccurs="0" name="testo" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoEtichetta" type="tns:tipoEtichetta" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name="tipoOperazione">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="AGGIORNAMENTO" />
+         <xs:enumeration value="CANCELLAZIONE" />
+         <xs:enumeration value="ASSOCIAZIONE" />
+         <xs:enumeration value="DISASSOCIAZIONE" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="tipoEtichetta">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="PERSONALE" />
+         <xs:enumeration value="ANATOMICA" />
+         <xs:enumeration value="ENTRAMBE" />
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="associaDisassociaEtichette">
+    <wsdl:part element="tns:associaDisassociaEtichette" name="associaDisassociaEtichette">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getListaEtichette">
+    <wsdl:part element="tns:getListaEtichette" name="getListaEtichette">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="associaDisassociaEtichetteResponse">
+    <wsdl:part element="tns:associaDisassociaEtichetteResponse" name="associaDisassociaEtichetteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateEtichettaPersonale">
+    <wsdl:part element="tns:updateEtichettaPersonale" name="updateEtichettaPersonale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateEtichettaPersonaleResponse">
+    <wsdl:part element="tns:updateEtichettaPersonaleResponse" name="updateEtichettaPersonaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setEtichettaPersonaleResponse">
+    <wsdl:part element="tns:setEtichettaPersonaleResponse" name="setEtichettaPersonaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getListaEtichetteResponse">
+    <wsdl:part element="tns:GetListaEtichetteResponse" name="GetListaEtichetteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setEtichettaPersonale">
+    <wsdl:part element="tns:setEtichettaPersonale" name="setEtichettaPersonale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="EtichetteService">
+    <wsdl:operation name="associaDisassociaEtichette">
+      <wsdl:input message="tns:associaDisassociaEtichette" name="associaDisassociaEtichette">
+    </wsdl:input>
+      <wsdl:output message="tns:associaDisassociaEtichetteResponse" name="associaDisassociaEtichetteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getListaEtichette">
+      <wsdl:input message="tns:getListaEtichette" name="getListaEtichette">
+    </wsdl:input>
+      <wsdl:output message="tns:getListaEtichetteResponse" name="getListaEtichetteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateEtichettaPersonale">
+      <wsdl:input message="tns:updateEtichettaPersonale" name="updateEtichettaPersonale">
+    </wsdl:input>
+      <wsdl:output message="tns:updateEtichettaPersonaleResponse" name="updateEtichettaPersonaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setEtichettaPersonale">
+      <wsdl:input message="tns:setEtichettaPersonale" name="setEtichettaPersonale">
+    </wsdl:input>
+      <wsdl:output message="tns:setEtichettaPersonaleResponse" name="setEtichettaPersonaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EtichetteServiceSoapBinding" type="tns:EtichetteService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="associaDisassociaEtichette">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="associaDisassociaEtichette">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="associaDisassociaEtichetteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getListaEtichette">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="getListaEtichette">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getListaEtichetteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateEtichettaPersonale">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="updateEtichettaPersonale">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateEtichettaPersonaleResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setEtichettaPersonale">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="setEtichettaPersonale">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setEtichettaPersonaleResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EtichetteService">
+    <wsdl:port binding="tns:EtichetteServiceSoapBinding" name="EtichettePort">
+      <soap12:address location="https://xxx-dma.xxx.csi.it/dmacc/EtichetteService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

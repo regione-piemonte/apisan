@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="StudiMedici" targetNamespace="http://opessan.opessanws.services.csi.it/" xmlns:ns1="http://opessan.opessanws.def.csi.it/" xmlns:ns2="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://opessan.opessanws.services.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:import location="https://applogic.reteunitaria.piemonte.it:1449/opessanws/services/studiMediciUserTkn?wsdl=StudiMedici.wsdl" namespace="http://opessan.opessanws.def.csi.it/">
+    </wsdl:import>
+  <wsdl:binding name="StudiMediciSoapBinding" type="ns1:StudiMedici">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getElencoStudi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getElencoStudi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getElencoStudiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StudiMedici">
+    <wsdl:port binding="tns:StudiMediciSoapBinding" name="StudiMediciCXFImplPort">
+      <soap:address location="https://xxx.reteunitaria.piemonte.it:1449/opessanws/services/studiMediciUserTkn" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

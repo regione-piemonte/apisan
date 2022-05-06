@@ -1,0 +1,1913 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:s0="http://csi.it" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://csi.it">
+    <wsdl:types>
+        <s:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://csi.it">
+            <s:element name="VerificaStatoPagamentoGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:RichiestaVerificaStatoPagamentoGPR"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="VerificaStatoPagamentoGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="VerificaStatoPagamentoGPRResult" type="s0:VerificaStatoPagamentoGPRResponseType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetCodiceVersamentoGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:RichiestaSetCodiceVersamento"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetCodiceVersamentoGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="SetCodiceVersamentoGPRResult" type="s0:SetCodiceVersamentoGPRResponseType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="Echo">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="arg" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="EchoResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="EchoResult" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AttivazioneAcquisizioneListaStatoTicket">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="AZIONE" type="s:string"></s:element>
+                        <s:element name="ASR" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AttivazioneAcquisizioneListaStatoTicketResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="AttivazioneAcquisizioneListaStatoTicketResult" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetDatiSensibiliUtenteCentrale">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="ASR" type="s:string"></s:element>
+                        <s:element name="UUID" type="s:string"></s:element>
+                        <s:element name="AZIONE" type="s:string"></s:element>
+                        <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetDatiSensibiliUtenteCentraleResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="GetDatiSensibiliUtenteCentraleResult" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="EstrazioneListaTicketMetadatiGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="ASR" type="s:string"></s:element>
+                        <s:element name="UUID" type="s:string"></s:element>
+                        <s:element name="AZIONE" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="EstrazioneListaTicketMetadatiGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="ERRORE" type="s0:Errore"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AttivazioneRecuperoMetadati">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="ASR" type="s:string"></s:element>
+                        <s:element name="DATA_RECUPERO_DA" type="s:string"></s:element>
+                        <s:element name="DATA_RECUPERO_A" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AttivazioneRecuperoMetadatiResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="AttivazioneRecuperoMetadatiResult" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetImportoTicket">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="richiesta" type="s0:Richiesta"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Richiesta">
+                <s:sequence>
+                    <s:element minOccurs="0" name="UUID" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="AZIONE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="ASR" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="NRE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_PRATICA" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="RichiestaSetCodiceVersamento">
+                <s:sequence>
+                    <s:element name="UUID" type="s0:String36Type"></s:element>
+                    <s:element name="TIPO_OPERAZIONE" type="s0:TipoOperazioneSetCodiceVersamentoType"></s:element>
+                    <s:element name="NUMERO_SPORTELLO" type="s0:NumeroSportello64AlfanumericoType"></s:element>
+                    <s:element name="COD_VERSAMENTO" type="s0:CodiceVersamentoType"></s:element>
+                    <s:element minOccurs="0" name="DESC_VERSAMENTO" type="s0:DescVersamentoSetCodiceVersamentoType"></s:element>
+                    <s:element name="ID_ASR" type="s0:AsrType"></s:element>
+                    <s:element minOccurs="0" name="APPLICATION_ID" type="s0:ApplicationIdSetCodiceVersamentoType"></s:element>
+                    <s:element minOccurs="0" name="COD_TASSONOMIA" type="s0:CodTassonomiaSetCodiceVersamentoType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="RichiestaVerificaStatoPagamentoGPR">
+                <s:sequence>
+                    <s:element name="UUID" type="s0:String36Type"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_SPORTELLO" type="s0:NumeroSportello64AlfanumericoType"></s:element>
+                    <s:element maxOccurs="unbounded" name="TICKET_DA_VERIFICARE" type="s0:TicketDaVerificareType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="TicketDaVerificareType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="NUMERO_PRATICA" type="s0:NumeroPratica27Type"></s:element>
+                    <s:element minOccurs="0" name="IUV_MOD_3" type="s0:IuvMod3Type"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="VerificaStatoPagamentoGPRResponseType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" name="TICKET_VERIFICATO" type="s0:TicketVerificatoType"></s:element>
+                    <s:element name="ERRORE" type="s0:ErroreSetCodiceVersamento"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="TicketVerificatoType">
+                <s:sequence>
+                    <s:element name="NUMERO_PRATICA" type="s0:NumeroPratica27Type"></s:element>
+                    <s:element name="STATO_PAGAMENTO" type="s0:StatoPagamentoType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="SetCodiceVersamentoGPRResponseType">
+                <s:sequence>
+                    <s:element name="ERRORE" type="s0:ErroreSetCodiceVersamento"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetImportoTicketResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="GetImportoTicketResult" type="s0:Importi"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Importi">
+                <s:sequence>
+                    <s:element minOccurs="0" name="PAZIENTE" type="s0:Paziente"></s:element>
+                    <s:element minOccurs="0" name="LISTA_PRENOTAZIONE" type="s0:ArrayOfPRATICAListaPrenotazioni"></s:element>
+                    <s:element name="ERRORE" type="s0:Errore"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Paziente">
+                <s:sequence>
+                    <s:element minOccurs="0" name="COGNOME" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NOME" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_NASCITA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="INDIRIZZO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="COMUNE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="PROVINCIA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CAP" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfPRATICAListaPrenotazioni">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="PRATICA" nillable="true" type="s0:ListaPrenotazione"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ListaPrenotazione">
+                <s:sequence>
+                    <s:element minOccurs="0" name="IMPORTO_PRATICA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_MARCA_BOLLO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_IVA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="PERCENTUALE_IVA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="PRESTAZIONE_EROGATA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="PRENOTAZIONE" type="s0:Prenotazione"></s:element>
+                    <s:element minOccurs="0" name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Prenotazione">
+                <s:sequence>
+                    <s:element minOccurs="0" name="NUMERO_RIGA_SORTING" type="s:int"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_DA_PAGARE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_PAGATO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="LISTA_FATTURA" type="s0:ListaFatturaType"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_QUIETANZA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="ELENCO_PRESTAZIONI" type="s0:ArrayOfPRESTAZIONEPrestazione"></s:element>
+                    <s:element minOccurs="0" name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="ASR_BENEFICIARIA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_CREAZIONE_PRENOTAZIONE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="AVVISO_PAGAMENTO" type="s0:AVVISO_PAGAMENTOtype"></s:element>
+                    <s:element minOccurs="0" name="IUV_MOD1" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="OPPOSIZIONE_730" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="LISTA_NRE" type="s0:LISTA_NREtype"></s:element>
+                    <s:element minOccurs="0" name="LISTA_RIMBORSI" type="s0:ListaRimborsiType"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_DA_RIMBORSARE" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_RIMBORSATO" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="RIMBORSO_IN_EROGAZIONE" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="MODALITA_RIMBORSO" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IBAN_RIMBORSO" nillable="true" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfPRESTAZIONEPrestazione">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="PRESTAZIONE" nillable="true" type="s0:Prestazione"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Prestazione">
+                <s:sequence>
+                    <s:element minOccurs="0" name="CODICE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DESCRIZIONE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_APPUNTAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="ORA_APPUNTAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NOTE_APPUNTAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="COMUNE_APPUNTAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="INDIRIZZO_APPUNTAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="PROVINCIA_APPUNTAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CAP_APPUNTAMENTO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LISTA_NREtype">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="NRE" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="AVVISO_PAGAMENTOtype">
+                <s:sequence>
+                    <s:element minOccurs="0" name="AUXDIGIT" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="APPLICATION_CODE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IUV" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_ASSOCIAZIONE" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ListaFatturaType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="ELENCO_PAGAMENTI" type="s0:ElencoPagamentiType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ElencoPagamentiType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="NUMERO_SPORTELLO" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_RICEVUTA" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_RICEVUTA" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_RICEVUTA" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="AVVISO_PAGAMENTO" nillable="true" type="s0:AVVISO_PAGAMENTOtype"></s:element>
+                    <s:element minOccurs="0" name="IUV_MOD1" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="FLAGPAGAMENTOANTICIPATO" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="FLAGTIPOSPESA" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="TIPOSPESA" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATAEMISSIONE" nillable="true" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ListaRimborsiType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" name="RIMBORSO" type="s0:RimborsoType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="RimborsoType">
+                <s:sequence>
+                    <s:element name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_RIMBORSO" nillable="true" type="s:string"></s:element>
+                    <s:element name="DATA_RIMBORSO" type="s:string"></s:element>
+                    <s:element name="IMPORTO_RIMBORSATO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_VERSAMENTO" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="AVVISO_PAGAMENTO" nillable="true" type="s0:AVVISO_PAGAMENTOtype"></s:element>
+                    <s:element minOccurs="0" name="IUV_MOD1" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_EMISSIONE" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="PRATICA_PAGATA_CON_CREDITO" nillable="true" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Errore">
+                <s:sequence>
+                    <s:element name="CODICE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="MESSAGGIO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetListaTicketCF">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="ASR" type="s:string"></s:element>
+                        <s:element name="UUID" type="s:string"></s:element>
+                        <s:element name="AZIONE" type="s:string"></s:element>
+                        <s:element name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                        <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                        <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                        <s:element name="IMPORTO_PRATICA" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetListaTicketCFResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="GetListaTicketCFResult" type="s0:Importi"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetAvvenutoPagamento">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="richiesta" type="s0:Pagamento"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Pagamento">
+                <s:sequence>
+                    <s:element minOccurs="0" name="UUID" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="AZIONE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="ASR" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_RICEVUTA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_RICEVUTA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_PRATICA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_FISCALE" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="SetAvvenutoPagamentoResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="SetAvvenutoPagamentoResult" type="s0:Quietanza"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Quietanza">
+                <s:sequence>
+                    <s:element minOccurs="0" name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_PRATICA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_QUIETANZA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_QUIETANZA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_RICEVUTA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_RICEVUTA" type="s:string"></s:element>
+                    <s:element name="ERRORE" type="s0:Errore"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetSingleIuvGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:richiestaIuv"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="richiestaIuv">
+                <s:sequence>
+                    <s:element minOccurs="0" name="APPLICATION_ID" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="TRANSACTION_ID" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element name="AZIONE" type="s:string"></s:element>
+                    <s:element name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="CODICE_ASR" type="s:string"></s:element>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element name="MODELLO_PAGAMENTO" type="s:short"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetSingleIuvGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="risposta" type="s0:rispostaIuv"></s:element>
+                        <s:element name="ERRORE" type="s0:Errore"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="rispostaIuv">
+                <s:sequence>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="AUXDIGIT" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="APPLICATION_CODE" type="s:string"></s:element>
+                    <s:element name="IUV" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetMultiIUVGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:richiestaMultiIuv"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="richiestaMultiIuv">
+                <s:sequence>
+                    <s:element name="APPLICATION_ID" type="s:string"></s:element>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element name="AZIONE" type="s:string"></s:element>
+                    <s:element name="CODICE_ASR" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetMultiIUVGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="GetMultiIUVGPRResult" type="s0:rispostaMultiIuv"></s:element>
+                        <s:element name="ERRORE" type="s0:Errore"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="rispostaMultiIuv">
+                <s:sequence>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element name="AUXDIGIT" type="s:string"></s:element>
+                    <s:element name="APPLICATION_CODE" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="LISTA_IUV" nillable="true" type="s0:listaIuv"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="listaIuv">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" name="IUV" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="SetAssociazioneIUVTicketGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:richiestaAssociazioneIUVTicket"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="richiestaAssociazioneIUVTicket">
+                <s:sequence>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element name="AZIONE" type="s:string"></s:element>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="CODICE_ASR" type="s:short"></s:element>
+                    <s:element name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element name="MODELLO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="AUXDIGIT" type="s:string"></s:element>
+                    <s:element name="APPLICATION_CODE" type="s:string"></s:element>
+                    <s:element name="IUV" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="SetAssociazioneIUVTicketGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="risposta" type="s0:rispostaAssociazioneIUVTicket"></s:element>
+                        <s:element name="ERRORE" type="s0:Errore"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="rispostaAssociazioneIUVTicket">
+                <s:sequence>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="CODICE_ASR" type="s:short"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element name="MODELLO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="AUXDIGIT" type="s:string"></s:element>
+                    <s:element name="APPLICATION_CODE" type="s:string"></s:element>
+                    <s:element name="IUV" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetConfigLottoIUVGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:richiestaGetConfigLottoIUV"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="richiestaGetConfigLottoIUV">
+                <s:sequence>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element name="DATI" type="s0:Dati"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Dati">
+                <s:sequence>
+                    <s:element minOccurs="0" name="CODICE_ASR" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetConfigLottoIUVGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="risposta" type="s0:rispostaGetConfigLottoIUVGPRResponse"></s:element>
+                        <s:element name="ERRORE" type="s0:Errore"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="rispostaGetConfigLottoIUVGPRResponse">
+                <s:sequence>
+                    <s:element minOccurs="0" name="CONFIGURAZIONE_LOTTI" type="s0:ConfigurazioneLotti"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ConfigurazioneLotti">
+                <s:sequence>
+                    <s:element name="CODICE_ASR" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element name="DIM_LOTTO_IUV" type="s:int"></s:element>
+                    <s:element name="VALORE_SOGLIA" type="s:int"></s:element>
+                    <s:element name="DATA_INIZIO_VALIDITA" type="s:date"></s:element>
+                    <s:element minOccurs="0" name="DATA_FINE_VALIDITA" type="s:date"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="DispacciaFlussoRendicontazioneRequest">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="arg" type="s:string"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="DispacciaFlussoRendicontazioneResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="Result" type="s0:DispFlRendRespResultType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="DispFlRendRespResultType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="Codice" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="Messaggio" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="LMSGetTicketPagatiRequest">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="RICHIESTA" type="s0:LMSGetTicketPagatiRequestType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="LMSGetTicketPagatiRequestType">
+                <s:sequence>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="UUID" type="s:string"></s:element>
+                    <s:element name="CODICE_ASR" type="s:string"></s:element>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="ANNO_PAGAMENTO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="LMSGetTicketPagatiResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="RISPOSTA" type="s0:LMSGetTicketPagatiResponseType"></s:element>
+                        <s:element name="ERRORE" type="s0:Errore"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="LMSGetTicketPagatiResponseType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="PRATICHE_DELEGATO" type="s0:LMSPraticheType"></s:element>
+                    <s:element minOccurs="0" name="PRATICHE_DELEGANTI" type="s0:LMSPraticheType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSPraticheType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="PRATICA" type="s0:LMSPraticaTicketPagatiType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSPraticaTicketPagatiType">
+                <s:sequence>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="ID_ASR_CUP" type="s:string"></s:element>
+                    <s:element name="DESCRIZIONE_ID_ASR_CUP" type="s:string"></s:element>
+                    <s:element name="IMPORTO_PRATICA" type="s:string"></s:element>
+                    <s:element name="IMPORTO_TICKET_PAGATO" type="s:string"></s:element>
+                    <s:element name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="CONSENSO_730" nillable="true" type="s:string"></s:element>
+                    <s:element name="CODICE_STATO_PRATICA" type="s:string"></s:element>
+                    <s:element name="DESCIZIONE_STATO_PRATICA" type="s:string"></s:element>
+                    <s:element name="DATA_ANNULLAMENTO" nillable="true" type="s:string"></s:element>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="RICEVUTA_PAGAMENTO" type="s0:LMSRicevutePagamentoTicketPagatiType"></s:element>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="RIMBORSO_PAGAMENTO" type="s0:LMSRicevuteRimborsoPagamentoType"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_DA_RIMBORSARE" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_RIMBORSATO" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="MODALITA_RIMBORSO" nillable="true" type="s:integer"></s:element>
+                    <s:element minOccurs="0" name="RIMBORSI_UTILIZZATI" type="s0:LMSRimborsiUtilizzatiType"></s:element>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSRicevutePagamentoTicketPagatiType">
+                <s:sequence>
+                    <s:element name="DATA_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="ID_RICEVUTA" type="s:string"></s:element>
+                    <s:element name="ID_RT" nillable="true" type="s:string"></s:element>
+                    <s:element name="ID_ESITO" nillable="true" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSRicevuteRimborsoPagamentoType">
+                <s:sequence>
+                    <s:element name="DATA_RIMBORSO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="ID_RIMBORSO" type="s:string"></s:element>
+                    <s:element name="IMPORTO_RIMBORSATO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="PRATICA_PAGATA_CON_CREDITO" type="s:string"></s:element>
+                    <s:element name="NUMERO_RIMBORSO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSRimborsiUtilizzatiType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" name="RIMBORSO_UTILIZZATO" type="s0:LMSRimborsoUtilizzatoType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSRimborsoUtilizzatoType">
+                <s:sequence>
+                    <s:element name="ID_RIMBORSO_UTILIZZATO" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA_RIMBORSATA" type="s:string"></s:element>
+                    <s:element name="IMPORTO_CREDITO_UTILIZZATO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="LMSGetRicevutaRequest">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="RICHIESTA" type="s0:LMSGetRicevutaRequestType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="LMSGetRicevutaRequestType">
+                <s:sequence>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="NUMERO_SPORTELLO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="UUID" type="s:string"></s:element>
+                    <s:element name="CODICE_ASR" type="s:string"></s:element>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="ID_RICEVUTA" type="s:string"></s:element>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="ID_RT" type="s:string"></s:element>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="ID_ESITO" type="s:string"></s:element>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="ID_RIMBORSO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="MODALITA_RIMBORSO" type="s0:ModalitaRimborsoType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="LMSGetRicevutaResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="RISPOSTA" type="s0:LMSGetRicevutaResponseType"></s:element>
+                        <s:element name="ERRORE" type="s0:Errore"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="LMSGetRicevutaResponseType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="PRATICA" type="s0:LMSPraticaRicevutaType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSPraticaRicevutaType">
+                <s:sequence>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="ID_ASR_CUP" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="ELENCO_RICEVUTE_STAMPA_ASR" type="s0:LMSDettPraticaRicevutaType"></s:element>
+                    <s:element minOccurs="0" name="ELENCO_RICEVUTE_CORTESIA" type="s0:LMSDettPraticaRicevutaType"></s:element>
+                    <s:element minOccurs="0" name="ELENCO_RICEVUTE_STAMPA_REGIONALE" type="s0:LMSDettPraticaRicevutaType"></s:element>
+                    <s:element minOccurs="0" name="ELENCO_RICEVUTE_TELEMATICHE" type="s0:LMSDettRicTelPraticaRicevutaType"></s:element>
+                    <s:element minOccurs="0" name="ELENCO_ESITI_PAGAMENTO" type="s0:LMSDettEsitiPagPraticaRicevutaType"></s:element>
+                    <s:element minOccurs="0" name="ATTESTATO_RICHIESTA_RIMBORSO" type="s0:LMSAttRicRimbPraticaRicevutaType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSDettPraticaRicevutaType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="RICEVUTA" type="s0:LMSRicevutaDettPraticaRicevutaType"></s:element>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="RIMBORSO" type="s0:LMSRimborsoDettPraticaRicevutaType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSDettRicTelPraticaRicevutaType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="RICEVUTA" type="s0:LMSRicevutaRTDettPraticaRicevutaType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSDettEsitiPagPraticaRicevutaType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="ESITO" type="s0:LMSEsitoDettPraticaRicevutaType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSRicevutaDettPraticaRicevutaType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="ID_RICEVUTA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_PAGAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="STAMPA" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSRicevutaRTDettPraticaRicevutaType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="ID_RT" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_PAGAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="STAMPA" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSRimborsoDettPraticaRicevutaType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="ID_RIMBORSO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_RIMBORSO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="STAMPA" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSEsitoDettPraticaRicevutaType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="ID_ESITO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_PAGAMENTO" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="STAMPA" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="LMSAttRicRimbPraticaRicevutaType">
+                <s:sequence>
+                    <s:element name="STAMPA" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="MODALITA_RIMBORSO" type="s:integer"></s:element>
+                    <s:element minOccurs="0" name="INVIATO_DA_ASR" type="s:integer"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetAvvisiUNPGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="richiesta" type="s0:AvvisoRequest"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="AvvisoRequest">
+                <s:sequence>
+                    <s:element minOccurs="0" name="GG" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="NI" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="UUID_PTB" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GprListaAvvisiUNP">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="unbounded" minOccurs="0" name="AVVISO" type="s0:Avviso"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Avviso">
+                <s:sequence>
+                    <s:element name="CODICE_FISCALE" type="s:string"></s:element>
+                    <s:element name="STRUTTURA_SANITARIA" type="s:string"></s:element>
+                    <s:element name="NOME" type="s:string"></s:element>
+                    <s:element name="COGNOME" type="s:string"></s:element>
+                    <s:element name="DATA_APPUNTAMENTO" type="s:string"></s:element>
+                    <s:element name="NUMERO_PRATICA" type="s:string"></s:element>
+                    <s:element name="INDIRIZZO_RESIDENZA" type="s:string"></s:element>
+                    <s:element name="IMPORTO_TICKET_DA_PAGARE" type="s:string"></s:element>
+                    <s:element name="EMAIL" type="s:string"></s:element>
+                    <s:element name="COMUNE_RESIDENZA" type="s:string"></s:element>
+                    <s:element name="PROVINCIA_RESIDENZA" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetListaRimborsiGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:GetListaRimborsiGPRRequest"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="GetListaRimborsiGPRRequest">
+                <s:sequence>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="CODICE_FISCALE" type="s0:CodiceFiscaleType"></s:element>
+                    <s:element minOccurs="0" name="ID_ASR" nillable="true" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="STATO_TICKET" nillable="true" type="s0:StatoTicketType"></s:element>
+                    <s:element minOccurs="0" name="IN_EROGAZIONE" nillable="true" type="s0:InErogazioneType"></s:element>
+                    <s:element minOccurs="0" name="MOTIVO_PAGAMENTO" nillable="true" type="s0:MotivoPagamentoType"></s:element>
+                    <s:element minOccurs="0" name="CODICE_VERSAMENTO" nillable="true" type="s0:CodiceVersamentoType"></s:element>
+                    <s:element minOccurs="0" name="CODICE_SERVIZIO" nillable="true" type="s0:CodiceServizioType"></s:element>
+                    <s:element minOccurs="0" name="MODALITA_RIMBORSO" nillable="true" type="s0:ModalitaRimborsoType"></s:element>
+                    <s:element minOccurs="0" name="DATA_DAL" nillable="true" type="s0:DataType"></s:element>
+                    <s:element minOccurs="0" name="DATA_AL" nillable="true" type="s0:DataType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetListaRimborsiGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="GetListaRimborsiGPRResult" type="s0:ListaRimborsiGPRResultType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ListaRimborsiGPRResultType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="LISTA_TICKET" type="s0:Importi"></s:element>
+                    <s:element name="ERRORE" type="s0:Errore"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="CodiceFiscaleType">
+                <s:restriction base="s:string">
+                    <s:pattern value="[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="StatoTicketType">
+                <s:restriction base="s:integer">
+                    <s:enumeration value="801"></s:enumeration>
+                    <s:enumeration value="802"></s:enumeration>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="InErogazioneType">
+                <s:restriction base="s:string">
+                    <s:enumeration value="0"></s:enumeration>
+                    <s:enumeration value="1"></s:enumeration>
+                    <s:enumeration value="2"></s:enumeration>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="MotivoPagamentoType">
+                <s:restriction base="s:string">
+                    <s:length value="1"></s:length>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="CodiceVersamentoType">
+                <s:restriction base="s:string">
+                    <s:length value="4"></s:length>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="CodiceServizioType">
+                <s:restriction base="s:string">
+                    <s:length value="2"></s:length>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="ModalitaRimborsoType">
+                <s:restriction base="s:integer">
+                    <s:enumeration value="1"></s:enumeration>
+                    <s:enumeration value="2"></s:enumeration>
+                    <s:enumeration value="3"></s:enumeration>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="DataType">
+                <s:restriction base="s:string">
+                    <s:pattern value="([0-2][0-9]|(3)[0-1])(\/)(0[0-9]|(1[0-2]))(\/)(\d{4})"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:element name="GetModalitaErogazioneAmmissibiliGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:GetModalitaErogazioneAmmissibiliGPRRequest"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="GetModalitaErogazioneAmmissibiliGPRRequest">
+                <s:sequence>
+                    <s:element name="UUID" type="s:string"></s:element>
+                    <s:element minOccurs="0" name="DATA_RIFERIMENTO" nillable="true" type="s0:DataType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetModalitaErogazioneAmmissibiliGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="risposta" type="s0:ModalitaErogazioneAmmissibiliGPRResultType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ModalitaErogazioneAmmissibiliGPRResultType">
+                <s:sequence>
+                    <s:element minOccurs="0" name="LISTA_MODALITA" type="s0:ListaModalitaErogazioneType"></s:element>
+                    <s:element name="ERRORE" type="s0:Errore"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ListaModalitaErogazioneType">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="MODALITA_AMMISSIBILE" type="s0:ModalitaAmmissibileType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ModalitaAmmissibileType">
+                <s:sequence>
+                    <s:element name="ID_ASR" type="s:string"></s:element>
+                    <s:element name="CODICE_SERVIZIO" type="s:string"></s:element>
+                    <s:element name="CODICE_VERSAMENTO" type="s:string"></s:element>
+                    <s:element name="MOTIVO_PAGAMENTO" type="s:string"></s:element>
+                    <s:element name="MODALITA_EROGAZIONE" type="s:integer"></s:element>
+                    <s:element minOccurs="0" name="IMPORTO_MIN_BONIFICO" nillable="true" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="SetModalitaErogazioneRimborsoGPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:SetModalitaErogazioneRimborsoGPRRequest"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="SetModalitaErogazioneRimborsoGPRRequest">
+                <s:sequence>
+                    <s:element name="UUID" type="s0:UuidType"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_PRATICA" type="s0:NumeroPraticaType"></s:element>
+                    <s:element minOccurs="0" name="MODALITA_RIMBORSO" type="s0:ModalitaRimborsoType2"></s:element>
+                    <s:element minOccurs="0" name="IBAN" nillable="true" type="s0:IBANType"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="UuidType">
+                <s:restriction base="s:string">
+                    <s:pattern value="[a-zA-Z0-9\-]{36}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="NumeroPraticaType">
+                <s:restriction base="s:string">
+                    <s:pattern value="[A-Z0-9]{27}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="NumeroPratica27Type">
+                <s:restriction base="s:string">
+                    <s:pattern value="{27}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="StatoPagamentoType">
+                <s:restriction base="s:integer">
+                    <s:enumeration value="032"></s:enumeration>
+                    <s:enumeration value="000"></s:enumeration>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="IuvMod3Type">
+                <s:restriction base="s:string">
+                    <s:pattern value="{17}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="ModalitaRimborsoType2">
+                <s:restriction base="s:integer">
+                    <s:enumeration value="1"></s:enumeration>
+                    <s:enumeration value="2"></s:enumeration>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="IBANType">
+                <s:restriction base="s:string">
+                    <s:pattern value="[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:element name="SetModalitaErogazioneRimborsoGPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="SetModalitaErogazioneRimborsoGPRResult" type="s0:SetModalitaErogazioneRimborsoGPRResultType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="SetModalitaErogazioneRimborsoGPRResultType">
+                <s:sequence>
+                    <s:element name="ERRORE" type="s0:Errore"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="SetOpposizionePrecompilazione730GPR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="richiesta" type="s0:SetOpposizionePrecompilazione730GPRRequest"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="SetOpposizionePrecompilazione730GPRRequest">
+                <s:sequence>
+                    <s:element name="UUID" type="s0:UuidType730"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_PRATICA" type="s0:NumeroPraticaType730"></s:element>
+                    <s:element minOccurs="0" name="NUMERO_SPORTELLO" type="s0:NumeroSportelloType"></s:element>
+                    <s:element minOccurs="0" name="OPPOSIZIONE_730" type="s0:Opposizione730Type"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="UuidType730">
+                <s:restriction base="s:string">
+                    <s:pattern value="[a-zA-Z0-9\-]{36}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="NumeroPraticaType730">
+                <s:restriction base="s:string">
+                    <s:pattern value="[A-Z0-9]{27}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="NumeroSportelloType">
+                <s:restriction base="s:string">
+                    <s:pattern value="[A-Z]{2}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="Opposizione730Type">
+                <s:restriction base="s:integer">
+                    <s:enumeration value="0"></s:enumeration>
+                    <s:enumeration value="1"></s:enumeration>
+                </s:restriction>
+            </s:simpleType>
+            <s:element name="SetOpposizionePrecompilazione730GPRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="SetOpposizionePrecompilazione730GPRResult" type="s0:SetOpposizionePrecompilazione730GPRResultType"></s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="SetOpposizionePrecompilazione730GPRResultType">
+                <s:sequence>
+                    <s:element name="ERRORE" type="s0:Errore"></s:element>
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="String36Type">
+                <s:restriction base="s:string">
+                    <s:minLength value="1"></s:minLength>
+                    <s:maxLength value="36"></s:maxLength>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="TipoOperazioneSetCodiceVersamentoType">
+                <s:restriction base="s:string">
+                    <s:enumeration value="A"></s:enumeration>
+                    <s:enumeration value="C"></s:enumeration>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="NumeroSportello64AlfanumericoType">
+                <s:restriction base="s:string">
+                    <s:minLength value="1"></s:minLength>
+                    <s:maxLength value="64"></s:maxLength>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="DescVersamentoSetCodiceVersamentoType">
+                <s:restriction base="s:string">
+                    <s:minLength value="1"></s:minLength>
+                    <s:maxLength value="200"></s:maxLength>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="AsrType">
+                <s:restriction base="s:string">
+                    <s:pattern value="[0-9]{3}"></s:pattern>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="ApplicationIdSetCodiceVersamentoType">
+                <s:restriction base="s:string">
+                    <s:minLength value="1"></s:minLength>
+                    <s:maxLength value="100"></s:maxLength>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="CodTassonomiaSetCodiceVersamentoType">
+                <s:restriction base="s:string">
+                    <s:minLength value="1"></s:minLength>
+                    <s:maxLength value="30"></s:maxLength>
+                </s:restriction>
+            </s:simpleType>
+            <s:complexType name="ErroreSetCodiceVersamento">
+                <s:sequence>
+                    <s:element name="CODICE" type="s:string"></s:element>
+                    <s:element name="MESSAGGIO" type="s:string"></s:element>
+                </s:sequence>
+            </s:complexType>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="AttivazioneRecuperoMetadatiSoapIn">
+        <wsdl:part name="parameters" element="s0:AttivazioneRecuperoMetadati"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="AttivazioneRecuperoMetadatiSoapOut">
+        <wsdl:part name="parameters" element="s0:AttivazioneRecuperoMetadatiResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetDatiSensibiliUtenteCentraleSoapIn">
+        <wsdl:part name="parameters" element="s0:GetDatiSensibiliUtenteCentrale"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetDatiSensibiliUtenteCentraleSoapOut">
+        <wsdl:part name="parameters" element="s0:GetDatiSensibiliUtenteCentraleResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LMSGetRicevutaSoapIn">
+        <wsdl:part name="parameters" element="s0:LMSGetRicevutaRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LMSGetRicevutaSoapOut">
+        <wsdl:part name="parameters" element="s0:LMSGetRicevutaResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="DispacciaFlussoRendicontazioneSoapIn">
+        <wsdl:part name="parameters" element="s0:DispacciaFlussoRendicontazioneRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="DispacciaFlussoRendicontazioneSoapOut">
+        <wsdl:part name="parameters" element="s0:DispacciaFlussoRendicontazioneResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="EstrazioneListaTicketMetadatiGPRSoapIn">
+        <wsdl:part name="parameters" element="s0:EstrazioneListaTicketMetadatiGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="EstrazioneListaTicketMetadatiGPRSoapOut">
+        <wsdl:part name="parameters" element="s0:EstrazioneListaTicketMetadatiGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetListaTicketCFSoapIn">
+        <wsdl:part name="parameters" element="s0:GetListaTicketCF"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetListaTicketCFSoapOut">
+        <wsdl:part name="parameters" element="s0:GetListaTicketCFResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetMultiIUVSoapIn">
+        <wsdl:part name="parameters" element="s0:GetMultiIUVGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetMultiIUVSoapOut">
+        <wsdl:part name="parameters" element="s0:GetMultiIUVGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="VerificaStatoPagamentoGPRRequest">
+        <wsdl:part name="parameters" element="s0:VerificaStatoPagamentoGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="VerificaStatoPagamentoGPRResponse">
+        <wsdl:part name="parameters" element="s0:VerificaStatoPagamentoGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetOpposizionePrecompilazione730GPRSoapIn">
+        <wsdl:part name="parameters" element="s0:SetOpposizionePrecompilazione730GPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetOpposizionePrecompilazione730GPRSoapOut">
+        <wsdl:part name="parameters" element="s0:SetOpposizionePrecompilazione730GPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetCodiceVersamentoGPRRequest">
+        <wsdl:part name="parameters" element="s0:SetCodiceVersamentoGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetCodiceVersamentoGPRResponse">
+        <wsdl:part name="parameters" element="s0:SetCodiceVersamentoGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetAvvenutoPagamentoSoapIn">
+        <wsdl:part name="parameters" element="s0:SetAvvenutoPagamento"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetAvvenutoPagamentoSoapOut">
+        <wsdl:part name="parameters" element="s0:SetAvvenutoPagamentoResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetModalitaErogazioneAmmissibiliGPRSoapIn">
+        <wsdl:part name="parameters" element="s0:GetModalitaErogazioneAmmissibiliGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetModalitaErogazioneAmmissibiliGPRSoapOut">
+        <wsdl:part name="parameters" element="s0:GetModalitaErogazioneAmmissibiliGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="AttivazioneAcquisizioneListaStatoTicketSoapIn">
+        <wsdl:part name="parameters" element="s0:AttivazioneAcquisizioneListaStatoTicket"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="AttivazioneAcquisizioneListaStatoTicketSoapOut">
+        <wsdl:part name="parameters" element="s0:AttivazioneAcquisizioneListaStatoTicketResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetConfigLottoIUVSoapIn">
+        <wsdl:part name="parameters" element="s0:GetConfigLottoIUVGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetConfigLottoIUVSoapOut">
+        <wsdl:part name="parameters" element="s0:GetConfigLottoIUVGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="EchoSoapIn">
+        <wsdl:part name="parameters" element="s0:Echo"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="EchoSoapOut">
+        <wsdl:part name="parameters" element="s0:EchoResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LMSGetTicketPagatiSoapIn">
+        <wsdl:part name="parameters" element="s0:LMSGetTicketPagatiRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LMSGetTicketPagatiSoapOut">
+        <wsdl:part name="parameters" element="s0:LMSGetTicketPagatiResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetAssociazioneIUVTicketSoapIn">
+        <wsdl:part name="parameters" element="s0:SetAssociazioneIUVTicketGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetAssociazioneIUVTicketSoapOut">
+        <wsdl:part name="parameters" element="s0:SetAssociazioneIUVTicketGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetModalitaErogazioneRimborsoGPRSoapIn">
+        <wsdl:part name="parameters" element="s0:SetModalitaErogazioneRimborsoGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="SetModalitaErogazioneRimborsoGPRSoapOut">
+        <wsdl:part name="parameters" element="s0:SetModalitaErogazioneRimborsoGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetListaRimborsiGPRSoapIn">
+        <wsdl:part name="parameters" element="s0:GetListaRimborsiGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetListaRimborsiGPRSoapOut">
+        <wsdl:part name="parameters" element="s0:GetListaRimborsiGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetImportoTicketSoapIn">
+        <wsdl:part name="parameters" element="s0:GetImportoTicket"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetImportoTicketSoapOut">
+        <wsdl:part name="parameters" element="s0:GetImportoTicketResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetSingleIuvSoapIn">
+        <wsdl:part name="parameters" element="s0:GetSingleIuvGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetSingleIuvSoapOut">
+        <wsdl:part name="parameters" element="s0:GetSingleIuvGPRResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetAvvisiUNPGPRSoapIn">
+        <wsdl:part name="parameters" element="s0:GetAvvisiUNPGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetAvvisiUNPGPRSoapOut">
+        <wsdl:part name="parameters" element="s0:GprListaAvvisiUNP"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="proxyGPRPortType">
+        <wsdl:operation name="AttivazioneRecuperoMetadati">
+            <wsdl:input message="s0:AttivazioneRecuperoMetadatiSoapIn" wsaw:Action="http://csi.it/AttivazioneRecuperoMetadati"></wsdl:input>
+            <wsdl:output message="s0:AttivazioneRecuperoMetadatiSoapOut" wsaw:Action="http://csi.it/ptbSoap/AttivazioneRecuperoMetadatiResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDatiSensibiliUtenteCentrale">
+            <wsdl:input message="s0:GetDatiSensibiliUtenteCentraleSoapIn" wsaw:Action="http://csi.it/GetDatiSensibiliUtenteCentrale"></wsdl:input>
+            <wsdl:output message="s0:GetDatiSensibiliUtenteCentraleSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetDatiSensibiliUtenteCentraleResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetRicevuta">
+            <wsdl:input message="s0:LMSGetRicevutaSoapIn" wsaw:Action="http://csi.it/LMSGetRicevuta"></wsdl:input>
+            <wsdl:output message="s0:LMSGetRicevutaSoapOut" wsaw:Action="http://csi.it/ptbSoap/LMSGetRicevutaResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DispacciaFlussoRendicontazione">
+            <wsdl:input message="s0:DispacciaFlussoRendicontazioneSoapIn" wsaw:Action="http://csi.it/DispacciaFlussoRendicontazione"></wsdl:input>
+            <wsdl:output message="s0:DispacciaFlussoRendicontazioneSoapOut" wsaw:Action="http://csi.it/ptbSoap/DispacciaFlussoRendicontazioneResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="EstrazioneListaTicketMetadatiGPR">
+            <wsdl:input message="s0:EstrazioneListaTicketMetadatiGPRSoapIn" wsaw:Action="http://csi.it/EstrazioneListaTicketMetadatiGPR"></wsdl:input>
+            <wsdl:output message="s0:EstrazioneListaTicketMetadatiGPRSoapOut" wsaw:Action="http://csi.it/ptbSoap/EstrazioneListaTicketMetadatiGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaTicketCF">
+            <wsdl:input message="s0:GetListaTicketCFSoapIn" wsaw:Action="http://csi.it/GetListaTicketCF"></wsdl:input>
+            <wsdl:output message="s0:GetListaTicketCFSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetListaTicketCFResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMultiIUVGPR">
+            <wsdl:input message="s0:GetMultiIUVSoapIn" wsaw:Action="http://csi.it/GetMultiIUVGPR"></wsdl:input>
+            <wsdl:output message="s0:GetMultiIUVSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetMultiIUVGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="VerificaStatoPagamentoGPR">
+            <wsdl:input message="s0:VerificaStatoPagamentoGPRRequest" wsaw:Action="http://csi.it/VerificaStatoPagamentoGPR"></wsdl:input>
+            <wsdl:output message="s0:VerificaStatoPagamentoGPRResponse" wsaw:Action="http://csi.it/ptbSoap/VerificaStatoPagamentoGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetOpposizionePrecompilazione730GPR">
+            <wsdl:input message="s0:SetOpposizionePrecompilazione730GPRSoapIn" wsaw:Action="http://csi.it/SetOpposizionePrecompilazione730GPR"></wsdl:input>
+            <wsdl:output message="s0:SetOpposizionePrecompilazione730GPRSoapOut" wsaw:Action="http://csi.it/ptbSoap/SetOpposizionePrecompilazione730GPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetCodiceVersamentoGPR">
+            <wsdl:input message="s0:SetCodiceVersamentoGPRRequest" wsaw:Action="http://csi.it/SetCodiceVersamentoGPR"></wsdl:input>
+            <wsdl:output message="s0:SetCodiceVersamentoGPRResponse" wsaw:Action="http://csi.it/ptbSoap/SetCodiceVersamentoGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAvvenutoPagamento">
+            <wsdl:input message="s0:SetAvvenutoPagamentoSoapIn" wsaw:Action="http://csi.it/SetAvvenutoPagamento"></wsdl:input>
+            <wsdl:output message="s0:SetAvvenutoPagamentoSoapOut" wsaw:Action="http://csi.it/ptbSoap/SetAvvenutoPagamentoResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetModalitaErogazioneAmmissibiliGPR">
+            <wsdl:input message="s0:GetModalitaErogazioneAmmissibiliGPRSoapIn" wsaw:Action="http://csi.it/GetModalitaErogazioneAmmissibiliGPR"></wsdl:input>
+            <wsdl:output message="s0:GetModalitaErogazioneAmmissibiliGPRSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetModalitaErogazioneAmmissibiliGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AttivazioneAcquisizioneListaStatoTicket">
+            <wsdl:input message="s0:AttivazioneAcquisizioneListaStatoTicketSoapIn" wsaw:Action="http://csi.it/AttivazioneAcquisizioneListaStatoTicket"></wsdl:input>
+            <wsdl:output message="s0:AttivazioneAcquisizioneListaStatoTicketSoapOut" wsaw:Action="http://csi.it/ptbSoap/AttivazioneAcquisizioneListaStatoTicketResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetConfigLottoIUVGPR">
+            <wsdl:input message="s0:GetConfigLottoIUVSoapIn" wsaw:Action="http://csi.it/GetConfigLottoIUVGPR"></wsdl:input>
+            <wsdl:output message="s0:GetConfigLottoIUVSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetConfigLottoIUVGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Echo">
+            <wsdl:input message="s0:EchoSoapIn" wsaw:Action="http://csi.it/Echo"></wsdl:input>
+            <wsdl:output message="s0:EchoSoapOut" wsaw:Action="http://csi.it/ptbSoap/EchoResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetTicketPagati">
+            <wsdl:input message="s0:LMSGetTicketPagatiSoapIn" wsaw:Action="http://csi.it/LMSGetTicketPagati"></wsdl:input>
+            <wsdl:output message="s0:LMSGetTicketPagatiSoapOut" wsaw:Action="http://csi.it/ptbSoap/LMSGetTicketPagatiResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAssociazioneIUVTicketGPR">
+            <wsdl:input message="s0:SetAssociazioneIUVTicketSoapIn" wsaw:Action="http://csi.it/SetAssociazioneIUVTicketGPR"></wsdl:input>
+            <wsdl:output message="s0:SetAssociazioneIUVTicketSoapOut" wsaw:Action="http://csi.it/ptbSoap/SetAssociazioneIUVTicketGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetModalitaErogazioneRimborsoGPR">
+            <wsdl:input message="s0:SetModalitaErogazioneRimborsoGPRSoapIn" wsaw:Action="http://csi.it/SetModalitaErogazioneRimborsoGPR"></wsdl:input>
+            <wsdl:output message="s0:SetModalitaErogazioneRimborsoGPRSoapOut" wsaw:Action="http://csi.it/ptbSoap/SetModalitaErogazioneRimborsoGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaRimborsiGPR">
+            <wsdl:input message="s0:GetListaRimborsiGPRSoapIn" wsaw:Action="http://csi.it/GetListaRimborsiGPR"></wsdl:input>
+            <wsdl:output message="s0:GetListaRimborsiGPRSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetListaRimborsiGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetImportoTicket">
+            <wsdl:input message="s0:GetImportoTicketSoapIn" wsaw:Action="http://csi.it/GetImportoTicket"></wsdl:input>
+            <wsdl:output message="s0:GetImportoTicketSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetImportoTicketResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSingleIuvGPR">
+            <wsdl:input message="s0:GetSingleIuvSoapIn" wsaw:Action="http://csi.it/GetSingleIuvGPR"></wsdl:input>
+            <wsdl:output message="s0:GetSingleIuvSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetSingleIuvGPRResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAvvisiUNPGPR">
+            <wsdl:input message="s0:GetAvvisiUNPGPRSoapIn" wsaw:Action="http://csi.it/GetAvvisiUNPGPR"></wsdl:input>
+            <wsdl:output message="s0:GetAvvisiUNPGPRSoapOut" wsaw:Action="http://csi.it/ptbSoap/GetAvvisiUNPGPRResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="proxyGPRSoap11Binding" type="s0:proxyGPRPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+        <wsdl:operation name="GetDatiSensibiliUtenteCentrale">
+            <soap:operation soapAction="http://csi.it/GetDatiSensibiliUtenteCentrale" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AttivazioneRecuperoMetadati">
+            <soap:operation soapAction="http://csi.it/AttivazioneRecuperoMetadati" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DispacciaFlussoRendicontazione">
+            <soap:operation soapAction="http://csi.it/DispacciaFlussoRendicontazione" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetRicevuta">
+            <soap:operation soapAction="http://csi.it/LMSGetRicevuta" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="EstrazioneListaTicketMetadatiGPR">
+            <soap:operation soapAction="http://csi.it/EstrazioneListaTicketMetadatiGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaTicketCF">
+            <soap:operation soapAction="http://csi.it/GetListaTicketCF" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMultiIUVGPR">
+            <soap:operation soapAction="http://csi.it/GetMultiIUVGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetOpposizionePrecompilazione730GPR">
+            <soap:operation soapAction="http://csi.it/SetOpposizionePrecompilazione730GPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="VerificaStatoPagamentoGPR">
+            <soap:operation soapAction="http://csi.it/VerificaStatoPagamentoGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetCodiceVersamentoGPR">
+            <soap:operation soapAction="http://csi.it/SetCodiceVersamentoGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAvvenutoPagamento">
+            <soap:operation soapAction="http://csi.it/SetAvvenutoPagamento" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetModalitaErogazioneAmmissibiliGPR">
+            <soap:operation soapAction="http://csi.it/GetModalitaErogazioneAmmissibiliGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AttivazioneAcquisizioneListaStatoTicket">
+            <soap:operation soapAction="http://csi.it/AttivazioneAcquisizioneListaStatoTicket" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetConfigLottoIUVGPR">
+            <soap:operation soapAction="http://csi.it/GetConfigLottoIUVGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Echo">
+            <soap:operation soapAction="http://csi.it/Echo" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAssociazioneIUVTicketGPR">
+            <soap:operation soapAction="http://csi.it/SetAssociazioneIUVTicketGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetTicketPagati">
+            <soap:operation soapAction="http://csi.it/LMSGetTicketPagati" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetModalitaErogazioneRimborsoGPR">
+            <soap:operation soapAction="http://csi.it/SetModalitaErogazioneRimborsoGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetImportoTicket">
+            <soap:operation soapAction="http://csi.it/GetImportoTicket" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaRimborsiGPR">
+            <soap:operation soapAction="http://csi.it/GetListaRimborsiGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSingleIuvGPR">
+            <soap:operation soapAction="http://csi.it/GetSingleIuvGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAvvisiUNPGPR">
+            <soap:operation soapAction="http://csi.it/GetAvvisiUNPGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="proxyGPRSoap12Binding" type="s0:proxyGPRPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
+        <wsdl:operation name="GetDatiSensibiliUtenteCentrale">
+            <soap12:operation soapAction="http://csi.it/GetDatiSensibiliUtenteCentrale" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AttivazioneRecuperoMetadati">
+            <soap12:operation soapAction="http://csi.it/AttivazioneRecuperoMetadati" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DispacciaFlussoRendicontazione">
+            <soap12:operation soapAction="http://csi.it/DispacciaFlussoRendicontazione" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetRicevuta">
+            <soap12:operation soapAction="http://csi.it/LMSGetRicevuta" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="EstrazioneListaTicketMetadatiGPR">
+            <soap12:operation soapAction="http://csi.it/EstrazioneListaTicketMetadatiGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaTicketCF">
+            <soap12:operation soapAction="http://csi.it/GetListaTicketCF" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMultiIUVGPR">
+            <soap12:operation soapAction="http://csi.it/GetMultiIUVGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetOpposizionePrecompilazione730GPR">
+            <soap12:operation soapAction="http://csi.it/SetOpposizionePrecompilazione730GPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="VerificaStatoPagamentoGPR">
+            <soap12:operation soapAction="http://csi.it/VerificaStatoPagamentoGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetCodiceVersamentoGPR">
+            <soap12:operation soapAction="http://csi.it/SetCodiceVersamentoGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAvvenutoPagamento">
+            <soap12:operation soapAction="http://csi.it/SetAvvenutoPagamento" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetModalitaErogazioneAmmissibiliGPR">
+            <soap12:operation soapAction="http://csi.it/GetModalitaErogazioneAmmissibiliGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AttivazioneAcquisizioneListaStatoTicket">
+            <soap12:operation soapAction="http://csi.it/AttivazioneAcquisizioneListaStatoTicket" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetConfigLottoIUVGPR">
+            <soap12:operation soapAction="http://csi.it/GetConfigLottoIUVGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Echo">
+            <soap12:operation soapAction="http://csi.it/Echo" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAssociazioneIUVTicketGPR">
+            <soap12:operation soapAction="http://csi.it/SetAssociazioneIUVTicketGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetTicketPagati">
+            <soap12:operation soapAction="http://csi.it/LMSGetTicketPagati" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetModalitaErogazioneRimborsoGPR">
+            <soap12:operation soapAction="http://csi.it/SetModalitaErogazioneRimborsoGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetImportoTicket">
+            <soap12:operation soapAction="http://csi.it/GetImportoTicket" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaRimborsiGPR">
+            <soap12:operation soapAction="http://csi.it/GetListaRimborsiGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSingleIuvGPR">
+            <soap12:operation soapAction="http://csi.it/GetSingleIuvGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAvvisiUNPGPR">
+            <soap12:operation soapAction="http://csi.it/GetAvvisiUNPGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="proxyGPRHttpBinding" type="s0:proxyGPRPortType">
+        <http:binding verb="POST"></http:binding>
+        <wsdl:operation name="GetDatiSensibiliUtenteCentrale">
+            <http:operation location="GetDatiSensibiliUtenteCentrale"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AttivazioneRecuperoMetadati">
+            <http:operation location="AttivazioneRecuperoMetadati"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DispacciaFlussoRendicontazione">
+            <http:operation location="DispacciaFlussoRendicontazione"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetRicevuta">
+            <http:operation location="LMSGetRicevuta"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="EstrazioneListaTicketMetadatiGPR">
+            <http:operation location="EstrazioneListaTicketMetadatiGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaTicketCF">
+            <http:operation location="GetListaTicketCF"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMultiIUVGPR">
+            <http:operation location="GetMultiIUVGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetOpposizionePrecompilazione730GPR">
+            <http:operation location="SetOpposizionePrecompilazione730GPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="VerificaStatoPagamentoGPR">
+            <http:operation location="VerificaStatoPagamentoGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetCodiceVersamentoGPR">
+            <http:operation location="SetCodiceVersamentoGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAvvenutoPagamento">
+            <http:operation location="SetAvvenutoPagamento"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetModalitaErogazioneAmmissibiliGPR">
+            <http:operation location="GetModalitaErogazioneAmmissibiliGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AttivazioneAcquisizioneListaStatoTicket">
+            <http:operation location="AttivazioneAcquisizioneListaStatoTicket"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetConfigLottoIUVGPR">
+            <http:operation location="GetConfigLottoIUVGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Echo">
+            <http:operation location="Echo"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAssociazioneIUVTicketGPR">
+            <http:operation location="SetAssociazioneIUVTicketGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LMSGetTicketPagati">
+            <http:operation location="LMSGetTicketPagati"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetModalitaErogazioneRimborsoGPR">
+            <http:operation location="SetModalitaErogazioneRimborsoGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetImportoTicket">
+            <http:operation location="GetImportoTicket"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetListaRimborsiGPR">
+            <http:operation location="GetListaRimborsiGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSingleIuvGPR">
+            <http:operation location="GetSingleIuvGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAvvisiUNPGPR">
+            <http:operation location="GetAvvisiUNPGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="proxyGPR">
+        <wsdl:port name="proxyGPRHttpSoap11Endpoint" binding="s0:proxyGPRSoap11Binding">
+            <soap:address location="http://xxx-gpr.xxx.csi.it:80/wso050/services/proxyGPR.proxyGPRHttpSoap11Endpoint"></soap:address>
+        </wsdl:port>
+        <wsdl:port name="proxyGPRHttpsSoap11Endpoint" binding="s0:proxyGPRSoap11Binding">
+            <soap:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/proxyGPR.proxyGPRHttpsSoap11Endpoint"></soap:address>
+        </wsdl:port>
+        <wsdl:port name="proxyGPRHttpsSoap12Endpoint" binding="s0:proxyGPRSoap12Binding">
+            <soap12:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/proxyGPR.proxyGPRHttpsSoap12Endpoint"></soap12:address>
+        </wsdl:port>
+        <wsdl:port name="proxyGPRHttpSoap12Endpoint" binding="s0:proxyGPRSoap12Binding">
+            <soap12:address location="http://xxx-gpr.xxx.csi.it:80/wso050/services/proxyGPR.proxyGPRHttpSoap12Endpoint"></soap12:address>
+        </wsdl:port>
+        <wsdl:port name="proxyGPRHttpsEndpoint" binding="s0:proxyGPRHttpBinding">
+            <http:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/proxyGPR.proxyGPRHttpsEndpoint"></http:address>
+        </wsdl:port>
+        <wsdl:port name="proxyGPRHttpEndpoint" binding="s0:proxyGPRHttpBinding">
+            <http:address location="http://xxx-gpr.xxx.csi.it:80/wso050/services/proxyGPR.proxyGPRHttpEndpoint"></http:address>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

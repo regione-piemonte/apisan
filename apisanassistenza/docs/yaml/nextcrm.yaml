@@ -1,0 +1,924 @@
+openapi: 3.0.0
+info:
+  version: v1
+  title: api-request-management-nextcrm
+  description: Le API consentono di interfacciarsi con il sistema NextCRM e gestire le richieste dei clienti
+servers:
+  - url: http:///tecno/nextcrm/v1
+security:
+  - OAuth2AuthClient: []
+tags:
+  - name: Users
+  - name: Tickets
+  - name: Ticket Articles
+paths:
+  /users/search:
+    get:
+      tags:
+        - Users
+      description: Searches the User matching the given expression in fields firstname, lastname or email
+      parameters:
+        - name: filter
+          in: query
+          description: |
+            Criteria for filtering users.
+            The filter is a json object with the following format:
+
+            `{"<field_name>": <criteria>, "<field_name>": <criteria>, ...}`
+             
+            `<field_name>` must be one of the attributes of the object User.
+
+            For example, these are valid `<field_name>`:
+            * "email"
+            * "first_name"
+            * "last_name"
+            * "codice_fiscale"
+            * "tessera_team"
+
+
+            Il `<criteria>` is in the following format: `{"<operator>": "<value>", "<operator>": "<value>", ...}`
+
+            The attribute operator `<operator>` must be one of the following identifiers:
+            * "eq" (equals, ignore case)
+            * "ci" (contains, ignore case)
+            * "si" (starts with, ignore case)
+            * "ei" (ends with, ignore case)
+            "<value>" can contain multiple words separated by OR operator
+          schema:
+            type: string
+          example: '{"note":{"si":"sanita"},"email":{"eq":"mario.rossi@gmail.com OR mario.rossi@hotmail.com"},"codice_fiscale":{"ci":"XXXXXXXXXX"}}'
+        - name: per_page
+          in: query
+          description: amount of record per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 100
+        - name: page
+          in: query
+          description: returns the specified  page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: sort_by
+          in: query
+          description: sort records by attribute
+          schema:
+            type: string
+            default: updated_at
+        - name: order_by
+          in: query
+          description: order records ascending or descending
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+      responses:
+        '200':
+          description: The request has been fulfilled correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /tickets:
+    get:
+      tags:
+        - Tickets
+      description: Get all tickets allocated in groups of which you have the view permission. If used, per_page and page parameters must both be provided (if only one is provided, it will be ignored)
+      parameters:
+        - name: per_page
+          in: query
+          description: amount of record per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+        - name: page
+          in: query
+          description: returns the specified  page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      responses:
+        '200':
+          description: The request has been fulfilled correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+    post:
+      tags:
+        - Tickets
+      description: create a ticket
+      requestBody:
+        description: Article object is required. The ticket must be assigned to an existing user, so 'customer' object is required with at least the email field. If the user does not exists, it will be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  required:
+                    - title
+                    - article
+                  properties:
+                    article:
+                      $ref: '#/components/schemas/ArticleNew'
+                - $ref: '#/components/schemas/NewTicket'
+      responses:
+        '201':
+          description: The request has been fulfilled and resulted in a new resource being created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /tickets/search:
+    get:
+      tags:
+        - Tickets
+      description: List tickets matching a filter criteria
+      parameters:
+        - name: filter
+          in: query
+          description: |
+            Criteria for filtering tickets.
+            The filter is a json object with the following format:
+
+            `{"<field_name>": <criteria>, "<field_name>": <criteria>, ...}`
+             
+            `<field_name>` must be one of the attributes of the object Ticket.
+
+            `<field_name>` can be one of the attributes of an object related to Ticket, such as Article or  User (with the name of Customer or Owner) in the format `<object>.<attribute>`
+            For example, these are valid `<field_name>`:
+            * "title"
+            * "note"
+            * "number"
+            * "customer.email"
+            * "customer.first_name"
+
+
+            Il `<criteria>` is in the following format: `{"<operator>": "<value>", "<operator>": "<value>", ...}`
+
+            The attribute operator `<operator>` must be one of the following identifiers:
+            * "eq" (equals, ignore case)
+            * "ci" (contains, ignore case)
+            * "si" (starts with, ignore case)
+            * "ei" (ends with, ignore case)
+            "<value>" can contain multiple words separated by OR operator
+          schema:
+            type: string
+          example: '{"title":{"ci":"error"},"state_id":{"eq":"1 OR 2"}, "state":{"eq":"open OR new OR closed"}, "note":{"si":"sanita"},"customer.email":{"eq":"mario.rossi@gmail.com"},"article.body":{"ci":"prova creazione ticket"}}'
+        - name: per_page
+          in: query
+          description: amount of record per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 100
+        - name: page
+          in: query
+          description: returns the specified  page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: sort_by
+          in: query
+          description: sort records by given ticket attribute
+          schema:
+            type: string
+            default: updated_at
+        - name: order_by
+          in: query
+          description: order records ascending or descending
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+      responses:
+        '200':
+          description: The request has been fulfilled correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /tickets/{id}:
+    get:
+      tags:
+        - Tickets
+      description: show one ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ticket ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has been fulfilled correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+    put:
+      tags:
+        - Tickets
+      description: update ticket
+      parameters:
+        - name: id
+          in: path
+          description: Ticket ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: ticket parameters to modify
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketUpdate'
+      responses:
+        '200':
+          description: The request has been fulfilled correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /tickets/{ticket_id}/articles:
+    get:
+      tags:
+        - Ticket Articles
+      description: get all ticket articles
+      parameters:
+        - name: ticket_id
+          in: path
+          description: Ticket ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The request has been fulfilled correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+    post:
+      tags:
+        - Ticket Articles
+      description: create article
+      parameters:
+        - name: ticket_id
+          in: path
+          description: Ticket ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleNew'
+      responses:
+        '201':
+          description: The request has been fulfilled and resulted in a new resource being created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  /tickets/{ticket_id}/articles/{article_id}/attachments/{id}:
+    get:
+      tags:
+        - Ticket Articles
+      description: download of one attachment
+      parameters:
+        - name: ticket_id
+          in: path
+          description: Ticket ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: article_id
+          in: path
+          description: Article ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          description: Attachment ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The request has been fulfilled correctly
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unhautorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+components:
+  securitySchemes:
+    OAuth2AuthClient:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://example.com/oauth/token
+          scopes: {}
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: /authorize
+          scopes: {}
+  schemas:
+    GeneralError:
+      type: object
+      required:
+        - error
+        - error_human
+      properties:
+        error:
+          type: string
+        error_human:
+          type: string
+    User:
+      type: object
+      required:
+        - firstname
+        - lastname
+        - email
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          example: 42
+        email:
+          type: string
+          example: johndoe@gmail.com
+        firstname:
+          type: string
+          example: John
+        lastname:
+          type: string
+          example: Doe
+        phone:
+          type: string
+          example: 113482453
+        fax:
+          type: string
+        mobile:
+          type: string
+        active:
+          readOnly: true
+          type: boolean
+        note:
+          type: string
+        codice_fiscale:
+          type: string
+        birthdate:
+          type: string
+          format: date-time
+          example: '1984-07-21T00:00:00.000Z'
+        verified_data:
+          readOnly: true
+          type: boolean
+          description: if true, the user data are obtained from a verified form of authentication (such as SPID)
+        last_login:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        created_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        updated_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    NewTicket:
+      type: object
+      required:
+        - title
+        - group_id
+        - customer
+        - article
+        - utente_riconosciuto
+      properties:
+        title:
+          type: string
+        group_id:
+          type: integer
+          example: 1
+        priority_id:
+          type: integer
+          default: 3
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          description: 'priority of the ticket: 1: critical, 2: high, 3: medium, 4: low'
+        customer:
+          $ref: '#/components/schemas/User'
+        utente_riconosciuto:
+          type: integer
+          enum:
+            - 0
+            - 1
+          description: 'the ticket was created through an insecure mode (eg: anonymous form or weak authentication) that does not allow to verify the identity of the user.  0 -> no,  1 -> si'
+        note:
+          type: string
+        type_id:
+          type: integer
+          example: 1
+          description: 'Type of ticket. 1: "Richiesta informativa generica", 2: "Domanda sul servizio applicativo", 3: "Segnalazione di malfunzionamento"'
+        asset_id:
+          description: ID of the Application
+          type: integer
+          example: 1
+        article:
+          $ref: '#/components/schemas/Article'
+        additional_info:
+          type: string
+          description: 'field where is possible to enter business data useful for this ticket. The data can be expressed in any syntax. E.g.  name: "value" | name: "value" | ....'
+        notification_email:
+          type: string
+          description: email on which the user has expressed his preference to be notified for this ticket. If present, it overrides the default notification email address used by the system.
+        recall_phone:
+          type: string
+          description: phone number on which the user has expressed his preference to be recalled for this ticket. If present, it overrides the default recall phone number used by the system.
+    Ticket:
+      type: object
+      required:
+        - title
+        - group_id
+        - customer_id
+        - utente_riconosciuto
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          example: 1
+        priority_id:
+          type: integer
+          default: 3
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          description: 'priority of the ticket: 1: critical, 2: high, 3: medium, 4: low'
+        priority:
+          type: string
+          description: label of the priority
+        state_id:
+          type: integer
+          default: 1
+          enum:
+            - 1
+            - 2
+            - 4
+            - 8
+            - 9
+          description: 'id of the state of the ticket:  1:nuovo, 2:aperto, 4:chiuso, 8:risolto, 9:in attesa di informazioni da utente'
+        state:
+          type: string
+          description: label of the state
+        number:
+          readOnly: true
+          type: string
+          example: '72023'
+        title:
+          type: string
+        customer_id:
+          type: integer
+          example: 1
+          description: id of the user to whom the ticket is assigned
+        customer:
+          type: string
+          description: email of the user to whom the ticket is assigned
+          example: johnDoe@gmail.com
+        type_id:
+          type: integer
+          example: 1
+          description: 'Type of ticket. 1: "Richiesta informativa generica", 2: "Domanda sul servizio applicativo", 3: "Segnalazione di malfunzionamento"'
+        type:
+          type: string
+          enum:
+            - Richiesta informativa generica
+            - Domanda sul servizio applicativo
+            - Segnalazione di malfunzionamento
+        utente_riconosciuto:
+          type: integer
+          enum:
+            - 0
+            - 1
+          description: 'the ticket was created through an insecure mode (eg: anonymous form or weak authentication) that does not allow to verify the identity of the user.  0 -> no,  1 -> si'
+        note:
+          type: string
+        create_article_type:
+          readOnly: true
+          type: string
+          description: type (channel) of the article created together with the creation of the ticket
+        create_article_sender:
+          description: type (role) of the author of the article created together with the creation of the ticket
+          readOnly: true
+          type: string
+        article_count:
+          readOnly: true
+          type: integer
+        asset_id:
+          type: integer
+          description: id of the application
+        asset:
+          type: string
+          description: label of the application
+        created_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        updated_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        additional_info:
+          type: string
+          description: 'field where is possible to enter business data useful for this ticket. The data can be expressed in any syntax. E.g.  name: "value" | name: "value" | ....'
+        notification_email:
+          type: string
+          description: email on which the user has expressed his preference to be notified for this ticket. If present, it overrides the default notification email address used by the system.
+        recall_phone:
+          type: string
+          description: phone number on which the user has expressed his preference to be recalled for this ticket. If present, it overrides the default recall phone number used by the system.
+    TicketUpdate:
+      type: object
+      required:
+        - title
+        - group_id
+        - customer_id
+        - utente_riconosciuto
+      properties:
+        priority_id:
+          type: integer
+          default: 3
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          description: 'priority of the ticket: 1: critical, 2: high, 3: medium, 4: low'
+        state_id:
+          type: integer
+          enum:
+            - 2
+            - 8
+          description: 'state id: 2:aperto, 8:risolto'
+        title:
+          type: string
+        customer_id:
+          type: integer
+          example: 1
+          description: id of the user to whom the ticket is assigned. One of 'customer_id' or 'customer' is required. The user must exists.
+        customer:
+          type: string
+          example: johnDoe@gmail.com
+          description: email of the user to whom the ticket is assigned. One of 'customer_id' or 'customer' is required. The user must exists.
+        type_id:
+          type: integer
+          example: 1
+          description: 'Type of ticket. 1: "Richiesta informativa generica", 2: "Domanda sul servizio applicativo", 3: "Segnalazione di malfunzionamento"'
+        utente_riconosciuto:
+          type: integer
+          enum:
+            - 0
+            - 1
+          description: 'the ticket was created through an insecure mode (eg: anonymous form or weak authentication) that does not allow to verify the identity of the user.  0 -> no,  1 -> si'
+        note:
+          type: string
+        asset_id:
+          description: ID of the Application
+          type: integer
+          example: 1
+    ArticleNew:
+      type: object
+      required:
+        - from
+        - body
+        - type_id
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          example: 1
+        ticket_id:
+          readOnly: true
+          type: integer
+          example: 1
+        type_id:
+          type: integer
+          description: ID of the communication channel of the article. id 13 -> "web (via API)"
+          enum:
+            - 13
+        type:
+          readOnly: true
+          description: channel label
+          type: string
+          example: web (via API)
+        body:
+          type: string
+        content_type:
+          type: string
+          description: 'Mime type of the article body. For example, if the body contains html tags, use: text/html'
+          format: mime type
+          example: text/html
+        attachments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+                example: 1
+              filename:
+                type: string
+                description: file name
+              mime-type:
+                type: string
+                example: text/plain
+              data:
+                type: string
+                description: file content in base64
+        from:
+          description: Customer email. The email must match the user's identification email (e.g. the email that the user associated with the authentication provider and was entered in the customer's email field when creating the ticket).
+          type: string
+        to:
+          readOnly: true
+          type: string
+        cc:
+          readOnly: true
+          type: string
+        subject:
+          readOnly: true
+          type: string
+        reply_to:
+          readOnly: true
+          type: string
+        in_reply_to:
+          readOnly: true
+          type: string
+        sender:
+          readOnly: true
+          type: string
+          example: Agent
+        origin_by_id:
+          readOnly: true
+          type: integer
+          example: 1
+        created_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        updated_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    Article:
+      type: object
+      required:
+        - from
+        - body
+        - type_id
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          example: 1
+        ticket_id:
+          readOnly: true
+          type: integer
+          example: 1
+        type_id:
+          type: integer
+          description: ID of the communication channel of the article. id 13 -> "web (via API)"
+          enum:
+            - 13
+        type:
+          readOnly: true
+          description: channel label
+          type: string
+          example: web (via API)
+        body:
+          type: string
+        content_type:
+          type: string
+          description: 'Mime type of the article body. For example, if the body contains html tags, use: text/html'
+          format: mime type
+          example: text/html
+        attachments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+                example: 1
+              filename:
+                type: string
+                description: file name
+              mime-type:
+                type: string
+                example: text/plain
+        from:
+          description: Customer email. The email must match the user's identification email (e.g. the email that the user associated with the authentication provider and was entered in the customer's email field when creating the ticket).
+          type: string
+        to:
+          readOnly: true
+          type: string
+        cc:
+          readOnly: true
+          type: string
+        subject:
+          readOnly: true
+          type: string
+        reply_to:
+          readOnly: true
+          type: string
+        in_reply_to:
+          readOnly: true
+          type: string
+        sender:
+          readOnly: true
+          type: string
+          example: Agent
+        origin_by_id:
+          readOnly: true
+          type: integer
+          example: 1
+        created_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        updated_at:
+          readOnly: true
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+  responses:
+    Created:
+      description: The request has been fulfilled and resulted in a new resource being created.
+    NoContent:
+      description: The request has been fulfilled correctly.
+    BadRequest:
+      description: The request cannot be fulfilled due to bad syntax.
+    Unhautorized:
+      description: The request cannot be fulfilled due to Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    NotFound:
+      description: Entity not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    UnprocessableEntity:
+      description: The request was well formed but unable to follow due to semantic errors
+    GeneralError:
+      description: Generic error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'

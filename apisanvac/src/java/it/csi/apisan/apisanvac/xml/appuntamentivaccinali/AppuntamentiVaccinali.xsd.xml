@@ -1,0 +1,23 @@
+<AppuntamentiVaccinali>
+  <!--Optional:-->
+  <Convocazioni>
+    <!--Zero or more repetitions:-->
+    <DTOConvocazione>
+      <CodicePaziente>3</CodicePaziente>
+      <DataConvocazione>2008-09-29T03:49:45</DataConvocazione>
+      <!--Optional:-->
+      <CodiceConsultorio>string</CodiceConsultorio>
+      <CodiceAmbulatorio>3</CodiceAmbulatorio>
+      <!--Optional:-->
+      <Vaccini>
+        <!--Zero or more repetitions:-->
+        <DTOVaccino>
+          <!--Optional:-->
+          <CodiceVaccino>string</CodiceVaccino>
+          <!--Optional:-->
+          <DescrizioneVaccino>string</DescrizioneVaccino>
+        </DTOVaccino>
+      </Vaccini>
+    </DTOConvocazione>
+  </Convocazioni>
+</AppuntamentiVaccinali>

@@ -1,0 +1,1510 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Esenzione per reddito ######</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Esenzione per reddito</h1>
+    <div class="app-desc">Api risorse per gestire le esenzioni ticket per reddito</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/apisanred/api/v1</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Default">Default</a></h4>
+  <ul>
+  <li><a href="#servizioAttivoGet"><code><span class="http-method">get</span> /servizio-attivo</code></a></li>
+  </ul>
+  <h4><a href="#Necessari">Necessari</a></h4>
+  <ul>
+  <li><a href="#cittadiniCfBeneficiariGet"><code><span class="http-method">get</span> /cittadini/{cf}/beneficiari</code></a></li>
+  <li><a href="#cittadiniCfEsenzioniGet"><code><span class="http-method">get</span> /cittadini/{cf}/esenzioni</code></a></li>
+  <li><a href="#cittadiniCfEsenzioniIdGet"><code><span class="http-method">get</span> /cittadini/{cf}/esenzioni/{id}</code></a></li>
+  <li><a href="#cittadiniCfEsenzioniIdRevocaPut"><code><span class="http-method">put</span> /cittadini/{cf}/esenzioni/{id}/revoca</code></a></li>
+  <li><a href="#cittadiniCfEsenzioniPost"><code><span class="http-method">post</span> /cittadini/{cf}/esenzioni</code></a></li>
+  <li><a href="#cittadiniCfInfoGet"><code><span class="http-method">get</span> /cittadini/{cf}/info</code></a></li>
+  <li><a href="#cittadiniCfTitolariGet"><code><span class="http-method">get</span> /cittadini/{cf}/titolari</code></a></li>
+  <li><a href="#codiciEsenzioneGet"><code><span class="http-method">get</span> /codici-esenzione</code></a></li>
+  <li><a href="#configurazioneGet"><code><span class="http-method">get</span> /configurazione</code></a></li>
+  <li><a href="#disclaimerGet"><code><span class="http-method">get</span> /disclaimer</code></a></li>
+  <li><a href="#rapportiFamiliariGet"><code><span class="http-method">get</span> /rapporti-familiari</code></a></li>
+  <li><a href="#statiEsenzioneGet"><code><span class="http-method">get</span> /stati-esenzione</code></a></li>
+  </ul>
+
+  <h1><a name="Default">Default</a></h1>
+  <div class="method"><a name="servizioAttivoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /servizio-attivo</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">servizioAttivoGet</span>)</div>
+    <div class="method-notes">Serve per verificare se il servizio risponde o meno</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#info_servizio">info_servizio</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "descrizione" : "descrizione",
+  "data" : "2000-01-23",
+  "nome" : "nome",
+  "servizio_attivo" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    OK
+        <a href="#info_servizio">info_servizio</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Necessari">Necessari</a></h1>
+  <div class="method"><a name="cittadiniCfBeneficiariGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/beneficiari</code></pre></div>
+    <div class="method-summary">Lista beneficiari (<span class="nickname">cittadiniCfBeneficiariGet</span>)</div>
+    <div class="method-notes">Restituisce l'elenco di beneficiari delle esenzioni relative al cittadino con il <code>{cf}</code> passato nel path</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#cittadino">cittadino</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "codice_fiscale" : "AAAAAA00B77B000F",
+  "cognome" : "Cognome",
+  "sesso" : "M",
+  "data_nascita" : "1947-07-23",
+  "nome" : "Nome",
+  "luogo_nascita" : {
+    "descrizione" : "Torino",
+    "codice" : "L219"
+  }
+}, {
+  "codice_fiscale" : "AAAAAA00B77B000F",
+  "cognome" : "Cognome",
+  "sesso" : "M",
+  "data_nascita" : "1947-07-23",
+  "nome" : "Nome",
+  "luogo_nascita" : {
+    "descrizione" : "Torino",
+    "codice" : "L219"
+  }
+} ]</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce l'elenco dei beneficiari del cittadino identificato dal {cf} nel path.
+        
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfEsenzioniGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/esenzioni</code></pre></div>
+    <div class="method-summary">Lista esenzioni (<span class="nickname">cittadiniCfEsenzioniGet</span>)</div>
+    <div class="method-notes">Lista esenzioni con ricerca</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">filter (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Un oggetto JSON encoded.
+Per i filtri ammessi vedere il model <code>filtro_esenzioni</code>.
+Esempi di filtro:</p>
+<pre><code class="language-javascript">{stato: {in: ['1', '4']}}
+</code></pre>
+<br/>
+```javascript
+{
+  data_inizio_validita: {gte: '2018-01-29T13:52:25+00:00'}, 
+  data_scadenza: {lte: '2019-04-29T13:52:25+00:00'}
+}
+```
+<br/>
+```javascript
+{
+  data_inizio_validita: {
+    gte: '2018-01-29T13:52:25+00:00',
+    lte: '2019-04-29T13:52:25+00:00'
+  },
+  rapporto_familiare: {eq: '5'},
+  codice_esenzione: {ne: 'E01'},
+  creato_per: {in: ['AAAAAA00B77B000F', 'XXXXXX00B77B000F']}
+}
+```
+ </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#esenzione">esenzione</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "codice_esenzione" : {
+    "descrizione" : "Cittadini con meno di 6 anni o più di 65 anni",
+    "motivo" : "Cittadini di età inferiore a sei anni e superiore a sessantacinque anni, appartenenti ad un nucleo familiare con reddito annuo complessivo non superiore a 36.151,98 euro.",
+    "valido" : true,
+    "data_attivazione" : "2018-07-23T15:25:00+02:00",
+    "data_scadenza" : "2018-07-23T15:25:00+02:00",
+    "codice" : "E01",
+    "familiare" : false
+  },
+  "data_revoca" : "2018-12-06T10:55:00+02:00",
+  "stampabile" : true,
+  "data_scadenza" : "2019-07-23T15:25:00+02:00",
+  "creato_per" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "data_inizio_validita" : "2018-07-23T15:25:00+02:00",
+  "revocabile" : true,
+  "data_richiesta" : "2018-07-22T15:25:00+02:00",
+  "titolare" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "stato" : {
+    "descrizione" : "Non valida",
+    "codice" : "1"
+  },
+  "motivazione_revoca" : "questa è la motivazione della revoca inserita dal cittadino",
+  "rapporto_familiare" : {
+    "descrizione" : "Genitore eservente la potestà",
+    "codice" : "1"
+  },
+  "creato_da" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "protocollo" : 321654987,
+  "id" : 123
+}, {
+  "codice_esenzione" : {
+    "descrizione" : "Cittadini con meno di 6 anni o più di 65 anni",
+    "motivo" : "Cittadini di età inferiore a sei anni e superiore a sessantacinque anni, appartenenti ad un nucleo familiare con reddito annuo complessivo non superiore a 36.151,98 euro.",
+    "valido" : true,
+    "data_attivazione" : "2018-07-23T15:25:00+02:00",
+    "data_scadenza" : "2018-07-23T15:25:00+02:00",
+    "codice" : "E01",
+    "familiare" : false
+  },
+  "data_revoca" : "2018-12-06T10:55:00+02:00",
+  "stampabile" : true,
+  "data_scadenza" : "2019-07-23T15:25:00+02:00",
+  "creato_per" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "data_inizio_validita" : "2018-07-23T15:25:00+02:00",
+  "revocabile" : true,
+  "data_richiesta" : "2018-07-22T15:25:00+02:00",
+  "titolare" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "stato" : {
+    "descrizione" : "Non valida",
+    "codice" : "1"
+  },
+  "motivazione_revoca" : "questa è la motivazione della revoca inserita dal cittadino",
+  "rapporto_familiare" : {
+    "descrizione" : "Genitore eservente la potestà",
+    "codice" : "1"
+  },
+  "creato_da" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "protocollo" : 321654987,
+  "id" : 123
+} ]</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce l'elenco delle esenzioni relative al cittadino identificato dal {cf} che rispettano i filtri passati nella querystring tramite il parametro <code>filter</code>.
+        
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfEsenzioniIdGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/esenzioni/{id}</code></pre></div>
+    <div class="method-summary">Esenzione (<span class="nickname">cittadiniCfEsenzioniIdGet</span>)</div>
+    <div class="method-notes">Corrisponde alla singola esenzione.
+Se invocato con il paramentro <strong><code>format=pdf</code></strong> restituisce il PDF dell'esenzione.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id dell'esenzione su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">cf_beneficiario (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Il codice fiscale del beneficiario </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#esenzione">esenzione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice_esenzione" : {
+    "descrizione" : "Cittadini con meno di 6 anni o più di 65 anni",
+    "motivo" : "Cittadini di età inferiore a sei anni e superiore a sessantacinque anni, appartenenti ad un nucleo familiare con reddito annuo complessivo non superiore a 36.151,98 euro.",
+    "valido" : true,
+    "data_attivazione" : "2018-07-23T15:25:00+02:00",
+    "data_scadenza" : "2018-07-23T15:25:00+02:00",
+    "codice" : "E01",
+    "familiare" : false
+  },
+  "data_revoca" : "2018-12-06T10:55:00+02:00",
+  "stampabile" : true,
+  "data_scadenza" : "2019-07-23T15:25:00+02:00",
+  "creato_per" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "data_inizio_validita" : "2018-07-23T15:25:00+02:00",
+  "revocabile" : true,
+  "data_richiesta" : "2018-07-22T15:25:00+02:00",
+  "titolare" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "stato" : {
+    "descrizione" : "Non valida",
+    "codice" : "1"
+  },
+  "motivazione_revoca" : "questa è la motivazione della revoca inserita dal cittadino",
+  "rapporto_familiare" : {
+    "descrizione" : "Genitore eservente la potestà",
+    "codice" : "1"
+  },
+  "creato_da" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "protocollo" : 321654987,
+  "id" : 123
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>application/pdf</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce l'esenzione identificata tramite <code>{id}</code> nel path. Attenzione che sull'id viene effettuata una trasformazione nel richiamo del servizio di back end. Se ricevo solo l'identificativo antepongo 000- all'identificativo e l'id diventa 000- + id, se riceve numero protocollo, codice esenzione e data inizio validita verifico se il numero protocollo inizia per 010 o no.  se inizia per 010 antepongo 002- e passo tutti e tre i dati separati dal trattino  se non inizia per 010 antepongo 001- e passo soltanto il numero protocollo. L'id passato nel path param deve essere composto da id (se presente nella get precedente) oppure da {protocollo}-{codice_esenzione}-{data_inizio_validita} nel caso in cui l'id nella get precedente non fosse presente Se invece viene valorizzato l'header <code>Accept: application/pdf</code>, ritorna
+il PDF dell'esenzione.
+        <a href="#esenzione">esenzione</a>
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfEsenzioniIdRevocaPut"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /cittadini/{cf}/esenzioni/{id}/revoca</code></pre></div>
+    <div class="method-summary">Revoca esenzione (<span class="nickname">cittadiniCfEsenzioniIdRevocaPut</span>)</div>
+    <div class="method-notes">Revoca esenzione</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id dell'esenzione su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">revoca <a href="#Revoca">Revoca</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Servizio di revoca; deve essere passato l'id dell'esenzione che deve essere composto da id (se presente nella get precedente) oppure da {protocollo}-{codice_esenzione}-{data_inizio_validita} nel caso in cui l'id nella get precedente non fosse presente. </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#esenzione">esenzione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice_esenzione" : {
+    "descrizione" : "Cittadini con meno di 6 anni o più di 65 anni",
+    "motivo" : "Cittadini di età inferiore a sei anni e superiore a sessantacinque anni, appartenenti ad un nucleo familiare con reddito annuo complessivo non superiore a 36.151,98 euro.",
+    "valido" : true,
+    "data_attivazione" : "2018-07-23T15:25:00+02:00",
+    "data_scadenza" : "2018-07-23T15:25:00+02:00",
+    "codice" : "E01",
+    "familiare" : false
+  },
+  "data_revoca" : "2018-12-06T10:55:00+02:00",
+  "stampabile" : true,
+  "data_scadenza" : "2019-07-23T15:25:00+02:00",
+  "creato_per" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "data_inizio_validita" : "2018-07-23T15:25:00+02:00",
+  "revocabile" : true,
+  "data_richiesta" : "2018-07-22T15:25:00+02:00",
+  "titolare" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "stato" : {
+    "descrizione" : "Non valida",
+    "codice" : "1"
+  },
+  "motivazione_revoca" : "questa è la motivazione della revoca inserita dal cittadino",
+  "rapporto_familiare" : {
+    "descrizione" : "Genitore eservente la potestà",
+    "codice" : "1"
+  },
+  "creato_da" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "protocollo" : 321654987,
+  "id" : 123
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce l'esenzione revocata con le modifiche apportate dal backend
+        <a href="#esenzione">esenzione</a>
+    <h4 class="field-label">202</h4>
+    L'esenzione è in stato &quot;in verifica&quot;,  la modifica verrà effettuata appena possibile.
+        <a href="#esenzione">esenzione</a>
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfEsenzioniPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cf}/esenzioni</code></pre></div>
+    <div class="method-summary">Crea esenzione (<span class="nickname">cittadiniCfEsenzioniPost</span>)</div>
+    <div class="method-notes">Crea una nuova esenzione</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">esenzione <a href="#esenzione_post">esenzione_post</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Il payload necessario alla creazione di una nuova esenzione.
+Gli altri campi (<code>id</code>, <code>protocollo</code>, <code>data_scadenza</code>, ecc) vengono generati automaticamente in base alla logica di business.
+Il codice fiscale dell'utente che ha creato l'esenzione è un'informazione abbastanza forte dal momento che viene fornita dal provider di autenticazione (SPID ecc.).
+Il cittadino per cui stiamo creando l'esenzione, invece, viene creato tramite dati inseriti dall'utente. </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#esenzione">esenzione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "codice_esenzione" : {
+    "descrizione" : "Cittadini con meno di 6 anni o più di 65 anni",
+    "motivo" : "Cittadini di età inferiore a sei anni e superiore a sessantacinque anni, appartenenti ad un nucleo familiare con reddito annuo complessivo non superiore a 36.151,98 euro.",
+    "valido" : true,
+    "data_attivazione" : "2018-07-23T15:25:00+02:00",
+    "data_scadenza" : "2018-07-23T15:25:00+02:00",
+    "codice" : "E01",
+    "familiare" : false
+  },
+  "data_revoca" : "2018-12-06T10:55:00+02:00",
+  "stampabile" : true,
+  "data_scadenza" : "2019-07-23T15:25:00+02:00",
+  "creato_per" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "data_inizio_validita" : "2018-07-23T15:25:00+02:00",
+  "revocabile" : true,
+  "data_richiesta" : "2018-07-22T15:25:00+02:00",
+  "titolare" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "stato" : {
+    "descrizione" : "Non valida",
+    "codice" : "1"
+  },
+  "motivazione_revoca" : "questa è la motivazione della revoca inserita dal cittadino",
+  "rapporto_familiare" : {
+    "descrizione" : "Genitore eservente la potestà",
+    "codice" : "1"
+  },
+  "creato_da" : {
+    "codice_fiscale" : "AAAAAA00B77B000F",
+    "cognome" : "Cognome",
+    "sesso" : "M",
+    "data_nascita" : "1947-07-23",
+    "nome" : "Nome",
+    "luogo_nascita" : {
+      "descrizione" : "Torino",
+      "codice" : "L219"
+    }
+  },
+  "protocollo" : 321654987,
+  "id" : 123
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Crea l'esenzione e la restituisce.
+        <a href="#esenzione">esenzione</a>
+    <h4 class="field-label">202</h4>
+    L'esenzione è in stato &quot;in verifica&quot;.
+        <a href="#esenzione">esenzione</a>
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfInfoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/info</code></pre></div>
+    <div class="method-summary">Informazioni (<span class="nickname">cittadiniCfInfoGet</span>)</div>
+    <div class="method-notes">Contiene informazioni inerenti all'utente per il servizio ma che non si riferiscono a nessuna delle risorse</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#info">info</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "scadenza" : "2019-03-31",
+  "data_sblocco" : "2018-08-22T15:25:00+02:00",
+  "bloccato" : false
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce le informazioni.
+        <a href="#info">info</a>
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCfTitolariGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cf}/titolari</code></pre></div>
+    <div class="method-summary">Lista titolari (<span class="nickname">cittadiniCfTitolariGet</span>)</div>
+    <div class="method-notes">Restituisce l'elenco dei titolari delle esenzioni relative al
+cittadino con il <code>{cf}</code> passato nel path</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cf (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#cittadino">cittadino</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "codice_fiscale" : "AAAAAA00B77B000F",
+  "cognome" : "Cognome",
+  "sesso" : "M",
+  "data_nascita" : "1947-07-23",
+  "nome" : "Nome",
+  "luogo_nascita" : {
+    "descrizione" : "Torino",
+    "codice" : "L219"
+  }
+}, {
+  "codice_fiscale" : "AAAAAA00B77B000F",
+  "cognome" : "Cognome",
+  "sesso" : "M",
+  "data_nascita" : "1947-07-23",
+  "nome" : "Nome",
+  "luogo_nascita" : {
+    "descrizione" : "Torino",
+    "codice" : "L219"
+  }
+} ]</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce l'elenco dei titolari delle esenzioni del cittadino identificato dal {cf} nel path.
+        
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="codiciEsenzioneGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /codici-esenzione</code></pre></div>
+    <div class="method-summary">Lista codici esenzione (<span class="nickname">codiciEsenzioneGet</span>)</div>
+    <div class="method-notes">Lista codici esenzione</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#codice_esenzione">codice_esenzione</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "descrizione" : "Cittadini con meno di 6 anni o più di 65 anni",
+  "motivo" : "Cittadini di età inferiore a sei anni e superiore a sessantacinque anni, appartenenti ad un nucleo familiare con reddito annuo complessivo non superiore a 36.151,98 euro.",
+  "valido" : true,
+  "data_attivazione" : "2018-07-23T15:25:00+02:00",
+  "data_scadenza" : "2018-07-23T15:25:00+02:00",
+  "codice" : "E01",
+  "familiare" : false
+}, {
+  "descrizione" : "Cittadini con meno di 6 anni o più di 65 anni",
+  "motivo" : "Cittadini di età inferiore a sei anni e superiore a sessantacinque anni, appartenenti ad un nucleo familiare con reddito annuo complessivo non superiore a 36.151,98 euro.",
+  "valido" : true,
+  "data_attivazione" : "2018-07-23T15:25:00+02:00",
+  "data_scadenza" : "2018-07-23T15:25:00+02:00",
+  "codice" : "E01",
+  "familiare" : false
+} ]</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce la lista dei codici delle esenzioni.
+        
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="configurazioneGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /configurazione</code></pre></div>
+    <div class="method-summary">Dati di configurazione e accessori (<span class="nickname">configurazioneGet</span>)</div>
+    <div class="method-notes">Contiene i dati di configurazione e accessori per il front-end.
+Ad esempio può contentere informazioni come testi di aiuto da mostrare
+sulla UI, dati che permettano di capire lo stato attuale del servizio ecc.</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#configurazione">configurazione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "descrizione_titolare" : "descrizione_titolare"
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restiutisce tutti i dati di configurazione
+        <a href="#configurazione">configurazione</a>
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="disclaimerGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /disclaimer</code></pre></div>
+    <div class="method-summary">Testo del disclaimer (<span class="nickname">disclaimerGet</span>)</div>
+    <div class="method-notes">Disclaimer da far approvare al cittadino</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#disclaimer">disclaimer</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "testo_informativa" : "testo_informativa",
+  "testo_privacy" : "testo_privacy",
+  "versione_privacy" : "versione_privacy",
+  "versione_informativa" : "versione_informativa"
+}</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce il testo del disclaimer ed eventualmente la versione (ad oggi non è previsto un versionemento del disclaimer, è un record nella tabella ESENRED_C_PARAMETRI)
+        <a href="#disclaimer">disclaimer</a>
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="rapportiFamiliariGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /rapporti-familiari</code></pre></div>
+    <div class="method-summary">Lista rapporti familiari (<span class="nickname">rapportiFamiliariGet</span>)</div>
+    <div class="method-notes">Lista di possibili relazioni con i familiari che permettono la richiesta di esenzione di terzi</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#rapporto_familiare">rapporto_familiare</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "descrizione" : "Genitore eservente la potestà",
+  "codice" : "1"
+}, {
+  "descrizione" : "Genitore eservente la potestà",
+  "codice" : "1"
+} ]</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce la lista dei possibili rapporti familiari ammessi dalle esenzioni.
+        
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="statiEsenzioneGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /stati-esenzione</code></pre></div>
+    <div class="method-summary">Lista stati esenzione (<span class="nickname">statiEsenzioneGet</span>)</div>
+    <div class="method-notes">Lista dei possibili stati di un'esenzione</div>
+
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#stato_esenzione">stato_esenzione</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "descrizione" : "Non valida",
+  "codice" : "1"
+}, {
+  "descrizione" : "Non valida",
+  "codice" : "1"
+} ]</code></pre>
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce la lista dei possibili stati di un'esenzione.
+        
+    <h4 class="field-label">400</h4>
+    Generico errore relativo al client (richiesta errata)
+        <a href="#Errore">Errore</a>
+    <h4 class="field-label">500</h4>
+    Generico errore relativo al server (risposta errata)
+        <a href="#Errore">Errore</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Dettaglio"><code>Dettaglio</code> - </a></li>
+    <li><a href="#Errore"><code>Errore</code> - </a></li>
+    <li><a href="#Revoca"><code>Revoca</code> - Revoca</a></li>
+    <li><a href="#cittadino"><code>cittadino</code> - Cittadino</a></li>
+    <li><a href="#cittadino_post"><code>cittadino_post</code> - [POST] Cittadino</a></li>
+    <li><a href="#codice_esenzione"><code>codice_esenzione</code> - Codice dell'esenzione</a></li>
+    <li><a href="#configurazione"><code>configurazione</code> - Configurazione</a></li>
+    <li><a href="#date_crit"><code>date_crit</code> - [FILTRI][CRITERI] Date</a></li>
+    <li><a href="#disclaimer"><code>disclaimer</code> - Disclaimer</a></li>
+    <li><a href="#esenzione"><code>esenzione</code> - Esenzione</a></li>
+    <li><a href="#esenzione_post"><code>esenzione_post</code> - [POST] Esenzione</a></li>
+    <li><a href="#filtro_esenzioni"><code>filtro_esenzioni</code> - [FILTRI] Esenzioni</a></li>
+    <li><a href="#info"><code>info</code> - Info</a></li>
+    <li><a href="#info_servizio"><code>info_servizio</code> - </a></li>
+    <li><a href="#luogo"><code>luogo</code> - </a></li>
+    <li><a href="#luogo_nascita"><code>luogo_nascita</code> - Luogo di nascita</a></li>
+    <li><a href="#rapporto_familiare"><code>rapporto_familiare</code> - Rapporto familiare</a></li>
+    <li><a href="#stato_esenzione"><code>stato_esenzione</code> - Stato dell'esenzione</a></li>
+    <li><a href="#string_crit"><code>string_crit</code> - [FILTRI][CRITERI] Stringhe</a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Dettaglio"><code>Dettaglio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Errore"><code>Errore</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">title (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">detail (optional)</div><div class="param-desc"><span class="param-type"><a href="#Dettaglio">array[Dettaglio]</a></span>  </div>
+<div class="param">links (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Revoca"><code>Revoca</code> - Revoca</a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">motivazione_revoca </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La motivazione delle revoca inserita probabilmente dal cittadino </div>
+<div class="param">codice_esenzione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice esenzione obbligatorio per la revoca di esenzioni certificate ovvero quelle a cui manca l'id </div>
+<div class="param">cf_beneficiario (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice fiscale del beneficiario obbligatorio per esenzioni autocertificate </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="cittadino"><code>cittadino</code> - Cittadino</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>nel caso di richiesta esenzione per se stessi l'unico campo valorizzato è il codice fiscale, il resto dei dati vengono forniti solo in caso di richiesta per altri</div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice fiscale </div>
+<div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> cognome </div>
+<div class="param">sesso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> sesso </div>
+<div class="param">data_nascita (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">luogo_nascita (optional)</div><div class="param-desc"><span class="param-type"><a href="#luogo_nascita">luogo_nascita</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="cittadino_post"><code>cittadino_post</code> - [POST] Cittadino</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Questa risorsa descrive la struttura relativa al cittadino usata solitamente nelle &quot;POST&quot;</div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice fiscale </div>
+<div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> cognome </div>
+<div class="param">sesso (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> sesso </div>
+<div class="param">data_nascita (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">luogo_nascita (optional)</div><div class="param-desc"><span class="param-type"><a href="#luogo">luogo</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="codice_esenzione"><code>codice_esenzione</code> - Codice dell'esenzione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice dell'esenzione. </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">motivo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Una descrizione testuale da mostrare all'utente. </div>
+<div class="param">familiare (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se la tipologia di esenzione definita dal codice è relativa al nucleo familiare </div>
+<div class="param">valido (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se il codice è attualmente valido o se deve essere utilizzato solo per la ricerca delle esenzioni vecchie </div>
+<div class="param">data_attivazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Indica quando è stata attivato o verrà attivato il codice esenzione. Potrebbe essere utile per mostrare l'informazione all'utente format: datetime</div>
+<div class="param">data_scadenza (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Indica quando scade il codice esenzione. Potrebbe essere utile per mostrare l'informazione all'utente format: datetime</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="configurazione"><code>configurazione</code> - Configurazione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Risorsa che contiene i dati di configurazione del front-end.
+Ad esempio può contenere delle stringhe &quot;helper&quot; da mostrare sulla UI
+per facilitare la comprensione dell'utente. Potrebbe contenere in futuro
+dei dati che permettono di capire lo stato del servizio (es. se è in manutenzione)</div>
+    <div class="field-items">
+      <div class="param">descrizione_titolare (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Contiene il testo, anche HTML, che descrive chi è il titolare di un'esenzione </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="date_crit"><code>date_crit</code> - [FILTRI][CRITERI] Date</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">eq (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Equal (=) format: date</div>
+<div class="param">ne (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Not Equal (&lt;&gt;) format: date</div>
+<div class="param">lt (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Less Then (&lt;) format: date</div>
+<div class="param">lte (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Less Then Or Equal (&lt;=) format: date</div>
+<div class="param">gt (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Greater Then (&gt;) format: date</div>
+<div class="param">gte (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Greater Then Or Equal (&gt;=) format: date</div>
+<div class="param">in (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">array[date]</a></span>  format: date</div>
+<div class="param">nin (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">array[date]</a></span>  format: date</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="disclaimer"><code>disclaimer</code> - Disclaimer</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Testo e versione del disclaimer</div>
+    <div class="field-items">
+      <div class="param">testo_informativa (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Contiene il testo, anche HTML, dell'informativa che l'utente dovrà accettare </div>
+<div class="param">versione_informativa (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Contiene la versione dell'informativa </div>
+<div class="param">testo_privacy (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Contiene il testo, anche HTML, dell'informativa sulla privacy che l'utente dovrà accettare </div>
+<div class="param">versione_privacy (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Contiene la versione dell'informativa sulla privacy </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="esenzione"><code>esenzione</code> - Esenzione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Identificativo univoco </div>
+<div class="param">protocollo (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> numero di protocollo Sogei
+(valorizzato solo nella risposta) </div>
+<div class="param">data_richiesta (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Quando è stata richiesta l'esenzione? format: date-time</div>
+<div class="param">data_inizio_validita (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Da quando è valida l'esenzione? format: date-time</div>
+<div class="param">data_scadenza (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Quando scade questa esenzione? format: date-time</div>
+<div class="param">data_revoca (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Quando è stata revocata questa esenzione? format: date-time</div>
+<div class="param">motivazione_revoca (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> fornita dal cittadino, viene riportata nelle varie richieste se preesente </div>
+<div class="param">revocabile (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> È possibile revocare questa esenzione?
+(Valorizzato solo nella risposta) </div>
+<div class="param">stampabile (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> È una esenzione stampabile?
+(Valorizzato solo nella risposta) </div>
+<div class="param">stato (optional)</div><div class="param-desc"><span class="param-type"><a href="#stato_esenzione">stato_esenzione</a></span>  </div>
+<div class="param">codice_esenzione (optional)</div><div class="param-desc"><span class="param-type"><a href="#codice_esenzione">codice_esenzione</a></span>  </div>
+<div class="param">creato_da (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino">cittadino</a></span>  </div>
+<div class="param">creato_per (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino">cittadino</a></span>  </div>
+<div class="param">titolare (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino">cittadino</a></span>  </div>
+<div class="param">rapporto_familiare (optional)</div><div class="param-desc"><span class="param-type"><a href="#rapporto_familiare">rapporto_familiare</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="esenzione_post"><code>esenzione_post</code> - [POST] Esenzione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'><p>Descrive il payload che il client può passare in fase di creazione di un'esenzione.<br></p>
+<ul>
+<li>Il campo &quot;creato_per&quot; se non popolato si riferisce all'utente il cui
+codice fiscale {cf} è presente nel path</li>
+<li>Il campo &quot;titolare&quot; se non popolato si riferisce all'utente il cui
+codice fiscale {cf} è presente nel path</li>
+</ul>
+</div>
+    <div class="field-items">
+      <div class="param">codice_esenzione </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La proprietà <code>codice</code> del codice dell'esenzione </div>
+<div class="param">rapporto_familiare (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice del rapporto familiare </div>
+<div class="param">disclaimer (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Presa visione del disclaimer (eventualmente integer con versione?) </div>
+<div class="param">creato_per (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino_post">cittadino_post</a></span>  </div>
+<div class="param">titolare (optional)</div><div class="param-desc"><span class="param-type"><a href="#cittadino_post">cittadino_post</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="filtro_esenzioni"><code>filtro_esenzioni</code> - [FILTRI] Esenzioni</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">stato (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+<div class="param">codice_esenzione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+<div class="param">rapporto_familiare (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+<div class="param">data_richiesta (optional)</div><div class="param-desc"><span class="param-type"><a href="#date_crit">date_crit</a></span>  </div>
+<div class="param">data_inizio_validita (optional)</div><div class="param-desc"><span class="param-type"><a href="#date_crit">date_crit</a></span>  </div>
+<div class="param">data_scadenza (optional)</div><div class="param-desc"><span class="param-type"><a href="#date_crit">date_crit</a></span>  </div>
+<div class="param">data_revoca (optional)</div><div class="param-desc"><span class="param-type"><a href="#date_crit">date_crit</a></span>  </div>
+<div class="param">creato_da (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+<div class="param">creato_per (optional)</div><div class="param-desc"><span class="param-type"><a href="#string_crit">string_crit</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="info"><code>info</code> - Info</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Una risorsa che ci permette di avere dati aggiuntivi sulla configurazione che un cittadino ha su questo servizio</div>
+    <div class="field-items">
+      <div class="param">scadenza </div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> indica la data di scadenza delle esenzioni, che è una <em>costante</em> costruita a partire dal valore della tabella ESENRED_C_PARAMETRI con CODICE = DATA_SCADENZA_PARAMETRIZZATA format: date</div>
+<div class="param">bloccato </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> indica se l'utente può creare una nuova esenzione o meno </div>
+<div class="param">data_sblocco (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Permette di mostrare all'utente quando potrà tornare a creare esenzioni format: date-time</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="info_servizio"><code>info_servizio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome del servizio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del servizio </div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">servizio_attivo (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> boolean di utilita per eventuali test </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="luogo"><code>luogo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice del comune </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del comune </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="luogo_nascita"><code>luogo_nascita</code> - Luogo di nascita</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Model che rappresenta un luogo di nascita</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="rapporto_familiare"><code>rapporto_familiare</code> - Rapporto familiare</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Il rapporto familiare esistente tra il cittadino che crea l'esenzione ed il beneficiario.
+Nel caso in cui un cittadino crea un'esenzione per sè, questo campo sarà null</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Un codename univoco che permette di identificare univocamente il rapporto familiare. </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Una descrizione testuale da mostrare all'utente. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="stato_esenzione"><code>stato_esenzione</code> - Stato dell'esenzione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Questo model rappresenta lo stato dell'esenzione</div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Un codename univoco che permette di identificare univocamente lo stato. </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Una descrizione testuale da mostrare all'utente. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="string_crit"><code>string_crit</code> - [FILTRI][CRITERI] Stringhe</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">eq (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Equal (=) </div>
+<div class="param">ne (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Not Equal (&lt;&gt;) </div>
+<div class="param">in (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> In Array </div>
+<div class="param">nin (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> Not In Array </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

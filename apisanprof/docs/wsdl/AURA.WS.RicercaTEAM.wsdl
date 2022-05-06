@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://RicercaTEAM.central.services.auraws.aura.csi.it" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://RicercaTEAM.central.services.auraws.aura.csi.it">
+    <types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://RicercaTEAM.central.services.auraws.aura.csi.it">
+            <s:element name="RicercaTEAM">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" name="CF" type="s:string"/>
+                        <s:element minOccurs="0" name="TEAM" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RicercaTEAMResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="RicercaTEAMResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </types>
+    <message name="RicercaTEAMSoapIn">
+        <part name="parameters" element="s0:RicercaTEAM"/>
+    </message>
+    <message name="RicercaTEAMSoapOut">
+        <part name="parameters" element="s0:RicercaTEAMResponse"/>
+    </message>
+    <portType name="RicercaTEAMSoap">
+        <operation name="RicercaTEAM">
+            <input message="s0:RicercaTEAMSoapIn"/>
+            <output message="s0:RicercaTEAMSoapOut"/>
+        </operation>
+    </portType>
+    <binding name="RicercaTEAMSoap" type="s0:RicercaTEAMSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="RicercaTEAM">
+            <soap:operation soapAction="http://RicercaTEAM.central.services.auraws.aura.csi.it/AURA.WS.RicercaTEAM.RicercaTEAM" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="RicercaTEAM">
+        <port name="RicercaTEAMSoap" binding="s0:RicercaTEAMSoap">
+            <soap:address location="https://xxx.xxx.it/sanitxens/AURA.WS.RicercaTEAM.cls"/>
+        </port>
+    </service>
+</definitions>

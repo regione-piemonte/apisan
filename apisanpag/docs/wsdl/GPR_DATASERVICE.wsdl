@@ -1,0 +1,1833 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://ws.wso2.org/dataservice" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns0="http://csi.it" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://ws.wso2.org/dataservice">
+    <wsdl:documentation></wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://csi.it">
+            <xs:element name="LmsGetTicketPagatiFunc">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="codiceFiscale" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="codiceFiscaleDelgante" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="annoPagamento" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="elencoTicketPagati" type="ns0:elencoTicketPagati"></xs:element>
+            <xs:complexType name="elencoTicketPagati">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="PRATICA" type="ns0:PRATICA"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PRATICA">
+                <xs:sequence>
+                    <xs:element name="ORDERCOL" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CODICE_FISCALE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_PRENOTAZIONE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUMERO_PRATICA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_ASR_CUP" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DESCRIZIONE_ID_ASR_CUP" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_PRATICA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_TICKET_PAGATO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="MOTIVO_PAGAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CONSENSO_730" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CODICE_STATO_PRATICA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DESCIZIONE_STATO_PRATICA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DATA_ANNULLAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_DA_RIMBORSARE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_RIMBORSATO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="MODALITA_RIMBORSO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CODICE_SERVIZIO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CODICE_VERSAMENTO" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="LmsGetRicevutePagamentiOnoratiByPratica">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id_prenotazione" nillable="true" type="xs:decimal"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="elencoRicevutePagamentiOnorati" type="ns0:elencoRicevutePagamentiOnorati"></xs:element>
+            <xs:complexType name="elencoRicevutePagamentiOnorati">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="RICEVUTA_PAGAMENTO" type="ns0:RICEVUTA_PAGAMENTO"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RICEVUTA_PAGAMENTO">
+                <xs:sequence>
+                    <xs:element name="DATA_PAGAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_RICEVUTA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_RT" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_ESITO" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="LmsGetRimborsiPagamentoByPratica">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id_prenotazione" nillable="true" type="xs:decimal"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="elencoRimborsiPagamento" type="ns0:elencoRimborsiPagamento"></xs:element>
+            <xs:complexType name="elencoRimborsiPagamento">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="RIMBORSO_PAGAMENTO" type="ns0:RIMBORSO_PAGAMENTO"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RIMBORSO_PAGAMENTO">
+                <xs:sequence>
+                    <xs:element name="DATA_RIMBORSO_PAGAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_RIMBORSO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_RIMBORSATO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="PRATICA_PAGATA_CON_CREDITO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUMERO_RIMBORSO" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="LmsGetRimborsiUtilizzatiByPratica">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="numero_pratica" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="elencoRimborsiUtilizzati" type="ns0:elencoRimborsiUtilizzati"></xs:element>
+            <xs:complexType name="elencoRimborsiUtilizzati">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="RIMBORSO_UTILIZZATO" type="ns0:RIMBORSO_UTILIZZATO"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RIMBORSO_UTILIZZATO">
+                <xs:sequence>
+                    <xs:element name="ID_RIMBORSO_UTILIZZATO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUMERO_PRATICA_RIMBORSATA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_CREDITO_UTILIZZATO" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://ws.wso2.org/dataservice">
+            <xs:element name="DataServiceFault" type="xs:string"></xs:element>
+            <xs:element name="REQUEST_STATUS" type="xs:string"></xs:element>
+            <xs:element name="DATA_SERVICE_RESPONSE">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any minOccurs="0"></xs:any>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEndpointPerGetListaRimborsiGPR">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="idasr" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprInsertLogMessage">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id_asr" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="uuid" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="cod_stato" nillable="true" type="xs:decimal"></xs:element>
+                        <xs:element name="stringa_xml" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="cod_servizio" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="azione" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="numero_sportello" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="numero_pratica" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="codice_fiscale" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="uuid_ptb" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEndpointPerGetListaTicketCF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ASR" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprListaRELByCF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="codice_fiscale" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEstrazioneListaTicketMetadatiGPAupdate">
+                <xs:complexType>
+                    <xs:sequence></xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprGetConfigLottoIUVCodiceAsr">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CODICE_ASR" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="risposta" type="ns1:risposta"></xs:element>
+            <xs:complexType name="risposta">
+                <xs:sequence>
+                    <xs:element minOccurs="0" ref="ns1:CONFIGURAZIONE_LOTTI"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="CONFIGURAZIONE_LOTTI" type="ns1:CONFIGURAZIONE_LOTTI"></xs:element>
+            <xs:complexType name="CONFIGURAZIONE_LOTTI">
+                <xs:sequence>
+                    <xs:element name="CODICE_ASR" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CODICE_VERSAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUM_OCCORRENZE_IUV" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUM_SOGLIA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DATA_INIZIO_VALIDITA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DATA_FINE_VALIDITA" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprEndpointPerSetOpposizionePrecompilazione730GPR">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="numero_pratica" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SetModalitaErogazioneRimborsoGPR" type="ns1:SetModalitaErogazioneRimborsoGPR"></xs:element>
+            <xs:complexType name="SetModalitaErogazioneRimborsoGPR">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="ENDPOINT" type="ns1:ENDPOINT"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ENDPOINT">
+                <xs:sequence>
+                    <xs:element name="URL" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_ASR" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprEstrazioneListaTicketMetadatiGPAListaFatturaNested">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="idPrenotazione" nillable="true" type="xs:decimal"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LISTA_FATTURA" type="ns1:LISTA_FATTURA"></xs:element>
+            <xs:complexType name="LISTA_FATTURA">
+                <xs:sequence>
+                    <xs:element minOccurs="0" ref="ns1:ELENCO_PAGAMENTI"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ELENCO_PAGAMENTI" type="ns1:ELENCO_PAGAMENTI"></xs:element>
+            <xs:complexType name="ELENCO_PAGAMENTI">
+                <xs:sequence>
+                    <xs:element name="NUMERO_SPORTELLO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUMERO_RICEVUTA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DATA_RICEVUTA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_RICEVUTA" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprListaDescrizioneStrutturaByNRE">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="NRE" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprListaDescrizioneStrutturaByNREResult" type="ns1:GprListaDescrizioneStrutturaByNREResult"></xs:element>
+            <xs:complexType name="GprListaDescrizioneStrutturaByNREResult">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="NREDESCRIZIONE" type="ns1:NREDESCRIZIONE"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="NREDESCRIZIONE">
+                <xs:sequence>
+                    <xs:element name="NRE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DESCRIZIONE_STRUTTURA" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprEndpointPerAttivazioneRecuperoMetadati">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ASR" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEndpointPerAttivazioneAcquisizioneListaStatoTicket">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ASR" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEndpointPerGetDatiSensibiliUtenteCentrale">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ASR" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprRecuperoListaTicketMetadatiUpdate">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DAL" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="AL" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprRecuperoListaTicketMetadati">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DAL" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="AL" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RecuperoListaTicketMetadatiResult" type="ns1:RecuperoListaTicketMetadatiResult"></xs:element>
+            <xs:complexType name="RecuperoListaTicketMetadatiResult">
+                <xs:sequence>
+                    <xs:element minOccurs="0" ref="ns1:LISTA_METADATI_TICKET"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="LISTA_METADATI_TICKET" type="ns1:LISTA_METADATI_TICKET"></xs:element>
+            <xs:complexType name="LISTA_METADATI_TICKET">
+                <xs:sequence>
+                    <xs:element ref="ns1:PAZIENTE"></xs:element>
+                    <xs:element ref="ns1:LISTA_PRENOTAZIONE"></xs:element>
+                    <xs:element ref="ns1:ERRORE"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="PAZIENTE" type="ns1:PAZIENTE"></xs:element>
+            <xs:complexType name="PAZIENTE">
+                <xs:sequence>
+                    <xs:element name="NOME" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="COGNOME" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DATA_NASCITA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CODICE_FISCALE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="INDIRIZZO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="COMUNE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="PROVINCIA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CAP" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="LISTA_PRENOTAZIONE" type="ns1:LISTA_PRENOTAZIONE"></xs:element>
+            <xs:complexType name="LISTA_PRENOTAZIONE">
+                <xs:sequence>
+                    <xs:element ref="ns1:PRATICA"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="PRATICA" type="ns1:PRATICA"></xs:element>
+            <xs:complexType name="PRATICA">
+                <xs:sequence>
+                    <xs:element name="IMPORTO_PRATICA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element ref="ns1:PRENOTAZIONE"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="PRENOTAZIONE" type="ns1:PRENOTAZIONE"></xs:element>
+            <xs:complexType name="PRENOTAZIONE">
+                <xs:sequence>
+                    <xs:element name="NUMERO_PRATICA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUMERO_PRATICA_ALTERNATIVO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CODICE_SPECIALITA_EROGATA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_DA_PAGARE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_PAGATO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element ref="ns1:ELENCO_PRESTAZIONI"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ELENCO_PRESTAZIONI" type="ns1:ELENCO_PRESTAZIONI"></xs:element>
+            <xs:complexType name="ELENCO_PRESTAZIONI">
+                <xs:sequence>
+                    <xs:element minOccurs="0" ref="ns1:PRESTAZIONE"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="PRESTAZIONE" type="ns1:PRESTAZIONE"></xs:element>
+            <xs:complexType name="PRESTAZIONE">
+                <xs:sequence>
+                    <xs:element name="CODICE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DESCRIZIONE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IMPORTO_PRESTAZIONE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="DATA_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ORA_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="LUOGO_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NOTE_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="COMUNE_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="INDIRIZZO_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="PROVINCIA_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="CAP_APPUNTAMENTO" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ERRORE" type="ns1:ERRORE"></xs:element>
+            <xs:complexType name="ERRORE">
+                <xs:sequence>
+                    <xs:element name="CODICE" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="MESSAGGIO" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprEndpointPerEstrazioneTicketMetadatiGPR">
+                <xs:complexType>
+                    <xs:sequence></xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprGetConfigLottoIUVCodiceAsrCodiceVersamento">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CODICE_ASR" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="CODICE_VERSAMENTO" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEndpointPerSetModalitaErogazioneRimborsoGPR">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="idAsr" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEstrazioneListaTicketMetadatiGPANested">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="idPrenotazione" nillable="true" type="xs:decimal"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprGetConfigLottoIUV">
+                <xs:complexType>
+                    <xs:sequence></xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprListaAvvisiUNP">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="cryptPwd" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprGetDatiSensibiliUtenteAziendale">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="NUMERO_PRATICA" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetDatiSensibiliUtenteAziendaleResult" type="ns1:GetDatiSensibiliUtenteAziendaleResult"></xs:element>
+            <xs:complexType name="GetDatiSensibiliUtenteAziendaleResult">
+                <xs:sequence>
+                    <xs:element minOccurs="0" ref="ns1:PAZIENTE"></xs:element>
+                    <xs:element minOccurs="0" ref="ns1:LISTA_PRENOTAZIONE"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprEstrazioneListaTicketMetadatiGPA">
+                <xs:complexType>
+                    <xs:sequence></xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EstrazioneListaTicketMetadatiResult" type="ns1:EstrazioneListaTicketMetadatiResult"></xs:element>
+            <xs:complexType name="EstrazioneListaTicketMetadatiResult">
+                <xs:sequence>
+                    <xs:element minOccurs="0" ref="ns1:LISTA_METADATI_TICKET"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprRichiestaLottoIUVMulti">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="codice_asr" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="codice_versamento" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="uuid_gpr" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="uuid_gpa" nillable="true" type="xs:string"></xs:element>
+                        <xs:element name="iuv_richiesti" nillable="true" type="xs:decimal"></xs:element>
+                        <xs:element name="esito_prec" nillable="true" type="xs:decimal"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprRichiestaLottoIUVMultiResponse" type="ns1:GprRichiestaLottoIUVMultiResponse"></xs:element>
+            <xs:complexType name="GprRichiestaLottoIUVMultiResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="LOTTO_IUV" type="ns1:LOTTO_IUV"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="LOTTO_IUV">
+                <xs:sequence>
+                    <xs:element name="ESITO" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="NUM_IUV_RICHIESTA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="IUV" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="AUXDIGIT" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="APPLICATION_CODE" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprEndpointPerGetListaFlussiFRDaInviareGPA">
+                <xs:complexType>
+                    <xs:sequence></xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEndpointPerGetListaFlussiFRDaInviareGPAResult" type="ns1:GprEndpointPerGetListaFlussiFRDaInviareGPAResult"></xs:element>
+            <xs:complexType name="GprEndpointPerGetListaFlussiFRDaInviareGPAResult">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="FLUSSO" type="ns1:FLUSSO"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FLUSSO">
+                <xs:sequence>
+                    <xs:element name="ID_QUEUE_FLUSSI" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_MSG" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="URL_GPA" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="UUID" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_ASR" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="MESSAGGIO" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GprListaPratiche">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="numero_pratica" nillable="true" type="xs:string"></xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GprEndpointPerGetModalitaErogazioneAmmissibiliGPR">
+                <xs:complexType>
+                    <xs:sequence></xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetModalitaErogazioneAmmissibiliGPR" type="ns1:GetModalitaErogazioneAmmissibiliGPR"></xs:element>
+            <xs:complexType name="GetModalitaErogazioneAmmissibiliGPR">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="ENDPOINT" type="ns1:ENDPOINT2"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ENDPOINT2">
+                <xs:sequence>
+                    <xs:element name="URL" nillable="true" type="xs:string"></xs:element>
+                    <xs:element name="ID_ASR" nillable="true" type="xs:string"></xs:element>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="GprEstrazioneListaTicketMetadatiGPANestedRequest">
+        <wsdl:part name="parameters" element="ns1:GprEstrazioneListaTicketMetadatiGPANested"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEstrazioneListaTicketMetadatiGPANestedResponse">
+        <wsdl:part name="parameters" element="ns1:ELENCO_PRESTAZIONI"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="DataServiceFault">
+        <wsdl:part name="parameters" element="ns1:DataServiceFault"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerEstrazioneTicketMetadatiGPRRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerEstrazioneTicketMetadatiGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerEstrazioneTicketMetadatiGPRResponse">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerEstrazioneTicketMetadatiGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaPraticheRequest">
+        <wsdl:part name="parameters" element="ns1:GprListaPratiche"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaPraticheResponse">
+        <wsdl:part name="parameters" element="ns1:GprListaPratiche"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerSetOpposizionePrecompilazione730GPRRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerSetOpposizionePrecompilazione730GPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerSetOpposizionePrecompilazione730GPRResponse">
+        <wsdl:part name="parameters" element="ns1:SetModalitaErogazioneRimborsoGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEstrazioneListaTicketMetadatiGPARequest">
+        <wsdl:part name="parameters" element="ns1:GprEstrazioneListaTicketMetadatiGPA"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEstrazioneListaTicketMetadatiGPAResponse">
+        <wsdl:part name="parameters" element="ns1:EstrazioneListaTicketMetadatiResult"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerAttivazioneAcquisizioneListaStatoTicketRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerAttivazioneAcquisizioneListaStatoTicket"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerAttivazioneAcquisizioneListaStatoTicketResponse">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerAttivazioneAcquisizioneListaStatoTicket"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetModalitaErogazioneAmmissibiliGPRRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetModalitaErogazioneAmmissibiliGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetModalitaErogazioneAmmissibiliGPRResponse">
+        <wsdl:part name="parameters" element="ns1:GetModalitaErogazioneAmmissibiliGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprRecuperoListaTicketMetadatiRequest">
+        <wsdl:part name="parameters" element="ns1:GprRecuperoListaTicketMetadati"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprRecuperoListaTicketMetadatiResponse">
+        <wsdl:part name="parameters" element="ns1:RecuperoListaTicketMetadatiResult"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetDatiSensibiliUtenteCentraleRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetDatiSensibiliUtenteCentrale"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetDatiSensibiliUtenteCentraleResponse">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetDatiSensibiliUtenteCentrale"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprRecuperoListaTicketMetadatiUpdateRequest">
+        <wsdl:part name="parameters" element="ns1:GprRecuperoListaTicketMetadatiUpdate"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaDescrizioneStrutturaByNRERequest">
+        <wsdl:part name="parameters" element="ns1:GprListaDescrizioneStrutturaByNRE"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaDescrizioneStrutturaByNREResponse">
+        <wsdl:part name="parameters" element="ns1:GprListaDescrizioneStrutturaByNREResult"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetTicketPagatiFuncRequest">
+        <wsdl:part name="parameters" element="ns0:LmsGetTicketPagatiFunc"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetTicketPagatiFuncResponse">
+        <wsdl:part name="parameters" element="ns0:elencoTicketPagati"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerSetModalitaErogazioneRimborsoGPRRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerSetModalitaErogazioneRimborsoGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerSetModalitaErogazioneRimborsoGPRResponse">
+        <wsdl:part name="parameters" element="ns1:SetModalitaErogazioneRimborsoGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetDatiSensibiliUtenteAziendaleRequest">
+        <wsdl:part name="parameters" element="ns1:GprGetDatiSensibiliUtenteAziendale"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetDatiSensibiliUtenteAziendaleResponse">
+        <wsdl:part name="parameters" element="ns1:GetDatiSensibiliUtenteAziendaleResult"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaAvvisiUNPRequest">
+        <wsdl:part name="parameters" element="ns1:GprListaAvvisiUNP"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaAvvisiUNPResponse">
+        <wsdl:part name="parameters" element="ns1:GprListaAvvisiUNP"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEstrazioneListaTicketMetadatiGPAListaFatturaNestedRequest">
+        <wsdl:part name="parameters" element="ns1:GprEstrazioneListaTicketMetadatiGPAListaFatturaNested"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEstrazioneListaTicketMetadatiGPAListaFatturaNestedResponse">
+        <wsdl:part name="parameters" element="ns1:LISTA_FATTURA"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetRicevutePagamentiOnoratiByPraticaRequest">
+        <wsdl:part name="parameters" element="ns0:LmsGetRicevutePagamentiOnoratiByPratica"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetRicevutePagamentiOnoratiByPraticaResponse">
+        <wsdl:part name="parameters" element="ns0:elencoRicevutePagamentiOnorati"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaRELByCFRequest">
+        <wsdl:part name="parameters" element="ns1:GprListaRELByCF"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprListaRELByCFResponse">
+        <wsdl:part name="parameters" element="ns1:GprListaRELByCF"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetConfigLottoIUVCodiceAsrRequest">
+        <wsdl:part name="parameters" element="ns1:GprGetConfigLottoIUVCodiceAsr"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetConfigLottoIUVCodiceAsrResponse">
+        <wsdl:part name="parameters" element="ns1:risposta"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetConfigLottoIUVRequest">
+        <wsdl:part name="parameters" element="ns1:GprGetConfigLottoIUV"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetConfigLottoIUVResponse">
+        <wsdl:part name="parameters" element="ns1:risposta"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEstrazioneListaTicketMetadatiGPAupdateRequest">
+        <wsdl:part name="parameters" element="ns1:GprEstrazioneListaTicketMetadatiGPAupdate"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetConfigLottoIUVCodiceAsrCodiceVersamentoRequest">
+        <wsdl:part name="parameters" element="ns1:GprGetConfigLottoIUVCodiceAsrCodiceVersamento"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprGetConfigLottoIUVCodiceAsrCodiceVersamentoResponse">
+        <wsdl:part name="parameters" element="ns1:risposta"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetListaTicketCFRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetListaTicketCF"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetListaTicketCFResponse">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetListaTicketCF"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetRimborsiPagamentoByPraticaRequest">
+        <wsdl:part name="parameters" element="ns0:LmsGetRimborsiPagamentoByPratica"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetRimborsiPagamentoByPraticaResponse">
+        <wsdl:part name="parameters" element="ns0:elencoRimborsiPagamento"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetRimborsiUtilizzatiByPraticaRequest">
+        <wsdl:part name="parameters" element="ns0:LmsGetRimborsiUtilizzatiByPratica"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="LmsGetRimborsiUtilizzatiByPraticaResponse">
+        <wsdl:part name="parameters" element="ns0:elencoRimborsiUtilizzati"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprInsertLogMessageRequest">
+        <wsdl:part name="parameters" element="ns1:GprInsertLogMessage"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetListaFlussiFRDaInviareGPARequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetListaFlussiFRDaInviareGPA"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetListaFlussiFRDaInviareGPAResponse">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetListaFlussiFRDaInviareGPAResult"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprRichiestaLottoIUVMultiRequest">
+        <wsdl:part name="parameters" element="ns1:GprRichiestaLottoIUVMulti"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprRichiestaLottoIUVMultiResponse">
+        <wsdl:part name="parameters" element="ns1:GprRichiestaLottoIUVMultiResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerAttivazioneRecuperoMetadatiRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerAttivazioneRecuperoMetadati"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerAttivazioneRecuperoMetadatiResponse">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerAttivazioneRecuperoMetadati"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetListaRimborsiGPRRequest">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetListaRimborsiGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GprEndpointPerGetListaRimborsiGPRResponse">
+        <wsdl:part name="parameters" element="ns1:GprEndpointPerGetListaRimborsiGPR"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="GPR_DATASERVICEPortType">
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPANested">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEstrazioneListaTicketMetadatiGPANestedRequest" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPANested"></wsdl:input>
+            <wsdl:output message="ns1:GprEstrazioneListaTicketMetadatiGPANestedResponse" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPANestedResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPANestedDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerEstrazioneTicketMetadatiGPR">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerEstrazioneTicketMetadatiGPRRequest" wsaw:Action="urn:GprEndpointPerEstrazioneTicketMetadatiGPR"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerEstrazioneTicketMetadatiGPRResponse" wsaw:Action="urn:GprEndpointPerEstrazioneTicketMetadatiGPRResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerEstrazioneTicketMetadatiGPRDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaPratiche">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprListaPraticheRequest" wsaw:Action="urn:GprListaPratiche"></wsdl:input>
+            <wsdl:output message="ns1:GprListaPraticheResponse" wsaw:Action="urn:GprListaPraticheResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprListaPraticheDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetOpposizionePrecompilazione730GPR">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerSetOpposizionePrecompilazione730GPRRequest" wsaw:Action="urn:GprEndpointPerSetOpposizionePrecompilazione730GPR"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerSetOpposizionePrecompilazione730GPRResponse" wsaw:Action="urn:GprEndpointPerSetOpposizionePrecompilazione730GPRResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerSetOpposizionePrecompilazione730GPRDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPA">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEstrazioneListaTicketMetadatiGPARequest" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPA"></wsdl:input>
+            <wsdl:output message="ns1:GprEstrazioneListaTicketMetadatiGPAResponse" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPAResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPADataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneAcquisizioneListaStatoTicket">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerAttivazioneAcquisizioneListaStatoTicketRequest" wsaw:Action="urn:GprEndpointPerAttivazioneAcquisizioneListaStatoTicket"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerAttivazioneAcquisizioneListaStatoTicketResponse" wsaw:Action="urn:GprEndpointPerAttivazioneAcquisizioneListaStatoTicketResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerAttivazioneAcquisizioneListaStatoTicketDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetModalitaErogazioneAmmissibiliGPR">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerGetModalitaErogazioneAmmissibiliGPRRequest" wsaw:Action="urn:GprEndpointPerGetModalitaErogazioneAmmissibiliGPR"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerGetModalitaErogazioneAmmissibiliGPRResponse" wsaw:Action="urn:GprEndpointPerGetModalitaErogazioneAmmissibiliGPRResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerGetModalitaErogazioneAmmissibiliGPRDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadati">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprRecuperoListaTicketMetadatiRequest" wsaw:Action="urn:GprRecuperoListaTicketMetadati"></wsdl:input>
+            <wsdl:output message="ns1:GprRecuperoListaTicketMetadatiResponse" wsaw:Action="urn:GprRecuperoListaTicketMetadatiResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprRecuperoListaTicketMetadatiDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetDatiSensibiliUtenteCentrale">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerGetDatiSensibiliUtenteCentraleRequest" wsaw:Action="urn:GprEndpointPerGetDatiSensibiliUtenteCentrale"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerGetDatiSensibiliUtenteCentraleResponse" wsaw:Action="urn:GprEndpointPerGetDatiSensibiliUtenteCentraleResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerGetDatiSensibiliUtenteCentraleDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadatiUpdate">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprRecuperoListaTicketMetadatiUpdateRequest" wsaw:Action="urn:GprRecuperoListaTicketMetadatiUpdate"></wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaDescrizioneStrutturaByNRE">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprListaDescrizioneStrutturaByNRERequest" wsaw:Action="urn:GprListaDescrizioneStrutturaByNRE"></wsdl:input>
+            <wsdl:output message="ns1:GprListaDescrizioneStrutturaByNREResponse" wsaw:Action="urn:GprListaDescrizioneStrutturaByNREResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprListaDescrizioneStrutturaByNREDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetTicketPagatiFunc">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:LmsGetTicketPagatiFuncRequest" wsaw:Action="urn:LmsGetTicketPagatiFunc"></wsdl:input>
+            <wsdl:output message="ns1:LmsGetTicketPagatiFuncResponse" wsaw:Action="urn:LmsGetTicketPagatiFuncResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:LmsGetTicketPagatiFuncDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetModalitaErogazioneRimborsoGPR">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerSetModalitaErogazioneRimborsoGPRRequest" wsaw:Action="urn:GprEndpointPerSetModalitaErogazioneRimborsoGPR"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerSetModalitaErogazioneRimborsoGPRResponse" wsaw:Action="urn:GprEndpointPerSetModalitaErogazioneRimborsoGPRResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerSetModalitaErogazioneRimborsoGPRDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetDatiSensibiliUtenteAziendale">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprGetDatiSensibiliUtenteAziendaleRequest" wsaw:Action="urn:GprGetDatiSensibiliUtenteAziendale"></wsdl:input>
+            <wsdl:output message="ns1:GprGetDatiSensibiliUtenteAziendaleResponse" wsaw:Action="urn:GprGetDatiSensibiliUtenteAziendaleResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprGetDatiSensibiliUtenteAziendaleDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaAvvisiUNP">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprListaAvvisiUNPRequest" wsaw:Action="urn:GprListaAvvisiUNP"></wsdl:input>
+            <wsdl:output message="ns1:GprListaAvvisiUNPResponse" wsaw:Action="urn:GprListaAvvisiUNPResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprListaAvvisiUNPDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAListaFatturaNested">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEstrazioneListaTicketMetadatiGPAListaFatturaNestedRequest" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPAListaFatturaNested"></wsdl:input>
+            <wsdl:output message="ns1:GprEstrazioneListaTicketMetadatiGPAListaFatturaNestedResponse" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPAListaFatturaNestedResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPAListaFatturaNestedDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRicevutePagamentiOnoratiByPratica">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:LmsGetRicevutePagamentiOnoratiByPraticaRequest" wsaw:Action="urn:LmsGetRicevutePagamentiOnoratiByPratica"></wsdl:input>
+            <wsdl:output message="ns1:LmsGetRicevutePagamentiOnoratiByPraticaResponse" wsaw:Action="urn:LmsGetRicevutePagamentiOnoratiByPraticaResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:LmsGetRicevutePagamentiOnoratiByPraticaDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaRELByCF">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprListaRELByCFRequest" wsaw:Action="urn:GprListaRELByCF"></wsdl:input>
+            <wsdl:output message="ns1:GprListaRELByCFResponse" wsaw:Action="urn:GprListaRELByCFResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprListaRELByCFDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsr">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprGetConfigLottoIUVCodiceAsrRequest" wsaw:Action="urn:GprGetConfigLottoIUVCodiceAsr"></wsdl:input>
+            <wsdl:output message="ns1:GprGetConfigLottoIUVCodiceAsrResponse" wsaw:Action="urn:GprGetConfigLottoIUVCodiceAsrResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprGetConfigLottoIUVCodiceAsrDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUV">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprGetConfigLottoIUVRequest" wsaw:Action="urn:GprGetConfigLottoIUV"></wsdl:input>
+            <wsdl:output message="ns1:GprGetConfigLottoIUVResponse" wsaw:Action="urn:GprGetConfigLottoIUVResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprGetConfigLottoIUVDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAupdate">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEstrazioneListaTicketMetadatiGPAupdateRequest" wsaw:Action="urn:GprEstrazioneListaTicketMetadatiGPAupdate"></wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsrCodiceVersamento">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprGetConfigLottoIUVCodiceAsrCodiceVersamentoRequest" wsaw:Action="urn:GprGetConfigLottoIUVCodiceAsrCodiceVersamento"></wsdl:input>
+            <wsdl:output message="ns1:GprGetConfigLottoIUVCodiceAsrCodiceVersamentoResponse" wsaw:Action="urn:GprGetConfigLottoIUVCodiceAsrCodiceVersamentoResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprGetConfigLottoIUVCodiceAsrCodiceVersamentoDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaTicketCF">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerGetListaTicketCFRequest" wsaw:Action="urn:GprEndpointPerGetListaTicketCF"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerGetListaTicketCFResponse" wsaw:Action="urn:GprEndpointPerGetListaTicketCFResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerGetListaTicketCFDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiPagamentoByPratica">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:LmsGetRimborsiPagamentoByPraticaRequest" wsaw:Action="urn:LmsGetRimborsiPagamentoByPratica"></wsdl:input>
+            <wsdl:output message="ns1:LmsGetRimborsiPagamentoByPraticaResponse" wsaw:Action="urn:LmsGetRimborsiPagamentoByPraticaResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:LmsGetRimborsiPagamentoByPraticaDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiUtilizzatiByPratica">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:LmsGetRimborsiUtilizzatiByPraticaRequest" wsaw:Action="urn:LmsGetRimborsiUtilizzatiByPratica"></wsdl:input>
+            <wsdl:output message="ns1:LmsGetRimborsiUtilizzatiByPraticaResponse" wsaw:Action="urn:LmsGetRimborsiUtilizzatiByPraticaResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:LmsGetRimborsiUtilizzatiByPraticaDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprInsertLogMessage">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprInsertLogMessageRequest" wsaw:Action="urn:GprInsertLogMessage"></wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaFlussiFRDaInviareGPA">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerGetListaFlussiFRDaInviareGPARequest" wsaw:Action="urn:GprEndpointPerGetListaFlussiFRDaInviareGPA"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerGetListaFlussiFRDaInviareGPAResponse" wsaw:Action="urn:GprEndpointPerGetListaFlussiFRDaInviareGPAResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerGetListaFlussiFRDaInviareGPADataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRichiestaLottoIUVMulti">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprRichiestaLottoIUVMultiRequest" wsaw:Action="urn:GprRichiestaLottoIUVMulti"></wsdl:input>
+            <wsdl:output message="ns1:GprRichiestaLottoIUVMultiResponse" wsaw:Action="urn:GprRichiestaLottoIUVMultiResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprRichiestaLottoIUVMultiDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneRecuperoMetadati">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerAttivazioneRecuperoMetadatiRequest" wsaw:Action="urn:GprEndpointPerAttivazioneRecuperoMetadati"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerAttivazioneRecuperoMetadatiResponse" wsaw:Action="urn:GprEndpointPerAttivazioneRecuperoMetadatiResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerAttivazioneRecuperoMetadatiDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaRimborsiGPR">
+            <wsdl:documentation></wsdl:documentation>
+            <wsdl:input message="ns1:GprEndpointPerGetListaRimborsiGPRRequest" wsaw:Action="urn:GprEndpointPerGetListaRimborsiGPR"></wsdl:input>
+            <wsdl:output message="ns1:GprEndpointPerGetListaRimborsiGPRResponse" wsaw:Action="urn:GprEndpointPerGetListaRimborsiGPRResponse"></wsdl:output>
+            <wsdl:fault message="ns1:DataServiceFault" name="DataServiceFault" wsaw:Action="urn:GprEndpointPerGetListaRimborsiGPRDataServiceFault"></wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="GPR_DATASERVICESOAP11Binding" type="ns1:GPR_DATASERVICEPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPANested">
+            <soap:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPANested" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerEstrazioneTicketMetadatiGPR">
+            <soap:operation soapAction="urn:GprEndpointPerEstrazioneTicketMetadatiGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaPratiche">
+            <soap:operation soapAction="urn:GprListaPratiche" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetOpposizionePrecompilazione730GPR">
+            <soap:operation soapAction="urn:GprEndpointPerSetOpposizionePrecompilazione730GPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPA">
+            <soap:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPA" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneAcquisizioneListaStatoTicket">
+            <soap:operation soapAction="urn:GprEndpointPerAttivazioneAcquisizioneListaStatoTicket" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetModalitaErogazioneAmmissibiliGPR">
+            <soap:operation soapAction="urn:GprEndpointPerGetModalitaErogazioneAmmissibiliGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadati">
+            <soap:operation soapAction="urn:GprRecuperoListaTicketMetadati" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetDatiSensibiliUtenteCentrale">
+            <soap:operation soapAction="urn:GprEndpointPerGetDatiSensibiliUtenteCentrale" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadatiUpdate">
+            <soap:operation soapAction="urn:GprRecuperoListaTicketMetadatiUpdate" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaDescrizioneStrutturaByNRE">
+            <soap:operation soapAction="urn:GprListaDescrizioneStrutturaByNRE" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetTicketPagatiFunc">
+            <soap:operation soapAction="urn:LmsGetTicketPagatiFunc" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetModalitaErogazioneRimborsoGPR">
+            <soap:operation soapAction="urn:GprEndpointPerSetModalitaErogazioneRimborsoGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetDatiSensibiliUtenteAziendale">
+            <soap:operation soapAction="urn:GprGetDatiSensibiliUtenteAziendale" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaAvvisiUNP">
+            <soap:operation soapAction="urn:GprListaAvvisiUNP" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAListaFatturaNested">
+            <soap:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPAListaFatturaNested" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRicevutePagamentiOnoratiByPratica">
+            <soap:operation soapAction="urn:LmsGetRicevutePagamentiOnoratiByPratica" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaRELByCF">
+            <soap:operation soapAction="urn:GprListaRELByCF" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsr">
+            <soap:operation soapAction="urn:GprGetConfigLottoIUVCodiceAsr" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUV">
+            <soap:operation soapAction="urn:GprGetConfigLottoIUV" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAupdate">
+            <soap:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPAupdate" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsrCodiceVersamento">
+            <soap:operation soapAction="urn:GprGetConfigLottoIUVCodiceAsrCodiceVersamento" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaTicketCF">
+            <soap:operation soapAction="urn:GprEndpointPerGetListaTicketCF" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiPagamentoByPratica">
+            <soap:operation soapAction="urn:LmsGetRimborsiPagamentoByPratica" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiUtilizzatiByPratica">
+            <soap:operation soapAction="urn:LmsGetRimborsiUtilizzatiByPratica" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprInsertLogMessage">
+            <soap:operation soapAction="urn:GprInsertLogMessage" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaFlussiFRDaInviareGPA">
+            <soap:operation soapAction="urn:GprEndpointPerGetListaFlussiFRDaInviareGPA" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRichiestaLottoIUVMulti">
+            <soap:operation soapAction="urn:GprRichiestaLottoIUVMulti" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneRecuperoMetadati">
+            <soap:operation soapAction="urn:GprEndpointPerAttivazioneRecuperoMetadati" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaRimborsiGPR">
+            <soap:operation soapAction="urn:GprEndpointPerGetListaRimborsiGPR" style="document"></soap:operation>
+            <wsdl:input>
+                <soap:body use="literal"></soap:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"></soap:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap:fault use="literal" name="DataServiceFault"></soap:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="GPR_DATASERVICESOAP12Binding" type="ns1:GPR_DATASERVICEPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap12:binding>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPANested">
+            <soap12:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPANested" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerEstrazioneTicketMetadatiGPR">
+            <soap12:operation soapAction="urn:GprEndpointPerEstrazioneTicketMetadatiGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaPratiche">
+            <soap12:operation soapAction="urn:GprListaPratiche" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetOpposizionePrecompilazione730GPR">
+            <soap12:operation soapAction="urn:GprEndpointPerSetOpposizionePrecompilazione730GPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPA">
+            <soap12:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPA" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneAcquisizioneListaStatoTicket">
+            <soap12:operation soapAction="urn:GprEndpointPerAttivazioneAcquisizioneListaStatoTicket" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetModalitaErogazioneAmmissibiliGPR">
+            <soap12:operation soapAction="urn:GprEndpointPerGetModalitaErogazioneAmmissibiliGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadati">
+            <soap12:operation soapAction="urn:GprRecuperoListaTicketMetadati" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetDatiSensibiliUtenteCentrale">
+            <soap12:operation soapAction="urn:GprEndpointPerGetDatiSensibiliUtenteCentrale" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadatiUpdate">
+            <soap12:operation soapAction="urn:GprRecuperoListaTicketMetadatiUpdate" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaDescrizioneStrutturaByNRE">
+            <soap12:operation soapAction="urn:GprListaDescrizioneStrutturaByNRE" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetTicketPagatiFunc">
+            <soap12:operation soapAction="urn:LmsGetTicketPagatiFunc" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetModalitaErogazioneRimborsoGPR">
+            <soap12:operation soapAction="urn:GprEndpointPerSetModalitaErogazioneRimborsoGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetDatiSensibiliUtenteAziendale">
+            <soap12:operation soapAction="urn:GprGetDatiSensibiliUtenteAziendale" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaAvvisiUNP">
+            <soap12:operation soapAction="urn:GprListaAvvisiUNP" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAListaFatturaNested">
+            <soap12:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPAListaFatturaNested" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRicevutePagamentiOnoratiByPratica">
+            <soap12:operation soapAction="urn:LmsGetRicevutePagamentiOnoratiByPratica" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaRELByCF">
+            <soap12:operation soapAction="urn:GprListaRELByCF" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsr">
+            <soap12:operation soapAction="urn:GprGetConfigLottoIUVCodiceAsr" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUV">
+            <soap12:operation soapAction="urn:GprGetConfigLottoIUV" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAupdate">
+            <soap12:operation soapAction="urn:GprEstrazioneListaTicketMetadatiGPAupdate" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsrCodiceVersamento">
+            <soap12:operation soapAction="urn:GprGetConfigLottoIUVCodiceAsrCodiceVersamento" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaTicketCF">
+            <soap12:operation soapAction="urn:GprEndpointPerGetListaTicketCF" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiPagamentoByPratica">
+            <soap12:operation soapAction="urn:LmsGetRimborsiPagamentoByPratica" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiUtilizzatiByPratica">
+            <soap12:operation soapAction="urn:LmsGetRimborsiUtilizzatiByPratica" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprInsertLogMessage">
+            <soap12:operation soapAction="urn:GprInsertLogMessage" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaFlussiFRDaInviareGPA">
+            <soap12:operation soapAction="urn:GprEndpointPerGetListaFlussiFRDaInviareGPA" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprRichiestaLottoIUVMulti">
+            <soap12:operation soapAction="urn:GprRichiestaLottoIUVMulti" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneRecuperoMetadati">
+            <soap12:operation soapAction="urn:GprEndpointPerAttivazioneRecuperoMetadati" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaRimborsiGPR">
+            <soap12:operation soapAction="urn:GprEndpointPerGetListaRimborsiGPR" style="document"></soap12:operation>
+            <wsdl:input>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"></soap12:body>
+            </wsdl:output>
+            <wsdl:fault name="DataServiceFault">
+                <soap12:fault use="literal" name="DataServiceFault"></soap12:fault>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="GPR_DATASERVICEHttpBinding" type="ns1:GPR_DATASERVICEPortType">
+        <http:binding verb="POST"></http:binding>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPANested">
+            <http:operation location="GprEstrazioneListaTicketMetadatiGPANested"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerEstrazioneTicketMetadatiGPR">
+            <http:operation location="GprEndpointPerEstrazioneTicketMetadatiGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaPratiche">
+            <http:operation location="GprListaPratiche"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetOpposizionePrecompilazione730GPR">
+            <http:operation location="GprEndpointPerSetOpposizionePrecompilazione730GPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPA">
+            <http:operation location="GprEstrazioneListaTicketMetadatiGPA"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneAcquisizioneListaStatoTicket">
+            <http:operation location="GprEndpointPerAttivazioneAcquisizioneListaStatoTicket"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetModalitaErogazioneAmmissibiliGPR">
+            <http:operation location="GprEndpointPerGetModalitaErogazioneAmmissibiliGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadati">
+            <http:operation location="GprRecuperoListaTicketMetadati"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetDatiSensibiliUtenteCentrale">
+            <http:operation location="GprEndpointPerGetDatiSensibiliUtenteCentrale"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprRecuperoListaTicketMetadatiUpdate">
+            <http:operation location="GprRecuperoListaTicketMetadatiUpdate"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaDescrizioneStrutturaByNRE">
+            <http:operation location="GprListaDescrizioneStrutturaByNRE"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetTicketPagatiFunc">
+            <http:operation location="LmsGetTicketPagatiFunc"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerSetModalitaErogazioneRimborsoGPR">
+            <http:operation location="GprEndpointPerSetModalitaErogazioneRimborsoGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetDatiSensibiliUtenteAziendale">
+            <http:operation location="GprGetDatiSensibiliUtenteAziendale"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaAvvisiUNP">
+            <http:operation location="GprListaAvvisiUNP"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAListaFatturaNested">
+            <http:operation location="GprEstrazioneListaTicketMetadatiGPAListaFatturaNested"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRicevutePagamentiOnoratiByPratica">
+            <http:operation location="LmsGetRicevutePagamentiOnoratiByPratica"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprListaRELByCF">
+            <http:operation location="GprListaRELByCF"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsr">
+            <http:operation location="GprGetConfigLottoIUVCodiceAsr"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUV">
+            <http:operation location="GprGetConfigLottoIUV"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEstrazioneListaTicketMetadatiGPAupdate">
+            <http:operation location="GprEstrazioneListaTicketMetadatiGPAupdate"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprGetConfigLottoIUVCodiceAsrCodiceVersamento">
+            <http:operation location="GprGetConfigLottoIUVCodiceAsrCodiceVersamento"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaTicketCF">
+            <http:operation location="GprEndpointPerGetListaTicketCF"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiPagamentoByPratica">
+            <http:operation location="LmsGetRimborsiPagamentoByPratica"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LmsGetRimborsiUtilizzatiByPratica">
+            <http:operation location="LmsGetRimborsiUtilizzatiByPratica"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprInsertLogMessage">
+            <http:operation location="GprInsertLogMessage"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaFlussiFRDaInviareGPA">
+            <http:operation location="GprEndpointPerGetListaFlussiFRDaInviareGPA"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprRichiestaLottoIUVMulti">
+            <http:operation location="GprRichiestaLottoIUVMulti"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerAttivazioneRecuperoMetadati">
+            <http:operation location="GprEndpointPerAttivazioneRecuperoMetadati"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GprEndpointPerGetListaRimborsiGPR">
+            <http:operation location="GprEndpointPerGetListaRimborsiGPR"></http:operation>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"></mime:content>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="GPR_DATASERVICE">
+        <wsdl:port name="HTTPS_APISOAP11Endpoint" binding="ns1:GPR_DATASERVICESOAP11Binding">
+            <soap:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/GPR_DATASERVICE.HTTPS_APISOAP11Endpoint"></soap:address>
+        </wsdl:port>
+        <wsdl:port name="SecureSOAP11Endpoint" binding="ns1:GPR_DATASERVICESOAP11Binding">
+            <soap:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/GPR_DATASERVICE.SecureSOAP11Endpoint"></soap:address>
+        </wsdl:port>
+        <wsdl:port name="JMSSOAP11Endpoint" binding="ns1:GPR_DATASERVICESOAP11Binding">
+            <soap:address location="jms:/GPR_DATASERVICE?transport.jms.DestinationType=queue&amp;transport.jms.ContentTypeProperty=Content-Type&amp;java.naming.provider.url=failover:(tcp://wsoptf4.isan.csi.it:61616)&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;transport.jms.ConnectionFactoryType=queue&amp;transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory"></soap:address>
+        </wsdl:port>
+        <wsdl:port name="SOAP11Endpoint" binding="ns1:GPR_DATASERVICESOAP11Binding">
+            <soap:address location="http://xxx-gpr.xxx.csi.it:80/wso050/services/GPR_DATASERVICE.SOAP11Endpoint"></soap:address>
+        </wsdl:port>
+        <wsdl:port name="HTTPS_APISOAP12Endpoint" binding="ns1:GPR_DATASERVICESOAP12Binding">
+            <soap12:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/GPR_DATASERVICE.HTTPS_APISOAP12Endpoint"></soap12:address>
+        </wsdl:port>
+        <wsdl:port name="SOAP12Endpoint" binding="ns1:GPR_DATASERVICESOAP12Binding">
+            <soap12:address location="http://xxx-gpr.xxx.csi.it:80/wso050/services/GPR_DATASERVICE.SOAP12Endpoint"></soap12:address>
+        </wsdl:port>
+        <wsdl:port name="JMSSOAP12Endpoint" binding="ns1:GPR_DATASERVICESOAP12Binding">
+            <soap12:address location="jms:/GPR_DATASERVICE?transport.jms.DestinationType=queue&amp;transport.jms.ContentTypeProperty=Content-Type&amp;java.naming.provider.url=failover:(tcp://wsoptf4.isan.csi.it:61616)&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;transport.jms.ConnectionFactoryType=queue&amp;transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory"></soap12:address>
+        </wsdl:port>
+        <wsdl:port name="SecureSOAP12Endpoint" binding="ns1:GPR_DATASERVICESOAP12Binding">
+            <soap12:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/GPR_DATASERVICE.SecureSOAP12Endpoint"></soap12:address>
+        </wsdl:port>
+        <wsdl:port name="HTTPEndpoint" binding="ns1:GPR_DATASERVICEHttpBinding">
+            <http:address location="http://xxx-gpr.xxx.csi.it:80/wso050/services/GPR_DATASERVICE.HTTPEndpoint"></http:address>
+        </wsdl:port>
+        <wsdl:port name="SecureHTTPEndpoint" binding="ns1:GPR_DATASERVICEHttpBinding">
+            <http:address location="https://xxx-gpr.xxx.csi.it:443/wso050/services/GPR_DATASERVICE.SecureHTTPEndpoint"></http:address>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

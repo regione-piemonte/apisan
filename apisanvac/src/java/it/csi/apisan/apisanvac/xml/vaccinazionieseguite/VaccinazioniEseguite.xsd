@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="VaccinazioniEseguite" nillable="true" type="VaccinazioniEseguite" />
+  <xs:complexType name="VaccinazioniEseguite">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Segnalazione" type="DTOSegnalazioneReazioniAvverse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOSegnalazioneReazioniAvverse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CodiceFiscaleSegnalatore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CognomeSegnalatore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NomeSegnalatore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TelefonoSegnalatore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="EmailSegnalatore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CFAssistito" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FarmacoConcomitante" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NoteSegnalazione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataReazione" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Tipologia" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NoteRisposta" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IdUtenteVariazione" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CodVaccinazione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IdRichiesta" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

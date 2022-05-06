@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Info_DatiAssistito" nillable="true" type="Info_DatiAssistito" />
+  <xs:complexType name="Info_DatiAssistito">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="ContattiAssistito" type="DTOContatti" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContattiAssistitoResult" type="SetContattoResult" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DatiPaziente" type="DTOPaziente" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Result" type="ResultSetPost" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Documenti" type="ArrayOfDTODocumento" />
+      <xs:element minOccurs="0" maxOccurs="1" name="VacciniDaEffettuare" type="ArrayOfDTOVaccinoEssential" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOContatti">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono2" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono3" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Email" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SetContattoResult">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Success" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Message" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOPaziente">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CodicePaziente" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Cognome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Nome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Sesso" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Codice_Fiscale" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Tessera" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataDiNascita" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ComuneDiNascita" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CittadinanzaCodice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CittadinanzaDescrizione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ComuneResidenza" type="Localita" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ComuneDomicilio" type="Localita" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Telefono" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="UslResidenzaCodice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="UslResidenzaDescrizione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Stato" nillable="true" type="StatiVaccinaliEnum" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataInserimento" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CentroVaccinale" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Localita">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Indirizzo" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Codice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Provincia" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Cap" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataInizio" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataFine" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="StatiVaccinaliEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="InCorso" />
+      <xs:enumeration value="Terminato" />
+      <xs:enumeration value="InadempienteTotale" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ResultSetPost">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Success" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Message" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTODocumento">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTODocumento" nillable="true" type="DTODocumento" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTODocumento">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DataArchiviazione" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Tipologia" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NomeDocumento" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="StatoDocumentoDescrizione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="StatoDocumentoId" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Documento64" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDTOVaccinoEssential">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DTOVaccinoEssential" nillable="true" type="DTOVaccinoEssential" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DTOVaccinoEssential">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Codice" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Descrizione" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ImportoIndicativo" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

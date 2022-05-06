@@ -1,0 +1,285 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="FarabServiceImplService" targetNamespace="http://farab.msg.interfacews.farmab.dma.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://farab.msg.interfacews.farmab.dma.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema targetNamespace="http://farab.msg.interfacews.farmab.dma.csi.it/" version="1.0" xmlns:tns="http://farab.msg.interfacews.farmab.dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="autorizzaFarmaciaOccasionale">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="uuidDevice" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="autorizzaFarmaciaOccasionaleResponse">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="farmaciaOccasionale" type="tns:farmaciaOccasionaleType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="certificaDevice">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="cfCittadino" type="xs:string"/>
+<xs:element minOccurs="0" name="uuidDevice" type="xs:string"/>
+<xs:element minOccurs="0" name="fonte" type="tns:codifica"/>
+<xs:element minOccurs="0" name="telCittadino" type="xs:string"/>
+<xs:element minOccurs="0" name="dispositivo" type="tns:dispositivo"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="certificaDeviceConOtp">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="uuidDevice" type="xs:string"/>
+<xs:element minOccurs="0" name="codiceOtp" type="xs:string"/>
+<xs:element minOccurs="0" name="cfCittadino" type="xs:string"/>
+<xs:element minOccurs="0" name="dispositivo" type="tns:dispositivo"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="certificaDeviceConOtpResponse">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="certificaDeviceResponse">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="datiCertificazione" type="tns:certificazioneType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="getFarmaciaOccasionale">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="uuidDevice" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="getFarmaciaOccasionaleResponse">
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="tns:serviceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="farmaciaOccasionale" type="tns:farmaciaOccasionaleType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="serviceRequest">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="richiedente" type="tns:richiedente"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="codifica">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dispositivo">
+<xs:sequence>
+<xs:element minOccurs="0" name="sistemaOperativo" type="xs:string"/>
+<xs:element minOccurs="0" name="browser" type="xs:string"/>
+<xs:element minOccurs="0" name="modello" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="richiedente">
+<xs:sequence>
+<xs:element minOccurs="0" name="applicativoVerticale" type="tns:tipoCodice"/>
+<xs:element minOccurs="0" name="applicazione" type="tns:tipoCodice"/>
+<xs:element minOccurs="0" name="codiceFiscale" type="xs:string"/>
+<xs:element minOccurs="0" name="ip" type="xs:string"/>
+<xs:element minOccurs="0" name="numeroTransazione" type="xs:string"/>
+<xs:element minOccurs="0" name="ruolo" type="tns:tipoCodice"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="tipoCodice">
+<xs:sequence>
+<xs:element minOccurs="0" name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="serviceResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="esito" type="xs:string"/>
+<xs:element minOccurs="0" name="elencoErrori" type="tns:elencoErroriType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="certificazioneType">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:string"/>
+<xs:element minOccurs="0" name="uuidDevice" type="xs:string"/>
+<xs:element minOccurs="0" name="dataCertificazione" type="xs:string"/>
+<xs:element minOccurs="0" name="fonte" type="tns:codifica"/>
+<xs:element minOccurs="0" name="numTelefono" type="xs:string"/>
+<xs:element minOccurs="0" name="cfCittadino" type="xs:string"/>
+<xs:element minOccurs="0" name="dispositivo" type="tns:dispositivo"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="elencoErroriType">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="errore" type="tns:errore"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="errore">
+<xs:sequence>
+<xs:element name="codice" type="xs:string"/>
+<xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="farmaciaOccasionaleType">
+<xs:sequence>
+<xs:element name="idRich" type="xs:string"/>
+<xs:element minOccurs="0" name="dataRichiesta" type="xs:string"/>
+<xs:element minOccurs="0" name="codFarmacia" type="xs:string"/>
+<xs:element minOccurs="0" name="descrFarmacia" type="xs:string"/>
+<xs:element minOccurs="0" name="indirizzoFarmacia" type="tns:indirizzoType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="indirizzoType">
+<xs:sequence>
+<xs:element minOccurs="0" name="provincia" type="xs:string"/>
+<xs:element minOccurs="0" name="comune" type="xs:string"/>
+<xs:element minOccurs="0" name="cap" type="xs:string"/>
+<xs:element minOccurs="0" name="indirizzo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="elencoFarmacieType">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="farmaciaOccasionale" type="tns:farmaciaOccasionaleType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getFarmaciaOccasionaleResponse">
+    <wsdl:part element="tns:getFarmaciaOccasionaleResponse" name="getFarmaciaOccasionaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getFarmaciaOccasionale">
+    <wsdl:part element="tns:getFarmaciaOccasionale" name="getFarmaciaOccasionale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="certificaDeviceConOtp">
+    <wsdl:part element="tns:certificaDeviceConOtp" name="certificaDeviceConOtp">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="certificaDevice">
+    <wsdl:part element="tns:certificaDevice" name="certificaDevice">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="autorizzaFarmaciaOccasionaleResponse">
+    <wsdl:part element="tns:autorizzaFarmaciaOccasionaleResponse" name="autorizzaFarmaciaOccasionaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="certificaDeviceConOtpResponse">
+    <wsdl:part element="tns:certificaDeviceConOtpResponse" name="certificaDeviceConOtpResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="autorizzaFarmaciaOccasionale">
+    <wsdl:part element="tns:autorizzaFarmaciaOccasionale" name="autorizzaFarmaciaOccasionale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="certificaDeviceResponse">
+    <wsdl:part element="tns:certificaDeviceResponse" name="certificaDeviceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="FarabService">
+    <wsdl:operation name="certificaDevice">
+      <wsdl:input message="tns:certificaDevice" name="certificaDevice">
+    </wsdl:input>
+      <wsdl:output message="tns:certificaDeviceResponse" name="certificaDeviceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="autorizzaFarmaciaOccasionale">
+      <wsdl:input message="tns:autorizzaFarmaciaOccasionale" name="autorizzaFarmaciaOccasionale">
+    </wsdl:input>
+      <wsdl:output message="tns:autorizzaFarmaciaOccasionaleResponse" name="autorizzaFarmaciaOccasionaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFarmaciaOccasionale">
+      <wsdl:input message="tns:getFarmaciaOccasionale" name="getFarmaciaOccasionale">
+    </wsdl:input>
+      <wsdl:output message="tns:getFarmaciaOccasionaleResponse" name="getFarmaciaOccasionaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="certificaDeviceConOtp">
+      <wsdl:input message="tns:certificaDeviceConOtp" name="certificaDeviceConOtp">
+    </wsdl:input>
+      <wsdl:output message="tns:certificaDeviceConOtpResponse" name="certificaDeviceConOtpResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FarabServiceImplServiceSoapBinding" type="tns:FarabService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="certificaDevice">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="certificaDevice">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="certificaDeviceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="autorizzaFarmaciaOccasionale">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="autorizzaFarmaciaOccasionale">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="autorizzaFarmaciaOccasionaleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFarmaciaOccasionale">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getFarmaciaOccasionale">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getFarmaciaOccasionaleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="certificaDeviceConOtp">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="certificaDeviceConOtp">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="certificaDeviceConOtpResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FarabServiceImplService">
+    <wsdl:port binding="tns:FarabServiceImplServiceSoapBinding" name="FarabServiceImplPort">
+      <soap:address location="https://xxx-dma.xxx.csi.it/farmab/FarabService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
