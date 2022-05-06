@@ -10,7 +10,7 @@ Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realiz
 
 I servizi "orchestrati" si trovano ai seguenti link [SERVIZI SOAP](docs/wsdl) gli script per l'inizializzazione del database sotto la cartella [SCRIPT](docs/sql). E' necessario che il file di [properties](buildfiles/prod.properties) sia configurato affinchè punti a dei servizi mock generati secondo tali descrittori.
 
-Lanciare il comando ant -DSECRET_PWD=xxx -Dvalue=mypass encrypt per generare la #password di cifratura  dovrà andare a sostituire il valore di encryptionkey sul  [file](buildfiles/prod-rp-01.properties)
+Lanciare il comando ant -DSECRET_PWD=xxx -Dvalue=mypass encrypt per generare la #password di cifratura  dovrà andare a sostituire il valore di encryptionkey sul  [file](buildfiles/prod.properties)
 
 ## Prerequisiti di sistema
 

@@ -8,7 +8,7 @@ Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realiz
 
 ## Configurazioni iniziali
 
-I servizi "orchestrati" si trovano ai seguenti link [SERVIZI REST](docs/rest). E' necessario che il file di [properties](buildfiles/prod.properties) sia configurato affinchè punti a dei servizi mock generati secondo tali descrittori.
+I servizi "orchestrati" si trovano ai seguenti link [SERVIZI REST](docs/yaml). E' necessario che il file di [properties](buildfiles/prod.properties) sia configurato affinchè punti a dei servizi mock generati secondo tali descrittori.
 
 ## Prerequisiti di sistema
 
