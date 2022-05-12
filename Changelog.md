@@ -8,3 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.0.0](https://github.com/regione-piemonte/apisan/releases/tag/1.0.0) - 2022-05-06
 
 ### Versione iniziale
+
+## [6.1.0](https://github.com/regione-piemonte/apisan/releases/tag/6.1.0) - 2022-05-12
+
+### Versione corrente

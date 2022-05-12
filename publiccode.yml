@@ -1,0 +1,100 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+applicationSuite: regione-piemonte
+categories:
+  - application-development
+description:
+  it:
+    features:
+      - |-
+        Le API esposte da APISAN facilitano la fruibilità dei servizi sanitari
+        al cittadino.
+    genericName: API per la sanità
+    localisedName: apisan
+    longDescription: |
+      Il prodotto APISAN espone servizi in tecnologia REST rivolti al cittadino
+      e riguardanti le tematiche sanitarie per la Regione Piemonte. Tali servizi
+      sono fruibili dal cittadino attraverso l'applicazione web SANSOL e
+      comprendono tra gli altri: 
+
+
+      - gestione del fascicolo sanitario del cittadino,
+
+
+      - la scelta/revoca del medico
+
+
+      - il profilo sanitario del cittadino 
+
+
+      - le vaccinazioni eseguite dal cittadino 
+
+
+      - i servizi dello screening 
+
+
+      - i servizi di gestione deleghe per operare sui servizi stessi per un
+      altro cittadino delegato 
+
+
+      - i servizi di ricerca topografica di farmacie, ospedali e case di cura,
+      strutture sanitarie 
+
+
+      - la ricerca e i pagamenti ticket sanitari on-line.
+    shortDescription: API di orchestrazione dei servizi sanitari rivolti al cittadino
+developmentStatus: stable
+it:
+  conforme:
+    gdpr: true
+    lineeGuidaDesign: true
+    misureMinimeSicurezza: false
+    modelloInteroperabilita: true
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+  riuso:
+    codiceIPA: r_piemon
+legal:
+  license: EUPL-1.2
+  repoOwner: CSI
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: false
+maintenance:
+  contacts:
+    - email: egidio.bosio@csi.it
+      name: Egidio Bosio
+  type: internal
+name: apisan
+platforms:
+  - linux
+releaseDate: '2022-05-06'
+softwareType: standalone/web
+softwareVersion: 1.0.0
+url: 'https://github.com/regione-piemonte/apisan.git'
+dependsOn:
+  open:
+    - name: Apache
+      optional: false
+      version: 2.4.6
+      versionMax: ''
+      versionMin: ''
+    - name: PostgreSQL
+      optional: false
+      version: '12'
+      versionMax: ''
+      versionMin: ''
+  proprietary:
+    - name: jbosseap
+      optional: false
+      version: 6.4.5
+      versionMax: ''
+      versionMin: ''
