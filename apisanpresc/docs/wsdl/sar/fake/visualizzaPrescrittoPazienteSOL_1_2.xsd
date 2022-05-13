@@ -1,0 +1,35 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://visualizzaprescrittopazientesolricevuta.xsd.dem.regione.piemonte.it" xmlns="http://visualizzaprescrittopazientesolricevuta.xsd.dem.regione.piemonte.it" xmlns:td="http://tipodati.xsd.dem.sanita.finanze.it" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://tipodati.xsd.dem.sanita.finanze.it" schemaLocation="TipiDati.xsd"/>
+  <xs:annotation>
+    <xs:documentation>Versione 1.2</xs:documentation>
+  </xs:annotation>
+  <xs:element name="VisualizzaPrescrittoPazienteSOLRicevuta">
+    <xs:annotation>
+      <xs:documentation>Elemento base della ricevuta per la richiesta di visualizzazione della ricetta prescritta dal medico</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ElencoRicette" type="td:elencoRicetteType">
+          <xs:annotation>
+            <xs:documentation>Ripetizione di InfoRicetta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="codEsitoVisualizzazione" type="td:codEsitoType">
+          <xs:annotation>
+            <xs:documentation>Codice dell'esito della visualizzazione</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="ElencoErroriRicette" type="td:elencoErroriRicetteType">
+          <xs:annotation>
+            <xs:documentation>Ripetizione di ErroreRicetta</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="ElencoComunicazioni" type="td:elencoComunicazioniType">
+          <xs:annotation>
+            <xs:documentation>Ripetizione di Comunicazioni di servizio</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

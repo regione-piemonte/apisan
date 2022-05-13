@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="BrokerService" targetNamespace="http://relbl.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://relbl.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://relbl.csi.it/" version="1.0" xmlns:tns="http://relbl.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="cache" type="tns:cache"/>
+<xs:element name="cacheDelete" type="tns:cacheDelete"/>
+<xs:element name="cacheDeleteResponse" type="tns:cacheDeleteResponse"/>
+<xs:element name="cacheResponse" type="tns:cacheResponse"/>
+<xs:element name="dbInfo" type="tns:dbInfo"/>
+<xs:element name="dbInfoResponse" type="tns:dbInfoResponse"/>
+<xs:element name="decryptAssRic" type="tns:decryptAssRic"/>
+<xs:element name="decryptAssRicResponse" type="tns:decryptAssRicResponse"/>
+<xs:element name="decryptCodAss" type="tns:decryptCodAss"/>
+<xs:element name="decryptCodAssResponse" type="tns:decryptCodAssResponse"/>
+<xs:element name="decryptXML" type="tns:decryptXML"/>
+<xs:element name="decryptXMLResponse" type="tns:decryptXMLResponse"/>
+<xs:element name="encryptAssRic" type="tns:encryptAssRic"/>
+<xs:element name="encryptAssRicResponse" type="tns:encryptAssRicResponse"/>
+<xs:element name="encryptCodAss" type="tns:encryptCodAss"/>
+<xs:element name="encryptCodAssOld" type="tns:encryptCodAssOld"/>
+<xs:element name="encryptCodAssOldResponse" type="tns:encryptCodAssOldResponse"/>
+<xs:element name="encryptCodAssResponse" type="tns:encryptCodAssResponse"/>
+<xs:element name="encryptCodAssSac" type="tns:encryptCodAssSac"/>
+<xs:element name="encryptCodAssSacResponse" type="tns:encryptCodAssSacResponse"/>
+<xs:element name="saveRicXML" type="tns:saveRicXML"/>
+<xs:element name="saveRicXMLResponse" type="tns:saveRicXMLResponse"/>
+<xs:element name="serviceInfo" type="tns:serviceInfo"/>
+<xs:element name="serviceInfoResponse" type="tns:serviceInfoResponse"/>
+<xs:element name="test" type="tns:test"/>
+<xs:element name="testResponse" type="tns:testResponse"/>
+<xs:complexType name="decryptCodAss">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codass" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="decryptCodAssResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="serviceInfo">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="user" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="pwd" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="serviceInfoResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="sinfo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="decryptAssRic">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="assric" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="decryptAssRicResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dbInfo">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="dbInfoResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="dinfo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptCodAssOld">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codass" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptCodAssOldResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cacheDelete">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cacheDeleteResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="saveRicXML">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="idXML" type="xs:decimal"/>
+<xs:element form="qualified" minOccurs="0" name="enkey" type="xs:string"/>
+<xs:element form="qualified" minOccurs="0" name="xml" type="xs:string"/>
+<xs:element form="qualified" name="saveUtil" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="saveRicXMLResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="cache">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="operation" type="tns:cacheOperation"/>
+<xs:element form="qualified" minOccurs="0" name="key" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cacheResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="cinfo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptAssRic">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="assric" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptAssRicResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="decryptXML">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="idXML" type="xs:decimal"/>
+<xs:element form="qualified" minOccurs="0" name="type" type="tns:xmlType"/>
+<xs:element form="qualified" minOccurs="0" name="enkey" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="decryptXMLResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="test">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="testResponse">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="stest" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptCodAssSac">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codass" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptCodAssSacResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptCodAss">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="codass" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="encryptCodAssResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="cacheOperation">
+<xs:restriction base="xs:string">
+<xs:enumeration value="CL"/>
+<xs:enumeration value="GT"/>
+<xs:enumeration value="GTI"/>
+<xs:enumeration value="GT_PARAM"/>
+<xs:enumeration value="GT_ATTIVAZ"/>
+<xs:enumeration value="RM"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="xmlType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="IN"/>
+<xs:enumeration value="OUT"/>
+<xs:enumeration value="SAC"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="encryptCodAssSacResponse">
+    <wsdl:part element="tns:encryptCodAssSacResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="encryptCodAssOldResponse">
+    <wsdl:part element="tns:encryptCodAssOldResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveRicXML">
+    <wsdl:part element="tns:saveRicXML" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cacheResponse">
+    <wsdl:part element="tns:cacheResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="decryptXMLResponse">
+    <wsdl:part element="tns:decryptXMLResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="decryptCodAss">
+    <wsdl:part element="tns:decryptCodAss" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="serviceInfoResponse">
+    <wsdl:part element="tns:serviceInfoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="encryptCodAssResponse">
+    <wsdl:part element="tns:encryptCodAssResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cache">
+    <wsdl:part element="tns:cache" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cacheDeleteResponse">
+    <wsdl:part element="tns:cacheDeleteResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="decryptCodAssResponse">
+    <wsdl:part element="tns:decryptCodAssResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="serviceInfo">
+    <wsdl:part element="tns:serviceInfo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="decryptAssRic">
+    <wsdl:part element="tns:decryptAssRic" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dbInfoResponse">
+    <wsdl:part element="tns:dbInfoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cacheDelete">
+    <wsdl:part element="tns:cacheDelete" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="encryptCodAssOld">
+    <wsdl:part element="tns:encryptCodAssOld" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="encryptCodAss">
+    <wsdl:part element="tns:encryptCodAss" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="encryptAssRicResponse">
+    <wsdl:part element="tns:encryptAssRicResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveRicXMLResponse">
+    <wsdl:part element="tns:saveRicXMLResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="encryptCodAssSac">
+    <wsdl:part element="tns:encryptCodAssSac" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="test">
+    <wsdl:part element="tns:test" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="decryptAssRicResponse">
+    <wsdl:part element="tns:decryptAssRicResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="encryptAssRic">
+    <wsdl:part element="tns:encryptAssRic" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dbInfo">
+    <wsdl:part element="tns:dbInfo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="testResponse">
+    <wsdl:part element="tns:testResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="decryptXML">
+    <wsdl:part element="tns:decryptXML" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="BrokerService">
+    <wsdl:operation name="decryptCodAss">
+      <wsdl:input message="tns:decryptCodAss" name="decryptCodAss">
+    </wsdl:input>
+      <wsdl:output message="tns:decryptCodAssResponse" name="decryptCodAssResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="serviceInfo">
+      <wsdl:input message="tns:serviceInfo" name="serviceInfo">
+    </wsdl:input>
+      <wsdl:output message="tns:serviceInfoResponse" name="serviceInfoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="decryptAssRic">
+      <wsdl:input message="tns:decryptAssRic" name="decryptAssRic">
+    </wsdl:input>
+      <wsdl:output message="tns:decryptAssRicResponse" name="decryptAssRicResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dbInfo">
+      <wsdl:input message="tns:dbInfo" name="dbInfo">
+    </wsdl:input>
+      <wsdl:output message="tns:dbInfoResponse" name="dbInfoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptCodAssOld">
+      <wsdl:input message="tns:encryptCodAssOld" name="encryptCodAssOld">
+    </wsdl:input>
+      <wsdl:output message="tns:encryptCodAssOldResponse" name="encryptCodAssOldResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cacheDelete">
+      <wsdl:input message="tns:cacheDelete" name="cacheDelete">
+    </wsdl:input>
+      <wsdl:output message="tns:cacheDeleteResponse" name="cacheDeleteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveRicXML">
+      <wsdl:input message="tns:saveRicXML" name="saveRicXML">
+    </wsdl:input>
+      <wsdl:output message="tns:saveRicXMLResponse" name="saveRicXMLResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cache">
+      <wsdl:input message="tns:cache" name="cache">
+    </wsdl:input>
+      <wsdl:output message="tns:cacheResponse" name="cacheResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptAssRic">
+      <wsdl:input message="tns:encryptAssRic" name="encryptAssRic">
+    </wsdl:input>
+      <wsdl:output message="tns:encryptAssRicResponse" name="encryptAssRicResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="decryptXML">
+      <wsdl:input message="tns:decryptXML" name="decryptXML">
+    </wsdl:input>
+      <wsdl:output message="tns:decryptXMLResponse" name="decryptXMLResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="test">
+      <wsdl:input message="tns:test" name="test">
+    </wsdl:input>
+      <wsdl:output message="tns:testResponse" name="testResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptCodAssSac">
+      <wsdl:input message="tns:encryptCodAssSac" name="encryptCodAssSac">
+    </wsdl:input>
+      <wsdl:output message="tns:encryptCodAssSacResponse" name="encryptCodAssSacResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptCodAss">
+      <wsdl:input message="tns:encryptCodAss" name="encryptCodAss">
+    </wsdl:input>
+      <wsdl:output message="tns:encryptCodAssResponse" name="encryptCodAssResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BrokerServiceSoapBinding" type="tns:BrokerService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="decryptCodAss">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="decryptCodAss">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="decryptCodAssResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="serviceInfo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="serviceInfo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="serviceInfoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="decryptAssRic">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="decryptAssRic">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="decryptAssRicResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dbInfo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="dbInfo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="dbInfoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptCodAssOld">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="encryptCodAssOld">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="encryptCodAssOldResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cacheDelete">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cacheDelete">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cacheDeleteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cache">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cache">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cacheResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveRicXML">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="saveRicXML">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="saveRicXMLResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptAssRic">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="encryptAssRic">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="encryptAssRicResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="decryptXML">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="decryptXML">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="decryptXMLResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptCodAssSac">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="encryptCodAssSac">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="encryptCodAssSacResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="test">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="test">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="testResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="encryptCodAss">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="encryptCodAss">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="encryptCodAssResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BrokerService">
+    <wsdl:port binding="tns:BrokerServiceSoapBinding" name="BrokerServicePort">
+      <soap:address location="https://tst-applogic.reteunitaria.piemonte.it:1449/DEMCSI/BrokerService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

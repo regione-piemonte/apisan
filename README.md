@@ -2,13 +2,17 @@
 
 Backend API Servizi Salute
 
+## Versione
+
+6.1.0
+
 ## Descrizione del prodotto
 
-Si tratta di API di orchestrazione tra il front end, realizzato tramite il prodotto SANSOL pubblicato in xxx, e i servizi di business dei sistemi coinvolti per i servizi on line rivolti alla pubblica amministrazione - settore sanità della Regione Piemonte.
+Si tratta di API di orchestrazione tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui](<https://github.com/regione-piemonte/sansol>), e i servizi di business dei sistemi coinvolti per i servizi on line rivolti alla pubblica amministrazione - settore sanità della Regione Piemonte.
 
 Elenco componenti:
-* APISANASSISTENZA API per richieste di assistenza verso CRM
 
+* [APISANASSISTENZA](apisanassistenza) API per richieste di assistenza verso CRM
 * [APISANAUT](apisanaut)        API di orchestrazione per la gestione delle deleghe e dei consensi
 * [APISANCELIACHIA](apisanceliachia)  API per la gestione dei servizi inerenti ai malati di celiachia esposti al cittadino
 * [APISANCONS](apisancons)       API per la gestione dei consensi espressi dal cittadino

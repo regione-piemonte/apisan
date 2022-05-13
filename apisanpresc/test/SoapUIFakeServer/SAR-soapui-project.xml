@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns4:VisualizzaPrescrittoPazienteSOLRicevuta xmlns="http://visualizzaprescrittopazientesolrichiesta.xsd.dem.regione.piemonte.it" xmlns:ns2="http://tipodati.xsd.dem.sanita.finanze.it" xmlns:ns3="http://visualizzaprescrittopazientesol.xsd.dem.regione.piemonte.it" xmlns:ns4="http://visualizzaprescrittopazientesolricevuta.xsd.dem.regione.piemonte.it">
+         <ns4:ElencoRicette>
+            <ns2:InfoRicetta>
+               <ns2:nre>010D14019800054</ns2:nre>
+               <ns2:cfMedico1>CRGMLN50S58I258W</ns2:cfMedico1>
+               <ns2:nomeMedico1>MARILENA</ns2:nomeMedico1>
+               <ns2:cognomeMedico1>CARGNINO</ns2:cognomeMedico1>
+               <ns2:codRegione>010</ns2:codRegione>
+               <ns2:codASLAo>301</ns2:codASLAo>
+               <ns2:codSpecializzazione>F</ns2:codSpecializzazione>
+               <ns2:tipoPrescrizione>P</ns2:tipoPrescrizione>
+               <ns2:nonEsente>1</ns2:nonEsente>
+               <ns2:codDiagnosi>327.59</ns2:codDiagnosi>
+               <ns2:dataCompilazione>2019-08-09 08:12:13</ns2:dataCompilazione>
+               <ns2:tipoVisita>A</ns2:tipoVisita>
+               <ns2:indicazionePrescr>S</ns2:indicazionePrescr>
+               <ns2:classePriorita>U</ns2:classePriorita>
+               <ns2:statoProcesso>3</ns2:statoProcesso>
+               <ns2:ElencoDettagliPrescrizioni>
+                  <ns2:DettaglioPrescrizione>
+                     <ns2:codProdPrest>90.62.2</ns2:codProdPrest>
+                     <ns2:descrProdPrest>EMOCROMO: HB, GR, GB, HCT, PLT, IND. DERIV., F. L.</ns2:descrProdPrest>
+                     <ns2:quantita>1</ns2:quantita>
+                     <ns2:codCatalogoPrescr>90.62.2</ns2:codCatalogoPrescr>
+                     <ns2:tipoAccesso>1</ns2:tipoAccesso>
+                  </ns2:DettaglioPrescrizione>
+               </ns2:ElencoDettagliPrescrizioni>
+            </ns2:InfoRicetta>
+         </ns4:ElencoRicette>
+         <ns4:codEsitoVisualizzazione>0000</ns4:codEsitoVisualizzazione>
+         <ns4:ElencoErroriRicette>
+            <ns2:ErroreRicetta>
+               <ns2:codEsito>0000</ns2:codEsito>
+               <ns2:esito>Operazione eseguita correttamente</ns2:esito>
+               <ns2:progPresc>0</ns2:progPresc>
+               <ns2:tipoErrore/>
+            </ns2:ErroreRicetta>
+         </ns4:ElencoErroriRicette>
+         <ns4:ElencoComunicazioni>
+            <ns2:Comunicazione>
+               <ns2:codice>0900</ns2:codice>
+               <ns2:messaggio>Nessuna comunicazione</ns2:messaggio>
+            </ns2:Comunicazione>
+         </ns4:ElencoComunicazioni>
+      </ns4:VisualizzaPrescrittoPazienteSOLRicevuta>
+   </soap:Body>
+</soap:Envelope>

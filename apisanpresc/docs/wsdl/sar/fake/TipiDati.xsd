@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta name="viewport" content="width=device-width" /><title>https://tst-applogic.reteunitaria.piemonte.it:1449/RELSOL/Prescritto/VisualizzaPrescrittoPazienteSOL?xsd=../../../mef/prescritto/TipiDati.xsd</title><link rel="stylesheet" type="text/css" href="resource://content-accessible/viewsource.css" /></head><body id="viewsource" class="highlight" style="-moz-tab-size: 4" contextmenu="actions"><pre id="line1"><span></span><span class="pi">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</span><span></span><span>&lt;<span class="start-tag">xs:schema</span> <span class="attribute-name">attributeFormDefault</span>="<a class="attribute-value">unqualified</a>" <span class="attribute-name">elementFormDefault</span>="<a class="attribute-value">qualified</a>" <span class="attribute-name">targetNamespace</span>="<a class="attribute-value">http://tipodati.xsd.dem.sanita.finanze.it</a>" <span class="attribute-name">xmlns</span>="<a class="attribute-value">http://tipodati.xsd.dem.sanita.finanze.it</a>" <span class="attribute-name">xmlns:xs</span>="<a class="attribute-value">http://www.w3.org/2001/XMLSchema</a>"&gt;</span><span>
+<span id="line2"></span>	</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line3"></span>		</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Versione 1.2</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line4"></span>	</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line5"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">cfAssistitoType</a>"&gt;</span><span>
+<span id="line6"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line7"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">0</a>"<span>/</span>&gt;</span><span>
+<span id="line8"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">16</a>"<span>/</span>&gt;</span><span>
+<span id="line9"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line10"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line11"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">cfOpType</a>"&gt;</span><span>
+<span id="line12"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line13"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">0</a>"<span>/</span>&gt;</span><span>
+<span id="line14"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">16</a>"<span>/</span>&gt;</span><span>
+<span id="line15"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line16"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line17"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">tipoRicettaPazienteType</a>"&gt;</span><span>
+<span id="line18"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line19"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line20"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line21"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line22"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line23"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">nreType</a>"&gt;</span><span>
+<span id="line24"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line25"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">15</a>"<span>/</span>&gt;</span><span>
+<span id="line26"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">15</a>"<span>/</span>&gt;</span><span>
+<span id="line27"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line28"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line29"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">codRegioneType</a>"&gt;</span><span>
+<span id="line30"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line31"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">3</a>"<span>/</span>&gt;</span><span>
+<span id="line32"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">3</a>"<span>/</span>&gt;</span><span>
+<span id="line33"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line34"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line35"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">cfMedicoType</a>"&gt;</span><span>
+<span id="line36"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line37"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">0</a>"<span>/</span>&gt;</span><span>
+<span id="line38"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">16</a>"<span>/</span>&gt;</span><span>
+<span id="line39"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line40"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line41"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">codSpecializzazioneType</a>"&gt;</span><span>
+<span id="line42"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line43"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line44"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line45"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line46"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line47"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">tipoInvioType</a>"&gt;</span><span>
+<span id="line48"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line49"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">3</a>"<span>/</span>&gt;</span><span>
+<span id="line50"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">3</a>"<span>/</span>&gt;</span><span>
+<span id="line51"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line52"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line53"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">tipoRicettaType</a>"&gt;</span><span>
+<span id="line54"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line55"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">2</a>"<span>/</span>&gt;</span><span>
+<span id="line56"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">2</a>"<span>/</span>&gt;</span><span>
+<span id="line57"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line58"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line59"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">tipoPrescType</a>"&gt;</span><span>
+<span id="line60"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line61"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line62"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line63"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line64"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line65"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">tipoVisitaType</a>"&gt;</span><span>
+<span id="line66"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line67"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line68"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line69"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line70"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line71"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">indicPrescType</a>"&gt;</span><span>
+<span id="line72"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line73"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line74"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line75"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line76"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line77"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">prioritaType</a>"&gt;</span><span>
+<span id="line78"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line79"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line80"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line81"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line82"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line83"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">dataOraType</a>"&gt;</span><span>
+<span id="line84"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line85"></span>			</span><span>&lt;<span class="start-tag">xs:minLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">19</a>"<span>/</span>&gt;</span><span>
+<span id="line86"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">19</a>"<span>/</span>&gt;</span><span>
+<span id="line87"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line88"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line89"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">codEsitoType</a>"&gt;</span><span>
+<span id="line90"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line91"></span>			</span><span>&lt;<span class="start-tag">xs:pattern</span> <span class="attribute-name">value</span>="<a class="attribute-value">[0-9]{4}</a>"<span>/</span>&gt;</span><span>
+<span id="line92"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line93"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line94"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line95"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"<span>/</span>&gt;</span><span>
+<span id="line96"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line97"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">string1Type</a>"&gt;</span><span>
+<span id="line98"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line99"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">1</a>"<span>/</span>&gt;</span><span>
+<span id="line100"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line101"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line102"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">string256Type</a>"&gt;</span><span>
+<span id="line103"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line104"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">256</a>"<span>/</span>&gt;</span><span>
+<span id="line105"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line106"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line107"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">integerType</a>"&gt;</span><span>
+<span id="line108"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line109"></span>			</span><span>&lt;<span class="start-tag">xs:pattern</span> <span class="attribute-name">value</span>="<a class="attribute-value">[0-9]</a>"<span>/</span>&gt;</span><span>
+<span id="line110"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line111"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line112"></span>	</span><span>&lt;<span class="start-tag">xs:simpleType</span> <span class="attribute-name">name</span>="<a class="attribute-value">maxString10</a>"&gt;</span><span>
+<span id="line113"></span>		</span><span>&lt;<span class="start-tag">xs:restriction</span> <span class="attribute-name">base</span>="<a class="attribute-value">xs:string</a>"&gt;</span><span>
+<span id="line114"></span>			</span><span>&lt;<span class="start-tag">xs:maxLength</span> <span class="attribute-name">value</span>="<a class="attribute-value">10</a>"<span>/</span>&gt;</span><span>
+<span id="line115"></span>		</span><span>&lt;/<span class="end-tag">xs:restriction</span>&gt;</span><span>
+<span id="line116"></span>	</span><span>&lt;/<span class="end-tag">xs:simpleType</span>&gt;</span><span>
+<span id="line117"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">erroreRicettaType</a>"&gt;</span><span>
+<span id="line118"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line119"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">name</span>="<a class="attribute-value">codEsito</a>" <span class="attribute-name">type</span>="<a class="attribute-value">codEsitoType</a>"<span>/</span>&gt;</span><span>
+<span id="line120"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">esito</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"<span>/</span>&gt;</span><span>
+<span id="line121"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">progPresc</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"<span>/</span>&gt;</span><span>
+<span id="line122"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">tipoErrore</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"<span>/</span>&gt;</span><span>
+<span id="line123"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line124"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line125"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">elencoErroriRicetteType</a>"&gt;</span><span>
+<span id="line126"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line127"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">maxOccurs</span>="<a class="attribute-value">unbounded</a>" <span class="attribute-name">name</span>="<a class="attribute-value">ErroreRicetta</a>" <span class="attribute-name">type</span>="<a class="attribute-value">erroreRicettaType</a>"<span>/</span>&gt;</span><span>
+<span id="line128"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line129"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line130"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">dettaglioPrescrizioneType</a>"&gt;</span><span>
+<span id="line131"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line132"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codProdPrest</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line133"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line134"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice prodotto farmaceutico (AIC) o codice prestazione specialistica</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line135"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line136"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line137"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">descrProdPrest</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line138"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line139"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Descrizione testuale del prodotto farmaceutico o della prestazione specialistica</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line140"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line141"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line142"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codGruppoEquival</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line143"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line144"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice del gruppo equivalente</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line145"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line146"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line147"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">descrGruppoEquival</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line148"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line149"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Descrizione testuale del gruppo equivalente</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line150"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line151"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line152"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">testoLibero</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line153"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line154"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Campo che indica di tenere conto solamente della descrizione inserita in descrTestoLibero</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line155"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line156"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line157"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">descrTestoLiberoNote</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line158"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line159"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Descrizione testuale della prestazione specialistica</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line160"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line161"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line162"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">nonSost</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line163"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line164"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Non sostituibilità del farmaco</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line165"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line166"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line167"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">motivazNote</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line168"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line169"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Motivazione della non sostituibilità</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line170"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line171"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line172"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codMotivazione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line173"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line174"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codici di motivazione di non sostituibilità di un farmaco</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line175"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line176"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line177"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">notaProd</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line178"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line179"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Nota AIFA</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line180"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line181"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line182"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">name</span>="<a class="attribute-value">quantita</a>" <span class="attribute-name">type</span>="<a class="attribute-value">integerType</a>"&gt;</span><span>
+<span id="line183"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line184"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Quantita' di confezioni o di prestazioni specialistiche prescritte</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line185"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line186"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line187"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">prescrizione1</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line188"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line189"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Campo destinato a informazioni aggiuntive</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line190"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line191"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line192"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">prescrizione2</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line193"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line194"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Campo destinato a informazioni aggiuntive</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line195"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line196"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line197"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codCatalogoPrescr</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line198"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line199"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice del catalogo regionale della prestazione prescritta</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line200"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line201"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>			
+<span id="line202"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">tipoAccesso</a>" <span class="attribute-name">type</span>="<a class="attribute-value">string1Type</a>"&gt;</span><span>
+<span id="line203"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line204"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Tipologia di accesso</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line205"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line206"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>	
+<span id="line207"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">numeroNota</a>" <span class="attribute-name">type</span>="<a class="attribute-value">maxString10</a>"&gt;</span><span>
+<span id="line208"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line209"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Decreto Lorenzin</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line210"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line211"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>	
+<span id="line212"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">condErogabilita</a>" <span class="attribute-name">type</span>="<a class="attribute-value">maxString10</a>"&gt;</span><span>
+<span id="line213"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line214"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Decreto Lorenzin</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line215"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line216"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>	
+<span id="line217"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">approprPrescrittiva</a>" <span class="attribute-name">type</span>="<a class="attribute-value">maxString10</a>"&gt;</span><span>
+<span id="line218"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line219"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Decreto Lorenzin</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line220"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line221"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>	
+<span id="line222"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">patologia</a>" <span class="attribute-name">type</span>="<a class="attribute-value">maxString10</a>"&gt;</span><span>
+<span id="line223"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line224"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Decreto Lorenzin</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line225"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line226"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>					
+<span id="line227"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line228"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line229"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">elencoDettagliPrescrizioniType</a>"&gt;</span><span>
+<span id="line230"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line231"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">maxOccurs</span>="<a class="attribute-value">unbounded</a>" <span class="attribute-name">name</span>="<a class="attribute-value">DettaglioPrescrizione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">dettaglioPrescrizioneType</a>"<span>/</span>&gt;</span><span>
+<span id="line232"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line233"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line234"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">comunicazioneType</a>"&gt;</span><span>
+<span id="line235"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line236"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">name</span>="<a class="attribute-value">codice</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line237"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line238"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice della comunicazione di servizio</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line239"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line240"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line241"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">name</span>="<a class="attribute-value">messaggio</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line242"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line243"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Messaggio di servizio</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line244"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line245"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line246"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line247"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line248"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">elencoComunicazioniType</a>"&gt;</span><span>
+<span id="line249"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line250"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">maxOccurs</span>="<a class="attribute-value">unbounded</a>" <span class="attribute-name">name</span>="<a class="attribute-value">Comunicazione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">comunicazioneType</a>"<span>/</span>&gt;</span><span>
+<span id="line251"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line252"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line253"></span>	
+<span id="line254"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">notaType</a>"&gt;</span><span>
+<span id="line255"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line256"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">progrPresc</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line257"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line258"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Decreto Lorenzin</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line259"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line260"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line261"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codProdPrest</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line262"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line263"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Decreto Lorenzin</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line264"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line265"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line266"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">tipoAmbulatorio</a>" <span class="attribute-name">type</span>="<a class="attribute-value">maxString10</a>"&gt;</span><span>
+<span id="line267"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line268"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Decreto Lorenzin</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line269"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line270"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line271"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line272"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line273"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">elencoNotaType</a>"&gt;</span><span>
+<span id="line274"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line275"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">maxOccurs</span>="<a class="attribute-value">unbounded</a>" <span class="attribute-name">name</span>="<a class="attribute-value">Nota</a>" <span class="attribute-name">type</span>="<a class="attribute-value">notaType</a>"<span>/</span>&gt;</span><span>
+<span id="line276"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line277"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line278"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">infoRicettaType</a>"&gt;</span><span>
+<span id="line279"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line280"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">nre</a>" <span class="attribute-name">type</span>="<a class="attribute-value">nreType</a>"&gt;</span><span>
+<span id="line281"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line282"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Numero Ricetta Elettronica</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line283"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line284"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line285"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">cfMedico1</a>" <span class="attribute-name">type</span>="<a class="attribute-value">cfMedicoType</a>"&gt;</span><span>
+<span id="line286"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line287"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice fiscale del medico associato all'NRE
+<span id="line288"></span>						inviato o attribuito in fase di registrazione</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line289"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line290"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line291"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">cfMedico2</a>" <span class="attribute-name">type</span>="<a class="attribute-value">cfMedicoType</a>"&gt;</span><span>
+<span id="line292"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line293"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice fiscale del medico che compila la ricetta
+<span id="line294"></span>						elettronica</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line295"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line296"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line297"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codRegione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">codRegioneType</a>"&gt;</span><span>
+<span id="line298"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line299"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice Regione / Provincia Autonoma del medico a
+<span id="line300"></span>						cui si vuole attribuire un NRE</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line301"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line302"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line303"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codASLAo</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line304"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line305"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice ASL del medico a cui si vuole attribuire
+<span id="line306"></span>						un NRE</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line307"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line308"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line309"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codStruttura</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line310"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line311"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice struttura del medico a cui si vuole
+<span id="line312"></span>						attribuire un NRE</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line313"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line314"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line315"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codSpecializzazione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">codSpecializzazioneType</a>"&gt;</span><span>
+<span id="line316"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line317"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Specializzazione del medico a cui si vuole
+<span id="line318"></span>						attribuire un NRE</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line319"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line320"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line321"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">testata1</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line322"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line323"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Campo destinato a informazioni aggiuntive
+<span id="line324"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line325"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line326"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line327"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">testata2</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line328"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line329"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Campo destinato a informazioni aggiuntive
+<span id="line330"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line331"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line332"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line333"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">tipoRic</a>" <span class="attribute-name">type</span>="<a class="attribute-value">tipoRicettaType</a>"&gt;</span><span>
+<span id="line334"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line335"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Tipologia della ricetta compilata
+<span id="line336"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line337"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line338"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line339"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codiceAss</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line340"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line341"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice Fiscale/STP/ENI/altro che rappresenta
+<span id="line342"></span>						l'assistito per cui viene compilata la ricetta</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line343"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line344"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line345"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">cognNome</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line346"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line347"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Cognome e nome dell'assistito</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line348"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line349"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line350"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">indirizzo</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line351"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line352"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Indirizzo dell'assistito</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line353"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line354"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line355"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">numTessSasn</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line356"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line357"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Numero tessera assistenza SASN</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line358"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line359"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line360"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">socNavigaz</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line361"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line362"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Societa di navigazione</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line363"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line364"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line365"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">tipoPrescrizione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">tipoPrescType</a>"&gt;</span><span>
+<span id="line366"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line367"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>F - Farmaceutica, P - Specialistica
+<span id="line368"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line369"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line370"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line371"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">ricettaInterna</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line372"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line373"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>La ricetta per prestazioni specialistiche
+<span id="line374"></span>						prescritta internamente ad una struttura pubblica deve essere
+<span id="line375"></span>						erogata all'interno della stessa struttura</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line376"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line377"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line378"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codEsenzione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line379"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line380"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice esenzione riportato in ricetta
+<span id="line381"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line382"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line383"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line384"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">nonEsente</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line385"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line386"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Campo che indica se l'assistito e' esente oppure
+<span id="line387"></span>						no</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line388"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line389"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line390"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">reddito</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line391"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line392"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Campo che indica se l'assistito e' esente per
+<span id="line393"></span>						reddito oppure no</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line394"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line395"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line396"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">codDiagnosi</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line397"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line398"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Codice diagnosi o del sospetto diagnostico
+<span id="line399"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line400"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line401"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line402"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">descrizioneDiagnosi</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line403"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line404"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Descrizione della diagnosi o del sospetto
+<span id="line405"></span>						diagnostico in testo libero</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line406"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line407"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line408"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">dataCompilazione</a>" <span class="attribute-name">type</span>="<a class="attribute-value">dataOraType</a>"&gt;</span><span>
+<span id="line409"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line410"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Data compilazione della ricetta, formato
+<span id="line411"></span>						aaaa-mm-gg hh24:mm:ss</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line412"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line413"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line414"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">tipoVisita</a>" <span class="attribute-name">type</span>="<a class="attribute-value">tipoVisitaType</a>"&gt;</span><span>
+<span id="line415"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line416"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>A - Ambulatoriale, D - Domiciliare
+<span id="line417"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line418"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line419"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line420"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">dispReg</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line421"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line422"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Disposizioni regionali specifiche
+<span id="line423"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line424"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line425"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line426"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">provAssistito</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line427"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line428"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Provincia di residenza dell'assistito
+<span id="line429"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line430"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line431"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line432"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">aslAssistito</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line433"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line434"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Asl di residenza dell'assistito
+<span id="line435"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line436"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line437"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line438"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">indicazionePrescr</a>" <span class="attribute-name">type</span>="<a class="attribute-value">indicPrescType</a>"&gt;</span><span>
+<span id="line439"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line440"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>S - Suggerita, H - Ricovero</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line441"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line442"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line443"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">altro</a>" <span class="attribute-name">type</span>="<a class="attribute-value">indicPrescType</a>"&gt;</span><span>
+<span id="line444"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line445"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Indicazione di trattamento di una patologia
+<span id="line446"></span>						cronica o non cronica</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line447"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line448"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line449"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">classePriorita</a>" <span class="attribute-name">type</span>="<a class="attribute-value">prioritaType</a>"&gt;</span><span>
+<span id="line450"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line451"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Classe di priorita' della prescrizione
+<span id="line452"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line453"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line454"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line455"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">statoEstero</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line456"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line457"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Stato del soggetto assicurato da istituzioni
+<span id="line458"></span>						estere</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line459"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line460"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line461"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">istituzCompetente</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line462"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line463"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Istituzione competente del soggetto assicurato da
+<span id="line464"></span>						istituzioni estere</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line465"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line466"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line467"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">numIdentPers</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line468"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line469"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Numero di identificazione personale del soggetto
+<span id="line470"></span>						assicurato da istituzioni estere</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line471"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line472"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line473"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">numIdentTess</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line474"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line475"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Numero di identificazione della tessera del
+<span id="line476"></span>						soggetto assicurato da istituzioni estere</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line477"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line478"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line479"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">dataNascitaEstero</a>" <span class="attribute-name">type</span>="<a class="attribute-value">dataOraType</a>"&gt;</span><span>
+<span id="line480"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line481"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Data di nascita del soggetto assicurato da
+<span id="line482"></span>						istituzioni estere nel formato aaaa-mm-gg</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line483"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line484"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line485"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">dataScadTessera</a>" <span class="attribute-name">type</span>="<a class="attribute-value">dataOraType</a>"&gt;</span><span>
+<span id="line486"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line487"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Data scadenza della tessera del soggetto
+<span id="line488"></span>						assicurato da istituzioni estere nel formato aaaa-mm-gg
+<span id="line489"></span>					</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line490"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line491"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line492"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">statoProcesso</a>" <span class="attribute-name">type</span>="<a class="attribute-value">stringType</a>"&gt;</span><span>
+<span id="line493"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line494"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Stato della ricetta</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line495"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line496"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line497"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">minOccurs</span>="<a class="attribute-value">0</a>" <span class="attribute-name">name</span>="<a class="attribute-value">ElencoDettagliPrescrizioni</a>" <span class="attribute-name">type</span>="<a class="attribute-value">elencoDettagliPrescrizioniType</a>"&gt;</span><span>
+<span id="line498"></span>				</span><span>&lt;<span class="start-tag">xs:annotation</span>&gt;</span><span>
+<span id="line499"></span>					</span><span>&lt;<span class="start-tag">xs:documentation</span>&gt;</span><span>Elenco singole prescrizioni</span><span>&lt;/<span class="end-tag">xs:documentation</span>&gt;</span><span>
+<span id="line500"></span>				</span><span>&lt;/<span class="end-tag">xs:annotation</span>&gt;</span><span>
+<span id="line501"></span>			</span><span>&lt;/<span class="end-tag">xs:element</span>&gt;</span><span>
+<span id="line502"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line503"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line504"></span>	</span><span>&lt;<span class="start-tag">xs:complexType</span> <span class="attribute-name">name</span>="<a class="attribute-value">elencoRicetteType</a>"&gt;</span><span>
+<span id="line505"></span>		</span><span>&lt;<span class="start-tag">xs:sequence</span>&gt;</span><span>
+<span id="line506"></span>			</span><span>&lt;<span class="start-tag">xs:element</span> <span class="attribute-name">maxOccurs</span>="<a class="attribute-value">unbounded</a>" <span class="attribute-name">name</span>="<a class="attribute-value">InfoRicetta</a>" <span class="attribute-name">type</span>="<a class="attribute-value">infoRicettaType</a>"<span>/</span>&gt;</span><span>
+<span id="line507"></span>		</span><span>&lt;/<span class="end-tag">xs:sequence</span>&gt;</span><span>
+<span id="line508"></span>	</span><span>&lt;/<span class="end-tag">xs:complexType</span>&gt;</span><span>
+<span id="line509"></span></span><span>&lt;/<span class="end-tag">xs:schema</span>&gt;</span><span></span></pre><menu type="context" id="actions"><menuitem id="goToLine" label="Vai alla riga…" accesskey="L"></menuitem><menuitem id="wrapLongLines" label="A capo automatico" type="checkbox"></menuitem><menuitem id="highlightSyntax" label="Evidenzia sintassi" type="checkbox" checked="true"></menuitem></menu></body></html>

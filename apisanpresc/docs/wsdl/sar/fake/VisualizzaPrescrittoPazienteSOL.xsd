@@ -1,0 +1,126 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://visualizzaprescrittopazientesolrichiesta.xsd.dem.regione.piemonte.it" xmlns="http://visualizzaprescrittopazientesolrichiesta.xsd.dem.regione.piemonte.it" xmlns:td="http://tipodati.xsd.dem.sanita.finanze.it" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="http://tipodati.xsd.dem.sanita.finanze.it" schemaLocation="TipiDati.xsd"/>
+    <xs:annotation>
+        <xs:documentation>Versione 1.2</xs:documentation>
+    </xs:annotation>
+    <xs:element name="VisualizzaPrescrittoPazienteSOLRichiesta">
+        <xs:annotation>
+            <xs:documentation>Elemento base per la richiesta di visualizzazione della ricetta prescritta</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="1" name="pinCode" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>PinCode in possesso di chi invia la richiesta</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="idRichiesta" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Identificativo univoco della richiesta generato dal richiedente</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="applicativoChiamante" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Servizio applicativo che in origine ha generato la chiamata</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="contestoOperativo" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Il contesto operativo riceve un codice che specifica il motivo per il quale viene richiamato il servizio, per esempio richiesta dettagli della ricetta per visualizzazione, richiesta dettagli della ricetta per stampare la ricetta, ecc.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="1" name="cfAssistito" type="td:cfAssistitoType">
+                    <xs:annotation>
+                        <xs:documentation>Codice fiscale assistito cifrato attraverso certificato del SAR (utilizzando le stesse regole già previste per gli altri servizi)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="nre" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Numero di ricetta elettronica</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="tipoRegime" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>DM oppure tag  vuoto o non presente->  solo ricette dematerializzate
+                            DPCM -> solo ricette elettroniche (ricette rosse)
+                            Se il tag non è valorizzato restituire tutte le ricette indipendentemente dal regime</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="tipoRicetta" type="td:tipoRicettaPazienteType">
+                    <xs:annotation>
+                        <xs:documentation>Tipologia della ricetta:
+                            A -> autoimpegnativa (ricetta interna)
+                            I -> ricetta non autoimpegnativa
+                            Non valorizzato -> tutti i tipi di ricetta</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="tipoPrescrizione" type="td:tipoPrescType">
+                    <xs:annotation>
+                        <xs:documentation>Tipologia della prescrizione</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="codProdPrest" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Codice prestazione come da nomenclatore regionale
+                            per le prestazioni specialistiche oppure codice AIC
+                            per i farmmaci</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="codGruppoEquival" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Codice gruppo di equivalenza del farmaco solo per le
+                            prescrizioni farmaceutiche</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="codRaggrDisp" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>codice del raggruppamento dei dispositivi</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="statoProcesso" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Stato della ricetta. Campo ripetibile se sono richiesti più stati.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="dataIniRange" type="xs:date">
+                    <xs:annotation>
+                        <xs:documentation>Datainizio intervallo temporale di ricerca</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="dataFineRange" type="xs:date">
+                    <xs:annotation>
+                        <xs:documentation>Data fine intervallo temporale di ricerca</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="1" name="richiedente" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Codice Fiscale del soggetto che ha effettuato l'operazione</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="ricetteScadute" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Indica se devono essere restituite anche le ricette prescritte ma scadute.
+                            N -> non vengono restituite le ricette prescritte e scadute
+                            Se il tag non è valorizzato, vengono restituite tutte le ricette indipendentemente dalla scadenza</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="ricErogNonSSN" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Indica se devono essere restituite le ricette anche le ricette erogate non in SSN
+                            S -> vengono restituite le sole ricette erogate non in SSN
+                            N-> vengono restituite le sole ricette non erogate in SSN
+                            Se il tag non è valorizzato, vengono restituite le ricette sia erogate in SSN che quelle non erogate in SSN</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="regionePrescrizione" type="td:stringType">
+                    <xs:annotation>
+                        <xs:documentation>Indica se devono essere restituite solo le ricette prescritte in Piemonte o anche quelle prescritte in altre Regioni:
+                            P -> Vengono restituite solo le ricette prescritte in Piemonte
+                            F -> Vengono restituite solo le ricette prescritte in altra Regione
+                            Se il tag non è valorizzato, vengono restituite tutte le ricette indipendentemente dalla regione di prescrizione</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

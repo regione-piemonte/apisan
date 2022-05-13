@@ -1,0 +1,58 @@
+# Componente di Prodotto
+
+APISANPRESC
+
+## Versione
+
+1.3.3
+
+## Descrizione del prodotto
+
+Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui] (<https://github.com/regione-piemonte/sansol>), e i servizi di business delle prescrizioni mediche.
+
+## Configurazioni iniziali
+
+I servizi "orchestrati" si trovano ai seguenti link [SERVIZI SOAP](docs/wsdl) [SERVIZI REST](docs/rest). E' necessario che il file di [properties](buildfiles/prod.properties) sia configurato affinchè punti a dei servizi mock generati secondo tali descrittori.
+
+Lanciare il comando ant -Dtarget prod per compilare e generare il pacchetto
+
+## Prerequisiti di sistema
+
+Java:
+Jdk 1.8
+
+ANT:
+Ant version 1.9.6
+
+Server Web:
+Apache 2.4.6
+
+Application Server:
+JBoss eap 6.4.5
+
+## Installazione
+
+lanciare il comando ant -Dtarget prod per generare l'ear
+
+## Deployment
+
+Inserire il file ear generato durante l'installazione sotto la cartella deployments del Jboss
+
+## Versioning
+
+Per il versionamento del software si usa la tecnica Semantic Versioning (http://semver.org).
+
+## Authors
+
+Egidio Bosio
+
+## Copyrights
+
+“© Copyright Regione Piemonte – 2022”
+
+## License
+
+SPDX-License-Identifier: inserire il codice SPDX delle licenza
+Veder il file LICENSE per i dettagli.
+
+## Community site (Facoltativo)

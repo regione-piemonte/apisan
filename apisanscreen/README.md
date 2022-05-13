@@ -2,15 +2,19 @@
 
 APISANSCREEN
 
+## Versione
+
+1.0.0
+
 ## Descrizione del prodotto
 
-Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realizzato tramite il prodotto SANSOL pubblicato in xxx, e i servizi di business dello screening.
+Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui](<https://github.com/regione-piemonte/sansol>), e i servizi di business dello screening.
 
 ## Configurazioni iniziali
 
 I servizi "orchestrati" si trovano ai seguenti link [SERVIZI SOAP](docs/wsdl) [SERVIZI REST](docs/yaml) gli script per l'inizializzazione del database sotto la cartella [SCRIPT](docs/sql). E' necessario che il file di [properties](buildfiles/prod.properties) sia configurato affinchè punti a dei servizi mock generati secondo tali descrittori.
 
-Lanciare il comando ant -DSECRET_PWD=xxx -Dvalue=mypass encrypt per generare la #password di cifratura  dovrà andare a sostituire il valore di encryptionkey sul  [file](buildfiles/prod.properties)
+Lanciare il comando ant -Dtarget prod per compilare e generare il pacchetto
 
 ## Prerequisiti di sistema
 
@@ -31,7 +35,7 @@ postgres v12
 
 ## Installazione
 
-lanciare il comando ant -Dtarget prod -DSECRET_PWD[password](#password) per generare l'ear
+lanciare il comando ant -Dtarget prod per generare l'ear
 
 ## Deployment
 

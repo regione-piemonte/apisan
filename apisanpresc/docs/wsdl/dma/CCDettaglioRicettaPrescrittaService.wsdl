@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="CCDettaglioRicettaPrescrittaService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://dma.csi.it/" />
+  <xs:complexType name="dettaglioRicettaPrescrittaRequest">
+    <xs:sequence>
+      <xs:element name="richiedente" type="tns:richiedente" />
+      <xs:element name="paziente" type="tns:estremiPaziente" />
+      <xs:element name="informazioniRichiedente" type="tns:informazioniRichiedente" />
+      <xs:element name="estremiRicetta" type="ns1:estremiRicetta" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="richiedente">
+    <xs:sequence>
+      <xs:element name="servizioApplicativoChiamante" type="xs:string" />
+      <xs:element name="uuid" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="estremiPaziente">
+    <xs:sequence>
+      <xs:element name="codiceFiscale" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="informazioniRichiedente">
+    <xs:sequence>
+      <xs:element name="codiceFiscaleUtente" type="xs:string" />
+      <xs:element minOccurs="0" name="ruoloUtente" type="xs:string" />
+      <xs:element minOccurs="0" name="identificativoIpRichiedente" type="xs:string" />
+      <xs:element name="contestoOperativo" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="dettaglioRicettaPrescrittaResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ricetta" type="ns1:ricetta" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="serviceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="esito" type="xs:string" />
+      <xs:element minOccurs="0" name="errori" type="ns1:ListaErroriType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="dettaglioRicettaPrescrittaRequest" nillable="true" type="tns:dettaglioRicettaPrescrittaRequest" />
+  <xs:element name="dettaglioRicettaPrescrittaResponse" nillable="true" type="tns:dettaglioRicettaPrescrittaResponse" />
+</xs:schema>
+<xs:schema targetNamespace="http://dma.csi.it/" version="1.0" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="estremiRicetta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="tipoPrescrizione" type="xs:string" />
+      <xs:element minOccurs="0" name="regionePrescrizione" type="xs:string" />
+      <xs:element name="nre" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="ricetta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codiceFiscalePaziente" type="xs:string" />
+      <xs:element minOccurs="0" name="completa" type="xs:string" />
+      <xs:element minOccurs="0" name="dataCompilazione" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="livelloCondifidenzialita" type="xs:string" />
+      <xs:element minOccurs="0" name="medicoPrescrittore" type="xs:string" />
+      <xs:element minOccurs="0" name="nre" type="xs:string" />
+      <xs:element minOccurs="0" name="oid" type="xs:string" />
+      <xs:element minOccurs="0" name="regionePrescrizione" type="xs:string" />
+      <xs:element minOccurs="0" name="stato" type="tns:statoRicetta" />
+      <xs:element minOccurs="0" name="tipologia" type="tns:tipoRicetta" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="statoRicetta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codice" type="xs:string" />
+      <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="tipoRicetta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codice" type="xs:string" />
+      <xs:element minOccurs="0" name="descrizione" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="ListaErroriType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="errore" type="tns:errore" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="errore">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codiceEsito" type="xs:string" />
+      <xs:element minOccurs="0" name="esitoErrore" type="xs:string" />
+      <xs:element minOccurs="0" name="fonte" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoErrore" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="dettaglioRicettaPrescritta">
+    <wsdl:part element="tns:dettaglioRicettaPrescrittaRequest" name="dettaglioRicettaPrescrittaRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dettaglioRicettaPrescrittaResponse">
+    <wsdl:part element="tns:dettaglioRicettaPrescrittaResponse" name="dettaglioRicettaPrescrittaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CCDettaglioRicettaPrescrittaService">
+    <wsdl:operation name="dettaglioRicettaPrescritta">
+      <wsdl:input message="tns:dettaglioRicettaPrescritta" name="dettaglioRicettaPrescritta">
+    </wsdl:input>
+      <wsdl:output message="tns:dettaglioRicettaPrescrittaResponse" name="dettaglioRicettaPrescrittaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CCDettaglioRicettaPrescrittaServiceSoapBinding" type="tns:CCDettaglioRicettaPrescrittaService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="dettaglioRicettaPrescritta">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="dettaglioRicettaPrescritta">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="dettaglioRicettaPrescrittaResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CCDettaglioRicettaPrescrittaService">
+    <wsdl:port binding="tns:CCDettaglioRicettaPrescrittaServiceSoapBinding" name="CCDettaglioRicettaPrescrittaServicePort">
+      <soap12:address location="https://xxx-dma.xxx.csi.it/dmaccprobl/CCDettaglioRicettaPrescrittaService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

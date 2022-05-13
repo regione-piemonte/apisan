@@ -1,0 +1,890 @@
+swagger: '2.0'
+info:
+  title: Promemoria Ricette
+  description: >
+    API per il servizio di Promemoria Ricette Elettroniche. <br><br>
+
+
+    ### Breve spiegazione del servizio.
+
+    Dal momento che __il back-end deve prendere i dati da due _"bidoni"_ diversi (FSE e SAR)__ è
+    stato deciso, per semplicità e performance, di strutturare le richieste in modo
+    che il back-end vada a pescare da un _"bidone"_ alla volta.
+    Per questo motivo non è possibile ottenere una lista che contenga
+    contemporaneamente le ricette farmaceutiche (_bidone 1_) e quelle
+    specialistiche (_bidone 2_).
+
+
+    Inoltre un altro requisito prevede la possibilità per il cittadino di visualizzare sia le ricette
+    regionali che quelle non regionali. __Per visualizzare le ricette non regionali il cittadino deve avere
+    il FSE aperto__.
+    Da notare che se il cittadino ha appena aperto il FSE, non è detto che veda le ricette compilate
+    nel passato. Infatti bisogna distinguere due casistiche:
+
+      1. L'utente apre il FSE con il flag `recupero_pregresso: false`.
+        In questo caso il cittadino vedrà solo le ricette non regionali compilate __dopo__ l'apertura del FSE
+
+      2. L'utente apre il FSE con il flag `recupero_pregresso: true`.
+        In questo caso il cittadino vedrà anche le ricette non regionali compilate __prima__ dell'apertura del
+        FSE. I dati però vengono popolati solo dopo l'esecuzione di un batch notturno.
+
+    -----
+
+    Riassumendo tutte le casistiche ed i vincoli:
+
+      1. __Ricette regionali -> Specialistiche__:
+
+          * Necessita di un filtro temporale, sulla campo `data_compilazione`,
+          per evitare di ottenere dati non coerenti e/o per velocizzare la chiamata
+
+
+      2. __Ricette regionali -> Farmaceutiche__
+
+          * Non contengono lo stato
+
+      3. __Ricette non regionali -> Specialistiche__
+
+          * Necessita di un filtro temporale, sulla campo `data_compilazione`,
+          per evitare di ottenere dati non coerenti e/o per velocizzare la chiamata
+          * Necessario il FSE aperto
+          * Alcuni dati non si possono ottenere. Per questo motivo viene impostato il flag `completa` a `false`. In questo caso il front-end può far notare all'utente che sta visualizzando una ricetta che non contiene tutti i dati
+
+      4. __Ricette non regionali -> Farmaceutiche__
+
+          * Non contengono lo stato
+          * Necessario il FSE aperto
+          * Alcuni dati non si possono ottenere. Per questo motivo viene impostato il flag `completa` a `false`. In questo caso il front-end può far notare all'utente che sta visualizzando una ricetta che non contiene tutti i dati
+
+    ----
+
+    ### Breve guida all'uso delle API.
+
+    #### Lista ricette
+
+    Il client, per ottenere l'elenco di tutte le ricette regionali, deve effettuare 2 chiamate e poi
+    fare il merge in locale
+
+      ```
+      # Lista ricette regionali farmaceutiche
+      GET /cittadini/{cf}/ricette?filter={"tipologia": {"eq": "F"}, "regionale": {"eq": true}}
+
+      # Lista ricette regionali specialistiche dell'ultimo anno
+      GET /cittadini/{cf}/ricette?filter={"tipologia": {"eq": "P"}, "regionale": {"eq": true}, "data_compilazione": {"gte": "2018-04-11T15:33:33.959Z", "lte": "2019-04-11T15:33:33.959Z"}}
+      ```
+
+    Il client prima di richiedere le ricette non regionali deve controllare che il cittadino abbia aperto
+    il FSE.
+    Dopodichè per ottenere tutte le ricette non regionali deve effettuare 2 chiamate e poi fare il merge
+    in locale
+
+      ```
+      # Lista ricette non regionali farmaceutiche
+      GET /cittadini/{cf}/ricette?filter={"tipologia": {"eq": "F"}, "regionale": {"eq": false}}
+
+      # Lista ricette non regionali specialistiche degli ultimi 3 mesi
+      GET /cittadini/{cf}/ricette?filter={"tipologia": {"eq": "P"}, "regionale": {"eq": false}, "data_compilazione": {"gte": "2019-01-11T15:33:33.959Z", "lte": "2019-04-11T15:33:33.959Z"}}
+      ```
+
+    Quindi per ottenere tutte le ricette il client dovrà effettuare 4 chiamate.
+
+    #### Dettaglio e PDF ricetta
+
+    Per lo stesso motivo, nel momento in cui si richiede la singola ricetta o
+    il PDF il fruitore dovrà passare la tipologia ed il flag di regionalità:
+
+      ```
+      # per ottenere una ricetta che sappiamo essere regionale di tipo farmaceutico
+      GET /cittadini/{cf}/ricette/{nre}?filter={"tipologia": {"eq": "F"}, "regionale": {"eq": true}}
+
+      # per ottenere il PDF di una ricetta che sappiamo essere non regionale e di tipo specialistica
+      GET /cittadini/{cf}/ricette/{nre}/pdf?filter={"tipologia": {"eq": "P"}, "regionale": {"eq": false}}
+      ```
+
+
+
+    Al contrario, non è necessario passare la tipologia e la regionalità quando si chiede di cambiare
+    lo stato del flag `nascosta` nella ricetta dal momento che è un dato gestito
+    direttamente dal back-end
+
+      ```
+      # Per impostare una ricetta come nascosta
+      GET /cittadini/{cf}/ricette/{nre}/nascosta
+      {nascosta: true}
+
+      # Per riattivare una ricetta nascosta
+      GET /cittadini/{cf}/ricette/{nre}/nascosta
+      {nascosta: false}
+      ```
+
+
+    Infine dal momento che il numero di ricette per cittadino non è elevato
+    si è pensato di gestire i filtri completamente lato client.
+
+
+    <br>
+    <br>
+    <sub>
+    Note: Questo YAML è stato pensato esclusivamente per il front-end
+    destinato al cittadino.
+    </sub>
+
+  version: 1.0.0
+host: 'tst-applogic-e2isan.csi.it:443'
+schemes:
+  - https
+basePath: /ricette/api/v1
+produces:
+  - application/json
+paths:
+  /tipologie-ricette:
+    get:
+      summary: Lista tipologie ricette
+      tags:
+        - Ricette
+      description: >
+        Restituisce la lista delle possibili tipologie delle ricette
+        elettroniche.
+
+        Utile per mostrare dei filtri
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente
+            le tipologie di ricette
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_tipologia_ricetta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  /stati-ricette:
+    get:
+      summary: Lista degli stati ricette
+      tags:
+        - Ricette
+      description: |
+        Restituisce la lista dei possibili stati delle ricette elettroniche.
+        Utile per mostrare dei filtri
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array dei
+            possibili stati delle ricette
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_stato_ricetta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/ricette':
+    get:
+      summary: Lista ricette
+      description: >
+        Dato un cittadino, il cui codice fiscale è quello presente nel path
+        {citId}, restituisce la lista delle ricette in cui lui è l'assistito.
+
+        Inoltre nella querystring dev'essere presente il parametro `tipologia` che
+        indica quale lista di ricette vogliamo richiedere ed il parametro `regionale` che indica se
+        vogliamo richiedere le ricette regionali o meno.
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/citId'
+        - $ref: '#/parameters/filter'
+      tags:
+        - Ricette
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce un'array contenente
+            le ricette elettroniche in cui l'assistito è l'utente con il
+            codice_fiscale={citId}
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_ricetta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/ricette/{nre}':
+    parameters:
+      - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+      - $ref: '#/parameters/xCodiceServizio'
+      - $ref: '#/parameters/xRequestId'
+      - $ref: '#/parameters/citId'
+      - $ref: '#/parameters/nre'
+      - $ref: '#/parameters/filter'
+    get:
+      summary: Dettaglio ricetta
+      description: |
+        Permette di ottenere una singola ricetta per {nre}
+
+      tags:
+        - Ricette
+      responses:
+        '200':
+          description: >-
+            La chiamata è andata a buon fine, e viene restituito l'oggetto che
+            rappresenta la ricetta elettronica avente nre={nre}
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            $ref: '#/definitions/model_ricetta'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/ricette/{nre}/pdf':
+    get:
+      summary: Ricetta in formato pdf
+      description: |
+        Permette di ottenere il PDF dellla ricetta.
+        Questa funzionalità permetterà all'utente di salvare il PDF o stamparlo.
+      produces:
+        - application/pdf
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/citId'
+        - $ref: '#/parameters/nre'
+        - $ref: '#/parameters/filter'
+      tags:
+        - Ricette
+      responses:
+        '200':
+          description: >-
+            La chiamata è andata a buon fine e viene restituito il PDF della
+            ricetta elettronica avente nre={nre}
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: file
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/cittadini/{citId}/ricette/{nre}/nascosta':
+    put:
+      summary: Nascondi ricetta
+      tags:
+        - Ricette
+      description: |
+        Cambia lo stato del flag nascosta dalla ricetta.
+
+        Esempi
+
+        1. Impostare una ricetta come nascosta
+          ```
+          POST /cittadini/{cit}/ricette/{nre}/nascosta
+
+          {nascosta: true}
+          ```
+
+        2. Ripristinare una ricetta nascosta
+          ```
+          POST /cittadini/{cit}/ricette/{nre}/nascosta
+
+          {nascosta: false}
+          ```
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/shibIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/citId'
+        - $ref: '#/parameters/nre'
+        - in: body
+          name: payload
+          required: false
+          schema:
+            type: object
+            required:
+              - nascosta
+            properties:
+              nascosta:
+                type: boolean
+      operationId: nascondiRicetta
+      responses:
+        '200':
+          description: >-
+            La ricetta è stata modificata con successo e viene restituito un
+            oggetto che rappresenta il nuovo stato del flag "nascosta".
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+          schema:
+            type: object
+            required:
+              - nascosta
+            properties:
+              nascosta:
+                type: boolean
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalServerError'
+parameters:
+  shibIdentitaCodiceFiscale:
+    in: header
+    name: Shib-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  xCodiceServizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  xRequestId:
+    in: header
+    name: X-Request-ID
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  accept:
+    in: header
+    name: Accept
+    type: string
+    required: false
+    description: >-
+      Stabilisce qual è il tipo di ritorno atteso (`application/json`,
+      `application/pdf`, ecc)
+  citId:
+    in: path
+    name: citId
+    type: string
+    required: true
+    description: Il codice fiscale del cittadino su cui operare
+  nre:
+    in: path
+    name: nre
+    type: string
+    required: true
+    description: Identificativo della ricetta (NRE)
+  filter:
+    in: query
+    name: filter
+    type: string
+    required: true
+    description: >
+      Un oggetto JSON encoded come definito nel model <code>[Filtri]
+      ricetta</code>.
+
+
+      I campi `tipologia` e `regionale` vanno sempre passati.
+
+      Invece il campo `data_compilazione` va passato solo per le ricette di tipo "specialistiche"
+  tipologia:
+    in: query
+    name: tipologia
+    description: Il codice della tipologia della ricetta (es. F per le farmaceutiche)
+    type: string
+    required: true
+  regionale:
+    in: query
+    name: regionale
+    description: Un flag che determina se si tratta di ricetta/e regionali o meno
+    type: boolean
+    required: true
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_ricetta:
+    title: Ricetta
+    type: object
+    properties:
+      nre:
+        type: string
+        description: >
+          Identificativo della ricetta all'interno dei sistema (Numero di
+          Ricetta Elettronica)
+      data_compilazione:
+        type: string
+        format: date-time
+        description: |
+          Data di compilazione della ricetta
+      data_fine_validita:
+        type: string
+        format: date-time
+        description: La data di fine validità della ricetta
+      nascosta:
+        type: boolean
+        description: Flag che indica se la ricetta è stata nascosta dall'utente
+      regionale:
+        type: boolean
+        description: |
+          Flag che indica se la ricetta è regionale o meno
+      completa:
+        type: boolean
+        description: |
+          Flag che indica se la ricetta contiene tutti i dati oppure se non è stato possibile e non è possibile ottenere
+          alcuni dati della ricetta. Utile per avvisare l'utente che i dati forniti non sono completi e non è
+          possibile saperne di più
+      tipologia:
+        $ref: '#/definitions/model_tipologia_ricetta'
+      stato:
+        $ref: '#/definitions/model_stato_ricetta'
+      priorita:
+        $ref: '#/definitions/model_priorita_ricetta'
+      assistito:
+        $ref: '#/definitions/model_cittadino'
+      medico_prescrittore:
+        $ref: '#/definitions/model_medico'
+      esenzione:
+        $ref: '#/definitions/model_esenzione'
+      prescrizioni:
+        type: array
+        description: >
+          Elenco delle prestazioni e/o dei farmaci prescritti in questa ricetta.
+        items:
+          $ref: '#/definitions/model_prescrizione'
+      diagnosi:
+        type: string
+        x-nullable: true
+        x-nullable-description: Solo nel caso di ricette specialistiche
+
+    required:
+      - nre
+      - data_compilazione
+      - data_fine_validita
+      - nascosta
+      - regionale
+      - completa
+      - tipologia
+      - assistito
+      - medico_prescrittore
+      - prestazioni
+  model_stato_ricetta:
+    title: StatoRicetta
+    description: Il model che rappresenta lo stato di "vita" di una ricetta
+    type: object
+    x-nullable:  true
+    x-nullable-description:  "Nel model 'Ricetta' può essere null solo nel caso di ricette farmaceutiche"
+    properties:
+      codice:
+        type: string
+        description: Il codice univoco dello stato della ricetta
+        enum:
+          - 3
+          - 5
+      nome:
+        type: string
+        description: Un nome user-frendly da mostrare sulla UI
+      descrizione:
+        type: string
+        description: La descrizione dello stato
+    required:
+      - codice
+      - nome
+      - descrizione
+  model_tipologia_ricetta:
+    title: TipologiaRicetta
+    description: Il model che rappresenta la tipologia di una ricetta
+    type: object
+    properties:
+      codice:
+        type: string
+        description: |
+          Il codice univoco della tipologia della ricetta
+        enum:
+          - F
+          - P
+      nome:
+        type: string
+        description: >
+          Un nome user-firendly da mostrare sulla UI (Es. Specialistica visita o
+          esame)
+      descrizione:
+        type: string
+        description: |
+          Una descrizione estesa della tipologia
+    required:
+      - codice
+      - nome
+      - descrizione
+  model_priorita_ricetta:
+    title: PrioritaRicetta
+    description: Model che descrive la priorità di una ricetta
+    x-nullable: true
+    x-nullable-description: >-
+      Nel model 'Ricetta' può essere null solo nel caso di ricette
+      specialistiche
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice che identifica univocamente la priorità della ricetta
+        enum:
+          - U
+          - B
+          - D
+          - P
+      nome:
+        type: string
+        description: Un nome user-friendly da mostrare sulla UI (es. Priorità alta)
+      descrizione:
+        type: string
+        description: Una descrizione dettagliata della priorità
+    required:
+      - codice
+      - nome
+      - descrizione
+  model_cittadino:
+    title: Cittadino
+    description: >
+      Il model generico del cittadino. <br> In caso venga usato per determinare
+      l'assistito di una ricetta, questi campi dovrebbero contenere le
+      informazioni valide al momento della creazione.
+    type: object
+    properties:
+      nome:
+        type: string
+        description: Il nome del cittadino
+      cognome:
+        type: string
+        description: Il cognome del cittadino
+      data_nascita:
+        type: string
+        format: date-time
+        description: La data di nascita del cittadino
+      codice_fiscale:
+        type: string
+        description: Il cognome del cittadino
+      sigla_provincia:
+        type: string
+        description: La sigla della provincia di domicilio del cittadino
+      provincia:
+        type: string
+        description: La provincia di domicilio del cittadino
+      comune:
+        type: string
+        description: La città di domicilio del cittadino
+      cap:
+        type: string
+        description: Il CAP del domicilio del cittadino
+      indirizzo:
+        type: string
+        description: L'indirizzo del domicilio del cittadino
+    required:
+      - codice_fiscale
+  model_medico:
+    title: Medico
+    description: |
+      Il model generico che rappresenta il medico
+    type: object
+    properties:
+      nome:
+        type: string
+        description: Il nome del medico
+      cognome:
+        type: string
+        description: Il cognome del medico
+      codice_fiscale:
+        type: string
+        description: Il codice fiscale del medico
+    required:
+      - codice_fiscale
+  model_prescrizione:
+    title: Prescrizione
+    description: >
+      Il model che descrive una prestazione o un farmaco prescritto in una
+      ricetta
+    type: object
+    properties:
+      codice_catalogo_regionale:
+        type: string
+        x-nullable: true
+        x-nullable-description: in caso di ricette di tipo 'farmaceutica'
+        description: Il codice della prestazione riportato nel catalogo regionale
+      descrizione_catalogo_regionale:
+        type: string
+        x-nullable: true
+        x-nullable-description: in caso di ricette di tipo 'farmaceutica'
+        description: Descrizione della prestazione riportata nel catalogo regionale
+      codice_aic:
+        type: string
+        x-nullable: true
+        x-nullable-description: in caso di ricette di tipo 'specialistica' o se non presente il dato
+        description: Il codice del farmaco AIC (i farmaci commerciali)
+      descrizione_aic:
+        type: string
+        x-nullable: true
+        x-nullable-description: in caso di ricette di tipo 'specialistica' o se non presente il dato
+        description: Descrizione del farmaco AIC (i farmaci commerciali)
+      codice_gruppo_equivalenza:
+        type: string
+        x-nullable: true
+        x-nullable-description: in caso di ricette di tipo 'specialistica' o se non presente il dato
+        description: Codice del farmaco generico
+      descrizione_gruppo_equivalenza:
+        type: string
+        x-nullable: true
+        x-nullable-description: in caso di ricette di tipo 'specialistica' o se non presente il dato
+        description: Descrizione del farmaco generico
+      quantita:
+        type: integer
+        description: la quantità di farmaci o visite prescritte
+      nota:
+        type: string
+        description: Nota presente nella prestazione
+      tipo_accesso:
+        type: string
+        x-nullable: true
+        x-nullable-description: Solo nel caso di ricette specialistiche
+    required:
+      - descrizione
+      - quantita
+      - nota
+  model_esenzione:
+    title: Esenzione
+    description: |
+      Il model che descrive l'esenzione associata alla ricetta
+    x-nullable: true
+    x-nullable-description: |
+      null quando non c'è un'esenzione associata alla ricetta
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice dell'esenzione.
+        example: E01
+      descrizione:
+        type: string
+        example: Cittadini con meno di 6 anni o più di 65 anni
+    required:
+      - codice
+      - descrizione
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+        description: >-
+          Questo campo contiene lo status HTTP che rappresenta lo stato della
+          risposta. <br/><br/> Es. <ul>
+            <li>200: Ok</li>
+            <li>201: Created</li>
+            <li>400: Bad request</li>
+            <li>400: Bad request</li>
+            <li>403: Forbidden</li>
+            <li>404: Not found</li>
+            <li>500: Internal server error</li>
+          </ul>
+      code:
+        type: string
+        description: >-
+          Un codice univoco che permette di riconoscere e rintracciare l'errore
+          ad esempio nei logs
+      title:
+        type: string
+        description: Una descrizione user-friendly dell'errore
+      detail:
+        description: L'elenco dei singoli errori
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        description: Eventuali link alla documentazione degli errori
+        items:
+          type: string
+          description: Il link alla documentazione
+    required:
+      - status
+      - code
+      - title
+      - detail
+      - links
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+        description: Un codice univoco che descrive l'errore
+      valore:
+        type: string
+        description: Un nome user-friendy dell'errore generato
+    additionalProperties:
+      type: string
+    required:
+      - chiave
+      - valore
+  filtro_ricetta:
+    title: '[FILTRI] Ricette'
+    type: object
+    properties:
+      tipologia:
+        type: object
+        properties:
+          eq:
+            type: string
+            description: Equal (==)
+      regionale:
+        type: object
+        properties:
+          eq:
+            type: boolean
+            description: Equal (==)
+      data_compilazione:
+        $ref: '#/definitions/filtri_date'
+  filtri_stringhe:
+    title: '[FILTRI][CRITERI] Stringhe'
+    type: object
+    properties:
+      eq:
+        type: string
+        description: Equal (=)
+      ne:
+        type: string
+        description: Not Equal (<>)
+      in:
+        type: array
+        description: In Array
+        items:
+          type: string
+      nin:
+        type: array
+        description: Not In Array
+        items:
+          type: string
+  filtri_date:
+    title: '[FILTRI][CRITERI] Date'
+    type: object
+    properties:
+      eq:
+        description: Equal (=)
+        type: string
+        format: date
+      ne:
+        description: Not Equal (<>)
+        type: string
+        format: date
+      lt:
+        description: Less Then (<)
+        type: string
+        format: date
+      lte:
+        description: Less Then Or Equal (<=)
+        type: string
+        format: date
+      gt:
+        description: Greater Then (>)
+        type: string
+        format: date
+      gte:
+        description: Greater Then Or Equal (>=)
+        type: string
+        format: date
+      in:
+        type: array
+        items:
+          description: In Array
+          type: string
+          format: date
+      nin:
+        type: array
+        items:
+          description: Not In Array
+          type: string
+          format: date

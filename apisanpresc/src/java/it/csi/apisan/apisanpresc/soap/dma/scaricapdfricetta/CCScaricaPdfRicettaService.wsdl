@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="CCScaricaPdfRicettaService" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmacc.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dmacc.csi.it/" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmacc.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:import namespace="http://dma.csi.it/" />
+   <xs:complexType name="scaricaPdfRicettaRequest">
+      <xs:sequence>
+         <xs:element name="richiedente" type="tns:richiedente" />
+         <xs:element name="paziente" type="tns:estremiPaziente" />
+         <xs:element name="informazioniRichiedente" type="tns:informazioniRichiedente" />
+         <xs:element name="estremiRicetta" type="ns1:estremiRicetta" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="richiedente">
+      <xs:sequence>
+         <xs:element name="servizioApplicativoChiamante" type="xs:string" />
+         <xs:element name="uuid" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="estremiPaziente">
+      <xs:sequence>
+         <xs:element name="codiceFiscale" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="informazioniRichiedente">
+      <xs:sequence>
+         <xs:element name="codiceFiscaleUtente" type="xs:string" />
+         <xs:element minOccurs="0" name="ruoloUtente" type="xs:string" />
+         <xs:element minOccurs="0" name="identificativoIpRichiedente" type="xs:string" />
+         <xs:element name="contestoOperativo" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="scaricaPdfRicettaResponse">
+      <xs:complexContent>
+         <xs:extension base="tns:serviceResponse">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="pdf" type="xs:base64Binary" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="serviceResponse">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="esito" type="xs:string" />
+         <xs:element minOccurs="0" name="errori" type="ns1:ListaErroriType" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="scaricaPdfRicettaRequest" nillable="true" type="tns:scaricaPdfRicettaRequest" />
+   <xs:element name="scaricaPdfRicettaResponse" nillable="true" type="tns:scaricaPdfRicettaResponse" />
+</xs:schema><xs:schema targetNamespace="http://dma.csi.it/" version="1.0" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:complexType name="estremiRicetta">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="tipoPrescrizione" type="xs:string" />
+         <xs:element minOccurs="0" name="regionePrescrizione" type="xs:string" />
+         <xs:element name="nre" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ListaErroriType">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" name="errore" type="tns:errore" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="errore">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="codiceEsito" type="xs:string" />
+         <xs:element minOccurs="0" name="esitoErrore" type="xs:string" />
+         <xs:element minOccurs="0" name="fonte" type="xs:string" />
+         <xs:element minOccurs="0" name="tipoErrore" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>  </wsdl:types>
+  <wsdl:message name="scaricaPdfRicettaResponse">
+    <wsdl:part element="tns:scaricaPdfRicettaResponse" name="scaricaPdfRicettaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="scaricaPdfRicetta">
+    <wsdl:part element="tns:scaricaPdfRicettaRequest" name="scaricaPdfRicettaRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CCScaricaPdfRicettaService">
+    <wsdl:operation name="scaricaPdfRicetta">
+      <wsdl:input message="tns:scaricaPdfRicetta" name="scaricaPdfRicetta">
+    </wsdl:input>
+      <wsdl:output message="tns:scaricaPdfRicettaResponse" name="scaricaPdfRicettaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CCScaricaPdfRicettaServiceSoapBinding" type="tns:CCScaricaPdfRicettaService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="scaricaPdfRicetta">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="scaricaPdfRicetta">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="scaricaPdfRicettaResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CCScaricaPdfRicettaService">
+    <wsdl:port binding="tns:CCScaricaPdfRicettaServiceSoapBinding" name="CCScaricaPdfRicettaServicePort">
+      <soap12:address location="https://tst-bejava-dma.isan.csi.it/dmaccproblrti/CCScaricaPdfRicettaService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

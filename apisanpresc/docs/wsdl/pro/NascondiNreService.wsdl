@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="NascondiNreService" targetNamespace="http://dmapro.csi.it/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://dmapro.csi.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema targetNamespace="http://dmapro.csi.it/" version="1.0" xmlns:ns1="http://dma.csi.it/" xmlns:tns="http://dmapro.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://dma.csi.it/" />
+<xs:element name="nascondiNreRequest" type="tns:nascondiNre" />
+<xs:element name="nascondiNreResponse" type="tns:nascondiNreResponse" />
+<xs:complexType name="nascondiNre">
+    <xs:sequence>
+      <xs:element name="richiedente" type="tns:richiedente" />
+      <xs:element name="paziente" type="tns:estremiPaziente" />
+      <xs:element name="estremiRicetta" type="ns1:estremiRicetta" />
+      <xs:element name="operazione" type="tns:operazione" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="richiedente">
+    <xs:sequence>
+      <xs:element name="servizioApplicativoChiamante" type="xs:string" />
+      <xs:element name="uuid" type="xs:string" />
+      <xs:element name="codiceFiscaleRichiedente" type="xs:string" />
+      <xs:element minOccurs="0" name="identificativoIpRichiedente" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="estremiPaziente">
+    <xs:sequence>
+      <xs:element name="codiceFiscale" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="operazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="flagOperazione" type="tns:codiceOperazione" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="nascondiNreResponse">
+    <xs:complexContent>
+      <xs:extension base="tns:serviceResponse">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="serviceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="esito" type="xs:string" />
+      <xs:element minOccurs="0" name="errori" type="ns1:ListaErroriType" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="codiceOperazione">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RENDI_VISIBILE" />
+      <xs:enumeration value="RENDI_INVISIBILE" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema targetNamespace="http://dma.csi.it/" version="1.0" xmlns:tns="http://dma.csi.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="estremiRicetta">
+    <xs:sequence>
+      <xs:element name="nre" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="ListaErroriType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="errore" type="tns:errore" />
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="errore">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codiceEsito" type="xs:string" />
+      <xs:element minOccurs="0" name="esitoErrore" type="xs:string" />
+      <xs:element minOccurs="0" name="fonte" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoErrore" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="nascondiNreResponse">
+    <wsdl:part element="tns:nascondiNreResponse" name="nascondiNreResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nascondiNre">
+    <wsdl:part element="tns:nascondiNreRequest" name="nascondiNreRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="NascondiNreService">
+    <wsdl:operation name="nascondiNre">
+      <wsdl:input message="tns:nascondiNre" name="nascondiNre">
+    </wsdl:input>
+      <wsdl:output message="tns:nascondiNreResponse" name="nascondiNreResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NascondiNreServiceSoapBinding" type="tns:NascondiNreService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="nascondiNre">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="nascondiNre">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nascondiNreResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NascondiNreService">
+    <wsdl:port binding="tns:NascondiNreServiceSoapBinding" name="NascondiNreServicePort">
+      <soap12:address location="https://xxx-pro.xxx.csi.it/prorel/NascondiNreService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

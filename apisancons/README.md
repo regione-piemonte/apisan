@@ -2,15 +2,19 @@
 
 APISANCONS
 
+## Versione
+
+1.3.0
+
 ## Descrizione del prodotto
 
-Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realizzato tramite il prodotto SANSOL pubblicato in xxx, e i servizi di business dei consensi.
+Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui](<https://github.com/regione-piemonte/sansol>), e i servizi di business dei consensi.
 
 ## Configurazioni iniziali
 
 I servizi "orchestrati" si trovano ai seguenti link [SERVIZI SOAP](docs/wsdl) . E' necessario che il file di [properties](buildfiles/prod.properties) sia configurato affinchè punti a dei servizi mock generati secondo tali descrittori.
 
-Lanciare il comando ant -DSECRET_PWD=xxx -Dvalue=mypass encrypt per generare la #password di cifratura  dovrà andare a sostituire il valore di encryptionkey sul  [file](buildfiles/prod.properties)
+Lanciare il comando ant -Dtarget prod per compilare e generare il pacchetto
 
 ## Prerequisiti di sistema
 
@@ -29,7 +33,7 @@ JBoss eap 6.4.5
 
 ## Installazione
 
-lanciare il comando ant -Dtarget prod -DSECRET_PWD[password](#password) per generare l'ear
+lanciare il comando ant -Dtarget prod  per generare l'ear
 
 ## Deployment
 
