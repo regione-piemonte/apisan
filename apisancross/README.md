@@ -41,15 +41,9 @@ Per il versionamento del software si usa la tecnica Semantic Versioning (http://
 
 ## Authors
 
-Egidio Bosio
+* [Domenico Lisi](https://github.com/hefrety?tab=stars)
+* [Egidio Bosio](https://github.com/egidio-bosio)
 
 ## Copyrights
 
 “© Copyright Regione Piemonte – 2022”
-
-## License
-
-SPDX-License-Identifier: inserire il codice SPDX delle licenza
-Veder il file LICENSE per i dettagli.
-
-

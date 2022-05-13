@@ -43,15 +43,9 @@ Per il versionamento del software si usa la tecnica Semantic Versioning (http://
 
 ## Authors
 
-Egidio Bosio
+* Stefano Spera
+* Tommaso Ruggiero
 
 ## Copyrights
 
 “© Copyright Regione Piemonte – 2022”
-
-## License
-
-SPDX-License-Identifier: inserire il codice SPDX delle licenza
-Veder il file LICENSE per i dettagli.
-
-

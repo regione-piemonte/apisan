@@ -41,11 +41,10 @@ Inserire il file ear generato durante l'installazione sotto la cartella deployme
 
 Per il versionamento del software si usa la tecnica Semantic Versioning (http://semver.org).
 
+## Authors
+
+* Tommaso Ruggiero
+
 ## Copyrights
 
 “© Copyright Regione Piemonte – 2022”
-
-## License
-
-SPDX-License-Identifier: inserire il codice SPDX delle licenza
-Veder il file LICENSE per i dettagli.

@@ -13,7 +13,7 @@ description:
         Le API esposte da APISAN facilitano la fruibilità dei servizi sanitari
         al cittadino.
     genericName: API per la sanità
-    localisedName: apisan
+    localisedName: Backend API Servizi Salute
     longDescription: |
       Il prodotto APISAN espone servizi in tecnologia REST rivolti al cittadino
       e riguardanti le tematiche sanitarie per la Regione Piemonte. Tali servizi
@@ -45,7 +45,7 @@ description:
 
 
       - la ricerca e i pagamenti ticket sanitari on-line.
-    shortDescription: API di orchestrazione dei servizi sanitari rivolti al cittadino
+    shortDescription: Backend API di orchestrazione dei servizi della Salute rivolti al cittadino della Regione Piemonte
 developmentStatus: stable
 it:
   conforme:
@@ -71,7 +71,7 @@ localisation:
 maintenance:
   contacts:
     - email: egidio.bosio@csi.it
-      name: Egidio Bosio
+      name: [Egidio Bosio](https://github.com/egidio-bosio)
   type: internal
 name: apisan
 platforms:
