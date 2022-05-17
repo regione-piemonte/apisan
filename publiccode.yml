@@ -3,50 +3,61 @@
 # More info at https://github.com/italia/publiccode.yml
 
 publiccodeYmlVersion: '0.2'
-applicationSuite: regione-piemonte
 categories:
-  - application-development
+  - erp
+dependsOn:
+  open:
+    - name: Apache httpd
+      optional: false
+      version: 2.4.6
+      versionMax: ''
+      versionMin: ''
+    - name: PostgreSQL
+      optional: false
+      version: '12'
+      versionMax: ''
+      versionMin: ''
+    - name: RedHat JBoss EAP
+      optional: false
+      version: 6.4.5
+      versionMax: ''
+      versionMin: ''
 description:
   it:
     features:
       - |-
         Le API esposte da APISAN facilitano la fruibilità dei servizi sanitari
         al cittadino.
-    genericName: API per la sanità
-    localisedName: Backend API Servizi Salute
+    genericName: apisan
+    localisedName: API per la sanità
     longDescription: |
       Il prodotto APISAN espone servizi in tecnologia REST rivolti al cittadino
       e riguardanti le tematiche sanitarie per la Regione Piemonte. Tali servizi
       sono fruibili dal cittadino attraverso l'applicazione web SANSOL e
       comprendono tra gli altri: 
 
+            - gestione del fascicolo sanitario del cittadino,
 
-      - gestione del fascicolo sanitario del cittadino,
+            - la scelta/revoca del medico
 
+            - il profilo sanitario del cittadino 
 
-      - la scelta/revoca del medico
+            - le vaccinazioni eseguite dal cittadino 
 
+            - i servizi dello screening 
 
-      - il profilo sanitario del cittadino 
+            - i servizi di gestione deleghe per operare sui servizi stessi per un  altro cittadino delegato 
 
+            - i servizi di ricerca topografica di farmacie, ospedali e case di cura, strutture sanitarie 
 
-      - le vaccinazioni eseguite dal cittadino 
-
-
-      - i servizi dello screening 
-
-
-      - i servizi di gestione deleghe per operare sui servizi stessi per un
-      altro cittadino delegato 
-
-
-      - i servizi di ricerca topografica di farmacie, ospedali e case di cura,
-      strutture sanitarie 
-
-
-      - la ricerca e i pagamenti ticket sanitari on-line.
-    shortDescription: Backend API di orchestrazione dei servizi della Salute rivolti al cittadino della Regione Piemonte
+            - la ricerca e i pagamenti ticket sanitari on-line.
+    shortDescription: |-
+      Backend API di orchestrazione dei servizi della Salute rivolti al
+      cittadino della Regione Piemonte
 developmentStatus: stable
+intendedAudience:
+  scope:
+    - healthcare
 it:
   conforme:
     gdpr: true
@@ -61,42 +72,26 @@ it:
     spid: false
   riuso:
     codiceIPA: r_piemon
+landingURL: 'https://github.com/regione-piemonte/apisan.git'
 legal:
+  authorsFile: |-
+    COPYRIGHTS.md
   license: EUPL-1.2
-  repoOwner: CSI
+  mainCopyrightOwner: Regione PIemonte
+  repoOwner: Regione Piemonte
 localisation:
   availableLanguages:
     - it
   localisationReady: false
-logo: |-
-  apisan.png
+logo: apisan.png
 maintenance:
   contacts:
     - email: egidio.bosio@csi.it
-      name: [Egidio Bosio](https://github.com/egidio-bosio)
+      name: Egidio Bosio
   type: internal
-name: apisan
+name: Backend API Servizi Salute
 platforms:
-  - linux
+  - web
 releaseDate: '2022-05-06'
 softwareType: standalone/web
 softwareVersion: 6.1.0
-url: 'https://github.com/regione-piemonte/apisan.git'
-dependsOn:
-  open:
-    - name: Apache
-      optional: false
-      version: 2.4.6
-      versionMax: ''
-      versionMin: ''
-    - name: PostgreSQL
-      optional: false
-      version: '12'
-      versionMax: ''
-      versionMin: ''
-  proprietary:
-    - name: jbosseap
-      optional: false
-      version: 6.4.5
-      versionMax: ''
-      versionMin: ''
