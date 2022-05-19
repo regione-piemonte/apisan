@@ -94,4 +94,5 @@ platforms:
   - web
 releaseDate: '2022-05-06'
 softwareType: standalone/web
+url: https://github.com/regione-piemonte/apisan
 softwareVersion: 6.1.0
