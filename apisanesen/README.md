@@ -8,7 +8,7 @@ APISANESEN
 
 ## Descrizione del prodotto
 
-Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui](<https://github.com/regione-piemonte/sansol>), e i servizi di business delle esenzioni da reddito.
+Si tratta di API di orchestrazione rivolte al cittadino tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui](https://github.com/regione-piemonte/sansol), e i servizi di business delle esenzioni da reddito.
 
 ## Configurazioni iniziali
 

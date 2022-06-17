@@ -8,7 +8,7 @@ Backend API Servizi Salute
 
 ## Descrizione del prodotto
 
-Si tratta di API di orchestrazione tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui](<https://github.com/regione-piemonte/sansol>), e i servizi di business dei sistemi coinvolti per i servizi on line rivolti alla pubblica amministrazione - settore sanità della Regione Piemonte.
+Si tratta di API di orchestrazione tra il front end, realizzato tramite il prodotto SANSOL pubblicato [qui](https://github.com/regione-piemonte/sansol), e i servizi di business dei sistemi coinvolti per i servizi on line rivolti alla pubblica amministrazione - settore sanità della Regione Piemonte.
 
 Elenco componenti:
 
