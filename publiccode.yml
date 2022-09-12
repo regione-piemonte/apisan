@@ -25,6 +25,10 @@ dependsOn:
 description:
   it:
     features:
+      - PNRR
+      - PNRR/Beneficiari/ASL
+      - PNRR/Beneficiari/Enti Regionali
+      - PNRR/Misura/1.4.1
       - |-
         Le API esposte da APISAN facilitano la fruibilità dei servizi sanitari
         al cittadino.
