@@ -15,6 +15,7 @@ Elenco componenti:
 * [APISANASSISTENZA](apisanassistenza) API per richieste di assistenza verso CRM
 * [APISANAUT](apisanaut)        API di orchestrazione per la gestione delle deleghe e dei consensi
 * [APISANCELIACHIA](apisanceliachia)  API per la gestione dei servizi inerenti ai malati di celiachia esposti al cittadino
+* [APISANCOD](apisancod)  API per la gestione del contatto digitale con il ittadino
 * [APISANCONS](apisancons)       API per la gestione dei consensi espressi dal cittadino
 * [APISANCROSS](apisancross)      API di orchestrazione per i servizi trasversali
 * [APISANESEN](apisanesen)       API di orchestrazione per la gestione delle esenzioni del cittadino
@@ -39,6 +40,7 @@ Si rimanda ai readme delle singole componenti
 * [APISANASSISTENZA](apisanassistenza/README.md)
 * [APISANAUT](apisanaut/README.md)
 * [APISANCELIACHIA](apisanceliachia/README.md)
+* [APISANCOD](apisancod/README.md)
 * [APISANCONS](apisancons/README.md)
 * [APISANCROSS](apisancross/README.md)
 * [APISANESEN](apisanesen/README.md)

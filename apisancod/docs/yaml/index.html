@@ -1,0 +1,1370 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Contatto Digitale - [Cittadino]</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Contatto Digitale - [Cittadino]</h1>
+    <div class="app-desc"><h1>Avvertenze</h1>
+<hr />
+<h1>Domande</h1>
+<hr />
+<h1>Prototipo Interfaccia</h1>
+<hr />
+<p>https://rn5jxm.axshare.com/#g=1&amp;p=indice</p>
+<h1>Note</h1>
+<hr />
+<h2>Versione 0.0.11 (06 Set 2022)</h2>
+<ul>
+<li>modificata risorsa lettura messaggio</li>
+</ul>
+<h2>Versione 0.0.10 (19 Lug 2022)</h2>
+<ul>
+<li>tolto cognome e nome autore</li>
+</ul>
+<h2>Versione 0.0.9 (7 Lug 2022)</h2>
+<ul>
+<li>Motivo_blocco codice diventa string</li>
+</ul>
+<h2>Versione 0.0.8 (4 Lug 2022)</h2>
+<ul>
+<li>Modifica lista accession_numbers</li>
+</ul>
+<h2>Versione 0.0.7 (10 Giu 2022)</h2>
+<ul>
+<li>Aggiunti campi  <code>modificato</code>, <code>data_modifica</code> e <code>autore_modifica</code> su model ultimo messaggio</li>
+</ul>
+<h2>Versione 0.0.6 (03 Giu 2022)</h2>
+<ul>
+<li>Aggunto endpoint verifica abilitazione</li>
+</ul>
+<h2>Versione 0.0.5 (26 Mag 2022)</h2>
+<ul>
+<li>Tolto nome e cognome autore dal model messaggio</li>
+<li>Tolto campo categoria_tipologia dal model documento</li>
+</ul>
+<h2>Versione 0.0.4 (25 Mag 2022)</h2>
+<ul>
+<li>Aggiunto filtro <code>id_conversazione</code>, msu endpoint Lista conversazioni</li>
+</ul>
+<h2>Versione 0.0.3 (20 Mag 2022)</h2>
+<ul>
+<li>Aggiunto campo <code>modificato</code>, <code>data_modifica</code> e <code>autore_modifica</code> su model messaggio</li>
+</ul>
+<h2>Versione 0.0.2 (19 Mag 2022)</h2>
+<ul>
+<li>tolto endpoint &quot;cerca conversazione&quot; , filtro argomento aggiunto su &quot;Lista conversazioni&quot;</li>
+</ul>
+<h2>Versione 0.0.1 (10 Mag 2022)</h2>
+<ul>
+<li>Prima implementazione</li>
+</ul>
+</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 0.0.10</div>
+    <div class="app-desc">BasePath:/apisancod/api/v1</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Default">Default</a></h4>
+  <ul>
+  <li><a href="#cittadiniCitIdAbilitazioneGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/abilitazione</code></a></li>
+  <li><a href="#cittadiniCitIdConversazioniGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/conversazioni</code></a></li>
+  <li><a href="#cittadiniCitIdConversazioniIdConversazioneMessaggiGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi</code></a></li>
+  <li><a href="#cittadiniCitIdConversazioniIdConversazioneMessaggiIdMessaggioLettoPut"><code><span class="http-method">put</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi/{id_messaggio}/letto</code></a></li>
+  <li><a href="#cittadiniCitIdConversazioniIdConversazioneMessaggiIdMessaggioPut"><code><span class="http-method">put</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi/{id_messaggio}</code></a></li>
+  <li><a href="#cittadiniCitIdConversazioniIdConversazioneMessaggiPost"><code><span class="http-method">post</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi</code></a></li>
+  <li><a href="#cittadiniCitIdConversazioniPost"><code><span class="http-method">post</span> /cittadini/{cit_id}/conversazioni</code></a></li>
+  <li><a href="#cittadiniCitIdInfoMedicoGet"><code><span class="http-method">get</span> /cittadini/{cit_id}/info-medico</code></a></li>
+  <li><a href="#servizioAttivoGet"><code><span class="http-method">get</span> /servizio-attivo</code></a></li>
+  </ul>
+
+  <h1><a name="Default">Default</a></h1>
+  <div class="method"><a name="cittadiniCitIdAbilitazioneGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/abilitazione</code></pre></div>
+    <div class="method-summary">Info abilitazione (<span class="nickname">cittadiniCitIdAbilitazioneGet</span>)</div>
+    <div class="method-notes">Verifica se un cittadino è stato abilitato o bloccato dal medico</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">cf_medico (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; il codice fiscale del medico </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_abilitazione">model_abilitazione</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "abilitazione" : "A",
+  "motivazione_medico" : "motivazione_medico",
+  "motivo_blocco" : {
+    "descrizione" : "descrizione",
+    "codice" : "codice"
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Le informazioni del medico
+        <a href="#model_abilitazione">model_abilitazione</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Se il cittadino non ha medico o il medico non ha aderito restituisce 404
+        <a href="##/responses/NotFound">#/responses/NotFound</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdConversazioniGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/conversazioni</code></pre></div>
+    <div class="method-summary">Lista conversazioni (<span class="nickname">cittadiniCitIdConversazioniGet</span>)</div>
+    <div class="method-notes">Restituisce la lista delle conversazioni Il front-end può richiedere la paginazione dei risultati per evitare di mostrare troppi risultati a schermo. La paginazione viene effettuata tramite i due query params opzionali della request &quot;limit&quot; ed &quot;offset&quot;  e 1 header che contiene il numero totale di elementi in base ai filtri di ricerca alla paginazione &quot;X-Total-Elements&quot; Sono presenti anche altri query params della request opzionali che permettono di filtrare maggiormente la lista dei risultati</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">sola_lettura (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; <p>Filtra conversazioni per lo stato di abilitazione. Possibili valori</p>
+<ul>
+<li>A = conversazioni arttive</li>
+<li>B = conversazioni bloccate (sola lettura)</li>
+<li>T = tutte le conversazioni</li>
+</ul>
+ </div><div class="param">limit (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Il numero di pagine </div><div class="param">offset (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; L'offset della paginazione </div><div class="param">cf_medico (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; il codice fiscale del medico </div><div class="param">argomento (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; la stringa della ricerca per argomento </div><div class="param">id_conversazione (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; L'id della conversazione </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#model_conversazione">model_conversazione</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "motivazione_medico" : "motivazione_medico",
+  "motivo_blocco" : {
+    "descrizione" : "descrizione",
+    "codice" : "codice"
+  },
+  "medico" : {
+    "codice_fiscale" : "codice_fiscale",
+    "cognome" : "Rossi",
+    "nome" : "Mario"
+  },
+  "argomento" : "Dolore al ginocchio",
+  "data_creazione" : "2020-02-07T14:14:39.420Z",
+  "id" : "12",
+  "n_messaggi_non_letti" : 2,
+  "sola_lettura" : false,
+  "ultimo_messaggio" : {
+    "data_lettura" : "2020-02-07T15:14:39.420Z",
+    "data_modifica" : "2020-02-07T14:14:39.420Z",
+    "data_creazione" : "2020-02-07T14:14:39.420Z",
+    "letto" : true,
+    "autore_modifica" : "CF",
+    "modificato" : true,
+    "id" : "12",
+    "testo" : "Ho allegato il referto",
+    "autore" : {
+      "tipo" : "assistito",
+      "codice_fiscale" : "codice_fiscale"
+    }
+  },
+  "autore" : {
+    "tipo" : "assistito",
+    "codice_fiscale" : "codice_fiscale"
+  }
+}, {
+  "motivazione_medico" : "motivazione_medico",
+  "motivo_blocco" : {
+    "descrizione" : "descrizione",
+    "codice" : "codice"
+  },
+  "medico" : {
+    "codice_fiscale" : "codice_fiscale",
+    "cognome" : "Rossi",
+    "nome" : "Mario"
+  },
+  "argomento" : "Dolore al ginocchio",
+  "data_creazione" : "2020-02-07T14:14:39.420Z",
+  "id" : "12",
+  "n_messaggi_non_letti" : 2,
+  "sola_lettura" : false,
+  "ultimo_messaggio" : {
+    "data_lettura" : "2020-02-07T15:14:39.420Z",
+    "data_modifica" : "2020-02-07T14:14:39.420Z",
+    "data_creazione" : "2020-02-07T14:14:39.420Z",
+    "letto" : true,
+    "autore_modifica" : "CF",
+    "modificato" : true,
+    "id" : "12",
+    "testo" : "Ho allegato il referto",
+    "autore" : {
+      "tipo" : "assistito",
+      "codice_fiscale" : "codice_fiscale"
+    }
+  },
+  "autore" : {
+    "tipo" : "assistito",
+    "codice_fiscale" : "codice_fiscale"
+  }
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    La lista delle conversazioni
+        
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdConversazioniIdConversazioneMessaggiGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi</code></pre></div>
+    <div class="method-summary">Lista messaggi (<span class="nickname">cittadiniCitIdConversazioniIdConversazioneMessaggiGet</span>)</div>
+    <div class="method-notes">Restituisce la lista dei messaggi di una conversazione. Il front-end può richiedere la paginazione dei risultati per evitare di mostrare troppi risultati a schermo. La paginazione viene effettuata tramite i due query params opzionali della request &quot;limit&quot; ed &quot;offset&quot;  e 1 header che contiene il numero totale di elementi in base ai filtri di ricerca alla paginazione &quot;X-Total-Elements&quot;</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">id_conversazione (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id della singola conversazione </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">limit (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Il numero di pagine </div><div class="param">offset (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; L'offset della paginazione </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#model_messaggio">model_messaggio</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "modificabile" : true,
+  "data_lettura" : "2020-02-07T15:14:39.420Z",
+  "data_modifica" : "2020-02-07T14:14:39.420Z",
+  "data_creazione" : "2020-02-07T14:14:39.420Z",
+  "letto" : true,
+  "autore_modifica" : "CF",
+  "modificato" : true,
+  "id" : "12",
+  "allegati" : [ {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  }, {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  } ],
+  "testo" : "Ho allegato il referto",
+  "autore" : {
+    "tipo" : "assistito",
+    "codice_fiscale" : "codice_fiscale"
+  }
+}, {
+  "modificabile" : true,
+  "data_lettura" : "2020-02-07T15:14:39.420Z",
+  "data_modifica" : "2020-02-07T14:14:39.420Z",
+  "data_creazione" : "2020-02-07T14:14:39.420Z",
+  "letto" : true,
+  "autore_modifica" : "CF",
+  "modificato" : true,
+  "id" : "12",
+  "allegati" : [ {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  }, {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  } ],
+  "testo" : "Ho allegato il referto",
+  "autore" : {
+    "tipo" : "assistito",
+    "codice_fiscale" : "codice_fiscale"
+  }
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Il dettaglio della conversazione
+        
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdConversazioniIdConversazioneMessaggiIdMessaggioLettoPut"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi/{id_messaggio}/letto</code></pre></div>
+    <div class="method-summary">Lettura messaggio (<span class="nickname">cittadiniCitIdConversazioniIdConversazioneMessaggiIdMessaggioLettoPut</span>)</div>
+    <div class="method-notes">Imposta un messaggio come letto</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">id_conversazione (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id della singola conversazione </div><div class="param">id_messaggio (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id del singolo messaggio </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    Operazione eseguita con successo
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdConversazioniIdConversazioneMessaggiIdMessaggioPut"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi/{id_messaggio}</code></pre></div>
+    <div class="method-summary">Modifica messaggio (<span class="nickname">cittadiniCitIdConversazioniIdConversazioneMessaggiIdMessaggioPut</span>)</div>
+    <div class="method-notes">Modifica un messaggio</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">id_conversazione (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id della singola conversazione </div><div class="param">id_messaggio (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id del singolo messaggio </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">Payload messaggio <a href="#Payload messaggio">Payload messaggio</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; I dati che il client deve passare alle API per creare una nuovo messaggio in una conversazione </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_messaggio">model_messaggio</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "modificabile" : true,
+  "data_lettura" : "2020-02-07T15:14:39.420Z",
+  "data_modifica" : "2020-02-07T14:14:39.420Z",
+  "data_creazione" : "2020-02-07T14:14:39.420Z",
+  "letto" : true,
+  "autore_modifica" : "CF",
+  "modificato" : true,
+  "id" : "12",
+  "allegati" : [ {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  }, {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  } ],
+  "testo" : "Ho allegato il referto",
+  "autore" : {
+    "tipo" : "assistito",
+    "codice_fiscale" : "codice_fiscale"
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Il dettaglio del messaggio
+        <a href="#model_messaggio">model_messaggio</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdConversazioniIdConversazioneMessaggiPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cit_id}/conversazioni/{id_conversazione}/messaggi</code></pre></div>
+    <div class="method-summary">Nuovo messaggio (<span class="nickname">cittadiniCitIdConversazioniIdConversazioneMessaggiPost</span>)</div>
+    <div class="method-notes">Permette al cittadino di aggiungere un nuovo messaggio sulla conversazione</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div><div class="param">id_conversazione (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; L'id della singola conversazione </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">Payload messaggio <a href="#Payload messaggio">Payload messaggio</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; I dati che il client deve passare alle API per creare una nuovo messaggio in una conversazione </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_messaggio">model_messaggio</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "modificabile" : true,
+  "data_lettura" : "2020-02-07T15:14:39.420Z",
+  "data_modifica" : "2020-02-07T14:14:39.420Z",
+  "data_creazione" : "2020-02-07T14:14:39.420Z",
+  "letto" : true,
+  "autore_modifica" : "CF",
+  "modificato" : true,
+  "id" : "12",
+  "allegati" : [ {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  }, {
+    "codice_cl" : "codice_cl",
+    "tipo_contributo" : "tipo_contributo",
+    "codice_documento_dipartimentale" : "codice_documento_dipartimentale",
+    "azienda" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "tipo_documento" : {
+      "descrizione" : "descrizione",
+      "codice" : "codice"
+    },
+    "accession_numbers" : [ "accession_numbers", "accession_numbers" ],
+    "data_validazione" : "2000-01-23",
+    "id_repository_cl" : "id_repository_cl",
+    "categoria_tipologia" : "FSE",
+    "descrizione_struttura" : "descrizione_struttura",
+    "id_episodio" : 0.80082819046101150206595775671303272247314453125,
+    "id_documento_ilec" : "id_documento_ilec"
+  } ],
+  "testo" : "Ho allegato il referto",
+  "autore" : {
+    "tipo" : "assistito",
+    "codice_fiscale" : "codice_fiscale"
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Il dettaglio del messaggio
+        <a href="#model_messaggio">model_messaggio</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdConversazioniPost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /cittadini/{cit_id}/conversazioni</code></pre></div>
+    <div class="method-summary">Nuova conversazione (<span class="nickname">cittadiniCitIdConversazioniPost</span>)</div>
+    <div class="method-notes">Permette al cittadino di creare una nuova conversazione</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">Payload conversazione <a href="#Payload conversazione">Payload conversazione</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; I dati che il client deve passare alle API per creare una nuova conversazione </div>
+
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_conversazione_nuova">model_conversazione_nuova</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "medico" : {
+    "codice_fiscale" : "codice_fiscale",
+    "cognome" : "Rossi",
+    "nome" : "Mario"
+  },
+  "argomento" : "Dolore al ginocchio",
+  "data_creazione" : "2020-02-07T14:14:39.420Z",
+  "id" : "12",
+  "autore" : {
+    "tipo" : "assistito",
+    "codice_fiscale" : "codice_fiscale"
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Il dettaglio della conversazione
+        <a href="#model_conversazione_nuova">model_conversazione_nuova</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="cittadiniCitIdInfoMedicoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /cittadini/{cit_id}/info-medico</code></pre></div>
+    <div class="method-summary">Info medico (<span class="nickname">cittadiniCitIdInfoMedicoGet</span>)</div>
+    <div class="method-notes">Restituisce le informazioni del medico associato al cittadino</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">cit_id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Il codice fiscale del cittadino su cui operare </div>
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+      
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_medico_info">model_medico_info</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data_inizio_adesione" : "2020-02-07T14:14:39.420Z",
+  "codice_fiscale" : "codice_fiscale",
+  "cognome" : "cognome",
+  "data_fine_adesione" : "data_fine_adesione",
+  "notifica_lettura_messaggi" : false,
+  "nome" : "nome"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Le informazioni del medico
+        <a href="#model_medico_info">model_medico_info</a>
+    <h4 class="field-label">400</h4>
+    La richiesta fatta dal client è errata. Ad esempio non sono stati passati tutti i campi obbligatori, uno dei campi è di un tipo non valido, formattazione dei filtri errata ecc.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">403</h4>
+    L'utente non ha i permessi necessari per visualizzare queste risorse. <br> Ad esempio un utente che sta provando ad ottenere le ricette di un altro utente senza averne la delega.
+        <a href="#errore">errore</a>
+    <h4 class="field-label">404</h4>
+    Se il cittadino non ha medico o il medico non ha aderito restituisce 404
+        <a href="##/responses/NotFound">#/responses/NotFound</a>
+    <h4 class="field-label">500</h4>
+    Si è verificato un'errore interno del server. (es. null pointer exception, connessione al DB saltata ecc)
+        <a href="#errore">errore</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="servizioAttivoGet"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /servizio-attivo</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">servizioAttivoGet</span>)</div>
+    <div class="method-notes">Restituisce informazioni sull'ambiente su cui sta girando il back-end. Es. variabili ambiente, header http ricevuti ecc.</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#model_info_servizio">model_info_servizio</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "descrizione" : "descrizione",
+  "data" : "2000-01-23",
+  "nome" : "nome",
+  "servizio_attivo" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Restituisce un oggetto JSON contenente i dati dell'env su cui sta girando il servizio
+        <a href="#model_info_servizio">model_info_servizio</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Payload conversazione"><code>Payload conversazione</code> - </a></li>
+    <li><a href="#Payload messaggio"><code>Payload messaggio</code> - </a></li>
+    <li><a href="#errore"><code>errore</code> - [ERRORE] Generico</a></li>
+    <li><a href="#errore_dettaglio"><code>errore_dettaglio</code> - [ERRORE] Dettaglio</a></li>
+    <li><a href="#model_abilitazione"><code>model_abilitazione</code> - Abilitazione</a></li>
+    <li><a href="#model_accession_number"><code>model_accession_number</code> - AccessionNumber</a></li>
+    <li><a href="#model_autore"><code>model_autore</code> - Autore</a></li>
+    <li><a href="#model_autore_payload"><code>model_autore_payload</code> - Autore</a></li>
+    <li><a href="#model_codifica"><code>model_codifica</code> - Codifica</a></li>
+    <li><a href="#model_conversazione"><code>model_conversazione</code> - Conversazione</a></li>
+    <li><a href="#model_conversazione_nuova"><code>model_conversazione_nuova</code> - Nuova conversazione</a></li>
+    <li><a href="#model_documento"><code>model_documento</code> - Documento</a></li>
+    <li><a href="#model_info_servizio"><code>model_info_servizio</code> - </a></li>
+    <li><a href="#model_medico"><code>model_medico</code> - Medico</a></li>
+    <li><a href="#model_medico_info"><code>model_medico_info</code> - Info medico</a></li>
+    <li><a href="#model_messaggio"><code>model_messaggio</code> - Messaggio</a></li>
+    <li><a href="#model_motivo_blocco"><code>model_motivo_blocco</code> - Motivo blocco</a></li>
+    <li><a href="#model_ultimo_messaggio"><code>model_ultimo_messaggio</code> - Ultimo messaggio</a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Payload conversazione"><code>Payload conversazione</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">medico (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_medico">model_medico</a></span>  </div>
+<div class="param">argomento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'argomento della conversazione </div>
+<div class="param">autore (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_autore_payload">model_autore_payload</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Payload messaggio"><code>Payload messaggio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">testo </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il testo del messaggio </div>
+<div class="param">allegati (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_documento">array[model_documento]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="errore"><code>errore</code> - [ERRORE] Generico</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice univoco di errore interno </div>
+<div class="param">title (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Testo dell'errore da mostrare al cittadino </div>
+<div class="param">detail (optional)</div><div class="param-desc"><span class="param-type"><a href="#errore_dettaglio">array[errore_dettaglio]</a></span>  </div>
+<div class="param">links (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="errore_dettaglio"><code>errore_dettaglio</code> - [ERRORE] Dettaglio</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">chiave (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice univoco di errore interno </div>
+<div class="param">valore (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Testo dell'errore da mostrare al cittadino </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_abilitazione"><code>model_abilitazione</code> - Abilitazione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">abilitazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> <p>Indica se un assistito è abilitato. Possibili valori</p>
+<ul>
+<li>A = assistito è abilitato</li>
+<li>B = assistito è bloccato</li>
+<li>N = assistito senza stato</li>
+</ul>
+ </div>
+<div class="param">motivo_blocco (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_motivo_blocco">model_motivo_blocco</a></span>  </div>
+<div class="param">motivazione_medico (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La motivazione del blocco scritta dal medico </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_accession_number"><code>model_accession_number</code> - AccessionNumber</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">accession_number (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">data_notifica_pacs (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_autore"><code>model_autore</code> - Autore</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>L'autore della conversazione o del messaggio</div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice fiscale dell'autore </div>
+<div class="param">tipo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Indica il tipo di autore </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">assistito</div><div class="param-enum">delegato</div><div class="param-enum">medico</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_autore_payload"><code>model_autore_payload</code> - Autore</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>L'autore della conversazione</div>
+    <div class="field-items">
+      <div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice fiscale dell'autore </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_codifica"><code>model_codifica</code> - Codifica</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice della codifica </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione della codifica </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_conversazione"><code>model_conversazione</code> - Conversazione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Rappresenta la conversazione</div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Identificativo univoco </div>
+<div class="param">medico (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_medico">model_medico</a></span>  </div>
+<div class="param">argomento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'argomento della conversazione </div>
+<div class="param">n_messaggi_non_letti (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Il numero dei messaggi ancora non letti della conversazione </div>
+<div class="param">sola_lettura (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se la conversazione è in sola lettura </div>
+<div class="param">ultimo_messaggio (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_ultimo_messaggio">model_ultimo_messaggio</a></span>  </div>
+<div class="param">data_creazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui è stata creata la conversazione format: datetime</div>
+<div class="param">motivo_blocco (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_motivo_blocco">model_motivo_blocco</a></span>  </div>
+<div class="param">motivazione_medico (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La motivazione scritta dal medico quando blocca un assistito </div>
+<div class="param">autore (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_autore">model_autore</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_conversazione_nuova"><code>model_conversazione_nuova</code> - Nuova conversazione</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Rappresenta la conversazione</div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Identificativo univoco </div>
+<div class="param">medico (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_medico">model_medico</a></span>  </div>
+<div class="param">argomento (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> L'argomento della conversazione </div>
+<div class="param">data_creazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui è stata creata la conversazione format: datetime</div>
+<div class="param">autore (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_autore">model_autore</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_documento"><code>model_documento</code> - Documento</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id_documento_ilec (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> id del documento </div>
+<div class="param">codice_cl (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice della componente locale </div>
+<div class="param">azienda (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_codifica">model_codifica</a></span>  </div>
+<div class="param">descrizione_struttura (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione della struttura </div>
+<div class="param">data_validazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">tipo_documento (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_codifica">model_codifica</a></span>  </div>
+<div class="param">tipo_contributo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Se il documento è autocontribuito può valere TRASCRIZIONE o ALLEGATO (nel primo caso bisogna far vedere il testo nel secodo trattasi di un pdf), altrimenti viene restituito null </div>
+<div class="param">id_episodio (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">codice_documento_dipartimentale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codice che identifica il documento all'interno dell'ASR. </div>
+<div class="param">id_repository_cl (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">categoria_tipologia (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> <p>categoria del documento. Possibili valori</p>
+<ul>
+<li>FSE</li>
+<li>PERSONALE</li>
+</ul>
+ </div>
+<div class="param">accession_numbers (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_info_servizio"><code>model_info_servizio</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome del servizio </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del servizio </div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">servizio_attivo (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> boolean di utilita per eventuali test </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_medico"><code>model_medico</code> - Medico</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> nome del medico </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> cognome del medico </div>
+<div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice fiscale del medico </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_medico_info"><code>model_medico_info</code> - Info medico</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">data_inizio_adesione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data dell'ultima adesione format: datetime</div>
+<div class="param">data_fine_adesione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data della revoca al servizio. format: datetime</div>
+<div class="param">notifica_lettura_messaggi (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se i pazienti possono visualizzare lo stato della lettura dei messaggi inviati al medico </div>
+<div class="param">codice_fiscale (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il codice fiscale del medico </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il cognome del medico </div>
+<div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il nome del medico </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_messaggio"><code>model_messaggio</code> - Messaggio</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Identificativo univoco </div>
+<div class="param">data_creazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui è stato mandato il messaggio format: datetime</div>
+<div class="param">letto (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se il messaggio è stato letto dal destinatario </div>
+<div class="param">data_lettura (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui il messaggio è stato letto dal destinatario format: datetime</div>
+<div class="param">testo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il testo del messaggio </div>
+<div class="param">modificabile (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se il messaggio è modificabile </div>
+<div class="param">autore (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_autore">model_autore</a></span>  </div>
+<div class="param">modificato (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se il messaggio è stato modificato </div>
+<div class="param">autore_modifica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il cf dell'autore della modifica </div>
+<div class="param">data_modifica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui il messaggio è stato modificato format: datetime</div>
+<div class="param">allegati (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_documento">array[model_documento]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_motivo_blocco"><code>model_motivo_blocco</code> - Motivo blocco</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">codice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> codice del motivo del blocco </div>
+<div class="param">descrizione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> descrizione del motivo del blocco </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="model_ultimo_messaggio"><code>model_ultimo_messaggio</code> - Ultimo messaggio</a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Identificativo univoco </div>
+<div class="param">data_creazione (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui è stato mandato il messaggio format: datetime</div>
+<div class="param">letto (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se il messaggio è stato letto dal destinatario </div>
+<div class="param">data_lettura (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui il messaggio è stato letto dal destinatario format: datetime</div>
+<div class="param">testo (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il testo del messaggio </div>
+<div class="param">autore (optional)</div><div class="param-desc"><span class="param-type"><a href="#model_autore">model_autore</a></span>  </div>
+<div class="param">modificato (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Indica se il messaggio è stato modificato </div>
+<div class="param">autore_modifica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Il cf dell'autore della modifica </div>
+<div class="param">data_modifica (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> La data in cui il messaggio è stato modificato format: datetime</div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

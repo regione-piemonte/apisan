@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datasources>
+  <datasource jta="false"
+     jndi-name="java:/apisan/jdbc/apisanDS" pool-name="apisanDS"
+     enabled="true" use-ccm="false">
+      <connection-url>@@DB_APISAN_URL@@</connection-url>
+     <driver-class>org.postgresql.Driver</driver-class>
+      <driver>postgresql</driver>
+      <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
+    <pool>
+      <min-pool-size>0</min-pool-size>
+      <max-pool-size>15</max-pool-size>
+    </pool>
+    <security>
+      <user-name>@@DB_APISAN_USER@@</user-name>
+      <password>@@DB_PWD@@</password>
+    </security>
+    <validation>
+      <validate-on-match>true</validate-on-match>
+      <background-validation>false</background-validation>
+	  <check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+    </validation>
+    <statement>
+      <track-statements>true</track-statements>
+      <share-prepared-statements>false</share-prepared-statements>
+    </statement>
+	 <timeout>
+      <set-tx-query-timeout>true</set-tx-query-timeout>
+      <query-timeout>30</query-timeout>
+    </timeout>
+  </datasource>
+</datasources>
