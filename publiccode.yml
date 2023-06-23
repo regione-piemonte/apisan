@@ -98,7 +98,7 @@ maintenance:
 name: Backend API Servizi Salute
 platforms:
   - web
-releaseDate: '2023-14-06'
+releaseDate: '2023-06-14'
 softwareType: standalone/web
 url: https://github.com/regione-piemonte/apisan
 softwareVersion: 6.3.0
