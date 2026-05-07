@@ -1,8 +1,8 @@
-# This repository adheres to the publiccode.yml standard by including this 
+# This repository adheres to the publiccode.yml standard by including this
 # metadata file that makes public software easily discoverable.
-# More info at https://github.com/italia/publiccode.yml
+# More info at https://github.com/publiccodeyml/publiccode.yml
 
-publiccodeYmlVersion: '0.2'
+publiccodeYmlVersion: '0'
 categories:
   - erp
 dependsOn:
@@ -32,10 +32,9 @@ description:
       - |-
         Le API esposte da APISAN facilitano la fruibilità dei servizi sanitari
         al cittadino.
-    genericName: Servizi Web e API per la sanità
     longDescription: |
       Le componenti SANSOL rappresentano il Front-End dei servizi sanitari rivolti ai cittadini della
-      Regione Piemonte. 
+      Regione Piemonte.
 
 
       Nasce come  punto di accesso unico per consultare la propria storia
@@ -51,30 +50,30 @@ description:
       o consultare i documenti sanitari presenti nel proprio fascicolo
       sanitario, visualizzare le proprie vaccinazioni, cambiare o scegliere il
       proprio medico di famiglia, scaricare le proprie ricette dematerializzate,
-      visualizzare il proprio buono celiachia ecc.. 
-      
+      visualizzare il proprio buono celiachia ecc..
+
       Le componenti APISAN espongono servizi in tecnologia REST rivolti al cittadino
       e riguardanti le tematiche sanitarie per la Regione Piemonte. Tali servizi
       sono fruibili dal cittadino attraverso l'applicazione web SANSOL e
-      comprendono tra gli altri: 
+      comprendono tra gli altri:
 
             - gestione del fascicolo sanitario del cittadino,
 
             - la scelta/revoca del medico
 
-            - il profilo sanitario del cittadino 
+            - il profilo sanitario del cittadino
 
-            - le vaccinazioni eseguite dal cittadino 
+            - le vaccinazioni eseguite dal cittadino
 
-            - i servizi dello screening 
+            - i servizi dello screening
 
-            - i servizi di gestione deleghe per operare sui servizi stessi per un  altro cittadino delegato 
+            - i servizi di gestione deleghe per operare sui servizi stessi per un  altro cittadino delegato
 
-            - i servizi di ricerca topografica di farmacie, ospedali e case di cura, strutture sanitarie 
+            - i servizi di ricerca topografica di farmacie, ospedali e case di cura, strutture sanitarie
 
             - la ricerca e i pagamenti ticket sanitari on-line.
 
-            - i sertvizi per il contatto digitale 
+            - i sertvizi per il contatto digitale
     shortDescription: |-
       Rappresenta il sistema Back-End dei servizi sanitari rivolti ai cittadini della
       Regione Piemonte.
@@ -82,38 +81,24 @@ developmentStatus: obsolete
 intendedAudience:
   scope:
     - healthcare
-it:
-  conforme:
-    gdpr: false
-    lineeGuidaDesign: false
-    misureMinimeSicurezza: true
-    modelloInteroperabilita: false
-  countryExtensionVersion: '0.2'
-  piattaforme:
-    anpr: false
-    cie: true
-    pagopa: false
-    spid: true
-  riuso:
-    codiceIPA: r_piemon
 landingURL: 'https://github.com/regione-piemonte/apisan.git'
 legal:
-  authorsFile: |-
-    COPYRIGHTS.md
   license: EUPL-1.2
   mainCopyrightOwner: Regione PIemonte
-  repoOwner: Regione Piemonte
 localisation:
   availableLanguages:
     - it
   localisationReady: false
-logo: apisansol.png
+logo: apisan.png
 maintenance:
   contacts:
     - email: giovanni.pennone@csi.it
       name: Giovanni Pennone
   type: internal
 name: FE Servizi Salute Regione Piemonte e Backend API Servizi Salute
+organisation:
+  name: Regione Piemonte
+  uri: 'urn:x-italian-pa:r_piemon'
 platforms:
   - web
 releaseDate: '2022-05-11'
